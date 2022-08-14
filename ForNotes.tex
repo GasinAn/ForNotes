@@ -1,0 +1,42 @@
+% 编译方式: xelatex*2
+\documentclass{ctexbook}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{syntonly}
+%\syntaxonly
+\pagestyle{plain}
+\makeatletter
+\newcommand{\starttoc}{
+    \chapter*{\contentsname}
+    \thispagestyle{empty}\@starttoc{toc}\thispagestyle{empty}
+}
+\makeatother
+\renewcommand{\tableofcontents}{\twocolumn\starttoc\onecolumn}
+\hypersetup{
+    colorlinks,
+    linkcolor=blue,
+    filecolor=pink,
+    urlcolor=cyan,
+    citecolor=red,
+}
+\DeclareMathOperator{\sgn}{sgn}
+\newtheorem{principle}{规范}
+\title{Fortran笔记}
+\author{GasinAn}
+\begin{document}
+    \maketitle
+    \include{copyright.tex}
+    \tableofcontents
+    \setcounter{page}{1}
+    \include{preface.tex}
+    \include{compiler.tex}
+    \include{basic.tex}
+    \include{intrinsic_type.tex}
+    \include{assignment_and_operation.tex}
+    \include{construct.tex}
+    \include{array.tex}
+    \include{procedure.tex}
+    \include{io.tex}
+\end{document}

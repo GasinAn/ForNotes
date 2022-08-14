@@ -1,0 +1,243 @@
+\chapter{固有类型}\label{fortran_intrinsic_type}
+
+变量(variable)相当于容器, 可以存放电脑计算时使用的数据, 变量中存储的数据在计算过程中可以改变. 常量(constant)相当于存放着固定数据的容器, 分为字面常量(literal constant)和具名常量(named constant, 见\ref{fortran_parameter}节), 常量中存储的数据在计算过程中不能被改变. 变量和常量都是数据实体(data entity).
+
+在Fortran中, 每一个数据实体都有一个明确的类型(type). 类型分为固有类型(intrinsic type)和派生类型(derived type). 所有固有类型的数据实体都有种别(kind).
+
+Fortran是静态类型语言(statically typed language), 也就是说, Fortran中的变量不能在一个命令执行之后转变类型. Fortran中要使用一个变量, 必先声明(specify), 声明后变量的类型就确定了, 以后不能更改.
+
+之前的所有程序都含有个\verb|implicit none|, 这个命令能阻止很多变量声明时的坑人规则发挥作用, 血泪教训就是一定要把它加上\dots
+
+\begin{principle}
+    永远在程序中加入\verb|implicit none|.
+\end{principle}
+
+Fortran的固有类型分五种: 整型(integer type), 实型(real type), 复型(complex type), 字符型(character type)和逻辑型(logical type). 整型, 实型和复型都是数字型(numeric type). 使用这五个类型的变量前, 一定要声明变量的具体类型. 种别可以声明也可以不声明, 如果不声明, 会取一个默认的种别.
+
+\section{整型}
+
+整型字面常量没啥好讲, 说白了就和整数一毛一样. 下面这个程序使用了整型字面常量\verb|-1234567890|.
+\begin{verbatim}
+program main
+    implicit none
+    print *, -1234567890
+end program main
+\end{verbatim}
+
+用\verb|integer|关键词(keyword)可以声明整型变量, 像下面这样.
+\begin{verbatim}
+program main
+    implicit none
+    integer :: i
+end program main
+\end{verbatim}
+
+上面这个程序声明了个名称为\verb|i|的默认种别的整型变量.
+
+我们还可以一口气声明多个同类型同种别的变量, 像下面这样.
+\begin{verbatim}
+program main
+    implicit none
+    integer :: i, j, k, l, m, n
+end program main
+\end{verbatim}
+
+上面这个程序一口气声明了六个默认种别的整型变量.
+
+64位电脑上,~Ifort和Gfortran都支持四个整型种别: \verb|int8|, \verb|int16|, \verb|int32|和\verb|int64|. 指明整型字面常量的种别, 在其后面用下划线连上种别名就成. 但种别名不能直接用, 出现在\verb|use, intrinsic :: iso_fortran_env|后就可以用了, 像下面这样. 注意\verb|use ...|要摆在\verb|implicit none|上面.
+\begin{verbatim}
+program main
+    use, intrinsic :: iso_fortran_env, &
+        only: int8, int16, int32, int64
+    implicit none
+    print *, 127_int8
+    print *, 32767_int16
+    print *, 2147483647_int32
+    print *, 9223372036854775807_int64
+end program main
+\end{verbatim}
+
+Ifort和Gfortran默认的整型种别都是\verb|int32|.
+
+指明整型变量的种别, 在\verb|integer|后加括号, 然后填上种别名.
+\begin{verbatim}
+program main
+    use, intrinsic :: iso_fortran_env, &
+        only: int8, int16, int32, int64
+    implicit none
+    integer(int8) :: i8
+    integer(int16) :: i16
+    integer(int32) :: i32
+    integer(int64) :: i64
+end program main
+\end{verbatim}
+
+我们还可以给种别取个别名, 像这样.
+\begin{verbatim}
+program main
+    use, intrinsic :: iso_fortran_env, &
+        only: s=>int16, i=>int32, l=>int64
+    implicit none
+    integer(s) :: short
+    integer(i) :: int
+    integer(l) :: long
+    print *, 32767_s
+    print *, 2147483647_i
+    print *, 9223372036854775807_l
+end program main
+\end{verbatim}
+
+整型种别名最后的数字实际上表示数字在电脑中用几个单位空间来存储. 设存储的单位空间数为$n$, Ifort能存储$-2^{n-1}$到$2^{n-1}-1$的整数, Gfortran能存储$-2^{n-1}+1$到$2^{n-1}-1$的整数. 如果选择的种别``太小'', 空间不足却强令电脑存储数字, Ifort会给警告然后算出个奇奇怪怪的结果, Gfortran会直接报错. 后面实型和复型也是如此.
+
+选择什么整型种别, 看需要, 一般选默认的就成.
+
+\section{实型}
+
+实型字面常量也没啥好讲, 说白了也就和实数一毛一样. 不过这里的实数可以有一个以10为底的指数部分, 用字母\verb|e|后加整数来表示. 下面这个程序使用了实型字面常量\verb|6.62607015e-34|, 其相当于$6.62607015\times10^{-34}$.
+\begin{verbatim}
+program main
+    implicit none
+    print *, 6.62607015e-34
+end program main
+\end{verbatim}
+运行程序后Terminal出现的其实只是个近似6.62607015e-34的值, 这是由于计算机实际上不总能绝对精确地存储实型数据实体. 多数情况下这样的不精确不妨事, 但有时会大事!
+
+用\verb|real|关键词可以声明实型变量, 像下面这样.
+\begin{verbatim}
+program main
+    implicit none
+    real :: h
+end program main
+\end{verbatim}
+
+上面这个程序声明了个变量名为\verb|h|的默认种别的实型变量.
+
+我们还可以一口气声明多个同类型同种别的变量, 方法同整型变量.
+
+64位电脑上,~Ifort和Gfortran都支持三种实型种别: \verb|real32|, \verb|real64|和\\\verb|real128|, 分别称为单精度, 双精度和四精度. 指明实型字面常量或变量的种别的方式, 还有给实型种别取别名的方式, 都和整型一样.
+
+同样, 实型种别名最后的数字实际上表示数字在电脑中用几个单位空间来存储. 原则上存储的单位空间数越多, 实型量有效位数就越多, 并且可取得的范围也越广, 也就是说既能取超级大的数, 也能取超级小的数.
+
+只要不是在用古董电脑, 统统用\verb|real128|就好了. 统统用\verb|real128|, 很多坑都能不踩到了, 这是好事, 然而程序的运行时间必然蹭蹭上涨, 而且一般计算并不需要那么高的精度\footnote{众所周知, 俺们天文观测数据的不确定度是相当大滴.}. 天文中很多经典轮子都是运行在\verb|real64|这样的精度的, 所以统统用\verb|real64|一般也是可的.
+
+\section{复型}
+
+复型真的好不常用\dots{}~如果是搞物理的, 还可能用用.
+
+复型字面常量长成\verb|(..., ...)|的样子, 其中\verb|...|是整型或实型常量, 逗号前后分别是实部和虚部.
+
+下面这个程序使用了复型字面常量\verb|(3.0, 4.0)|, 其相当于$3+4i$.
+\begin{verbatim}
+program main
+    implicit none
+    print *, (3.0, 4.0)
+end program main
+\end{verbatim}
+
+构造复型字面常量时, 是可以在实部和虚部用整型字面常量, 但构造完的复型字面常量的实部和虚部都会自动变成相应的实型字面常量, 比如把上面的\verb|(3.0, 4.0)|改成\verb|(3, 4)|, 结果是一样的.
+\begin{itemize}
+    \item 如果构造时实部和虚部都用实型字面常量, 则实部和虚部的种别是两个实型字面常量的种别中较精确的一个.
+    \item 如果构造时实部和虚部一个用实型字面常量, 另一个用整型字面常量, 则实部和虚部的种别是实型字面常量的种别.
+    \item 如果构造时实部和虚部都用整型字面常量, 则实部和虚部的种别是默认的实型种别, 也就是\verb|0.0|的种别.
+\end{itemize}
+
+用\verb|complex|关键词可以声明复型变量. 复型的种别与实型相同, 复型数据实体的种别与实部和虚部的种别相同. 声明复型变量方法, 标明复型变量种别的方法同实型和整型. 但要注意, 给复型常量加尾巴是不成的. 要标明复型常量的种别, 给实部和虚部分别加上尾巴就成.
+
+\section{字符型}\label{fortran_char}
+
+字符串用\verb|'...'|或\verb|"..."|表示, 其中\verb|...|是字符串的内容, 可以没有.
+
+下面这个程序使用了字符型字面常量\verb|'!@#$%^&*'|, 代表!@\#\$\%\^{}\&*, 还有字符型常量\verb|''|, 代表一个字符也无的``空字符串''.
+\begin{verbatim}
+program main
+    implicit none
+    print *, '!@#$%^&*', '', '!@#$%^&*'
+end program main
+\end{verbatim}
+
+注意引号内的所有内容都是字符串的一部分, 包括空格, 并且字符串中的字母是区分大小写的. 下举一例.
+\begin{verbatim}
+program main
+    implicit none
+    print *, '.', 'HELLO', 'HELLO', 'HELLO', '.'
+    print *, '.', ' hello', '  hello   ', 'hello    ', '.'
+end program main
+\end{verbatim}
+
+自然而然出现的问题就是, 如何在字符串中加\verb|'|和\verb|"|. 自然可以在用\verb|'|括起来的字符串里用\verb|"|, 在用\verb|"|括起来的字符串里用\verb|'|. 如果非得在用\verb|'|/\verb|"|的字符串里用\verb|'|/\verb|"|, 则可以用两个连续的\verb|'|/\verb|"|来表示\verb|'|/\verb|"|, 像下面这样.
+\begin{verbatim}
+program main
+    implicit none
+    print *, "'?", ' ', '"?'
+end program main
+\end{verbatim}
+\begin{verbatim}
+program main2
+    implicit none
+    print *, 'GasinAn said, "I love using ''wheels'','
+    print *, "especially the 'liber' ones."""
+end program main2
+\end{verbatim}
+
+用\verb|character|关键词可以声明字符型变量. 注意, 需要告诉电脑字符型变量所装的字符串的长度, 在\verb|character|后紧跟括号, 内加整型常量来表示.
+
+下面这个程序声明了个非常非常长的字符型变量.
+\begin{verbatim}
+program main
+    use iso_fortran_env, only: l=>int64
+    implicit none
+    character(1000000000000_l) :: very_long_char
+end program main
+\end{verbatim}
+
+要注意这么写是不成的, 因为\verb|1e12|实际上是实型的.
+\begin{verbatim}
+program main
+    implicit none
+    character(1e12) :: very_long_char
+end program main
+\end{verbatim}\mbox{}\\
+但这么写是可的. 若不知为何, 可暂且不管这个例子.
+\begin{verbatim}
+program main
+    implicit none
+    character(10**12) :: very_long_char
+end program main
+\end{verbatim}
+
+有些时候非常尴尬, 程序运行前我们并不知道字符型变量的长度应该取多少, 这时我们可以在声明中加上\verb|,allocatable|, 并将长度设成一个冒号``\verb|:|'', 造一个延迟长度字符型变量(deferred-length character variable). 随后我们可以用allocate语句(statement)将字符型变量的长度变成一个确定值. 接着我们还可以用deallocate语句将字符型变量的长度重新变成不确定的, 然后再对字符型变量使用allocate语句\dots
+
+使用延迟长度字符型变量的示例如下.
+\begin{verbatim}
+program main
+    implicit none
+    character(:),allocatable :: deferred_len_char
+    ! Now length of deferred_len_char is undefined.
+    allocate(character(100000000) :: deferred_len_char)
+    ! Now length of deferred_len_char is 100000000.
+    deallocate(deferred_len_char)
+    ! Now length of deferred_len_char is undefined again.
+    allocate(character(0) :: deferred_len_char)
+    ! Now length of deferred_len_char is 0.
+end program main
+\end{verbatim}
+
+可以对字符串进行切片(slicing)操作. 切片就是在字符串后加上个形如\verb|(nl:nu)|的东东, 将字符串的第\verb|nl|到第\verb|nu|个字符截下来, 得到一个新字符串. \verb|nl|和\verb|nu|必须是整型数据实体. \verb|nl|和\verb|nu|都可以不写. 如果\verb|nl|不写, \verb|nl|就等于\verb|1|. 如果\verb|nu|不写, \verb|nu|就等于字符串的长度.
+
+看下面这个例子就懂了.
+\newpage
+\begin{verbatim}
+program main
+    implicit none
+    character(9) :: numbers
+    numbers = '123456789'
+    print *, numbers(3:7)
+    print *, numbers(:7)
+    print *, numbers(3:)
+    print *, numbers(:)
+end program main
+\end{verbatim}
+
+\section{逻辑型}
+
+逻辑型字面常量只有两个: \verb|.true.|和\verb|.false.|, 分别对应于逻辑中的``真''和``假''. 声明逻辑型变量用\verb|logical|关键词.

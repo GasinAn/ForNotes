@@ -1,0 +1,376 @@
+\chapter{基础知识}
+
+\section{程序}\label{fortran_program}
+
+程序(program)是指挥电脑工作的一堆指令. 这些指令是要用一堆字符表示的, 表示指令的字符的整体称为源代码(source code). 源代码需要被保存在文件中, 保存源代码的文件称为源代码文件(source code file)\footnote{
+    显然, 程序, 源代码和源代码文件是高度相关的, 所以今后将不再区分这三者.
+}.
+
+比如, 在一个名为\verb|helloworld.f90|的文件内写入下面这些内容并保存.
+\begin{verbatim}
+program main
+    implicit none
+    print *, 'Hello, world!'
+end program main
+\end{verbatim}
+这个\verb|helloworld.f90|文件就是一个源代码文件, 里面的四行字符就是一份源代码, 这份源代码代表四条指令, 这四条指令组合起来就是一个程序.
+
+\section{字符集}
+
+Fortran可以在程序中使用键盘能直接打出的所有字符. 其他字符(比如汉字, 汉语标点)等能不能出现在程序中, 要看编译器认不认, 也就是能不能执行(见\ref{run_fortran}节). 注意, 英文标点和中文标点是不同的!
+
+经测试, Ifort和Gfortran都是可以支持汉字和汉语标点的, 但直接把汉字或汉语标点打在屏幕上可能会出现乱码(这可以解决).
+
+为避免各种各样的问题, 还是只用正常字符为好.
+
+\begin{principle}
+    不要在程序中使用键盘不能直接打出的字符.
+\end{principle}
+
+Fortran是大小写不敏感的(case-insensitive), 也就是说, 很多情况下程序中的字母大写小写效果是完全相同的(效果不同的地方见\ref{fortran_char}节). 比如, 下面这个程序和\ref{fortran_program}节中的程序是完全等价的.
+\begin{verbatim}
+PROGRAM MAIN
+    IMPLICIT NONE
+    PRINT *, 'Hello, world!'
+END PROGRAM MAIN
+\end{verbatim}
+
+相信我, 在程序中混用大小写字母是很容易出事的.
+
+\begin{principle}
+    尽量在程序中使用小写字母.
+\end{principle}
+
+\section{源代码格式}
+
+Fortran的源代码格式(source form)分两种: 自由格式(free form)和固定格式(fixed form). 自由格式的源代码需要保存在拓展名为\verb|.f90|的文件中, 可能可以保存在拓展名为\verb|.F90|, \verb|.f03|, \verb|.F03|, \verb|.f08|, \verb|.F08|, \verb|.f18|, \verb|.F18|, \verb|.fypp|, \verb|.FYPP|的文件中. 固定格式的源代码需要保存在拓展名为\verb|.for|或\verb|.f|的文件中, 可能可以保存在拓展名为\verb|.FOR|, \verb|.F|, \verb|.ftn|, \verb|.FTN|, \verb|.fpp|, \verb|.FPP|的文件中. 上述``可能''要看编译器承认不承认, 也就是能不能执行(见\ref{run_fortran}节).
+
+写固定格式的程序会遇到各种各样的问题. 自由格式就是为了替代固定格式而创立的. 本书Fortran部分的全部内容都基于自由格式程序.
+
+\begin{principle}
+    永远编写自由格式的程序.
+\end{principle}
+
+源代码文件名除拓展名外可以随便取, 但乱取文件名是要粗事情滴.
+
+\begin{principle}
+    将源代码文件名取成能表示程序功能的字符串.
+\end{principle}
+
+\begin{principle}
+    不要在源代码文件名中使用汉字等特殊字符.
+\end{principle}
+
+\subsection{缩进}
+
+缩进(indent)是指源代码每行最前面的空格(可能没有). 对Fortran而言, 缩进本身通常没有意义, 但适当的缩进能使程序更容易被理解.
+
+\begin{principle}\label{fortran_indent}
+    在程序中加入适当的缩进, 最好以$4$个空格为单位.
+\end{principle}
+
+``以4个空格为单位'', 是指保持缩进为4个空格, 或8个空格, 或12个空格, 以此类推. 合格的文本编辑器(text editor), 比如VS Code, 会自动在程序中加上合适的缩进. 有些人可能更喜欢以2个空格或8个空格为单位的缩进.
+
+注意, 在文本编辑器中按[Tab]键, 也会出现一长串``空格'', 但实际上对电脑而言, 按[Tab]键和按一堆空格, 效果是不同的. 智能的文本编辑器, 比如VS Code, 会自动把[Tab]转换为适当数目的空格, 但还是不保险. 一些经典的优秀编辑器, 比如Vim, 好像是会严格区分[Tab]和空格的\footnote{
+    这并不见得是坏事, 因为有些特殊文件是默认必须使用[Tab]的.
+}, 除非另装外挂. 一些编译器可能会接受在程序编辑中使用[Tab]键, 但这也不保险. 总而言之, 使用[Tab]键, 实在不清楚会不会出问题.
+
+\begin{principle}
+    不要使用\emph{[Tab]}键.
+\end{principle}
+
+\subsection{空行}
+
+为便于理解程序, 还要在程序中加入适当的空行(就是没有任何字符的一行\footnote{
+    只有空格的行也是空行, 但这样的行除了多占用存储空间外, 和没有任何字符的行没区别.
+}). 至于什么时候加入一行或加入几行, 完全看心情. 简单的原则就是, 如果读程序长长的一部分, 感觉头昏脑涨, 或觉得以后肯定会头昏脑涨, 插入空行来把这部分划分成各自能完成一件事的几部分就是不错的选择.
+
+\begin{principle}
+    在程序中加入适当的空行.
+\end{principle}
+
+正如\ref{fortran_program}节所说, 程序是指令的集合. 空行代表的指令是``啥事也不做''.
+
+\subsection{注释}
+
+程序每一行中, \verb|!|及后面的所有内容, 通常都会被无视(不会被无视的地方见\ref{fortran_char}节), 也就相当于\verb|!|后面的内容不存在. 会被无视的\verb|!|及后面的内容称为注释(comment), 只包含注释的行称为注释行(comment line).
+
+注释写什么无所谓, 但这么强大的东东还是要充分利用的. 普通的小程序, 可以在程序中复杂深奥的部分加上注释, 写上这部分是怎么运作的, 干了什么事, 得到什么结果等. 只要自己看程序的一部分, 觉得头大, 就加上注释吧. 优秀的轮子里都有非常完善的注释, 包括程序每部分的功能, 作者姓名, 机构, 修改时间, 和版权声明等, 注释比程序本身还长是常有的事.
+
+自己的小程序, 写写汉语注释也无所谓, 不过最好还是写英文的(顺便提升英语能力). 造轮子请加上纯英文的注释.
+
+\begin{principle}
+    在程序中加入适当的注释.
+\end{principle}
+
+\subsection{续行}
+
+有时可能遇到一行太长的情况, 这时可以使用\verb|&|来把一行拆成两行写.
+
+下面这个程序就用了续行(continuation).
+\begin{verbatim}
+program main
+    implicit none
+    print *, &
+    'Loooooooooooooooooooooooooooooooong!'
+end program main
+\end{verbatim}
+上面这个程序就相当于下面这个程序.
+\begin{verbatim}
+program main
+    implicit none
+    print *, 'Loooooooooooooooooooooooooooooooong!'
+end program main
+\end{verbatim}
+
+如果用一个续行符\verb|&|续行后, 一行还是太长, 可以接着用续行符再续. 比如下面这个程序和上面两个程序是一样的.
+\begin{verbatim}
+program main
+    implicit none
+    print &
+    *, &
+    'Loooooooooooooooooooooooooooooooong!'
+end program main
+\end{verbatim}
+
+其他使用续行符的规则如下.
+\begin{itemize}
+    \item 不能简单地在不能插入空格的地方续行\footnote{
+        也就是说用特殊方法可以, 但这样的话这个程序就会让人看得脑壳疼.
+    }.\\比如,下面这个程序是不成的.\begin{verbatim}
+program main
+    im&
+plicit none
+    print *, 'Loooooooooooooooooooooooooooooooong!'
+end program main
+    \end{verbatim}
+    \item 可能不能让一行之中只有空格和一个续行符.\\比如, 下面这个程序可能是不成的    \begin{verbatim}
+program main
+    implicit none
+    print *, 'Loooooooooooooooooooooooooooooooong!'
+    &
+end program main
+    \end{verbatim}
+    \item 续行符下一行不能是空行, 也不能是注释行.\\比如, 下面这个程序是不成的.\begin{verbatim}
+program main
+    implicit none
+    print *, 'Loooooooooooooooooooooooooooooooong!' &
+    ! This is invalid!
+end program main
+    \end{verbatim}
+    \item 没法在注释中使用续行符, 因为注释中的\verb|&|会被当成是注释的一部分.\\比如, 下面这个程序是不成的.\begin{verbatim}
+program main
+    implicit none
+    print *, 'Loooooooooooooooooooooooooooooooong!'
+    ! This is &
+      invalid!
+end program main
+    \end{verbatim}在VS code这样合格的编辑器中, 上面这个程序的第四行和第五行颜色会不一样, 并且第四行中\verb|&|的颜色会和第四行其他字符的颜色一样. 这就提示我们\verb|&|是注释的一部分, 并且第五行不被当成是注释.
+    \item 续行符后的所有空格会被无视, 并且可以在续行符后加注释.\\比如, 下面这个程序是成的.\begin{verbatim}
+program main
+    implicit none
+    print *, & ! This is valid!
+    'Loooooooooooooooooooooooooooooooong!'
+end program main
+    \end{verbatim}
+\end{itemize}
+
+总的来说就是, 老老实实用续行符是可以的, 搞幺蛾子是不行的.
+
+如果程序中某些行非常非常长\footnote{
+    按照标准, 一行最多能有132个字符.
+}, 那这程序读起来真是头疼.
+
+\begin{principle}\label{fortran_no_more_than_80}
+    程序每一行应不超过$80$个字符.
+\end{principle}
+
+\begin{principle}
+    在合适的地方使用续行符, 并保证续行符前有一个空格.
+\end{principle}
+
+用VS Code的话, 可以在\verb|settings.json|里加入下面这两个键值对.
+\begin{verbatim}
+"editor.wordWrap": "wordWrapColumn",
+"editor.wordWrapColumn": 80
+\end{verbatim}
+这样如果一行超过80个字符, 就会分行显示. 注意, 只是分行显示, 这一行还是超过80个字符的\footnote{
+    可以看到下面一``行''是没有行号的.
+}. 加入这两个键值对只是起到提醒作用, 太长还是要分行写的.
+
+\subsection{标号}
+
+除了空行, 注释行和续行符的后一行, 程序的每一行开头都可以加上标号(label). 标号是1--99999的数字, 后面至少有一个空格. 标号开头可以是0, 但标号中的数字不能多于五个. 四位数的, 整千或整百的标号比较常见.
+
+下面的程序第三行使用了标号.
+\begin{verbatim}
+program main
+    implicit none
+    1000 print *, 'label'
+end program main
+\end{verbatim}
+
+在程序中显然不能有重复的标号\footnote{
+    准确来说是在一个程序单元内不能有重复标号. 程序单元的含义见\ref{run_fortran}节.
+}, 比如下面这个程序是不成的.\begin{verbatim}
+program main
+    implicit none
+    09999 print *, '09999'
+    9999  print *, '9999'
+end program main
+\end{verbatim}
+
+\subsection{标签}
+
+在一些特殊的地方(见\ref{fortran_exit}和\ref{fortran_cycle}小节)可以加标签(tag). 
+
+下面的程序第四行使用了标签.
+\begin{verbatim}
+program main
+    implicit none
+    integer :: i
+    tag: do i = 1, 1
+        print *, 'tag'
+    end do tag
+end program main
+\end{verbatim}
+
+显然在程序中也不能有重复的标签\footnote{
+    同标号一样, 准确来说是在一个程序单元内不能有重复标签.
+}.
+
+\section{运行}\label{run_fortran}
+
+Fortran程序由若干程序单元(program unit)组成, 程序单元可能是主程序(main program), 或外部子程序(external subprogram, 见第\ref{fortran_procedure}章), 或模块(module, 见第\ref{fortran_module}章), 或子模块(submodule, 见第\ref{fortran_submodule}章). 一个Fortran程序中必须有且只有一个主程序, 其他程序单元数目任意.
+
+主程序必须满足下面的格式\footnote{
+    其实头尾还可能可以省略一部分, 但还是写全为好.
+}.
+\begin{verbatim}
+program [program-name]
+    ...
+end program [program-name]
+\end{verbatim}
+其中, \verb|[program-name]|处是一个名称(name). 名称指的是由字母, 数字和下划线``\verb|_|''\footnote{
+    下划线是空格的替代字符, 长得还是蛮像滴!
+}组成的, 开头是字母的字符串. ``\verb|...|''处则是各种指令, 一行一条.
+
+\ref{use_ifort}小节和\ref{use_gfortran}小节中已经介绍了程序运行/执行(run/execute)的部分方法(我觉着掌握这些就够了). 所谓运行就是让电脑按程序中的指令干活. 程序运行的规则是:
+\begin{enumerate}
+    \item 首先运行\verb|program [program-name]|.
+    \item 运行一行指令后, 紧接着运行下一行指令, 除非先前运行的指令中有指明接下来应该运行哪一行指令(见第\ref{fortran_construct}章, 第\ref{fortran_procedure}章, 第\ref{fortran_module}章, 第\ref{fortran_submodule}章).
+    \item 一旦运行\verb|end program [program-name]|, 就不再运行任何指令.
+\end{enumerate}
+
+\section{异常}\label{fortran_exception}
+
+程序的运行过程可未必一帆风顺, 可能出现异常(exception). 异常分为错误(error)和警告(warning).
+
+\subsection{错误}\label{fortran_error}
+
+电脑运行程序, 运行着运行着, 可能会突然发现自己没法儿干活了, 这时电脑就只好告诉我们, 它莫得干(这就是抛出错误), 然后直接罢工了.
+
+当然如果老是这样, 俺们和电脑们都会浑身难受, 因为在碰上错误前, 电脑还执行了其他指令, 这可能会白费相当多的时间. 所以在生成\verb|.exe|文件前, 电脑会先把整份代码读一遍, 瞅一瞅看是不是有地方电脑是不能干活的, 如果有, 电脑会提前抛出错误, 这样就不会白费太多时间了. 当然有时候, 电脑在事先没有办法判断某些个地方是没法干活的, 那它就只能等真执行到那里时再抛出错误了.
+
+比如, 运行这样一个程序(文件名\verb|main.f90|).
+\begin{verbatim}
+program main
+    implicit none
+    print 'Hello, world!'
+end program main
+\end{verbatim}
+
+Ifort给出的结果如下\footnote{
+    假定屏幕每行仅能容纳60字符, 且略去版权声明等无关紧要的内容, 下同.
+}.
+\begin{verbatim}
+main.f90(3): error #6899: First non-blank character in a cha
+racter type format specifier must be a left parenthesis.   [
+'Hello, world!']
+    print 'Hello, world!'
+-----------^
+compilation aborted for main.f90 (code 1)
+\end{verbatim}
+
+Gfortran给出的结果如下.
+\begin{verbatim}
+main.f90:3:10:
+
+    print 'Hello, world!'
+         1
+Error: Missing leading left parenthesis in format string at 
+(1)
+\end{verbatim}
+
+由于程序第三行不符合规则(\verb|print|后少了\verb|*,|), 电脑不知怎么干活了, 只好报个错儿. 这个错儿是在生成\verb|.exe|文件时就查出了.
+
+再比如, (Windows下)运行这样一个程序.
+\begin{verbatim}
+program main
+    implicit none
+    open(10, file='C:\*')
+end program main
+\end{verbatim}
+
+这回生成\verb|.exe|文件时, Ifort和Gfortran都表现得很正常, 然后就出事. 虽然所有命令都是符合规则的, 然而Windows文件名里不能有\verb|*|, 电脑没法干活, 只好报个错儿.
+
+一个程序会不会报错儿, 其实还和编译器有关. 比如运行下面这个程序.
+\begin{verbatim}
+program main
+    implicit none
+    print *, 1.0/0.0
+end program main
+\end{verbatim}
+(默认情形下)~Gfortran会报错儿说不能除以0, 但Ifort就不会报错, 会给个无穷大. 有趣的是, 如果运行下面这个程序, 则Gfortran和Ifort一样, 都会算出个无穷大来.
+\begin{verbatim}
+program main
+    implicit none
+    real :: r
+    r = 0.0
+    print *, 1.0/r
+end program main
+\end{verbatim}
+
+\subsection{警告}\label{fortran_warning}
+
+有些时候电脑能够执行指令, 但它觉得这些个指令十分``危险'', 很有可能指令的实际执行过程并不是我们预想的那样, 这时电脑就会抛出警告. 什么时候应该给个错误, 不同编译器的观点还是比较一致的, 但什么时候给个警告, 那就全看编译器心情了.
+
+比如, 运行这样一个程序(文件名\verb|main.f90|).
+\begin{verbatim}
+program main
+    implicit none
+    integer :: i = 1000000000000
+    print *, i
+end program main
+\end{verbatim}
+
+Ifort给出这样的结果.
+\begin{verbatim}
+main.f90(3): warning #6384: The INTEGER(KIND=4) value is out
+-of-range.   [1000000000000]
+    integer :: i = 1000000000000
+-------------------^
+\end{verbatim}
+
+Ifort认为\verb|1000000000000|过大, 无法正确存储, 于是就给个警告, 但程序仍然可以运行. 运行后输出\verb|-727379968|, 果然很奇怪! 至于Gfortran嘛, 它也认为\verb|1000000000000|过大, 但它不是给出警告, 而是直接报错.
+
+再比如, 运行这样一个程序(文件名\verb|main.f90|).
+\begin{verbatim}
+program main
+    implicit none
+    integer :: i = .true.
+    print *, i
+end program main
+\end{verbatim}
+
+Gfortran给出这样的结果.
+\begin{verbatim}
+main.f90:3:18:
+
+    integer :: i = .true.
+                 1
+Warning: Extension: Conversion from LOGICAL(4) to INTEGER(4)
+ at (1)
+\end{verbatim}
+
+Gfortran觉得令整数\verb|i|等于逻辑``真''的操作其实是标准规则不允许的, 是自己放水才能这么干的, 于是就给个警告, 但程序仍然可以运行. 运行后输出\verb|1|. 至于Ifort嘛, 它倒是不报错也不给警告, 干脆利落地运行了, 但运行后输出的是\verb|-1|\dots
