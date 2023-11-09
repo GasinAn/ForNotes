@@ -267,7 +267,7 @@ Gfortran的用法和\ref{use_ifort}小节中Ifort的用法非常像, 不同点�
   \item 默认生成文件\verb|a.exe|,且不会生成\verb|.o|文件.
 \end{itemize}
 
-直接打开命令行(cmd或powershell\footnote{残念です, powershell里虽然编译运行没问题, 但是输出不了东西了, 这是因为powershell需要更多的DLL. 请powershell用户猛戳\href{https://github.com/GasinAn/mingw64_gfortran_dll/archive/refs/heads/main.zip}{这个链接}, 下载所有DLL然后统统粘贴到\texttt{[dir]\textbackslash mingw64\textbackslash bin}里去.}), 即可使用\verb|gfortran|命令.
+直接打开命令行(cmd或powershell\footnote{残念です, powershell里虽然编译运行没问题, 但是输出不了东西了, 这是因为mingw-builds-binaries弄出来的一个DLL有问题. 请powershell用户猛戳\href{https://github.com/GasinAn/mingw64_gfortran_dll/archive/refs/heads/main.zip}{这个链接}, 下载好的DLL然后粘贴到\texttt{[dir]\textbackslash mingw64\textbackslash bin}里去.}), 即可使用\verb|gfortran|命令.
 
 在VS Code中, 可以直接点上面``Terminal''后点``New Terminal''来调出命令行. 默认调出的是powershell. 若想让默认调出的命令行是cmd, 可在\verb|settings.json|里加入下面这个键值对.
 \begin{verbatim}
