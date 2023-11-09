@@ -29,22 +29,22 @@
 
 Windows系统安装方式如下.
 \begin{enumerate}
-    \item 安装~\href{https://visualstudio.microsoft.com/zh-hans/thank-you-downloading-visual-studio/?sku=Community&rel=16}
-    {Visual Studio Community 2019}. 安装时可选择语言为中文.
+    \item 安装~\href{https://visualstudio.microsoft.com/zh-hans/thank-you-downloading-visual-studio/?sku=Community&channel=Release&version=VS2022&source=VSLandingPage&cid=2030&passive=false}
+    {Visual Studio Community 2022}. 安装时可选择语言为中文.
     \item ``工作负载''选择``使用C++的桌面开发''.
-    \item 安装~\href{https://registrationcenter-download.intel.com/akdlm/irc_nas/18412/w_fortran-compiler_p_2022.0.0.77_offline.exe}
+    \item 安装~\href{https://registrationcenter-download.intel.com/akdlm/IRC_NAS/1720594b-b12c-4aca-b7fb-a7d317bac5cb/w_fortran-compiler_p_2023.2.1.7.exe}
     {Intel\r{} Fortran Compiler}.
-    \item 找到开始菜单内Intel oneAPI 2022文件夹中的Intel oneAPI command prompt for Intel 64 for Visual Studio 2019和Intel oneAPI command prompt for IA32 for Visual Studio 2019, 右键选择``更多''$\rightarrow$``打开文件位置'', 可以找这两个东东的快捷方式. 然后右键这两个快捷方式,选择``属性'', 把``起始路径''改成自己最常访问的路径.
+    \item 找到开始菜单内Intel oneAPI 2023文件夹中的Intel oneAPI command prompt for Intel 64 for Visual Studio 2022和Intel oneAPI command prompt for IA32 for Visual Studio 2022, 右键选择``更多''$\rightarrow$``打开文件位置'', 可以找这两个东东的快捷方式. 然后右键这两个快捷方式, 选择``属性'', 把``起始路径''改成自己最常访问的路径(比如桌面的路径), 然后点``应用'', 点``继续'', 点``确定''.
 \end{enumerate}
 
 \subsection{使用}\label{use_ifort}
 
 \subsubsection{使用CLI}
 
-Windows系统中,打开开始菜单内Intel oneAPI 2021中的Intel oneAPI command prompt for Intel 64 for Visual Studio 2019 (或Intel oneAPI command prompt for IA32 for Visual Studio 2019). 然后可以使用cmd的命令(比如\verb|cd|之类的).
+Windows系统中, 打开开始菜单内Intel oneAPI 2023文件夹中的Intel oneAPI command prompt for Intel 64 for Visual Studio 2022 (或Intel oneAPI command prompt for IA32 for Visual Studio 2022). 然后可以使用cmd的命令(比如\verb|cd|之类的).
 
 \paragraph{示例1}
-新建一个名为\verb|main.f90|的文件,写入下面的内容并保存.
+新建一个名为\verb|main.f90|的文件, 写入下面的内容并保存.
 \begin{verbatim}
 program main
     implicit none
@@ -52,11 +52,11 @@ program main
 end program main
 \end{verbatim}
 
-然后\verb|cd|到\verb|main.f90|所在的目录后执行下面这条命令.
+然后\verb|cd|到\verb|main.f90|所在的目录后执行下面这条命令\footnote{这里\texttt{ifort}对应的其实是Intel\r{} Fortran Compiler Classic, 想用真Intel\r{} Fortran Compiler, 请换成\texttt{ifx}. 本书所有示例程序都是用\texttt{ifort}测试的, 懒得改了, 大家凑合看吧!}.
 \begin{verbatim}
 ifort main.f90
 \end{verbatim}
-就把\verb|main.f90|编译好啦,生成了文件\verb|main.obj|和\verb|main.exe|.
+就把\verb|main.f90|编译好啦, 生成了文件\verb|main.obj|和\verb|main.exe|.
 
 执行下面这条命令.
 \begin{verbatim}
@@ -65,7 +65,7 @@ main.exe
 ``\verb|Hello, world!|''被打出来啦!
 
 \paragraph{示例2}
-删掉\verb|main.obj|和\verb|main.exe|, 在\verb|main.f90|所在目录再新建一个名为\\\verb|helloworld.f90|的文件,写入下面的内容并保存.
+删掉\verb|main.obj|和\verb|main.exe|, 在\verb|main.f90|所在目录再新建一个名为\\\verb|helloworld.f90|的文件, 写入下面的内容并保存.
 \begin{verbatim}
 subroutine helloworld
     implicit none
@@ -102,7 +102,7 @@ main.exe
 \begin{verbatim}
 ifort *.f90
 \end{verbatim}
-就相当于\verb|ifort|后跟了当前目录所有最后是\verb|.f90|的文件的文件名.但注意,这回生成的不是\verb|main.exe|,而是\verb|helloworld.exe|,字母表中h可是排在m前面呢.
+就相当于\verb|ifort|后跟了当前目录所有最后是\verb|.f90|的文件的文件名. 但注意, 这回生成的不是\verb|main.exe|, 而是\verb|helloworld.exe|, 字母表中h可是排在m前面呢.
 
 执行命令.
 \begin{verbatim}
@@ -111,13 +111,13 @@ helloworld.exe
 ``\verb|Hello, world!|''被打出来啦!
 
 \paragraph{示例4}
-文件太多时,使用通配符后可能不清楚最后\verb|.exe|文件的文件名是什么.这时可以干脆直接指定文件名.
+文件太多时, 使用通配符后可能不清楚最后\verb|.exe|文件的文件名是什么. 这时可以干脆直接指定文件名.
 
-删掉\verb|main.obj|,~\verb|helloworld.obj|和\verb|helloworld.exe|.执行命令.
+删掉\verb|main.obj|,~\verb|helloworld.obj|和\verb|helloworld.exe|. 执行命令.
 \begin{verbatim}
 ifort *.f90 -o a
 \end{verbatim}
-这回生成的不是\verb|helloworld.exe|,而是\verb|a.exe|.
+这回生成的不是\verb|helloworld.exe|, 而是\verb|a.exe|.
 
 执行命令.
 \begin{verbatim}
@@ -126,11 +126,11 @@ a.exe
 ``\verb|Hello, world!|''被打出来啦!
 
 \paragraph{示例5}
-删掉\verb|main.obj|,~\verb|helloworld.obj|和\verb|a.exe|.执行命令.
+删掉\verb|main.obj|,~\verb|helloworld.obj|和\verb|a.exe|. 执行命令.
 \begin{verbatim}
 ifort -c helloworld.f90
 \end{verbatim}
-这回只生成了文件\verb|helloworld.obj|
+这回只生成了文件\verb|helloworld.obj|.
 
 执行命令.
 \begin{verbatim}
@@ -144,31 +144,31 @@ main.exe
 \end{verbatim}
 ``\verb|Hello, world!|''被打出来啦!
 
-Ifort的工作流程是,先把每个源文件都变成对应的\verb|.obj|文件,再把它们合起来后变成\verb|.exe|文件.遇到一些一万年也不会改,而且会反复使用的文件(比如轮子\footnote{
+Ifort的工作流程是, 先把每个源文件都变成对应的\verb|.obj|文件, 再把它们合起来后变成\verb|.exe|文件. 遇到一些一万年也不会改, 而且会反复使用的文件(比如轮子\footnote{
     这里玩了个``重新制造轮子''的梗.
-}里的文件),我们就可以先把它们统统变成\verb|.obj|文件,然后反复用,以节省时间.
+}里的文件), 我们就可以先把它们统统变成\verb|.obj|文件, 然后反复用, 以节省时间.
 
 \subsubsection{使用GUI}
 
 打开Visual Studio, 点``创建新项目''.
 
-然后搜索``Empty Project'', 找到下面标有``Fortran'',``Windows'',``控制台''的``Empty Project'',选择之,然后点击``下一步''.
+然后搜索``Empty Project'', 找到下面标有``Fortran'', ``Windows'', ``控制台''的``Empty Project'', 选择之, 然后点击``下一步''.
 
-然后把``项目名称''改成HelloWorld,``位置''选择自己喜欢的路径(下面用\verb|[dir]|表示这个路径),点击``创建''.
+然后把``项目名称''改成HelloWorld, ``位置''选择自己喜欢的路径(下面用\verb|[dir]|表示这个路径), 点击``创建''.
 
-然后就出现了编辑界面,并且\verb|[dir]|内多出了一个\verb|HelloWorld|文件夹.
+然后就出现了编辑界面, 并且\verb|[dir]|内多出了一个\verb|HelloWorld|文件夹.
 
-64位系统,可能需要将上面Debug后的x86改成x64,如不需要,也最好改改.点x86右边的向下箭头可以改,若没有x64,可以点``配置管理器\dots''后尝试把x64调出来.
+64位系统, 可能需要将上面Debug后的x86改成x64, 如不需要, 也最好改改. 点x86右边的向下箭头可以改, 若没有x64, 可以点``配置管理器\dots''后尝试把x64调出来.
 
-右击右边``解决方案资源管理器''中的``Source Files'',选择``添加''$\rightarrow$``现有项\dots'',然后把之前的\verb|main.f90|和\verb|helloworld.f90|添加进来.然后双击文件名即可打开文件.
+右击右边``解决方案资源管理器''中的``Source Files'', 选择``添加''$\rightarrow$``现有项\dots'', 然后把之前的\verb|main.f90|和\verb|helloworld.f90|添加进来. 然后双击文件名即可打开文件.
 
-点击上面的``调试'',然后点``开始执行(不调试)''.
+点击上面的``调试'', 然后点``开始执行(不调试)''.
 
 ``\verb|Hello, world!|''被打出来啦!
 
-右击右边``解决方案资源管理器''中的``Source Files'',选择``添加''$\rightarrow$``新建项\dots'',可以新建文件,默认在\verb|HelloWorld|文件夹里的\verb|HelloWorld|文件夹里.右击任意一个文件的文件名后,可以点击``删除''或``重命名''进行删除或重命名操作.
+右击右边``解决方案资源管理器''中的``Source Files'', 选择``添加''$\rightarrow$``新建项\dots'', 可以新建文件, 默认在\verb|HelloWorld|文件夹里的\verb|HelloWorld|文件夹里.右击任意一个文件的文件名后, 可以点击``删除''或``重命名''进行删除或重命名操作.
 
-关掉Visual Studio,重新打开,左边多出了个HelloWorld.sln,点它就能回到编辑界面了.
+关掉Visual Studio, 重新打开, 左边多出了个HelloWorld.sln, 点它就能回到编辑界面了.
 
 \section[GNU Fortran Compiler]{GNU Fortran Compiler (Gfortran)}
 
@@ -178,17 +178,16 @@ Windows系统安装方式如下.\footnote{
     以下是直接安装MinGW-w64来安装Gfortran的, 但如果有Python, 也许能直接通过Pip~(或Conda)来安装Gfortran~(或MinGW-w64, MSYS2, \dots)? 我也不知\dots
 }
 \begin{enumerate}
-    \item 下载~\href{https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/installer/mingw-w64-install.exe/download}
-    {MinGW-w64}\footnote{
-      怎么更新MinGW-w64是个问题. 也许装MSYS2更好?
-    }安装包并打开.
-    \item 64位系统, 先选择``Architecture''为``x86\_64'', 后选择``Threads''为``win32'', ``Exceptions''为``seh'', 然后安装.\\32位系统, 先选择``Architecture''为``i686'', 后选择``Threads''为``win32'', ``Exceptions''为``dwarf'', 然后安装.
-    \item 在系统环境变量\verb|Path|中加入\verb|[dir]\mingw64\bin|.\\其中\verb|[dir]|要替换为MinGW-w64的安装目录,在这个目录下应该能见到一个名为\verb|mingw-w64.bat|的文件.
+    \item 访问~\href{https://github.com/niXman/mingw-builds-binaries/releases}
+    {mingw-builds-binaries releases}, 选择最新的release进入.
+    \item 64位系统选带x86\_64的, 32位系统选带i686的; Win 10及以上选带ucrt的, Win 10以下选带msvcrt的. 下载并解压.
+    \item 把解压出来的名为\verb|mingw64|的文件夹剪切到随便哪个目录. 暂称粘贴到的目录为\verb|[dir]|.
+    \item 在系统环境变量\verb|Path|中加入\verb|[dir]\mingw64\bin|. 举个例子, 如果刚才粘贴到\verb|C:\Program Files|, 就加入\verb|C:\Program Files\mingw64\bin|.
     \item 下载~\href{https://code.visualstudio.com/sha/download?build=stable&os=win32-x64-user}
     {Visual Studio Code}~并安装.
-    \item 打开Visual Studio Code, 点击左边四个正方形飞出一个的图标,搜索C/C++,  Modern Fortran和Code Runner并安装.
+    \item 打开Visual Studio Code, 点击左边四个正方形飞出一个的图标, 搜索C/C++, Modern Fortran和Code Runner并安装.
     \item[] 如果已经装了Python, 装Modern Fortran前先用pip\footnote{有conda当然用conda啦$\!\text{\~{}}$}装fortls.
-    \item 按Ctrl+Shift+P,然后选择``Preferences: Open Settings (JSON)'',打开名为\verb|settings.json|的JSON文件.
+    \item 按Ctrl+Shift+P, 然后选择``Preferences: Open Settings (JSON)'', 打开名为\verb|settings.json|的JSON文件.
     \item 在\verb|settings.json|里加入下面这些键值对.
     \begin{verbatim}
 "code-runner.executorMap": {
@@ -200,19 +199,19 @@ Windows系统安装方式如下.\footnote{
 "code-runner.runInTerminal": true,
 "code-runner.saveAllFilesBeforeRun": true,
 "fortran.includePaths": [
-  "[dir]mingw64\\bin"
+  "[dir]\\mingw64\\bin"
 ]
     \end{verbatim}
 \end{enumerate}
 
 最后一步其实和在VS Code的设置里点点点是一样滴, 我其实就是在设置里凭感觉点点点后把\verb|settings.json|里的东东弄出来了, 如果玩代码的时候感觉不舒服, 自己解决, 我可不管. 注意
 \begin{itemize}
-    \item \verb|[cmd]|要替换成编译并执行程序的整套命令.可以参考\ref{use_gfortran}小节, 按自己的需求替换,也可以戳\href{https://zhuanlan.zhihu.com/p/362328064}{这里}搬运现成的.
-    \item \verb|[dir]|要替换为MinGW-w64的安装目录. 注意要多加一个\verb|\|来转义\verb|\|. (若连``转义''也不知何物, 也可看下面的例子)
+    \item \verb|[cmd]|要替换成编译并执行程序的整套命令.可以参考\ref{use_gfortran}小节, 按自己的需求替换, 也可以戳\href{https://zhuanlan.zhihu.com/p/362328064}{这里}搬运现成的.
+    \item \verb|[dir]|要替换成上文提到的\verb|[dir]|.
 \end{itemize}
 
 还有加入键值对的时候要符合JSON的规则. 举两个例子.
-如果一开始\verb|settings.json|里是空的,加入键值对后可能长这样.
+如果一开始\verb|settings.json|里是空的, 加入键值对后可能长这样.
 \begin{verbatim}
 {
   "code-runner.executorMap": {
@@ -225,7 +224,7 @@ Windows系统安装方式如下.\footnote{
   "code-runner.saveAllFilesBeforeRun": true,
 
   "fortran.includePaths": [
-    "C:\\Program Files\\mingw-w64\\mingw64\\bin"
+    "C:\\Program Files\\mingw64\\bin"
   ]
 }
 \end{verbatim}
@@ -251,30 +250,26 @@ Windows系统安装方式如下.\footnote{
   "code-runner.runInTerminal": true,
   "code-runner.saveAllFilesBeforeRun": true,
   "fortran.includePaths": [
-    "C:\\Program Files\\mingw-w64\\mingw64\\bin"
+    "C:\\Program Files\\mingw64\\bin"
   ],
   "workbench.colorTheme": "Red"
 }
 \end{verbatim}
 注意倒二行最后多了一个逗号. 键值对间要用逗号隔开.
 
-~
-
-~
-
 \subsection{使用}\label{use_gfortran}
 
 \subsubsection{使用CLI}
-Gfortran的用法和\ref{use_ifort}小节中Ifort的用法非常像,不同点是:
+Gfortran的用法和\ref{use_ifort}小节中Ifort的用法非常像, 不同点是:
 \begin{itemize}
   \item 使用\verb|gfortran|命令代替\verb|ifort|命令;
   \item 中间过程生成的是\verb|.o|文件,不是\verb|.obj|文件;
   \item 默认生成文件\verb|a.exe|,且不会生成\verb|.o|文件.
 \end{itemize}
 
-直接打开命令行(cmd或powershell),即可使用\verb|gfortran|命令.
+直接打开命令行(cmd或powershell\footnote{残念です, powershell里虽然编译运行没问题, 但是输出不了东西了, 不过cmd就输出得了, 也不知是为什么\dots{}}), 即可使用\verb|gfortran|命令.
 
-在VS Code中, 可以直接点上面``Terminal''后点``New Terminal''来调出命令行.默认调出的是powershell.若想让默认调出的命令行是cmd,可在\verb|settings.json|里加入下面这个键值对.
+在VS Code中, 可以直接点上面``Terminal''后点``New Terminal''来调出命令行. 默认调出的是powershell. 若想让默认调出的命令行是cmd, 可在\verb|settings.json|里加入下面这个键值对.
 \begin{verbatim}
 "terminal.integrated.shell.windows":
 "C:\\Windows\\System32\\cmd.exe"
