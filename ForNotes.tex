@@ -4,7 +4,10 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{hyperref}
+\usepackage{listings}
 \usepackage{syntonly}
+\usepackage{verbatim}
+\usepackage{xcolor}
 %\syntaxonly
 \pagestyle{plain}
 \makeatletter
@@ -20,6 +23,16 @@
     filecolor=pink,
     urlcolor=cyan,
     citecolor=red,
+}
+\lstset{
+    language=[18]Fortran,
+    basicstyle=\ttfamily,
+    keywordstyle=\bfseries\color{green},
+    identifierstyle=\color{blue},
+    stringstyle=\color{black},
+    commentstyle=\itshape\color{cyan},
+    showspaces=false,
+    showstringspaces=false,
 }
 \DeclareMathOperator{\sgn}{sgn}
 \newtheorem{principle}{规范}
