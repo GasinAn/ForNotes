@@ -158,7 +158,9 @@ Ifort的工作流程是, 先把每个源文件都变成对应的\verb|.obj|文�
 
 然后就出现了编辑界面, 并且\verb|[dir]|内多出了一个\verb|HelloWorld|文件夹.
 
-64位系统, 可能需要将上面Debug后的x86改成x64, 如不需要, 也最好改改. 点x86右边的向下箭头可以改, 若没有x64, 可以点``配置管理器\dots''后尝试把x64调出来.
+默认使用的是Ifort. 欲用Ifx, 右键右边``解决方案资源管理器''里的``Console1 (IFORT)'', 点最下面的``属性'', 左边选``配置属性''$\rightarrow$``General'' (应已自动选上), 点``Use Compiler''右边的``IFORT Intel$\,\text{\textregistered}$ Fortran Compiler Classic'', 点最右边的带向下标志的按钮, 改选成`IFX Intel$\,\text{\textregistered}$ Fortran Compiler'', 点``应用'', 点``确定'', 看到右边``Console1 (IFORT)''变成``Console1 (IFX)''即成功.
+
+64位系统, 若上面Debug后是x86, 则可能需要将上面Debug后的x86改成x64 (如不需要, 也最好改改). 点x86右边的向下箭头可以改, 若没有x64, 可以点``配置管理器\dots''后尝试把x64调出来.
 
 右击右边``解决方案资源管理器''中的``Source Files'', 选择``添加''$\rightarrow$``现有项\dots'', 然后把之前的\verb|main.f90|和\verb|helloworld.f90|添加进来. 然后双击文件名即可打开文件.
 
