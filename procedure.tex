@@ -185,7 +185,7 @@ subroutine factorial(n, fact)
 end subroutine factorial
 \end{verbatim}
 
-子程序灰常管用, 但也是要遵守一些禁令的. 首先哑实结合时, 哑参量和实参量的类型和种别\underline{都要相等}, 也就是说莫得类型种别转化了. 比如下面这个程序, Gfortran日常严格, 会出警告, 输出\verb|0.00000000|, Ifort日常宽松, 不出警告, 但也输出\verb|0.0000000E+00|\dots
+子程序灰常管用, 但也是要遵守一些禁令的. 首先哑实结合时, 哑参量和实参量的类型和种别\uline{都要相等}, 也就是说莫得类型种别转化了. 比如下面这个程序, Gfortran日常严格, 会出警告, 输出\verb|0.00000000|, Ifort日常宽松, 不出警告, 但也输出\verb|0.0000000E+00|\dots
 \begin{verbatim}
 program main
     use iso_fortran_env, only: sp => real32

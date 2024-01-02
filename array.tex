@@ -34,7 +34,7 @@
 
 直接了当的说法是: 把所有\verb|ei|重新排成一维数组并保证元素顺序不变, 然后首尾相接拼起来.
 
-在数组构造器\underline{中}$\!$$\!$还可以使用一种神奇的隐式do循环(implied \verb|do| loop), 这玩意儿形如\verb|((...(e(i1,...,in),i1=p1,q1,r1)...),in=pn,qn,rn)|, 里头\verb|e(i1,...,in)|是个数据实体, 通常是个含有\verb|i1|,\dots ,\verb|in|的表达式, \verb|i1|,\dots ,\verb|in|是一堆事先声明过的整型变量, 整个隐式do循环相当于\underline{一维}$\!$$\!$数组. 下面这样的两个程序总是等价的\footnote{
+在数组构造器\uline{中}还可以使用一种神奇的隐式do循环(implied \verb|do| loop), 这玩意儿形如\verb|((...(e(i1,...,in),i1=p1,q1,r1)...),in=pn,qn,rn)|, 里头\verb|e(i1,...,in)|是个数据实体, 通常是个含有\verb|i1|,\dots ,\verb|in|的表达式, \verb|i1|,\dots ,\verb|in|是一堆事先声明过的整型变量, 整个隐式do循环相当于\uline{一维}数组. 下面这样的两个程序总是等价的\footnote{
 看懂这两个程序, 同志们可能需要先读\ref{fortran_array_assignment}节.
 }. 自然任意\verb|,ri|都可以省略(默认为\verb|1|).
 \begin{verbatim}

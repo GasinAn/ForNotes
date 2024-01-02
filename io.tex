@@ -153,7 +153,7 @@ end program main
 \end{verbatim}
 第一次打开关闭文件, 因为\verb|status='REPLACE'|, 后面也没有写入, 所以最后得到一个空白文件. 第二次打开关闭文件, 先写入$e+\pi$, $e+\pi$后面再写入$e-\pi$. 第三次打开关闭文件, 在文件最后先写入$e\cdot\pi$, 再写入$e/\pi$, 所以最后文件里依次是$e+\pi$, $e-\pi$, $e\cdot\pi$, $e/\pi$. 第四次打开关闭文件, 先读取文件开头的$e+\pi$赋值给\verb|val|, 再读取下面的$e-\pi$赋值给\verb|val|. 第五次打开关闭文件, 还是先读取文件开头的$e+\pi$赋值给\verb|val|, 再读取下面的$e-\pi$赋值给\verb|val|, 所以最后输出的依次是$e+\pi$, $e-\pi$, $e+\pi$, $e-\pi$.
 
-注意每次\verb|read|或\verb|write|后, 下次\verb|read|或\verb|write|都会\underline{从下一行开始}. 下面这个轮子, 第一次\verb|write|后\verb|1|和\verb|2|写入在第一行, 第二次\verb|write|后\verb|3|和\verb|4|写入在第二行, 第一次\verb|read|从第一行开始, 因为后面只跟着一个\verb|val1|, 所以\verb|val1|为\verb|1|, 第二次\verb|read|从第二行开始, 因为后面只跟着一个\verb|val2|, 所以\verb|val2|为\verb|3|, \verb|2|和\verb|4|则被无视!
+注意每次\verb|read|或\verb|write|后, 下次\verb|read|或\verb|write|都会\uline{从下一行开始}. 下面这个轮子, 第一次\verb|write|后\verb|1|和\verb|2|写入在第一行, 第二次\verb|write|后\verb|3|和\verb|4|写入在第二行, 第一次\verb|read|从第一行开始, 因为后面只跟着一个\verb|val1|, 所以\verb|val1|为\verb|1|, 第二次\verb|read|从第二行开始, 因为后面只跟着一个\verb|val2|, 所以\verb|val2|为\verb|3|, \verb|2|和\verb|4|则被无视!
 \begin{verbatim}
 program main
     implicit none
@@ -416,7 +416,7 @@ program main
 end program main
 \end{verbatim}
 
-I$w.m$编辑符则表示一共输出$w$个字符, 其中数字字符(\verb|0|--\verb|9|)至少$m$个, 当然必须$m\leqslant  w$. 下面这个轮子, \verb|1000|只占4个字符, 所以前面要补上一个\verb|0|, \verb|10000|占5个字符, 正常输出, \verb|100000|占6个字符, 也正常输出, 因为是\underline{至少}$\!\!$输出5个字符, \verb|1000000|还是一堆\verb|*|.
+I$w.m$编辑符则表示一共输出$w$个字符, 其中数字字符(\verb|0|--\verb|9|)至少$m$个, 当然必须$m\leqslant  w$. 下面这个轮子, \verb|1000|只占4个字符, 所以前面要补上一个\verb|0|, \verb|10000|占5个字符, 正常输出, \verb|100000|占6个字符, 也正常输出, 因为是\uline{至少}输出5个字符, \verb|1000000|还是一堆\verb|*|.
 \begin{verbatim}
 program main
     implicit none
@@ -504,7 +504,7 @@ program main
 end program main
 \end{verbatim}
 
-输入的时候F$w.d$的$.d$则会被无视, 但$.d\,$\underline{不能被省略}. 下面这个轮子, F$11.99$看着很鬼, 一共11个字符, 小数部分99个? 但$.99$会被无视, 反正就是读$11$个字符然后赋值给\verb|val|完事, 所以轮子是跑得的. 在下面的轮子中我们还写入双精度后读取成单精度, 这也没问题, 读取和写入可以跨种别.
+输入的时候F$w.d$的$.d$则会被无视, 但$.d\,$\uline{不能被省略}. 下面这个轮子, F$11.99$看着很鬼, 一共11个字符, 小数部分99个? 但$.99$会被无视, 反正就是读$11$个字符然后赋值给\verb|val|完事, 所以轮子是跑得的. 在下面的轮子中我们还写入双精度后读取成单精度, 这也没问题, 读取和写入可以跨种别.
 \begin{verbatim}
 program main
     use iso_fortran_env, only: dp => real64
