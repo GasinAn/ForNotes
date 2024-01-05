@@ -269,9 +269,9 @@ end subroutine add_one
 
 正确标注哑参量为只读参量, 只写参量或读写参量\label{arguments}(加\verb|intent(...)|), 是灰常灰常必要的, 血泪教训告诉我们这么做能避免踩很多很多坑. 同志们一定不能怕麻烦, 老老实实一个个标注. 如果哑参量除哑实结合时外不被赋值, 就标只读, 如果哑参量在哑实结合时不需要被赋值, 就标只写, 剩下的标读写.
 
-\begin{principle}
+\begin{convention}
     正确标注每个哑参量为只读参量, 只写参量或读写参量.
-\end{principle}
+\end{convention}
 
 子程序还有很多禁令, 我安排同志们自己写程序测试, 编译器会告诉大家答案的. 比如, 子程序名能和主程序名一样嘛? 子程序名能和子程序里的变量的变量名一样嘛? 子程序名能和调用子程序的程序单元里的变量的变量名一样嘛? 子程序能直接或间接地调用自己嘛?\dots
 
@@ -326,9 +326,9 @@ end function combinatorial
 \end{enumerate}
 按照当今的规范, 我们必须保证函数子程序的所有哑参量都是只读的(结果不是哑参量). 如果不遵守此规范, 我保证同志们之后会无比头痛.
 
-\begin{principle}
+\begin{convention}
     标注函数子程序的所有哑参量为只读参量.
-\end{principle}
+\end{convention}
 
 使用函数子程序的好处是调用函数子程序后会生成一个数据实体, 经验表明多数情况下这样能让我们偷懒少打几个字, 即便使用函数子程序前必须多加一行函数子程序的声明. 我把之前第\pageref{fact_comb}页用计算阶乘的子程序计算组合数的程序用函数子程序改写如下, 同志们会不会觉得看着简单一点?
 \begin{verbatim}
@@ -448,9 +448,9 @@ end subroutine count
 \end{verbatim}
 因此, 不要这么写, 除非前面已经标好\verb|,parameter|或\verb|,save|.
 
-\begin{principle}
+\begin{convention}
     除非已经明确标明变量有\emph{parameter}属性或\emph{save}属性, 否则不要在声明变量的时候直接给变量赋值.
-\end{principle}
+\end{convention}
 
 \subsection{过程中的数组}
 

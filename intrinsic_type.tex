@@ -8,9 +8,9 @@ Fortran是静态类型语言(statically typed language), 也就是说, Fortran�
 
 之前的所有程序都含有个\verb|implicit none|, 这个命令能阻止很多变量声明时的坑人规则发挥作用, 血泪教训就是一定要把它加上\dots
 
-\begin{principle}
+\begin{convention}
     永远在程序中加入\verb|implicit none|.
-\end{principle}
+\end{convention}
 
 Fortran的固有类型分五种: 整型(integer type), 实型(real type), 复型(complex type), 字符型(character type)和逻辑型(logical type). 整型, 实型和复型都是数字型(numeric type). 使用这五个类型的变量前, 一定要声明变量的具体类型. 种别可以声明也可以不声明, 如果不声明, 会取一个默认的种别.
 

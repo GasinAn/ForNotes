@@ -23,9 +23,9 @@ Fortran可以在程序中使用键盘能直接打出的所有字符. 其他字�
 
 为避免各种各样的问题, 还是只用正常字符为好.
 
-\begin{principle}
+\begin{convention}
     不要在程序中使用键盘不能直接打出的字符.
-\end{principle}
+\end{convention}
 
 Fortran是大小写不敏感的(case-insensitive), 也就是说, 很多情况下程序中的字母大写小写效果是完全相同的(效果不同的地方见\ref{fortran_char}节). 比如, 下面这个程序和\ref{fortran_program}节中的程序是完全等价的.
 \begin{verbatim}
@@ -37,9 +37,9 @@ END PROGRAM MAIN
 
 相信我, 在程序中混用大小写字母是很容易出事的.
 
-\begin{principle}
+\begin{convention}
     尽量在程序中使用小写字母.
-\end{principle}
+\end{convention}
 
 \section{源代码格式}
 
@@ -47,27 +47,27 @@ Fortran的源代码格式(source form)分两种: 自由格式(free form)和固�
 
 写固定格式的程序会遇到各种各样的问题. 自由格式就是为了替代固定格式而创立的. 本书Fortran部分的全部内容都基于自由格式程序.
 
-\begin{principle}
+\begin{convention}
     永远编写自由格式的程序.
-\end{principle}
+\end{convention}
 
 源代码文件名除拓展名外可以随便取, 但乱取文件名是要粗事情滴.
 
-\begin{principle}
+\begin{convention}
     将源代码文件名取成能表示程序功能的字符串.
-\end{principle}
+\end{convention}
 
-\begin{principle}
+\begin{convention}
     不要在源代码文件名中使用汉字等特殊字符.
-\end{principle}
+\end{convention}
 
 \subsection{缩进}
 
 缩进(indent)是指源代码每行最前面的空格(可能没有). 对Fortran而言, 缩进本身通常没有意义, 但适当的缩进能使程序更容易被理解.
 
-\begin{principle}\label{fortran_indent}
+\begin{convention}\label{fortran_indent}
     在程序中加入适当的缩进, 最好以$4$个空格为单位.
-\end{principle}
+\end{convention}
 
 ``以4个空格为单位'', 是指保持缩进为4个空格, 或8个空格, 或12个空格, 以此类推. 合格的文本编辑器(text editor), 比如VS Code, 会自动在程序中加上合适的缩进. 有些人可能更喜欢以2个空格或8个空格为单位的缩进.
 
@@ -75,9 +75,9 @@ Fortran的源代码格式(source form)分两种: 自由格式(free form)和固�
     这并不见得是坏事, 因为有些特殊文件是默认必须使用[Tab]的.
 }, 除非另装外挂. 一些编译器可能会接受在程序编辑中使用[Tab]键, 但这也不保险. 总而言之, 使用[Tab]键, 实在不清楚会不会出问题.
 
-\begin{principle}
+\begin{convention}
     不要使用\emph{[Tab]}键.
-\end{principle}
+\end{convention}
 
 \subsection{空行}
 
@@ -85,9 +85,9 @@ Fortran的源代码格式(source form)分两种: 自由格式(free form)和固�
     只有空格的行也是空行, 但这样的行除了多占用存储空间外, 和没有任何字符的行没区别.
 }). 至于什么时候加入一行或加入几行, 完全看心情. 简单的原则就是, 如果读程序长长的一部分, 感觉头昏脑涨, 或觉得以后肯定会头昏脑涨, 插入空行来把这部分划分成各自能完成一件事的几部分就是不错的选择.
 
-\begin{principle}
+\begin{convention}
     在程序中加入适当的空行.
-\end{principle}
+\end{convention}
 
 正如\ref{fortran_program}节所说, 程序是指令的集合. 空行代表的指令是``啥事也不做''.
 
@@ -99,9 +99,9 @@ Fortran的源代码格式(source form)分两种: 自由格式(free form)和固�
 
 自己的小程序, 写写汉语注释也无所谓, 不过最好还是写英文的(顺便提升英语能力). 造轮子请加上纯英文的注释.
 
-\begin{principle}
+\begin{convention}
     在程序中加入适当的注释.
-\end{principle}
+\end{convention}
 
 \subsection{续行}
 
@@ -181,13 +181,13 @@ end program main
     按照标准, 一行最多能有132个字符.
 }, 那这程序读起来真是头疼.
 
-\begin{principle}\label{fortran_no_more_than_80}
+\begin{convention}\label{fortran_no_more_than_80}
     程序每一行应不超过$80$个字符.
-\end{principle}
+\end{convention}
 
-\begin{principle}
+\begin{convention}
     在合适的地方使用续行符, 并保证续行符前有一个空格.
-\end{principle}
+\end{convention}
 
 用VS Code的话, 可以在\verb|settings.json|里加入下面这两个键值对.
 \begin{verbatim}

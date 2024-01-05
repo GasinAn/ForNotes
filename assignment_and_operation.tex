@@ -30,9 +30,9 @@ Fortran是强\footnote{
 
 官方规则是这么说, 实际却不完全是这样. Ifort和Gfortran在\emph{不同程度}上是允许数字型数据实体和逻辑型数据实体相互赋值的, 赋值时遵循的规则还不太一样. 我懒得总结Ifort和Gfortran在这方面的``器规''了, 同志们自己试试, 自己总结.
 
-\begin{principle}
+\begin{convention}
     即使编译器允许, 也不要跨类型赋值.
-\end{principle}
+\end{convention}
 
 赋值的时候, ``\verb|=|''两边的类型或种别可能不一样, 这时自然有个类型和种别转化的问题. Fortran是静态类型语言, 所以转化的总则必然是: 把``\verb|=|''右边的数据实体转化成类型和种别与``\verb|=|''左边变量相同的数据实体, 然后赋值.
 
@@ -69,9 +69,9 @@ end program main
 
 统一使用同种别的实型(和复型), 能防止很多意料之外的情况出现.
 
-\begin{principle}\label{fortran_use_real}
+\begin{convention}\label{fortran_use_real}
     尽量使用同种别的实型$(\text{和复型})$常量和变量.
-\end{principle}
+\end{convention}
 
 字符串赋值时还有个长度匹配的问题. 如果``\verb|=|''左边字符串的长度小于右边字符串的长度, 则把右边字符串尾巴多出的部分砍掉, 然后赋值. 如果``\verb|=|''左边字符串的长度大于右边字符串的长度, 则在右边字符串尾巴处补上空格让长度一样, 然后赋值.
 \begin{verbatim}
@@ -235,9 +235,9 @@ end program main
 
 只要记得这里有个坑就好了. 真遇到连着两个\verb|**|, 不清楚哪个先算, 加个括号呀. 即使自己清楚, 也最好加个括号, 一是让自己更清楚, 二是照顾照顾别人(造轮子的时候), 因为别人很可能忘了到底哪个\verb|**|先算.
 
-\begin{principle}\label{use_barket}
+\begin{convention}\label{use_barket}
     在表达式中适当地多用括号以保证表达式能被轻松理解.
-\end{principle}
+\end{convention}
 
 还有一个小细节. 严格意义上说, \verb|+|和\verb|-|前面直接跟运算符是非法的. 然而器有器规呀, Gfortran只是送个警告, Ifort直接放行. 不过还是多加一个括号吧. 可以运行运行下面这个程序来看看结果.
 \begin{verbatim}
