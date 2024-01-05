@@ -45,52 +45,52 @@ Windows系统中, 打开开始菜单内Intel oneAPI 2023文件夹中的Intel one
 
 \paragraph{示例1}
 新建一个名为\verb|main.f90|的文件, 写入下面的内容并保存.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     print *, 'Hello, world!'
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 然后\verb|cd|到\verb|main.f90|所在的目录后执行下面这条命令\footnote{这里\texttt{ifort}对应的其实是Intel\r{} Fortran Compiler Classic, 想用真Intel\r{} Fortran Compiler, 请换成\texttt{ifx}. 本书所有示例程序都是用\texttt{ifort}测试的, 懒得改了, 大家凑合看吧!}.
-\begin{verbatim}
+\begin{lstlisting}
 ifort main.f90
-\end{verbatim}
+\end{lstlisting}
 就把\verb|main.f90|编译好啦, 生成了文件\verb|main.obj|和\verb|main.exe|.
 
 执行下面这条命令.
-\begin{verbatim}
+\begin{lstlisting}
 main.exe
-\end{verbatim}
+\end{lstlisting}
 ``\verb|Hello, world!|''被打出来啦!
 
 \paragraph{示例2}
 删掉\verb|main.obj|和\verb|main.exe|, 在\verb|main.f90|所在目录再新建一个名为\\\verb|helloworld.f90|的文件, 写入下面的内容并保存.
-\begin{verbatim}
+\begin{lstlisting}
 subroutine helloworld
     implicit none
     print *, 'Hello, world!'
 end subroutine helloworld
-\end{verbatim}
+\end{lstlisting}
 
 把\verb|main.f90|修改成下面这样.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     call helloworld
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 执行下面这条命令.
-\begin{verbatim}
+\begin{lstlisting}
 ifort main.f90 helloworld.f90
-\end{verbatim}
+\end{lstlisting}
 生成了\verb|main.obj|,~\verb|helloworld.obj|和\verb|main.exe|.
 
 然后再次执行下面的命令.
-\begin{verbatim}
+\begin{lstlisting}
 main.exe
-\end{verbatim}
+\end{lstlisting}
 ``\verb|Hello, world!|''被打出来啦!
 
 \paragraph{示例3}
@@ -99,49 +99,49 @@ main.exe
 一个个打文件名显然要死人.这时可以使用通配符.
 
 删掉\verb|main.obj|,~\verb|helloworld.obj|和\verb|main.exe|.执行命令.
-\begin{verbatim}
+\begin{lstlisting}
 ifort *.f90
-\end{verbatim}
+\end{lstlisting}
 就相当于\verb|ifort|后跟了当前目录所有最后是\verb|.f90|的文件的文件名. 但注意, 这回生成的不是\verb|main.exe|, 而是\verb|helloworld.exe|, 字母表中h可是排在m前面呢.
 
 执行命令.
-\begin{verbatim}
+\begin{lstlisting}
 helloworld.exe
-\end{verbatim}
+\end{lstlisting}
 ``\verb|Hello, world!|''被打出来啦!
 
 \paragraph{示例4}
 文件太多时, 使用通配符后可能不清楚最后\verb|.exe|文件的文件名是什么. 这时可以干脆直接指定文件名.
 
 删掉\verb|main.obj|,~\verb|helloworld.obj|和\verb|helloworld.exe|. 执行命令.
-\begin{verbatim}
+\begin{lstlisting}
 ifort *.f90 -o a
-\end{verbatim}
+\end{lstlisting}
 这回生成的不是\verb|helloworld.exe|, 而是\verb|a.exe|.
 
 执行命令.
-\begin{verbatim}
+\begin{lstlisting}
 a.exe
-\end{verbatim}
+\end{lstlisting}
 ``\verb|Hello, world!|''被打出来啦!
 
 \paragraph{示例5}
 删掉\verb|main.obj|,~\verb|helloworld.obj|和\verb|a.exe|. 执行命令.
-\begin{verbatim}
+\begin{lstlisting}
 ifort -c helloworld.f90
-\end{verbatim}
+\end{lstlisting}
 这回只生成了文件\verb|helloworld.obj|.
 
 执行命令.
-\begin{verbatim}
+\begin{lstlisting}
 ifort main.f90 helloworld.obj
-\end{verbatim}
+\end{lstlisting}
 生成了\verb|main.obj|和\verb|main.exe|.
 
 执行命令.
-\begin{verbatim}
+\begin{lstlisting}
 main.exe
-\end{verbatim}
+\end{lstlisting}
 ``\verb|Hello, world!|''被打出来啦!
 
 Ifort的工作流程是, 先把每个源文件都变成对应的\verb|.obj|文件, 再把它们合起来后变成\verb|.exe|文件. 遇到一些一万年也不会改, 而且会反复使用的文件(比如轮子\footnote{
@@ -191,7 +191,7 @@ Windows系统安装方式如下.\footnote{
     \item[] 如果已经装了Python, 装Modern Fortran前先用pip\footnote{有conda当然用conda啦$\!\text{\~{}}$}装fortls.
     \item 按Ctrl+Shift+P, 然后选择``Preferences: Open Settings (JSON)'', 打开名为\verb|settings.json|的JSON文件.
     \item 在\verb|settings.json|里加入下面这些键值对.
-    \begin{verbatim}
+    \begin{lstlisting}
 "code-runner.executorMap": {
     "FortranFreeForm":
     "[cmd]",
@@ -200,7 +200,7 @@ Windows系统安装方式如下.\footnote{
 },
 "code-runner.runInTerminal": true,
 "code-runner.saveAllFilesBeforeRun": true
-    \end{verbatim}
+    \end{lstlisting}
 \end{enumerate}
 
 最后一步其实和在VS Code的设置里点点点是一样滴, 我其实就是在设置里凭感觉点点点后把\verb|settings.json|里的东东弄出来了, 如果玩代码的时候感觉不舒服, 自己解决, 我可不管. 注意
@@ -211,7 +211,7 @@ Windows系统安装方式如下.\footnote{
 
 还有加入键值对的时候要符合JSON的规则. 举两个例子.
 如果一开始\verb|settings.json|里是空的, 加入键值对后可能长这样.
-\begin{verbatim}
+\begin{lstlisting}
 {
   "code-runner.executorMap": {
     "FortranFreeForm":
@@ -222,17 +222,17 @@ Windows系统安装方式如下.\footnote{
   "code-runner.runInTerminal": true,
   "code-runner.saveAllFilesBeforeRun": true
 }
-\end{verbatim}
+\end{lstlisting}
 如果一开始\verb|settings.json|长这样,
-\begin{verbatim}
+\begin{lstlisting}
 {
   "editor.wordWrap": "wordWrapColumn",
   "editor.wordWrapColumn": 80,
   "workbench.colorTheme": "Red"
 }
-\end{verbatim}
+\end{lstlisting}
 加入键值对后就可能长这样.
-\begin{verbatim}
+\begin{lstlisting}
 {
   "editor.wordWrap": "wordWrapColumn",
   "editor.wordWrapColumn": 80,
@@ -246,7 +246,7 @@ Windows系统安装方式如下.\footnote{
   "code-runner.saveAllFilesBeforeRun": true,
   "workbench.colorTheme": "Red"
 }
-\end{verbatim}
+\end{lstlisting}
 注意倒二行最后多了一个逗号. 键值对间要用逗号隔开.
 
 \subsection{使用}\label{use_gfortran}
@@ -262,10 +262,10 @@ Gfortran的用法和\ref{use_ifort}小节中Ifort的用法非常像, 不同点�
 直接打开命令行(cmd或powershell), 即可使用\verb|gfortran|命令.
 
 在VS Code中, 可以直接点上面``Terminal''后点``New Terminal''来调出命令行. 默认调出的是powershell. 若想让默认调出的命令行是cmd, 可在\verb|settings.json|里加入下面这个键值对.
-\begin{verbatim}
+\begin{lstlisting}
 "terminal.integrated.shell.windows":
 "C:\\Windows\\System32\\cmd.exe"
-\end{verbatim}
+\end{lstlisting}
 
 \subsubsection{使用GUI}
 点击右上方的白色三角儿即可编译并执行! 除非之前\verb|[cmd]|设错啦$\!\text{\~{}}$

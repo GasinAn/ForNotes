@@ -7,7 +7,7 @@
 }(assignment)是将一个数据实体的值拷贝给一个变量的操作.
 
 用形如\verb|a = b|的语句即可将\verb|b|中的内容拷贝给\verb|a|. 请看下面的例子.
-\begin{verbatim}
+\begin{lstlisting}
 program main
 
     implicit none
@@ -22,7 +22,7 @@ program main
     ! Now "print *, b" will return 1.
 
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 Fortran是强\footnote{
     事实上``强''和``弱''的定义是模糊的, 不过一般都将Fortran归为强类型语言.
@@ -43,7 +43,7 @@ Fortran是强\footnote{
 如果是``精度高''的数据实体转化成``精度低''的数据实体, 事情就比较复杂.
 
 如果是实型转整型, 我也不清楚标准规则怎么说, 但Ifort和Gfortran都是``向0取整''. 可以运行下面这个程序来感受一下.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     integer :: i
@@ -52,7 +52,7 @@ program main
     i = -9.87654321
     print *, i
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 如果是复型转实型, 自然是取实部.
 
@@ -74,7 +74,7 @@ end program main
 \end{convention}
 
 字符串赋值时还有个长度匹配的问题. 如果``\verb|=|''左边字符串的长度小于右边字符串的长度, 则把右边字符串尾巴多出的部分砍掉, 然后赋值. 如果``\verb|=|''左边字符串的长度大于右边字符串的长度, 则在右边字符串尾巴处补上空格让长度一样, 然后赋值.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     character(4) :: sc
@@ -87,9 +87,9 @@ program main
     lc = 'hello'
     print *, '"', lc, '"'
 end program main
-\end{verbatim}
+\end{lstlisting}
 我们还可以给字符串的切片赋值, 这样只会修改切片的那部分.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     character(13) :: hello_world
@@ -98,7 +98,7 @@ program main
     hello_world(1:1) = 'H'
     print *, hello_world
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 \section{运算}\label{fortran_opration}
 
@@ -129,7 +129,7 @@ end program main
 \subsection{算数运算}\label{fortran_numeric_operator}
 
 算数运算符一共五个: \verb|+|, \verb|-|, \verb|*|, \verb|/|, \verb|**|, 分别对应于加, 减, 乘, 除, 乘方.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     real :: a, b
@@ -141,12 +141,12 @@ program main
     print *, a/b ! Divide 3.0 by 4.0.
     print *, a**b ! Raise 3.0 to the power 4.0.
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 开方怎么算? 自己想!
 
 五个算数运算符的优先级和数学中是一样的.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     print *, 1.0+2.0*3.0 ! Result is 7.0.
@@ -154,12 +154,12 @@ program main
     print *, 4.0*5.0**6.0 ! Result is 6.25e4.
     print *, (4.0*5.0)**6.0 ! Result is 6.4e7.
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 严格上来说, Fortran有七个算数运算符, 另两个也是``\verb|+|''和``\verb|-|''. 众所周知, 数学中``$+$''和``$-$''前面可以没有数. Fortran中也一样. 对于任意一个数据实体\verb|[q]|, \verb|+[q1]|/\verb|-[q1]|就相当于\verb|[zero]+[q1]|/\verb|[zero]-[q1]|, 其中\verb|[zero]|是精度最低的种别的\verb|0|.
 
 看下面这个例子就懂了.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     real :: a
@@ -167,7 +167,7 @@ program main
     print *, -a**2.0 ! Result is -1.0.
     print *, (-a)**2.0 ! Result is 1.0.
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 数学中, $-a^2$也是表示$-(a^2)$哟!
 
@@ -178,12 +178,12 @@ end program main
 一般情况下都不需理会运算时的类型转化, 毕竟转化前后数学上差别不大. 但这里有一个非常传统, 非常典型, 非常折磨人的大坑, 巨坑, 奆坑. 这个坑就是整型数据实体相除.
 
 来看下面这个例子.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     print *, 2**(1/4)
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 乍一看, 这个程序非常聪明地将$\sqrt[4]{2}$算了出来, 然而一运行, 就会发现不对. 为什么? 让我们来一点一点分析电脑是怎么干活的.
 
@@ -195,7 +195,7 @@ end program main
 
 再来看下面这个程序.
 
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     integer :: p, q
@@ -205,7 +205,7 @@ program main
     r = p/q
     print *, 2.0**r
 end program main
-\end{verbatim}
+\end{lstlisting}
 这个程序的结果也不大对. 让我们再来分析分析这个程序.
 
 首先给\verb|p|和\verb|q|分别赋上\verb|1.0|和\verb|4.0|. 然而, \verb|p|和\verb|q|都是整型的. 根据赋值时的类型转化规则, \verb|p|和\verb|q|分别是\verb|1|和\verb|4|.
@@ -221,7 +221,7 @@ end program main
 最后还有一个小坑, 就是乘方从右边先算(非常特殊). 比如\verb|a**b**c|, 到底是${a^b}^c$, 还是$a^{b^c}$? 答案是$a^{b^c}$, 也就是先算$b^c$.可以这么记: \verb|(a**b)**c|其实等于\verb|a**(b*c)|, 如果\verb|a**b**c|是\verb|(a**b)**c|, 就显得太傻了, 还不如直接写\verb|a**(b*c)|\footnote{
     乘法应该比乘方快\dots
 }, 所以\verb|a**b**c|应该是\verb|a**(b**c)|.
-\begin{verbatim}
+\begin{lstlisting}
 
 program main
     implicit none
@@ -231,7 +231,7 @@ program main
     c = 2.0
     print *, a**b**c ! This is a**(b**c).
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 只要记得这里有个坑就好了. 真遇到连着两个\verb|**|, 不清楚哪个先算, 加个括号呀. 即使自己清楚, 也最好加个括号, 一是让自己更清楚, 二是照顾照顾别人(造轮子的时候), 因为别人很可能忘了到底哪个\verb|**|先算.
 
@@ -240,7 +240,7 @@ end program main
 \end{convention}
 
 还有一个小细节. 严格意义上说, \verb|+|和\verb|-|前面直接跟运算符是非法的. 然而器有器规呀, Gfortran只是送个警告, Ifort直接放行. 不过还是多加一个括号吧. 可以运行运行下面这个程序来看看结果.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     real :: a, b
@@ -252,35 +252,35 @@ program main
     print *, a/-b ! It is proper to write a/-b as a/(-b).
     print *, a**-b ! It is proper to write a**-b as a**(-b).
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 \subsection{字符运算}
 
 字符运算符只有一个: \verb|//|, 其作用是把左右两边的字符串连起来得到一个新字符串. 来看下面这个例子.
-\begin{verbatim}
+\begin{lstlisting}
 
 program main
     implicit none
     print *, 'Hello'//','//' '//'world'//'!'
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 如果把连接后得到的字符串赋给变量, 也要遵循字符串赋值的长度转换规则. 比如, 下面这个程序运行后``什么也没输出''\footnote{
     请自己思考为什么这里加了引号. 可以另造个真什么也没干的程序, 运行看看有什么区别.
 }.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     character(0) :: null_char
     null_char = 'Hello'//','//' '//'world'//'!'
     print *, null_char
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 \subsection{逻辑运算}
 
 逻辑运算符一共有五个. 常用的有三个: \verb|.and.|, \verb|.or.|, \verb|.not.|, 分别代表与, 或, 非. 不常用的有三个: \verb|.eqv.|和\verb|.neqv.|, 分别代表同或和异或. 一般用真值表来展现逻辑运算的结果. 下面的程序会输出完整的真值表.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     print *, '.and.'
@@ -304,35 +304,35 @@ program main
     print *, .true., .true..neqv..true., .true..neqv..false.
     print *, .false., .false..neqv..true., .false..neqv..false.
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 \subsection{关系运算}
 
 关系运算符有六个: \verb|<|, \verb|<=|, \verb|>|, \verb|>=|, \verb|==|, \verb|/=|.如果运算符左右两边是数, 则六个运算符分别代表$<$, $\leqslant$, $>$, $\geqslant$, $=$, $\ne$, 这种情况下关系运算符经常和逻辑运算符混用. 此时请务必遵循规范\ref{use_barket}, 加上括号来明确究竟哪部分先算.
 
 严格意义上说, 关系运算符是不能连用的. 比如下面这个程序, Gfortran是运行不了的. 然而Ifort是可以的\dots
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     print *, 1<2<3
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 要做``连续的关系运算'', 标准做法是把``连续的关系运算''拆分成``单独的关系运算'', 然后用\verb|.and.|连起来, 像下面这样.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     print *, (1<2).and.(2<3)
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 这里有一个经典的坑. 像下面这样的程序可能得出``错误''的结果.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     print *, (0.1+0.2)==0.3
 end program main
-\end{verbatim}
+\end{lstlisting}
 因为实型其实是不能``准确存储''的, 比如对电脑而言, \verb|0.1|可能不是真的$0.1$, 而是非常接近$0.1$的某个值, \verb|0.2|和\verb|0.3|也是这样, 所以\verb|0.1|加上\verb|0.2|还真可能不等于\verb|0.3|. 这个``问题''广泛存在于各种编程语言中, 连Python3默认情形下都是如此. 然而上面的程序Ifort和Gfortran都能得出正确的结果, 似乎非常高级\dots
 
 尽管得出正确结果了, 还是不好说其他情形下会不会出问题. 所以还是要慎重判断实型(和复型)变量是否相等(或不等). 不过整型总是可以随便判断的, 因为整型量的存储是绝对精确的.
@@ -348,7 +348,7 @@ end program main
 注意, 上面``补空格''的一步只是暂时的, 比较前后变量本身没有改变. 比如下面这个程序, 比较前后\verb|c|都是``\verb|I|'', 没有变成``\verb|I  |''\footnote{
 否则长度就变成3了, 这不符合``字符串变量长度不变''的规则.
 }.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     character(1) :: c
@@ -356,7 +356,7 @@ program main
     print *, c=='You'
     print *, '"', c, '"'
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 至于编译器要怎么定义字符的先后顺序, Fortran标准给了一些规定, 但没规定死, 也就是说不同编译器进行字符串比较可能得出不同的结果. 所以比较字符串的前后顺序不是件好事. 不过一般只会比较字符串是相同还是不同\footnote{
     恭喜同志们, 不必记上面那一大段规则了.

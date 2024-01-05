@@ -7,7 +7,7 @@
 \subsection{if结构体}
 
 假如我们要搞个轮子, 这个轮子能接受一个数, 然后判断这个数是不是零, 我们可以这么搞.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     use, intrinsic :: iso_fortran_env, only: real128
     implicit none
@@ -17,7 +17,7 @@ program main
         print *, 'The number is not 0!'
     end if
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 这玩楞第五行是准备读取输入的. 
 
@@ -48,7 +48,7 @@ end program main
 另外这个轮子在\verb|number==0|时啥子也没输出, 这可能让同志们头晕. 俺在设计这个例子的时候, 是把\verb|number==0|视作``正常情形'', 把\verb|number/=0|视作``异常情形'', 这其实是很通行的一个约定. 而``正常情形''下, 按UNIX哲学, 就应该啥子也不输出, 表示``一切正常'', ``异常情形''下才说话.
 
 当然让轮子在\verb|number==0|时也说话, 也是好的. 我们可以这么干.\newpage
-\begin{verbatim}
+\begin{lstlisting}
 program main
     use, intrinsic :: iso_fortran_env, only: real128
     implicit none
@@ -60,7 +60,7 @@ program main
         print *, 'The number is 0!'
     end if
 end program main
-\end{verbatim}
+\end{lstlisting}
 现在轮子里多了\verb|else|和后面到\verb|end if|中间称之为else块的东东, \verb|else|前到\verb|then|后的内容则是then块. 现在整个if结构体的执行方式就是, 先判断刮弧里的是\verb|.True.|还是\verb|.False.|.
 \begin{itemize}
     \item 如果是\verb|.True.|, 则一行一行执行then块, 然后跳到\verb|end if|.
@@ -70,7 +70,7 @@ end program main
 知道上面的内容, 干活就已经不成问题了. 但人嘛总是想着偷懒的. 下面介绍一些个偷懒的办法.
 
 首先第一个轮子, 我们可以少打一些字儿, 像这样.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     use, intrinsic :: iso_fortran_env, only: real128
     implicit none
@@ -78,11 +78,11 @@ program main
     read(*,*) number
     if (number/=0) print *, 'The number is not 0!'
 end program main
-\end{verbatim}
+\end{lstlisting}
 其中第六行的这种东东称为if语句, 就是删掉\verb|then|, 然后把then块里的话搬到刮弧后面. 如果我们需要在then块里加很多很多行, 那if语句就不好使了. 这时我们就老老实实用if结构体.
 
 还有, 如果我们要让上面的轮子还能判断是正是负, 我们可以把轮子改成下面这样.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     use, intrinsic :: iso_fortran_env, only: real128
     implicit none
@@ -98,11 +98,11 @@ program main
         end if
     end if
 end program main
-\end{verbatim}
+\end{lstlisting}
 也就是说我们在if结构体里再搞个if结构体(当然要按规范\ref{fortran_indent}再缩进一回). 只套两层还是能活的, 如果要搞一些其他活儿, 比如输入一个考试成绩, 判断是优良中差, 缩进都要缩死人了. 啥子? 不缩进了? 那您可放心了, 保证您要绞尽脑汁地去判断计几的一句话到底是在哪层if结构体中.
 
 像下面这样, 就可以偷懒了.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     use, intrinsic :: iso_fortran_env, only: real128
     implicit none
@@ -116,13 +116,13 @@ program main
         print *, 'The number is negative!'
     end if
 end program main
-\end{verbatim}
+\end{lstlisting}
 这样不仅可以少打个\verb|end if|, 还能少缩进一回, 让我不由得想起王司徒的经典语录呀.
 
 同志们可以尝试自己造一个判断分数优良中差的轮子, 练练手. 这个轮子可能有些同志造好之后, 觉得看着代码就不舒服, 因为if结构体只能实现双分支, 堆叠\verb|else if|是在强行用双分支来堆出多分支来, 有些同志可能就不爽, 想直接在轮子里弄出多分支来. 这些个同志可以自己去搜\verb|select case|的用法. 还有上面的轮子都有个问题, 就是如果用户突然发神经, 输个什么字母之类的, 这个轮子就崩了. 也许用\verb|select type|能解决这个问题.
 
 最后再讲个小技巧. 假如现在要搞个轮子, 在\verb|number==0|时输出条警告, 在\verb|number/=0|时啥也不干, 下面这样当然是可的.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     use, intrinsic :: iso_fortran_env, only: real128
     implicit none
@@ -130,11 +130,11 @@ program main
     read(*,*) number
     if (number==0) print *, 'Warning: the number is zero.'
 end program main
-\end{verbatim}
+\end{lstlisting}
 但我大胆猜测, 机器判断\verb|number/=0|显然比判断\verb|number==0|要容易\footnote{
     别信, 这我真是猜的.
 }, 所以为提高效率, 最好把判断条件变成\verb|number/=0|. 我们可以这么做.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     use, intrinsic :: iso_fortran_env, only: real128
     implicit none
@@ -146,7 +146,7 @@ program main
         print *, 'Warning: the number is zero.'
     end if
 end program main
-\end{verbatim}
+\end{lstlisting}
 \mbox{}\\\mbox{}\\
 其中\verb|continue|就是让电脑运行这行时啥都不干. 事实上把\verb|continue|这行删了, 电脑还是可以正确工作, 在\verb|number/=0|时直接跳到\verb|end if|的, 但我觉得不写\verb|continue|这行, 同志们和很多被Fortran折磨的人(相信不包括同志们)见了都要吓一跳, 不知道这玩楞是否能跑起来. 为了可读性, 还是写上好. 也不用担心加上这行后电脑会因为执行这个啥都不干的命令而变慢. 事实上电脑接到一个空转命令后, 可能反而跑得更快\footnote{
     这是真的.
@@ -162,7 +162,7 @@ end program main
 \end{equation*}
 
 我们可以将左边的级数截断至一个$n_{\text{max}}$来计算出$\pi$的近似值. 假如我们取$n_{\text{max}}=10$, 我们还可以这么做.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     use iso_fortran_env, only: qp=>real128
     implicit none
@@ -172,9 +172,9 @@ program main
                 +1/7_qp**2+1/8_qp**2 &
                 +1/9_qp**2+1/10_qp**2))**0.5_qp
 end program main
-\end{verbatim}
+\end{lstlisting}
 但如果我们取$n_{\text{max}}=100$, 这样做就要死人了. 这时我们就有必要使出do结构体, 像下面这样.\newpage
-\begin{verbatim}
+\begin{lstlisting}
 program main
     use iso_fortran_env, only: qp=>real128
     implicit none
@@ -186,12 +186,12 @@ program main
     end do
     print *, (6.0_qp*s)**0.5_qp
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 这个轮子运行到第七行后发生什么事了? 首先电脑把\verb|n|赋成\verb|1|,然后执行\verb|do|到\verb|end do|之间的命令, 也就是第八行. 执行完第八行后, 电脑把\verb|n|加上\verb|1|, 然后再一次执行第八行, 然后再把\verb|n|加上\verb|1|\dots~直到\verb|n|等于\verb|100|后, 电脑最后一次执行第八行, 然后就执行\verb|end do|之后的命令了. 对上面这个例子, 总的过程就是: 令\verb|n|等于\verb|1|, 执行第八行, 令\verb|n|等于\verb|2|, 执行第八行\dots~令\verb|n|等于\verb|99|, 执行第八行, 令\verb|n|等于\verb|100|, 执行第八行, 然后执行第十行. 总而言之是完成目的了!
 
 第七行逗号前后的东东也可以是变量或表达式, 只要是个数据实体就成. 假如我们要让用户自己选择$n_{\text{max}}$多大, 我们就可以这么做.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     use iso_fortran_env, only: qp=>real128
     implicit none
@@ -205,7 +205,7 @@ program main
     end do
     print *, (6.0_qp*s)**0.5_qp
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 上面的程序每次\verb|n|都增加\verb|1|. 我们可以改变这一点.
 看这个极限.
@@ -214,7 +214,7 @@ end program main
 \end{equation*}
 
 我们可以这么计算这个极限的近似值.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     use iso_fortran_env, only: qp=>real128
     implicit none
@@ -228,11 +228,11 @@ program main
     end do
     print *, s
 end program main
-\end{verbatim}
+\end{lstlisting}
 注意第九行现在后面多出了个\verb|-1|, 这就表示现在每次\verb|n|都增加\verb|-1|, 也就是减\verb|1|. 对上面这个例子, 这意味着\verb|n|会取\verb|-1|, \verb|-2|, 一直到\verb|n_min|. 同样, 这个\verb|-1|也可以被替换成变量或表达式之类的.
 
 让我们进一步探讨到底do结构体工作时会干什么事. 我们可以使用print大法来看程序的工作过程. 下面是一个示例程序, 可以执行它看看.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     integer :: n
@@ -243,7 +243,7 @@ program main
     end do
     print *, 'After loop:', n
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 一个do结构体前头肯定有一个类似于\verb|do m = m1, m2, m3|的东东, 这里的\verb|m|称作计数变量(counter variable), \verb|m1|称作初始参数(initial parameter), \verb|m2|称作终端参数(terminal parameter), \verb|m3|称作增量参数(incrementation parameter), 当然\verb|m3|可以没有, 没有时\verb|m3|就是\verb|1|. 我们暂且把\verb|do|所在那行和\verb|end do|所在那行之间的部分称作do块.
 
@@ -256,7 +256,7 @@ end program main
 \end{enumerate}
 
 上面程序的计数变量都是整型的. 按Modern Fortran规范, 计数变量``shall be''整型的. 这是无比正确的. 来看下面这个例子.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     integer :: n
@@ -269,14 +269,14 @@ program main
     end do
     print *, n, r, s
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 用Gfortran跑这个程序的同志们会发现出现一堆警告, 而且\verb|n|的输出结果怎么是\verb|1000|. 仔细看看, \verb|r|的输出结果可不是\verb|2.001|. 要知道, 实型量运算是有误差的, 这里\verb|r|被加了个一千次, 疯狂积累误差, 刚好使\verb|r|大于\verb|2.0|一丢丢, 电脑就退出循环了, 算出了个我们不想要的结果!
 
 用Ifort的同志们会发现没出警告, 而且结果还不错. 可别高兴得太早, 把\verb|0.001|改成\verb|0.000001|, 再跑一回, 就会发现事情不对了, 还连警告也没有\dots
 
 我们可以用一些偷鸡摸狗的正确办法来避免用实型的计数变量, 放在下面, 大家自己品品.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     integer :: n, r
@@ -289,7 +289,7 @@ program main
     end do
     print *, n, r, s
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 最后给大家留两个小作业.
 
@@ -314,7 +314,7 @@ end program main
 严格上说do while结构体是do结构体中的一种, 不过一般还是把do while结构体单划成一类.
 
 之前我们用了一个级数计算$\pi$. 现在要考虑这个级数收敛速度如何. 假如要计算$n$取多少时级数和能大于$3.14$, 我们可以这么做.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     use iso_fortran_env, only: qp=>real128
     implicit none
@@ -328,7 +328,7 @@ program main
     end do
     print *, n
 end program main
-\end{verbatim}
+\end{lstlisting}
 这个程序的运作过程不难理解. 运行到第八行时, 电脑会判断刮弧里的量是否为真. 若为真, 则执行后边直到\verb|end do|的内容, 然后回到第八行, 再判断刮弧里的量是否为真\dots~若刮弧里的量不为真, 则执行\verb|end do|之后的内容. \verb|do while ...|到\verb|end do|这样的部分就是do while结构体
 
 这里要注意最后一句话是\verb|end do|而不是\verb|end do while|, 因为do while结构体其实是do结构体中的一种.
@@ -336,7 +336,7 @@ end program main
 \subsection{exit语句}\label{fortran_exit}
 
 已知任意正整数$n$, $n^2$和$(n+1)^2$之间肯定有个质数. 现打算造个轮子来判断$n^2$和$(n+1)^2$之间的每个数是否是质数. 先造出个能跑的轮子如下.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     integer :: i, j, n
@@ -352,10 +352,10 @@ program main
         print *, i, is_prime
     end do
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 这个轮子在效率上让人不大满意, 因为在第九行判断\verb|j|是否整除\verb|i|时, 其实只需有一回\verb|i==i/j*j|就可以得出\verb|i|不是质数了, 所以希望在\verb|i==i/j*j|时, 将\verb|is_prime|赋成\verb|.false.|, 然后直接执行里层的\verb|end do|之后的语句(也就是第十三行). 这时只需加个exit语句就好, 像下面这样.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     integer :: i, j, n
@@ -372,12 +372,12 @@ program main
         print *, i, is_prime
     end do
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 在上面这个轮子中, 电脑只要一见到\verb|exit inner_loop|就浑身一激灵, 然后就直接执行\verb|end do inner_loop|之后的语句了. 注意上面这个轮子, 使用了鲜少出现的标签, 来明确指明执行\verb|exit|后究竟执行哪个\verb|end do|之后的语句. 其实直接写个\verb|exit|, 电脑还是干一样的活儿, 但不加标签的话, 总会令人脑子有点晕: 到底\verb|exit|后执行的是倒数第三行还是倒数第一行? 所以还是得用用标签. 当然如果do结构体只有一层就不用了.
 
 如果要让电脑在\verb|i==i/j*j|时, 将\verb|is_prime|赋成\verb|.false.|, 然后直接执行外层的\verb|end do|之后的语句(也就是最后一行), 可以这么做.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     integer :: i, j, n
@@ -394,7 +394,7 @@ program main
         print *, i, is_prime
     end do outer_loop
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 同志们可以自己尝试在do while结构中使用exit语句.
 
@@ -403,7 +403,7 @@ end program main
 cycle语句和exit语句只是功能不同, 语法完全一致.
 
 对内层使用cycle语句就像下面这样.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     integer :: i, j, n
@@ -420,12 +420,12 @@ program main
         print *, i, is_prime
     end do
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 跑这轮子, 电脑只要一见到\verb|cycle inner_loop|就浑身一哆嗦, 然后就直接执行\verb|end do inner_loop|, 也就是把\verb|j|加上\verb|1|, 然后再执行\verb|inner_loop: do|\\之后的语句, 之后可能又遇上\verb|cycle inner_loop|, 那就再来一回\dots
 
 对外层使用cycle语句就像下面这样.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     integer :: i, j, n
@@ -442,6 +442,6 @@ program main
         print *, i, is_prime
     end do outer_loop
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 同志们可以自己先想想这个轮子会跑出什么结果, 然后跑跑看.

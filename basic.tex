@@ -7,12 +7,12 @@
 }.
 
 比如, 在一个名为\verb|helloworld.f90|的文件内写入下面这些内容并保存.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     print *, 'Hello, world!'
 end program main
-\end{verbatim}
+\end{lstlisting}
 这个\verb|helloworld.f90|文件就是一个源代码文件, 里面的四行字符就是一份源代码, 这份源代码代表四条指令, 这四条指令组合起来就是一个程序.
 
 \section{字符集}
@@ -28,12 +28,12 @@ Fortran可以在程序中使用键盘能直接打出的所有字符. 其他字�
 \end{convention}
 
 Fortran是大小写不敏感的(case-insensitive), 也就是说, 很多情况下程序中的字母大写小写效果是完全相同的(效果不同的地方见\ref{fortran_char}节). 比如, 下面这个程序和\ref{fortran_program}节中的程序是完全等价的.
-\begin{verbatim}
+\begin{lstlisting}
 PROGRAM MAIN
     IMPLICIT NONE
     PRINT *, 'Hello, world!'
 END PROGRAM MAIN
-\end{verbatim}
+\end{lstlisting}
 
 相信我, 在程序中混用大小写字母是很容易出事的.
 
@@ -108,71 +108,71 @@ Fortran的源代码格式(source form)分两种: 自由格式(free form)和固�
 有时可能遇到一行太长的情况, 这时可以使用\verb|&|来把一行拆成两行写.
 
 下面这个程序就用了续行(continuation).
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     print *, &
     'Loooooooooooooooooooooooooooooooong!'
 end program main
-\end{verbatim}
+\end{lstlisting}
 上面这个程序就相当于下面这个程序.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     print *, 'Loooooooooooooooooooooooooooooooong!'
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 如果用一个续行符\verb|&|续行后, 一行还是太长, 可以接着用续行符再续. 比如下面这个程序和上面两个程序是一样的.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     print &
     *, &
     'Loooooooooooooooooooooooooooooooong!'
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 其他使用续行符的规则如下.
 \begin{itemize}
     \item 不能简单地在不能插入空格的地方续行\footnote{
         也就是说用特殊方法可以, 但这样的话这个程序就会让人看得脑壳疼.
-    }.\\比如,下面这个程序是不成的.\begin{verbatim}
+    }.\\比如,下面这个程序是不成的.\begin{lstlisting}
 program main
     im&
 plicit none
     print *, 'Loooooooooooooooooooooooooooooooong!'
 end program main
-    \end{verbatim}
-    \item 可能不能让一行之中只有空格和一个续行符.\\比如, 下面这个程序可能是不成的    \begin{verbatim}
+    \end{lstlisting}
+    \item 可能不能让一行之中只有空格和一个续行符.\\比如, 下面这个程序可能是不成的    \begin{lstlisting}
 program main
     implicit none
     print *, 'Loooooooooooooooooooooooooooooooong!'
     &
 end program main
-    \end{verbatim}
-    \item 续行符下一行不能是空行, 也不能是注释行.\\比如, 下面这个程序是不成的.\begin{verbatim}
+    \end{lstlisting}
+    \item 续行符下一行不能是空行, 也不能是注释行.\\比如, 下面这个程序是不成的.\begin{lstlisting}
 program main
     implicit none
     print *, 'Loooooooooooooooooooooooooooooooong!' &
     ! This is invalid!
 end program main
-    \end{verbatim}
-    \item 没法在注释中使用续行符, 因为注释中的\verb|&|会被当成是注释的一部分.\\比如, 下面这个程序是不成的.\begin{verbatim}
+    \end{lstlisting}
+    \item 没法在注释中使用续行符, 因为注释中的\verb|&|会被当成是注释的一部分.\\比如, 下面这个程序是不成的.\begin{lstlisting}
 program main
     implicit none
     print *, 'Loooooooooooooooooooooooooooooooong!'
     ! This is &
       invalid!
 end program main
-    \end{verbatim}在VS code这样合格的编辑器中, 上面这个程序的第四行和第五行颜色会不一样, 并且第四行中\verb|&|的颜色会和第四行其他字符的颜色一样. 这就提示我们\verb|&|是注释的一部分, 并且第五行不被当成是注释.
-    \item 续行符后的所有空格会被无视, 并且可以在续行符后加注释.\\比如, 下面这个程序是成的.\begin{verbatim}
+    \end{lstlisting}在VS code这样合格的编辑器中, 上面这个程序的第四行和第五行颜色会不一样, 并且第四行中\verb|&|的颜色会和第四行其他字符的颜色一样. 这就提示我们\verb|&|是注释的一部分, 并且第五行不被当成是注释.
+    \item 续行符后的所有空格会被无视, 并且可以在续行符后加注释.\\比如, 下面这个程序是成的.\begin{lstlisting}
 program main
     implicit none
     print *, & ! This is valid!
     'Loooooooooooooooooooooooooooooooong!'
 end program main
-    \end{verbatim}
+    \end{lstlisting}
 \end{itemize}
 
 总的来说就是, 老老实实用续行符是可以的, 搞幺蛾子是不行的.
@@ -190,10 +190,10 @@ end program main
 \end{convention}
 
 用VS Code的话, 可以在\verb|settings.json|里加入下面这两个键值对.
-\begin{verbatim}
+\begin{lstlisting}
 "editor.wordWrap": "wordWrapColumn",
 "editor.wordWrapColumn": 80
-\end{verbatim}
+\end{lstlisting}
 这样如果一行超过80个字符, 就会分行显示. 注意, 只是分行显示, 这一行还是超过80个字符的\footnote{
     可以看到下面一``行''是没有行号的.
 }. 加入这两个键值对只是起到提醒作用, 太长还是要分行写的.
@@ -203,29 +203,29 @@ end program main
 除了空行, 注释行和续行符的后一行, 程序的每一行开头都可以加上标号(label). 标号是1--99999的数字, 后面至少有一个空格. 标号开头可以是0, 但标号中的数字不能多于五个. 四位数的, 整千或整百的标号比较常见.
 
 下面的程序第三行使用了标号.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     1000 print *, 'label'
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 在程序中显然不能有重复的标号\footnote{
     准确来说是在一个程序单元内不能有重复标号. 程序单元的含义见\ref{run_fortran}节.
-}, 比如下面这个程序是不成的.\begin{verbatim}
+}, 比如下面这个程序是不成的.\begin{lstlisting}
 program main
     implicit none
     09999 print *, '09999'
     9999  print *, '9999'
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 \subsection{标签}
 
 在一些特殊的地方(见\ref{fortran_exit}和\ref{fortran_cycle}小节)可以加标签(tag). 
 
 下面的程序第四行使用了标签.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     integer :: i
@@ -233,7 +233,7 @@ program main
         print *, 'tag'
     end do tag
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 显然在程序中也不能有重复的标签\footnote{
     同标号一样, 准确来说是在一个程序单元内不能有重复标签.
@@ -246,11 +246,11 @@ Fortran程序由若干程序单元(program unit)组成, 程序单元可能是主
 主程序必须满足下面的格式\footnote{
     其实头尾还可能可以省略一部分, 但还是写全为好.
 }.
-\begin{verbatim}
+\begin{lstlisting}
 program [program-name]
     ...
 end program [program-name]
-\end{verbatim}
+\end{lstlisting}
 其中, \verb|[program-name]|处是一个名称(name). 名称指的是由字母, 数字和下划线``\verb|_|''\footnote{
     下划线是空格的替代字符, 长得还是蛮像滴!
 }组成的, 开头是字母的字符串. ``\verb|...|''处则是各种指令, 一行一条.
@@ -273,104 +273,104 @@ end program [program-name]
 当然如果老是这样, 俺们和电脑们都会浑身难受, 因为在碰上错误前, 电脑还执行了其他指令, 这可能会白费相当多的时间. 所以在生成\verb|.exe|文件前, 电脑会先把整份代码读一遍, 瞅一瞅看是不是有地方电脑是不能干活的, 如果有, 电脑会提前抛出错误, 这样就不会白费太多时间了. 当然有时候, 电脑在事先没有办法判断某些个地方是没法干活的, 那它就只能等真执行到那里时再抛出错误了.
 
 比如, 运行这样一个程序(文件名\verb|main.f90|).
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     print 'Hello, world!'
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 Ifort给出的结果如下\footnote{
     假定屏幕每行仅能容纳60字符, 且略去版权声明等无关紧要的内容, 下同.
 }.
-\begin{verbatim}
+\begin{lstlisting}
 main.f90(3): error #6899: First non-blank character in a cha
 racter type format specifier must be a left parenthesis.   [
 'Hello, world!']
     print 'Hello, world!'
 -----------^
 compilation aborted for main.f90 (code 1)
-\end{verbatim}
+\end{lstlisting}
 
 Gfortran给出的结果如下.
-\begin{verbatim}
+\begin{lstlisting}
 main.f90:3:10:
 
     print 'Hello, world!'
          1
 Error: Missing leading left parenthesis in format string at 
 (1)
-\end{verbatim}
+\end{lstlisting}
 
 由于程序第三行不符合规则(\verb|print|后少了\verb|*,|), 电脑不知怎么干活了, 只好报个错儿. 这个错儿是在生成\verb|.exe|文件时就查出了.
 
 再比如, (Windows下)运行这样一个程序.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     open(10, file='C:\*')
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 这回生成\verb|.exe|文件时, Ifort和Gfortran都表现得很正常, 然后就出事. 虽然所有命令都是符合规则的, 然而Windows文件名里不能有\verb|*|, 电脑没法干活, 只好报个错儿.
 
 一个程序会不会报错儿, 其实还和编译器有关. 比如运行下面这个程序.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     print *, 1.0/0.0
 end program main
-\end{verbatim}
+\end{lstlisting}
 (默认情形下)~Gfortran会报错儿说不能除以0, 但Ifort就不会报错, 会给个无穷大. 有趣的是, 如果运行下面这个程序, 则Gfortran和Ifort一样, 都会算出个无穷大来.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     real :: r
     r = 0.0
     print *, 1.0/r
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 \subsection{警告}\label{fortran_warning}
 
 有些时候电脑能够执行指令, 但它觉得这些个指令十分``危险'', 很有可能指令的实际执行过程并不是我们预想的那样, 这时电脑就会抛出警告. 什么时候应该给个错误, 不同编译器的观点还是比较一致的, 但什么时候给个警告, 那就全看编译器心情了.
 
 比如, 运行这样一个程序(文件名\verb|main.f90|).
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     integer :: i = 1000000000000
     print *, i
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 Ifort给出这样的结果.
-\begin{verbatim}
+\begin{lstlisting}
 main.f90(3): warning #6384: The INTEGER(KIND=4) value is out
 -of-range.   [1000000000000]
     integer :: i = 1000000000000
 -------------------^
-\end{verbatim}
+\end{lstlisting}
 
 Ifort认为\verb|1000000000000|过大, 无法正确存储, 于是就给个警告, 但程序仍然可以运行. 运行后输出\verb|-727379968|, 果然很奇怪! 至于Gfortran嘛, 它也认为\verb|1000000000000|过大, 但它不是给出警告, 而是直接报错.
 
 再比如, 运行这样一个程序(文件名\verb|main.f90|).
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     integer :: i = .true.
     print *, i
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 Gfortran给出这样的结果.
-\begin{verbatim}
+\begin{lstlisting}
 main.f90:3:18:
 
     integer :: i = .true.
                  1
 Warning: Extension: Conversion from LOGICAL(4) to INTEGER(4)
  at (1)
-\end{verbatim}
+\end{lstlisting}
 
 Gfortran觉得令整数\verb|i|等于逻辑``真''的操作其实是标准规则不允许的, 是自己放水才能这么干的, 于是就给个警告, 但程序仍然可以运行. 运行后输出\verb|1|. 至于Ifort嘛, 它倒是不报错也不给警告, 干脆利落地运行了, 但运行后输出的是\verb|-1|\dots

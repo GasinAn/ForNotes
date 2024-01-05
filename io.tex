@@ -3,7 +3,7 @@
 之前我们都只是小打小闹而已, 现在我们来干一些大活儿. 我们来玩玩\href{https://cdsarc.cds.unistra.fr/viz-bin/cat/I/355}{Gaia DR3}. 我们想知道Gaia DR3里的哪个源距银道面最远且最远有多远, 比较不动脑筋地做这件事呢, 我们想知道哪个源的$\left\lvert \sin b\right\rvert/p$最大, 其中$p$是源的视差, $b$是源的银纬. 但这里有一个问题, 就是Gaia DR3显然太大了, 同志们得交个几十杯奶茶钱的网费, 所以我们先用Gaia DR3的一个小样本试试水.
 
 首先我们要在\href{https://cdsarc.cds.unistra.fr/viz-bin/cat/I/355}{这个页面}里找到\href{https://cdsarc.cds.unistra.fr/viz-bin/ReadMe/I/355?format=html&tex=true}{ReadMe}点进去, 找到``File Summary''.
-\begin{verbatim}
+\begin{lstlisting}
    File Summary:
    --------------------------------------------------------
     FileName      Lrecl  Records   Explanations
@@ -12,11 +12,11 @@
    gaiadr3.sam     1788     1000   Gaia DR3 source catalog
                                    (1811709771 sources)
                             ......
-\end{verbatim}
+\end{lstlisting}
 从这个``File Summary''可知, \verb|gaiadr3.sam|是星表\footnote{认不得英文词儿的请上\href{https://nadc.china-vo.org/astrodict/}{天文学名词词典}查询.}, 一共1000行, 每行1788个字符. 不对呀, 后面明明写着一共1811709771个源嘛, 怎么只有1000行? 那当然是因为这只是个1000个源的样本啦, 文件名后缀可是\verb|.sam|呢. 于是乎我们要在\href{https://cdsarc.cds.unistra.fr/viz-bin/cat/I/355}{这个页面}里找到\href{https://cdsarc.cds.unistra.fr/ftp/I/355}{FTP}, 里头找到\href{https://cdsarc.cds.unistra.fr/ftp/I/355/gaiadr3.sam.gz}{\texttt{gaiadr3.sam.gz}}下载下来然后解压得到\verb|gaiadr3.sam|.
 
 回到ReadMe, 下面有\verb|gaiadr3.sam|的``Byte-by-byte Description''.
-\begin{verbatim}
+\begin{lstlisting}
 
    Byte-by-byte Description of file: gaiadr3.sam
    -----------...-------...--------------------------------
@@ -29,9 +29,9 @@
        ...         ...         ......
      987-1001 ... deg   ... Galactic latitude (b)
        ...         ...         ......
-\end{verbatim}
+\end{lstlisting}
 从这个``Byte-by-byte Description''可知, \verb|gaiadr3.sam|的每一行, 第1--28个字符都是源的编号, 第129--137个字符都是源的视差(单位为毫角秒), 第987--1001个字符都是源的银纬(单位为度). 好, 现在就造轮子!\label{gaiadr3.sam}
-\begin{verbatim}
+\begin{lstlisting}
 program main
     use iso_fortran_env, only: dp => real64
     implicit none
@@ -45,7 +45,7 @@ program main
     d = abs(sin(b))/p ! Unit: AU
     print *, maxloc(d), maxval(d)
 end program main
-\end{verbatim}
+\end{lstlisting}
 这轮子现在有个大问题, 我们需要把星表里的数据转移到数组\verb|p|和\verb|b|中, 难道用列选择将星表里的数据复制粘贴到轮子里? 好家伙, 一个轮子两千多行, 其中两千行是数据, 要是处理原始星表, 就有三十六亿行是数据, 这不是要崩溃\footnote{不仅我们要崩溃, 文本编辑器也要崩溃\dots}? 这时候我们就需要让Fortran自己干转移数据的事情.
 
 \section{文件}
@@ -53,22 +53,22 @@ end program main
 我们平常所说的文件, Fortran称其为外部文件(external file), 不过一般来说外部文件得是纯文本文件\footnote{某些编译器可能有器规来应对二进制文件. 不知什么是纯文本文件和二进制文件的同志们赶紧恶补.}. 既然是纯文本文件, 就相当于一个字符串, 说到字符串, 就让我们想到字符串变量. Fortran称字符串变量为内部文件(internal file), 将外部文件与内部文件合称为文件(file).
 
 我们需要让Fortran知道我们要用什么文件. 内部文件Fortran是认得的, 因为是自家的字符串变量嘛, 但外部文件Fortran不认得. 为了让Fortran认得外部文件, 我们要将外部文件打开(open). 下面这个轮子, Fortran会在第三行后认得\verb|test.txt|, 这个\verb|test.txt|应该和编译完最后生成的\verb|.exe|文件\footnote{注意不是源代码文件.}在一个目录里.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     open(10, file='test.txt')
 end program main
-\end{verbatim}
+\end{lstlisting}
 其中\verb|10|这个位置填的是文件单位(file unit), 说白了就是一个编号, 这编号必须是非负整数, 而且最好不小于\verb|10|, 因为小于\verb|10|的编号可能有些奇奇怪怪的用途. \verb|file=|后加的是文件路径, 不知什么是文件路径的同志们请自行补习. 上个轮子的第三行就是让Fortran认得文件路径为\verb|test.txt|的文件, 并且称其为10号文件.
 
 使用完外部文件后我们应当将其关闭(close), 也就是让Fortran忘记外部文件. 我们在上面那个轮子中加上一行, Fortran就会在第四行后忘记10号文件(即\verb|test.txt|).
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     open(10, file='test.txt')
     close(10)
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 每当我们暂时不需要使用外部文件时, 我们都应该将其关闭, 事实证明这是一个好习惯.
 
@@ -79,19 +79,19 @@ end program main
 注意, 内部文件是不需要也没法打开或关闭的.
 
 上面的轮子和下面的轮子等价.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     open(10, file='test.txt', status='UNKNOWN')
     close(10)
 end program main
-\end{verbatim}
+\end{lstlisting}
 其中\verb|status='UNKNOWN'|的意思是这个轮子在打开文件的时候进行了一波操作, 但这波操作是编译器自己决定的, 也就是说不同的编译器可能会有不同的操作, 所以不写\verb|status=...|有点危险\footnote{如果摸透了编译器会怎么决定的话, 偷个懒不写也罢了.\label{no_add}}. 我们可以把\verb|'UNKNOWN'|换成\verb|'OLD'|, \verb|'NEW'|, 或\verb|'REPLACE'|. 换成\verb|'OLD'|的话, \verb|test.txt|必须在轮子运行前存在, 运行时直接打开. 换成\verb|'NEW'|的话, \verb|test.txt|必须在轮子运行前不存在, 运行时, Fortran会自己造一个空白\verb|test.txt|文件并打开. 换成\verb|'REPLACE'|的话, 如果\verb|test.txt|在轮子运行前不存在, 则还是造一个空白\verb|test.txt|文件并打开, 如果\verb|test.txt|在轮子运行前存在, 则会把原来的\verb|test.txt|直接删掉, 再造一个新的空白\verb|test.txt|文件并打开. 请同志们自行造轮子实验上述操作.
 
 \section{读取与写入}
 
 读取(read)是把文件里的内容变成Fortran数据实体, 写入(write)是把Fortran数据实体变成文件里的内容. 让我们来看下面这个轮子.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     real :: e, pi
@@ -107,13 +107,13 @@ program main
     print *, e, pi
     close(10)
 end program main
-\end{verbatim}
+\end{lstlisting}
 其中\verb|write(10,*) ...|那行是把\verb|exp(1.0)|和\verb|acos(-1.0)|写入到10号文件里去, 所以打开\verb|test.txt|就会看到$e$和$\pi$. \verb|read(10,*) ...|那行则是把10号文件里的内容读取出来赋值给\verb|e|和\verb|pi|, 所以最后会输出$e$和$\pi$.
 
 上面这个轮子还有些细节. \verb|action=|后的字符串如果是\verb|'READ'|, 表示打开的文件是只读的, 不能写入. \verb|action=|后的字符串如果是\verb|'WRITE'|, 表示打开的文件是只写的, 不能读取. \verb|action=|后的字符串如果是\verb|'READWRITE'|, 表示打开的文件是读写的, 读取写入皆可. 这和之前\ref{arguments}小节的只读参量只写参量读写参量是很像的. 如果不加\verb|action=...|, 则是编译器自己决定是只读的只写的还是读写的, 这又有点危险了, 所以\verb|action=...|还是要加的\footnote{同脚注\ref{no_add}.}.
 
 \verb|position=...|则指明打开文件后的``文件定位'', 加\verb|position=...|的原因还是不加的话文件定位会由编译器自己决定\footnote{同脚注\ref{no_add}.}. 同志们不需知道文件定位是什么, 只需记得只写文件加\verb|position='APPEND'|, 写入时会写入在文件的最后, 只读文件加\verb|position='REWIND'|, 读取时会从文件的开头读取. 读写文件嘛, 我们选择不玩儿. 下面用一个长长的轮子来详细讲解.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     real :: e, pi
@@ -150,11 +150,11 @@ program main
     print *, val
     close(10)
 end program main
-\end{verbatim}
+\end{lstlisting}
 第一次打开关闭文件, 因为\verb|status='REPLACE'|, 后面也没有写入, 所以最后得到一个空白文件. 第二次打开关闭文件, 先写入$e+\pi$, $e+\pi$后面再写入$e-\pi$. 第三次打开关闭文件, 在文件最后先写入$e\cdot\pi$, 再写入$e/\pi$, 所以最后文件里依次是$e+\pi$, $e-\pi$, $e\cdot\pi$, $e/\pi$. 第四次打开关闭文件, 先读取文件开头的$e+\pi$赋值给\verb|val|, 再读取下面的$e-\pi$赋值给\verb|val|. 第五次打开关闭文件, 还是先读取文件开头的$e+\pi$赋值给\verb|val|, 再读取下面的$e-\pi$赋值给\verb|val|, 所以最后输出的依次是$e+\pi$, $e-\pi$, $e+\pi$, $e-\pi$.
 
 注意每次\verb|read|或\verb|write|后, 下次\verb|read|或\verb|write|都会\uline{从下一行开始}. 下面这个轮子, 第一次\verb|write|后\verb|1|和\verb|2|写入在第一行, 第二次\verb|write|后\verb|3|和\verb|4|写入在第二行, 第一次\verb|read|从第一行开始, 因为后面只跟着一个\verb|val1|, 所以\verb|val1|为\verb|1|, 第二次\verb|read|从第二行开始, 因为后面只跟着一个\verb|val2|, 所以\verb|val2|为\verb|3|, \verb|2|和\verb|4|则被无视!
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     integer :: val1, val2
@@ -170,10 +170,10 @@ program main
     print *, val1, val2
     close(10)
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 如果读取或写入时碰上数组, 则会把数组里的所有元素按元素顺序挨个读取或写入, 比如下面这个轮子, 先挨个写入1到9, 再写入10, 读取则是反向操作. 特别提醒, \verb|one2nine(1,3)|是\verb|7|, \verb|one2nine(3,1)|是\verb|3|, 同志们要是迷惑了请自行复习第\ref{fortran_array}章数组元素顺序的内容.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     integer :: i
@@ -189,10 +189,10 @@ program main
     print *, one2nine(1,3), one2nine(3,1)
     close(10)
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 把文件单位换成字符串变量即可读取和写入内部文件了. 注意内部文件是不需要也没法打开或关闭的, 所以没法加\verb|position=...|, 每次读取或写入都是从内部文件的开头第一个字符开始的, 不论之前读取写入几次. 下面这个轮子, Ifort可以把$e^\pi$写入\verb|f|并读取至\verb|val|\footnote{这就实现了数字型和字符型的相互转换.}, 但Gfortran不行, 要让Gfortran行, \verb|f|的长度必须大于\verb|16|. 原因见\ref{fortran_edit_descriptor}节.\label{internal_file}
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     character(16) :: f
@@ -202,18 +202,18 @@ program main
     read(f,*) val
     print *, val
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 我们还可以再把字符串变量换成\verb|*|, 输出的话\verb|*|通常代表电脑屏幕. 比如下面这个轮子就会把\verb|Hello, world!|``写入电脑屏幕'', 电脑屏幕上就出现\verb|Hello, world!|了. 要是问我\verb|write(*,*)|和\verb|print *,|有什么区别, 我的回答是没有区别\dots
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     write(*,*) 'Hello, world!'
     print *, 'Bye bye, world!'
 end program main
-\end{verbatim}
+\end{lstlisting}
 输入的话\verb|*|则通常代表键盘. 比如下面这个轮子, 运行到第五行时程序会停下来, 我们在命令行(cmd呀powershell呀之类的东东)中可以打字儿, 假设打入\verb|98 54e1|然后回车, \verb|98|和\verb|54e1|就赋值给\verb|mat(1,1)|和\verb|mat(1,2)|了, 第七行会干和第五行一样的事儿, 但语法更简单, 假设打入\verb|7.6 3.2e0|然后回车, \verb|7.6|和\verb|3.2e0|就赋值给\verb|mat(2,1)|和\verb|mat(2,2)|了, 最后输出矩阵行列式. 注意``\verb|*|''也是不需要且没法打开或关闭的.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     real :: mat(2,2)
@@ -224,7 +224,7 @@ program main
     read *, mat(2,:)
     print *, 'det:', mat(1,1)*mat(2,2)-mat(1,2)*mat(2,1)
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 相信同志们现在懂得如何读取和写入外部文件, 内部文件和``\verb|*|''了, 不过同志们还需要注意一些细节问题. 在上个轮子中, 我一开始就打出了``算$2\times2$矩阵的行列式''的提示, 告诉用这个轮子的人这个轮子会干什么, 后面输入和输出是什么也有提示. 如果不这么干, 用轮子的人估计会一脸懵, 轮子在干什么, 自己要干什么, 最后得到的又是什么统统弄不懂, 哪怕是造轮子的人自己可能也会懵, 忘了自己干了什么在干什么该干什么\footnote{如果轮子只是自己用, 还敢赌自己能晓得轮子在干什么, 那想偷懒就偷懒呗.}.
 
@@ -235,25 +235,25 @@ end program main
 \section{编辑符}\label{fortran_edit_descriptor}
 
 如果我们分别用Ifort和Gfortran跑下面这个处心积虑造出来的简单轮子, 我们会发现结果的格式有点区别, Ifort的结果是用科学计数法表示的而Gfortran的不是.
-\begin{verbatim}
+\begin{lstlisting}
 
 program main
     implicit none
     print *, 7.0e7
 end program main
-\end{verbatim}
+\end{lstlisting}
 这是由于我们让编译器自己决定输入输出的格式, 有时这会出事情, 比如之前第\pageref{internal_file}页有个轮子, Ifort跑得了但Gfortran跑不了, 原因在于Gfortran在把\verb|exp(1.0)**acos(-1.0)|写入内部文件\verb|f|时会在数字前后补上些空格之类的, 按Gfortran自己的规定, 最少要写入17个字符(包含1个换行符), 而\verb|f|长度只有16不够长, Ifort规定不同, 就没这个问题.
 
 我们可以自己规定输入输出的格式, 比如下面这个轮子\footnote{Ifort编译时会出现一个``remark'', 是些建议, 我们选择无视, 不过听从Ifort的建议也是好事.}, 第一个输出的结果一定不是科学计数法表示的, 第二个一定是. 
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     print "(F10.1)", 7.0e7
     print "(ES6.1E1)", 7.0e7
 end program main
-\end{verbatim}
+\end{lstlisting}
 再比如修改第\pageref{internal_file}页那个轮子可得下面这个轮子, Gfortran也是可以跑的.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     character(16) :: f
@@ -263,11 +263,11 @@ program main
     read(f,"(F15.12)") val
     print *, val
 end program main
-\end{verbatim}
+\end{lstlisting}
 可见自己规定格式就是把原来的\verb|*|换成一个字符串, 这个字符串里是\verb|(...)|, 称为格式声明(format specification), \verb|*|则是代表编译器自己决定格式.
 
 我们回归一开始玩Gaia DR3遇到的问题, 现在我们可以把第\pageref{gaiadr3.sam}页的轮子补成下面的样子, 其中倒数第二行我们写\verb|format|后跟格式声明(注意格式声明只是\verb|(...)|, 不带引号), 前面加标号, 这样我们就能在倒数第三行用标号代替字符串了\footnote{同志们这么写的时候, 带标号的行最好就在用标号的行的下面, 不然查格式时真的是会找不到的\dots}. 不过呢, 同志们会发现怎么输出的最大距离是无穷大, 那是因为星表里有些源根本没有视差的数据, 硬读出来是$0$, 看来研究还是没那么容易做的\dots
-\begin{verbatim}
+\begin{lstlisting}
 program main
     use iso_fortran_env, only: dp => real64
     implicit none
@@ -289,10 +289,10 @@ program main
     print 1000, maxloc(d), maxval(d)
     1000 format ('Object: ',I3,', ',ES11.4,' AU')
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 每个格式声明都由\verb|()|里的一堆编辑符(edit descriptor)组成, 编辑符间用\verb|,|隔开, 每个编辑符都代指一个操作, 比如上面的轮子读取时编辑符依次是\verb|128X|, \verb|F9.4|, \verb|849X|, \verb|F15.11|, 依次代表跳过128个字符不读, 读占9个字符的4位小数的实数, 跳过849个字符不读, 读占15个字符的11位小数的实数. 话说我是怎么知道这么读就行的? 我们再次打开\href{https://cdsarc.cds.unistra.fr/viz-bin/ReadMe/I/355?format=html&tex=true}{ReadMe}里的\verb|gaiadr3.sam|的``Byte-by-byte Description'', 里头写着.
-\begin{verbatim}
+\begin{lstlisting}
   Byte-by-byte Description of file: gaiadr3.sam
   ------------------------...-------------------------------
      Bytes   Format Units ... Explanations
@@ -304,11 +304,11 @@ end program main
       ...     ....   ...         ......
     987-1001 F15.11 deg   ... Galactic latitude (b)
       ...     ....   ...         ......
-\end{verbatim}
+\end{lstlisting}
 同志们看表里分明写着视差的格式是``F9.4'', 银纬的格式是``F15.11'', 这不就是编辑符么. 首先视差从第129个字符开始, 所以我们要先跳过前128个字符, 写上\verb|128X|, 然后把\verb|F9.4|无脑抄过去, 然后本来是读到第138个字符, 但银纬从第987个字符开始, 所以要再跳过$987-138=849$个字符, 写上\verb|849X|, 然后无脑抄上\verb|F15.11|, 因为每次\verb|read|完再\verb|read|都会从下一行开始, 所以后面的字符就不用管了. 给同志们留一个看完本章后的作业: 再次修改上面的轮子, 输出第\verb|maxloc(d)|个源的``Unique source designation''.
 
 如果我们把一些编辑符用\verb|()|起来, 前面加个数, 数是几就表示把\verb|()|里的编辑符重复几遍, 比如下面这个轮子写入和读取时格式声明是一样的(要不然就不知道读出什么东西了).
-\begin{verbatim}
+\begin{lstlisting}
 
 program main
     implicit none
@@ -328,9 +328,9 @@ program main
     print *, a, s, m, d
     close(10)
 end program main
-\end{verbatim}
+\end{lstlisting}
 \verb|()|还可以嵌套, 比如下面这个轮子两次写入时格式声明是一样的.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     ! A staff.
@@ -348,14 +348,14 @@ program main
     1002 format (4(2('X','O'),'|',A4,'|'))
     close(10)
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 编辑符又分三大类: 数据编辑符(data edit descriptor), 控制编辑符(control edit descriptor), 字符串编辑符(character string edit descriptor). 接下来我们一个个扒.
 
 \subsection{数据编辑符}
 
 数据编辑符和读取与写入时的数据实体是一一对应的, 比如下面这个轮子, \verb|A4|对应\verb|'ello'|, \verb|A5|对应\verb|'world'|, 其他编辑符不是数据编辑符, 没有对应的数据实体.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     open(10, file='test.txt', status='REPLACE', &
@@ -363,17 +363,17 @@ program main
     write(10,"('H',A4,',',1X,A5,'!')") 'ello', 'world'
     close(10)
 end program main
-\end{verbatim}
+\end{lstlisting}
 每个数据编辑符还都对应于一种数据类型, 比如下面这个轮子照道理是跑不得的, 因为\verb|I1|是整型编辑符而\verb|0.0|是实型的, 但Ifort居然能跑, 可恶的器规又出现了\dots
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     print "(I1)", 0.0
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 数据编辑符都可以直接在前面加数来表示重复, 比如下面这个轮子三个格式声明全都是一样的.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     ! Violin Strings.
@@ -384,12 +384,12 @@ program main
     write(10,"(4A)") 'G', 'D', 'A', 'E'
     close(10)
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 \subsubsection{整型编辑符}
 
 I$w$编辑符表示一共输出$w$个字符. 我们需要保证$w>0$. 下面这个轮子, 前面几次写入是正常的, 但最后一次写入的是一堆\verb|*|, 因为\verb|1000000|分明是个7位数, 却只能输出6个字符, 编译器只能摆烂了.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     open(10, file='test.txt', status='REPLACE', &
@@ -400,9 +400,9 @@ program main
     write(10,"(I6)") 1000000
     close(10)
 end program main
-\end{verbatim}
+\end{lstlisting}
 下面这个轮子, 后两次写入编译器都摆烂了, 因为``\verb|-|''也占1个字符, 千万千万要注意!
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     open(10, file='test.txt', status='REPLACE', &
@@ -414,10 +414,10 @@ program main
     write(10,"(I6)") -1000000
     close(10)
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 I$w.m$编辑符则表示一共输出$w$个字符, 其中数字字符(\verb|0|--\verb|9|)至少$m$个, 当然必须$m\leqslant  w$. 下面这个轮子, \verb|1000|只占4个字符, 所以前面要补上一个\verb|0|, \verb|10000|占5个字符, 正常输出, \verb|100000|占6个字符, 也正常输出, 因为是\uline{至少}输出5个字符, \verb|1000000|还是一堆\verb|*|.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     open(10, file='test.txt', status='REPLACE', &
@@ -429,9 +429,9 @@ program main
     write(10,"(I6.5)") 1000000
     close(10)
 end program main
-\end{verbatim}
+\end{lstlisting}
 特别注意输入时I$w.m$的$.m$会被无视, 也就是说I$w.m$等价于I$w$. 下面这个轮子是能正常运作的, 因为读取的时候I$6.5$等价于I$6$.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     integer :: k, dak, hk
@@ -450,9 +450,9 @@ program main
     print *, k, dak, hk
     close(10)
 end program main
-\end{verbatim}
+\end{lstlisting}
 反过来, 下面这个轮子也是能正常运作的, 虽然写入文件的时候\verb|1000|前加了\verb|0|, 但读取的时候开头的\verb|0|都会被无视.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     integer :: k, dak, hk
@@ -471,9 +471,9 @@ program main
     print *, k, dak, hk
     close(10)
 end program main
-\end{verbatim}
+\end{lstlisting}
 但下面这个轮子就不对了, 因为写入6个字符但只读取5个字符, 这意味着最后的\verb|0|没被读取, 结果\verb|1000|, \verb|10000|, \verb|100000|被读成\verb|100|, \verb|1000|, \verb|10000|.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     integer :: k, dak, hk
@@ -491,21 +491,21 @@ program main
     print *, k, dak, hk ! Wrong!
     close(10)
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 \subsubsection{实型编辑符}
 
 F$w.d$编辑符表示一共输出$w$个字符, 其中小数部分$d$个字符, 我们需要保证$w>d\geqslant0$. 下面这个轮子, 第一个输出是正常的, 第二个要输出``\verb|-12.|''再加2个字符, 一共6个字符, 但却只能输出5个, 编译器又摆烂了.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     print "(F5.2)", 12.3456789
     print "(F5.2)", -12.3456789
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 输入的时候F$w.d$的$.d$则会被无视, 但$.d\,$\uline{不能被省略}. 下面这个轮子, F$11.99$看着很鬼, 一共11个字符, 小数部分99个? 但$.99$会被无视, 反正就是读$11$个字符然后赋值给\verb|val|完事, 所以轮子是跑得的. 在下面的轮子中我们还写入双精度后读取成单精度, 这也没问题, 读取和写入可以跨种别.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     use iso_fortran_env, only: dp => real64
     implicit none
@@ -520,9 +520,9 @@ program main
     print *, val
     close(10)
 end program main
-\end{verbatim}
+\end{lstlisting}
 但下面这个轮子的结果是不对的, 因为写入和读取的\verb|1000|没有小数点, 在没有小数点的时候, $.d$复活了, 编译器会认为读取到的字符的最后$d$个是小数部分, 读到\verb|1000|, 最右边\verb|0|是小数部分, 前面\verb|100|是小数部分, 当然错啦!
-\begin{verbatim}
+\begin{lstlisting}
 
 program main
     implicit none
@@ -537,10 +537,10 @@ program main
     print *, val ! Wrong!
     close(10)
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 有时我们会碰到一些奇奇怪怪的数: $+\infty$, $-\infty$, 和$\text{NaN}$. $+\infty$和$-\infty$好理解, $\text{NaN}$名为``非数'', 表示``Not a Number'', 遇到什么不定式呀多值函数呀结果连$\pm\infty$都没法表示的时候结果就是$\text{NaN}$. Fortran规定输入输出时用前面加正负号的字符串\verb|INF|或\verb|INFINITY|表示$\pm\infty$, 用字符串\verb|NAN|表示$\text{NaN}$, 这些字符串不分大小写. 如果遇到$\pm\infty$或$\text{NaN}$, 则不论输入输出F$w.d$的$.d$都会被无视\footnote{虽然Fortran官方规则中没写明, 但想来是这样的.\label{edit_IEEE}}, 比如下面的轮子里$d$可以随便乱写, 只需保证$d\geqslant0$.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     real :: one, zero
@@ -563,29 +563,29 @@ program main
     print *, val1, val2, val3, val4
     close(10)
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 F编辑符经常会不大好用, 举个例子, 假如我们要输出$1.234\times10^{-3}$, $1.234$, $1.234\times10^{3}$量级不同的三个数, 编辑符都用F$5.3$, 那就只有$1.234$的输出是比较正常的, $1.234\times10^{-3}$有效数字丢了, $1.234\times10^{3}$干脆输出不了, 但麻烦的是实际的观测数据量级有差别是经常出现的事情.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     print "(F5.3)", 1.234e-3 ! output: 0.001
     print "(F5.3)", 1.234    ! output: 1.234
     print "(F5.3)", 1.234e+3 ! output: *****
 end program main
-\end{verbatim}
+\end{lstlisting}
 这时我们可以用E编辑符, E$w.d$表示一共输出$w$个字符, 输出时先将实数表示成$a\times10^{n}$, $0.1\leqslant a<1$, $n$为整数, 把$a$转换成小数部分占$d$个字符的字符串\verb|a|, $n$转换成开头带正负号的字符串\verb|n|, 然后输出字符串\verb|a//'E'//n|. 我们需要保证$w>d\geqslant0$. 最后输出的字符串\verb|a//'E'//n|中, 开头的\verb|0|和中间的\verb|E|可省略, 但输出的字符串去掉\verb|a|后剩下的部分必占4个字符, 所以保证$w\geqslant 3+d+4$一般就没什么事情了. 假如我们想保留4位有效数字, 编辑符设成E$11.4$就好啦.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     print "(E11.4)", 1.234e-3 ! output:  0.1234E-02
     print "(E11.4)", 1.234    ! output:  0.1234E+01
     print "(E11.4)", 1.234e+3 ! output:  0.1234E+04
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 用E$w.d$编辑符的时候, \verb|n|是三位数则\verb|E|必须省略, \verb|n|是四位数就只能罢工了, 虽然平常我们基本上不会用上这么极端的数\dots
-\begin{verbatim}
+\begin{lstlisting}
 program main
     use iso_fortran_env, only: qp => real128
     implicit none
@@ -593,9 +593,9 @@ program main
     print "(E11.4)", 1e100_qp  ! output:  0.1000+101
     print "(E11.4)", 1e1000_qp ! output: ***********
 end program main
-\end{verbatim}
+\end{lstlisting}
 这时我们可以用E$w.d$E$e$编辑符, E$e$表示\verb|n|为正负号后接$e$个数字的字符串, 其他和E$w.d$相同, 除了\verb|E|不可省略外. 这时我们需要额外保证$e>0$, 再保证$w\geqslant 3+d+2+e$一般就没什么事情了.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     use iso_fortran_env, only: qp => real128
     implicit none
@@ -603,9 +603,9 @@ program main
     print "(E13.4E4)", 1e100_qp  ! output:  0.1000E+0101
     print "(E13.4E4)", 1e1000_qp ! output:  0.1000E+1001
 end program main
-\end{verbatim}
+\end{lstlisting}
 不过E$w.d$E0也是合法的编辑符, 其中E0表示$e$等于$n$的位数, 但俺手里的Gfortran不认这个编辑符, 它out了!
-\begin{verbatim}
+\begin{lstlisting}
 program main
     use iso_fortran_env, only: qp => real128
     implicit none
@@ -613,10 +613,10 @@ program main
     print "(E13.4E0)", 1e100_qp  ! output:   0.1000E+101
     print "(E13.4E0)", 1e1000_qp ! output:  0.1000E+1001
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 和F编辑符类似, 输入的时候$.d$, E$e$, E0都会被无视, $.d\,$不能被省略. 不仅如此, 用F编辑符写入后还能用E编辑符读取, 用E编辑符写入后也能用F编辑符读取, 读取的时候字符\verb|E|还不分大小写.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     character(13+8+1) :: f
@@ -632,10 +632,10 @@ program main
     read(f,"(E13.13,F8.8)") val_fe, val_ef
     print *, val_fe, val_ef
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 E编辑符也可以应付$\pm\infty$和$\text{NaN}$, 遇到$\pm\infty$或$\text{NaN}$的时候$d$和$e$被无视, 其他和F编辑符相同\footnote{同脚注\ref{edit_IEEE}}, 也就是说我们又可以乱写了.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     real :: one, zero
@@ -658,29 +658,29 @@ program main
     print *, val1, val2, val3, val4
     close(10)
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 E编辑符蛮好用, 就是最后输出的结果不太符合俺们的习惯, 因为不是用科学计数法表示的. 我们只要把E换成ES, 结果就是科学计数法表示的了, 也就是说$1\leqslant a<10$. 我们还可以把E换成EN, 这样的结果是用工程计数法表示的, $1\leqslant a<1000$且$n$能被$3$整除, 这样单位换算就会比较方便. 除了$a$和$n$不同外E编辑符, ES编辑符, EN编辑符没有区别.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     print "(E7.1E1)", 10000.0
     print "(ES7.1E1)", 10000.0
     print "(EN7.1E1)", 10000.0
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 \subsubsection{复型编辑符}
 
 复型编辑符是没有的, 输出复数的时候, 永远是把实部和虚部分别输出, 我们可以分别给实部和虚部加实型编辑符.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     print "(F4.1,E8.1)", (0.1,1.0)
 end program main
-\end{verbatim}
+\end{lstlisting}
 输入也是一样的道理, 注意输入的时候实型编辑符是可以乱来的.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     complex :: z
@@ -695,12 +695,12 @@ program main
     print *, z
     close(10)
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 \subsubsection{字符型编辑符}
 
 A$w$编辑符表示一共输出$w$个字符. 设字符串长度为$l$, 如果$l>w$, 则只输出字符串最左边$w$个字符, 如果$l<w$, 则先输出$w-l$个空格再输出$w$个字符\footnote{这里是左补空格, 字符串赋值(\ref{fortran_assignment}节)是右补空格.}. A编辑符则表示$w=l$.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     open(10, file='test.txt', status='REPLACE', &
@@ -716,10 +716,10 @@ program main
     write(10,"(A)") 'hellohellohello'
     close(10)
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 输入的话情况比较复杂. 首先同志们要认定每一行最后都有无数个空格, 下面这个轮子, 写入完第一行是\verb|1234567890|, 读取完\verb|c|当然等于\verb|'12345'|, 第二行是\verb|1|, 后面没了, 同学们要认定\verb|1|后面跟着无数个空格, 所以读取完\verb|c|等于\verb|'1    '|
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     character(5) :: c
@@ -736,9 +736,9 @@ program main
     print "(2A)", c, '|'
     close(10)
 end program main
-\end{verbatim}
+\end{lstlisting}
 然后A编辑符表示$w=l$这点不变.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     character(4) :: sc
@@ -757,9 +757,9 @@ program main
     print "(2A)", lc, '|'
     close(10)
 end program main
-\end{verbatim}
+\end{lstlisting}
 A$w$编辑符则表示读取$w$个字符. 若$l<w$, 则赋值最右边$l$个字符\footnote{这里是赋值最右边的字符, 字符串赋值(\ref{fortran_assignment}节)是赋值最左边的字符.}, 若$l>w$, 则赋值$w$个字符后跟$l-w$个空格.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     character(4) :: sc
@@ -781,7 +781,7 @@ program main
     print "(2A)", lc, '|'
     close(10)
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 可见字符型编辑符十分让人头大, 如果老师敢考我们就当即暴动!
 
@@ -790,15 +790,15 @@ end program main
 \subsubsection{逻辑型编辑符}
 
 L$w$表示一共输出$w$个字符, 前面$w-1$个是空格, 最后1个是\verb|T|或\verb|F|, \verb|T|代表\verb|.true.|, \verb|F|代表\verb|.false.|.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     print "(L7)", .true.
     print "(L7)", .false.
 end program main
-\end{verbatim}
+\end{lstlisting}
 输入的时候, 字符\verb|T|和\verb|F|, 字符串\verb|TRUE|和\verb|FALSE|, 字符串\verb|.TRUE.|和\verb|.FALSE.|都代表\verb|.true.|和\verb|.false.|, 而且不分大小写.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     logical :: true, false
@@ -818,12 +818,12 @@ program main
     print "(2L7)", true, false
     close(10)
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 \subsection{控制编辑符}
 
 $n$X编辑符表示把``文件定位''右移$n$位, 这通常等价于输出$n$个空格, 但如果$n$X编辑符后没有数据编辑符或字符串编辑符, 则$n$X编辑符相当于没有.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     open(10, file='test.txt', status='REPLACE', &
@@ -831,9 +831,9 @@ program main
     write(10,"(2(A,1X))") 'X', 'descriptor'
     close(10)
 end program main
-\end{verbatim}
+\end{lstlisting}
 输入的时候$n$X编辑符则表示跳过$n$个字符不读.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     character(5) :: world
@@ -847,10 +847,10 @@ program main
     print "(A)", world
     close(10)
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 /编辑符表示接下来从下一行第一个字符开始读取或写入.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     character(5) :: hello, world
@@ -864,10 +864,10 @@ program main
     print "(A,/,A)", hello, world
     close(10)
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 SS编辑符表示之后输出正数时最开头都不带正号, SP编辑符则表示都带正号.\footnote{``S''代表``sign''. ``S''代表``suppress'', ``P''代表``plus''.}
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     print 1001, 0.1, 2.3, 4.5, 6.7, 8.9
@@ -875,17 +875,17 @@ program main
     print 1002, 0.1, 2.3, 4.5, 6.7, 8.9
     1002 format (SP,F5.1,F5.1,SS,F5.1,SP,F5.1,F5.1)
 end program main
-\end{verbatim}
+\end{lstlisting}
 注意正号会占一个字符, 编译器有可能因此罢工.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     print "(SS,F3.1)", 1.0 ! 1.0
     print "(SP,F3.1)", 1.0 ! ***
 end program main
-\end{verbatim}
+\end{lstlisting}
 输入的时候SS编辑符和SP编辑符不起作用, 我们又可以乱来了.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     real :: val0, val1, val2, val3, val4
@@ -907,10 +907,10 @@ program main
     print *, val0, val1, val2, val3, val4
     close(10)
 end program main
-\end{verbatim}
+\end{lstlisting}
 
 在输出实数的时候, 我们只能输出若干位有效数字, 所以这里有个舍入的问题. 比如测量值我们希望四舍五入但不确定度我们希望向上舍入. 我们可以用RU, RD, RZ, RC编辑符, 这四个编辑符分别表示之后输出实数时都向上舍入, 都向下舍入, 都向零舍入, 都四舍五入.\footnote{``R''代表``round''. ``U''代表``up'', ``D''代表``down'', ``Z''代表``zero'', ``C''代表``compatible''.}
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     print "(RU,4F5.1,/,RD,4F5.1,/,RZ,4F5.1,/,RC,4F5.1)", &
@@ -919,28 +919,28 @@ program main
         -5.6789, -0.1234, +0.1234, +5.6789, &
         -5.6789, -0.1234, +0.1234, +5.6789
 end program main
-\end{verbatim}
+\end{lstlisting}
 输入时RU, RD, RZ, RC编辑符也起作用, 因为用字符串表示的实数都是形如$\sum_{i=m_\text{min}}^{m_\text{max}}10^{i}$的实数, 而电脑是二进制的, 读取后实数都必须是形如$\sum_{i=n_\text{min}}^{n_\text{max}}2^{i}$的实数, 所以也得舍入.
 
 \subsection{字符串编辑符}\label{character_string_edit_descriptor}
 
 字符串编辑符就是一个字符串, 作用就是输出这个字符串.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     print "(A,', world!')", 'Hello'
     print "('Hello, ',A,'!')", 'world'
 end program main
-\end{verbatim}
+\end{lstlisting}
 读取和写入的时候, 我们其实可以不加任何数据实体, 所以可以秀波操作.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     print "('Hello, world!')",
 end program main
-\end{verbatim}
+\end{lstlisting}
 输入的时候不能用字符串编辑符, 我们可以用$n$X编辑符代替.
-\begin{verbatim}
+\begin{lstlisting}
 program main
     implicit none
     character :: the_end
@@ -954,4 +954,4 @@ program main
     print *, the_end
     close(10)
 end program main
-\end{verbatim}
+\end{lstlisting}
