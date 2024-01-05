@@ -36,7 +36,7 @@ program main
     print *, c
 end program main
 \end{lstlisting}
-麻烦的地方在于那个阶乘老是要\verb|do|来\verb|do|去, 不过就\verb|do|三回, 还能活.
+麻烦的地方在于那个阶乘老是要\texttt{do}来\texttt{do}去, 不过就\texttt{do}三回, 还能活.
 
 假如我们需要用Fortran算CG系数$\left\langle 3,2;5,4|7,6\right\rangle $,
 \begin{align*}
@@ -48,7 +48,7 @@ end program main
     &\cdot(j_1-m_1-\nu)!(j_2+m_2-\nu)!\\
     &\cdot(j_3-j_1-m_2+\nu)!(j_3-j_2+m_1+\nu)!],
 \end{align*}
-那不知要\verb|do|多少回, 算个大头鬼哟! 不算了, 准备卸Fortran了!
+那不知要\texttt{do}多少回, 算个大头鬼哟! 不算了, 准备卸Fortran了!
 
 桥豆麻袋, Fortran是有法子能偷懒滴(如果没有我第一个卸Fortran), 比如算$\text{C}_7^3$可以这样.
 \begin{lstlisting}
@@ -69,9 +69,9 @@ function factorial(n) result(p)
     end do
 end function factorial
 \end{lstlisting}
-写成这样, 确实能少打几个字儿. 不知道我写的是什么也可以先猜猜猜看. 把\verb|function ...|到\verb|end function ...|单看成一个程序, \verb|result(p)|里的\verb|p|就是\verb|factorial(n)|里的\verb|n|的阶乘, 如是这般, \verb|factorial(7)|就是\verb|7|的阶乘, \verb|factorial(3)|就是\verb|3|的阶乘, \verb|factorial(7-3)|就是\verb|7-3|的阶乘, 非常完美! 那算CG系数也简单多了, 只要算\verb|X|的阶乘的时候无脑写上\verb|factorial(X)|就成了, 不用\verb|do|来\verb|do|去了!
+写成这样, 确实能少打几个字儿. 不知道我写的是什么也可以先猜猜猜看. 把\texttt{function ...}到\texttt{end function ...}单看成一个程序, \texttt{result(p)}里的\texttt{p}就是\texttt{factorial(n)}里的\texttt{n}的阶乘, 如是这般, \texttt{factorial(7)}就是\texttt{7}的阶乘, \texttt{factorial(3)}就是\texttt{3}的阶乘, \texttt{factorial(7-3)}就是\texttt{7-3}的阶乘, 非常完美! 那算CG系数也简单多了, 只要算\texttt{X}的阶乘的时候无脑写上\texttt{factorial(X)}就成了, 不用\texttt{do}来\texttt{do}去了!
 
-于是乎我们便发现, 想要玩Fortran而不是被Fortran玩, 就必须懂过程(procedure). 过程的定义是``封装可以在程序执行期间直接调用的任意操作序列的实体'', 玄玄乎乎的, 我们不理它. 我们可以直接把过程理解成程序运行时的一个操作, 比如上面的例子中\verb|function ...|到\verb|end function ...|就是``计算\verb|n|的阶乘''这一操作. 使用过程后, 我们就进入面向过程程序设计(procedure-oriented programming, POP)阶段了. 啥叫面向过程呢? 众所周知, 置象于冰箱中, 步骤有三: 一开冰箱, 二塞大象, 三关冰箱. 用Fortran来写便这般.
+于是乎我们便发现, 想要玩Fortran而不是被Fortran玩, 就必须懂过程(procedure). 过程的定义是``封装可以在程序执行期间直接调用的任意操作序列的实体'', 玄玄乎乎的, 我们不理它. 我们可以直接把过程理解成程序运行时的一个操作, 比如上面的例子中\texttt{function ...}到\texttt{end function ...}就是``计算\texttt{n}的阶乘''这一操作. 使用过程后, 我们就进入面向过程程序设计(procedure-oriented programming, POP)阶段了. 啥叫面向过程呢? 众所周知, 置象于冰箱中, 步骤有三: 一开冰箱, 二塞大象, 三关冰箱. 用Fortran来写便这般.
 \begin{lstlisting}
 program main
     ...
@@ -95,8 +95,8 @@ subroutine close_door()
     ...
 end subroutine close_door
 \end{lstlisting}
-这样一看就知道这程序干仨事儿: 第一步\verb|call open_door()|开冰箱, 第二步\verb|call put_in(elephant)|塞大象, 第三步\verb|call close_door()|关冰箱. 至于到底咋么开的冰箱, 咋么塞的大象, 咋么关的冰箱, 看对应的\verb|subroutine|到\\\verb|end subroutine|
-里咋写的就知道了. 把整个程序(冰箱塞大象)拆成一个个步骤(开冰箱, 塞大象, 关冰箱), 然后每个步骤造个过程, 这就是面向过程. 那为什么塞大象要写成\verb|put_in(elephant)|而不是\verb|put_elephant_in()|? 这是因为说不准以后要把别的东西放进冰箱, 真有那天, 把\verb|elephant|换掉就行了, 哦, 还要把大象拿出来, 再多造个过程\dots
+这样一看就知道这程序干仨事儿: 第一步\texttt{call open\_{}door()}开冰箱, 第二步\texttt{call put\_{}in(elephant)}塞大象, 第三步\texttt{call close\_{}door()}关冰箱. 至于到底咋么开的冰箱, 咋么塞的大象, 咋么关的冰箱, 看对应的\texttt{subroutine}到\texttt{end subroutine}
+里咋写的就知道了. 把整个程序(冰箱塞大象)拆成一个个步骤(开冰箱, 塞大象, 关冰箱), 然后每个步骤造个过程, 这就是面向过程. 那为什么塞大象要写成\texttt{put\_{}in(elephant)}而不是\texttt{put\_{}elephant\_{}in()}? 这是因为说不准以后要把别的东西放进冰箱, 真有那天, 把\texttt{elephant}换掉就行了, 哦, 还要把大象拿出来, 再多造个过程\dots
 
 \section{外部过程}
 
@@ -138,18 +138,18 @@ subroutine ab2bc_then_sumabc(a, b, c)
 end subroutine ab2bc_then_sumabc
 \end{lstlisting}
 \begin{enumerate}
-    \item 从\verb|subroutine ...|到\verb|end subroutine ...|便是子例行子程序了. 这部分可以和主程序放在一个文件里, 顺序也随便, 但通常是单独放在另一个文件里.
-    \item \verb|subroutine|和\verb|end subroutine|后的\verb|XX| (示例中为\verb|ab2bc_then_sumabc|)称为子例行子程序名. 一般存这个子程序的文件就会取成\verb|XX.f90| (比如示例中的子程序就可以存入名为\verb|ab2bc_then_sumabc.f90|的文件中). 当然, 子程序名得尽量表明子程序的功能.
-    \item 子程序和主程序一样都是程序单元(见\ref{run_fortran}节), 一样得变量声明一波, 所以\verb|implicit none|得加, 要用种别的话\verb|use iso_fortran_env|也得加.
-    \item 子程序里有三个变量\verb|a|, \verb|b|, \verb|c|, 我在声明时加了\verb|,intent(...)|, 这三个变量在\verb|ab2bc_then_sumabc|后的\verb|()|里出现, 在\verb|()|里出现的称为哑参量(dummy argument), 只有哑参量能在声明时加\verb|,intent(...)|. 我称加\verb|,intent(in)|的为只读(read-only)参量, 加\verb|,intent(inout)|的为读写(read-write)参量, 加\verb|,intent(out)|的为只写(write-only)参量.
-    \item 主程序里也有三个变量\verb|a|, \verb|b|, \verb|c|, 但只是变量名和子程序里的\verb|a|, \verb|b|, \verb|c|一样, 实际上是不同的三个变量. 看我这示例, 子程序里\verb|a|, \verb|b|, \verb|c|变来变去, 花里胡哨, 主程序里\verb|a|, \verb|b|, \verb|c|岿然不动.
-    \item 主程序里出现\verb|call ab2bc_then_sumabc(x, y, z)|, \verb|()|里的\verb|x|, \verb|y|, \verb|z|称为实参量(actual argument). 实参量可以是任意数据实体, 也就是说实参量可以是变量, 也可以是常量或其他东东. 子程序里三个哑参量排排坐, 主程序里三个实参量排排坐, 位置一样的哑参量和实参量(\verb|a|和\verb|x|, \verb|b|和\verb|y|, \verb|c|和\verb|z|)称为对应的. 对应的参量在程序运行时会相互赋值来赋值去, 这称为参量结合(argument association), 我们一般称为哑实结合.
-    \item 现在分析示例程序的运行过程. 程序当然从\verb|program main|开始运行了. 按顺序一行一行运行, 前面不需讲解. 到\verb|call ...|, 就要说道说道了. 我们可以把主程序和子程序当成两个小人儿.\begin{enumerate}
-        \item \verb|call ab2bc_then_sumabc(x, y, z)|: 跳到子程序的开头, 也就是\verb|subroutine ab2bc_then_sumabc(a, b, c)|. \verb|call ...|这里程序运行的操作称为``主程序调用(invoke/call)子程序''.
-        \item \verb|subroutine ab2bc_then_sumabc(a, b, c)|: 子程序先按后面的变量声明语句声明好变量, 然后把所有只读的和读写的实参量赋值给对应的哑参量(主程序里的\verb|x|赋给子程序里的\verb|a|, 主程序里的\verb|y|赋给子程序里的\verb|b|, 这当然就是传说中的哑实结合啦).
-        \item 向下一行一行运行, 直到\verb|end subroutine ab2bc_then_sumabc|. 啰嗦一下具体过程. 首先主程序里的\verb|x|赋给子程序里的\verb|a|, 主程序里的\verb|y|赋给子程序里的\verb|b|, 所以子程序里的\verb|a|为\verb|4.0_dp|, 子程序里的\verb|b|为\verb|5.0_dp|. 然后\verb|c = b|, 子程序里的\verb|c|为\verb|5.0_dp|, 然后\verb|b = a|, 子程序里的\verb|b|为\verb|4.0_dp|, 然后\verb|s = a+b+c|, \verb|s|为\verb|13.0_dp|, 最后输出\verb|s|的值\verb|13.0_dp|.
-        \item \verb|end subroutine ab2bc_then_sumabc|: 把所有读写的和只写的哑参量赋值给对应的实参量(子程序里的\verb|b|赋给主程序里的\verb|y|, 子程序里的\verb|c|赋给主程序里的\verb|z|, 这当然也是传说中的哑实结合啦), 然后跳到\verb|call ab2bc_then_sumabc(x, y, z)|的下一行.
-    \end{enumerate}然后主程序继续按顺序一行一行运行至\verb|end program main|结束. 再啰嗦啰嗦, 子程序里的\verb|b|赋给主程序里的\verb|y|, 子程序里的\verb|c|赋给主程序里的\verb|z|, 所以\verb|x|还是\verb|4.0_dp|, \verb|y|则变为\verb|4.0_dp|, \verb|z|则变为\verb|5.0_dp|.
+    \item 从\texttt{subroutine ...}到\texttt{end subroutine ...}便是子例行子程序了. 这部分可以和主程序放在一个文件里, 顺序也随便, 但通常是单独放在另一个文件里.
+    \item \texttt{subroutine}和\texttt{end subroutine}后的\texttt{XX} (示例中为\texttt{ab2bc\_{}then\_{}sumabc})称为子例行子程序名. 一般存这个子程序的文件就会取成\texttt{XX.f90} (比如示例中的子程序就可以存入名为\texttt{ab2bc\_{}then\_{}sumabc.f90}的文件中). 当然, 子程序名得尽量表明子程序的功能.
+    \item 子程序和主程序一样都是程序单元(见\ref{run_fortran}节), 一样得变量声明一波, 所以\texttt{implicit none}得加, 要用种别的话\texttt{use iso\_{}fortran\_{}env}也得加.
+    \item 子程序里有三个变量\texttt{a}, \texttt{b}, \texttt{c}, 我在声明时加了\texttt{,intent(...)}, 这三个变量在\texttt{ab2bc\_{}then\_{}sumabc}后的\texttt{()}里出现, 在\texttt{()}里出现的称为哑参量(dummy argument), 只有哑参量能在声明时加\texttt{,intent(...)}. 我称加\texttt{,intent(in)}的为只读(read-only)参量, 加\texttt{,intent(inout)}的为读写(read-write)参量, 加\texttt{,intent(out)}的为只写(write-only)参量.
+    \item 主程序里也有三个变量\texttt{a}, \texttt{b}, \texttt{c}, 但只是变量名和子程序里的\texttt{a}, \texttt{b}, \texttt{c}一样, 实际上是不同的三个变量. 看我这示例, 子程序里\texttt{a}, \texttt{b}, \texttt{c}变来变去, 花里胡哨, 主程序里\texttt{a}, \texttt{b}, \texttt{c}岿然不动.
+    \item 主程序里出现\texttt{call ab2bc\_{}then\_{}sumabc(x, y, z)}, \texttt{()}里的\texttt{x}, \texttt{y}, \texttt{z}称为实参量(actual argument). 实参量可以是任意数据实体, 也就是说实参量可以是变量, 也可以是常量或其他东东. 子程序里三个哑参量排排坐, 主程序里三个实参量排排坐, 位置一样的哑参量和实参量(\texttt{a}和\texttt{x}, \texttt{b}和\texttt{y}, \texttt{c}和\texttt{z})称为对应的. 对应的参量在程序运行时会相互赋值来赋值去, 这称为参量结合(argument association), 我们一般称为哑实结合.
+    \item 现在分析示例程序的运行过程. 程序当然从\texttt{program main}开始运行了. 按顺序一行一行运行, 前面不需讲解. 到\texttt{call ...}, 就要说道说道了. 我们可以把主程序和子程序当成两个小人儿.\begin{enumerate}
+        \item \texttt{call ab2bc\_{}then\_{}sumabc(x, y, z)}: 跳到子程序的开头, 也就是\texttt{subroutine ab2bc\_{}then\_{}sumabc(a, b, c)}. \texttt{call ...}这里程序运行的操作称为``主程序调用(invoke/call)子程序''.
+        \item \texttt{subroutine ab2bc\_{}then\_{}sumabc(a, b, c)}: 子程序先按后面的变量声明语句声明好变量, 然后把所有只读的和读写的实参量赋值给对应的哑参量(主程序里的\texttt{x}赋给子程序里的\texttt{a}, 主程序里的\texttt{y}赋给子程序里的\texttt{b}, 这当然就是传说中的哑实结合啦).
+        \item 向下一行一行运行, 直到\texttt{end subroutine ab2bc\_{}then\_{}sumabc}. 啰嗦一下具体过程. 首先主程序里的\texttt{x}赋给子程序里的\texttt{a}, 主程序里的\texttt{y}赋给子程序里的\texttt{b}, 所以子程序里的\texttt{a}为\texttt{4.0\_{}dp}, 子程序里的\texttt{b}为\texttt{5.0\_{}dp}. 然后\texttt{c = b}, 子程序里的\texttt{c}为\texttt{5.0\_{}dp}, 然后\texttt{b = a}, 子程序里的\texttt{b}为\texttt{4.0\_{}dp}, 然后\texttt{s = a+b+c}, \texttt{s}为\texttt{13.0\_{}dp}, 最后输出\texttt{s}的值\texttt{13.0\_{}dp}.
+        \item \texttt{end subroutine ab2bc\_{}then\_{}sumabc}: 把所有读写的和只写的哑参量赋值给对应的实参量(子程序里的\texttt{b}赋给主程序里的\texttt{y}, 子程序里的\texttt{c}赋给主程序里的\texttt{z}, 这当然也是传说中的哑实结合啦), 然后跳到\texttt{call ab2bc\_{}then\_{}sumabc(x, y, z)}的下一行.
+    \end{enumerate}然后主程序继续按顺序一行一行运行至\texttt{end program main}结束. 再啰嗦啰嗦, 子程序里的\texttt{b}赋给主程序里的\texttt{y}, 子程序里的\texttt{c}赋给主程序里的\texttt{z}, 所以\texttt{x}还是\texttt{4.0\_{}dp}, \texttt{y}则变为\texttt{4.0\_{}dp}, \texttt{z}则变为\texttt{5.0\_{}dp}.
 \end{enumerate}
 
 啊! 上面那个程序终于分析完毕! 不仅是主程序能调用子程序, 任何程序单元都能调用子程序, 所以我们还可以玩点更花的. 假如我们现在要算组合数$\text{C}_7^3$, 我们可以造一个主程序, 一个算组合数的子程序, 一个算阶乘的子程序, 然后让主程序调用算组合数的子程序, 算组合数的子程序调用算阶乘的子程序, 就像下面这样. 请同志们自己分析其运行过程.\label{fact_comb}
@@ -185,7 +185,7 @@ subroutine factorial(n, fact)
 end subroutine factorial
 \end{lstlisting}
 
-子程序灰常管用, 但也是要遵守一些禁令的. 首先哑实结合时, 哑参量和实参量的类型和种别\uline{都要相等}, 也就是说莫得类型种别转化了. 比如下面这个程序, Gfortran日常严格, 会出警告, 输出\verb|0.00000000|, Ifort日常宽松, 不出警告, 但也输出\verb|0.0000000E+00|\dots
+子程序灰常管用, 但也是要遵守一些禁令的. 首先哑实结合时, 哑参量和实参量的类型和种别\uline{都要相等}, 也就是说莫得类型种别转化了. 比如下面这个程序, Gfortran日常严格, 会出警告, 输出\texttt{0.00000000}, Ifort日常宽松, 不出警告, 但也输出\texttt{0.0000000E+00}\dots
 \begin{lstlisting}
 program main
     use iso_fortran_env, only: sp => real32
@@ -203,7 +203,7 @@ subroutine add_one(a)
     a = a+1.0_dp
 end subroutine add_one
 \end{lstlisting}
-然后只读的(加\verb|,intent(in)|的)哑参量不能在子程序运行的时候被赋值(哑实结合当然还是可以的), 比如下面这个程序跑不得, Ifort和Gfortran都是如此. 这个规则是非常适当的, 因为如果我们可以确定一个哑参量在程序中是不应当被赋值的, 我们就可以让其成为只读的, 这样如果我们一不小心写错了, 在程序中给这个哑参量赋值了, 就能马上查出来.
+然后只读的(加\texttt{,intent(in)}的)哑参量不能在子程序运行的时候被赋值(哑实结合当然还是可以的), 比如下面这个程序跑不得, Ifort和Gfortran都是如此. 这个规则是非常适当的, 因为如果我们可以确定一个哑参量在程序中是不应当被赋值的, 我们就可以让其成为只读的, 这样如果我们一不小心写错了, 在程序中给这个哑参量赋值了, 就能马上查出来.
 \begin{lstlisting}
 program main
     use iso_fortran_env, only: dp => real64
@@ -221,7 +221,7 @@ subroutine add_one(a)
     a = a+1.0_dp
 end subroutine add_one
 \end{lstlisting}
-注意间接的赋值也是不行的, 比如下面这个程序, \verb|call add_one_(a)|实际上给\verb|add_one|里的\verb|a|赋值了. 但这样``隐晦的''赋值, 编译器就不一定会查了, Gfortran会给警告, Ifort直接放行. 但无论如何这么写都是不对的!\label{secret_assignment}
+注意间接的赋值也是不行的, 比如下面这个程序, \texttt{call add\_{}one\_{}(a)}实际上给\texttt{add\_{}one}里的\texttt{a}赋值了. 但这样``隐晦的''赋值, 编译器就不一定会查了, Gfortran会给警告, Ifort直接放行. 但无论如何这么写都是不对的!\label{secret_assignment}
 \begin{lstlisting}
 program main
     use iso_fortran_env, only: dp => real64
@@ -247,7 +247,7 @@ subroutine add_one_(a)
     a = a+1.0_dp
 end subroutine add_one_
 \end{lstlisting}
-还有只写的(加\verb|,intent(out)|的)哑参量, 在子程序运行的一开始是没有被赋值的, 所以下面这程序是天也不知会出什么结果的. 但Ifort和Gfortran有器规, 会把只写参量当成读写参量(我猜是这样了啦), 一开始也实参量赋值给哑参量了, 所以结果没事. 但无论如何这么写都是不对的!
+还有只写的(加\texttt{,intent(out)}的)哑参量, 在子程序运行的一开始是没有被赋值的, 所以下面这程序是天也不知会出什么结果的. 但Ifort和Gfortran有器规, 会把只写参量当成读写参量(我猜是这样了啦), 一开始也实参量赋值给哑参量了, 所以结果没事. 但无论如何这么写都是不对的!
 \begin{lstlisting}
 program main
     use iso_fortran_env, only: dp => real64
@@ -267,7 +267,7 @@ subroutine add_one(a)
 end subroutine add_one
 \end{lstlisting}
 
-正确标注哑参量为只读参量, 只写参量或读写参量\label{arguments}(加\verb|intent(...)|), 是灰常灰常必要的, 血泪教训告诉我们这么做能避免踩很多很多坑. 同志们一定不能怕麻烦, 老老实实一个个标注. 如果哑参量除哑实结合时外不被赋值, 就标只读, 如果哑参量在哑实结合时不需要被赋值, 就标只写, 剩下的标读写.
+正确标注哑参量为只读参量, 只写参量或读写参量\label{arguments}(加\texttt{intent(...)}), 是灰常灰常必要的, 血泪教训告诉我们这么做能避免踩很多很多坑. 同志们一定不能怕麻烦, 老老实实一个个标注. 如果哑参量除哑实结合时外不被赋值, 就标只读, 如果哑参量在哑实结合时不需要被赋值, 就标只写, 剩下的标读写.
 
 \begin{convention}
     正确标注每个哑参量为只读参量, 只写参量或读写参量.
@@ -277,7 +277,7 @@ end subroutine add_one
 
 \subsection{函数子程序}
 
-如果同志们没被子例行子程序弄晕, 那理解函数子程序便轻而易举了. 我们还是写一个计算组合数的子例行子程序, 不过我用\verb|...|省略一部分, 想来同志们自己补上没问题.
+如果同志们没被子例行子程序弄晕, 那理解函数子程序便轻而易举了. 我们还是写一个计算组合数的子例行子程序, 不过我用\texttt{...}省略一部分, 想来同志们自己补上没问题.
 \begin{lstlisting}
 program main
     implicit none
@@ -319,10 +319,10 @@ function combinatorial(n, m) result(comb)
 end function combinatorial
 \end{lstlisting}
 \begin{enumerate}
-    \item 从\verb|function ...|到\verb|end function ...|便是函数子程序了. 和子例行子程序一样, 可以和主程序放在一个文件里, 顺序也随便, 但通常是单独放在另一个文件里. \verb|function|和\verb|end function|后的\verb|XX| (示例中为\verb|combinatorial|)一样称为函数子程序名. 一般存这个子程序的文件也一样会取成\verb|XX.f90|.
-    \item 函数子程序名后的\verb|()|里的当然是哑参量, \verb|()|后的\verb|result(...)|里的变量\verb|...| (示例中为\verb|comb|)相当于一个只写哑参量, 称为结果(result), 但结果本身不是哑参量. 声明结果时不需也不能加\verb|,intent(out)|.
-    \item 调用函数子程序后, 结果赋值给函数名和其之后的括号及括号内的内容组成的整体. 示例中, 一开始主程序里\verb|7|和\verb|3|赋值给子程序里\verb|n|和\verb|m|, 最后子程序里结果\verb|comb|赋值给主程序里\verb|combinatorial(7, 3)|这一整个长串, \verb|combinatorial(7, 3)|就成为一个数据实体, 因此可以再赋值给主程序里的\verb|result|变量.
-    \item 调用函数子程序前必须对函数子程序本身进行声明(声明的类型和种别是函数子程序的结果的类型和种别), 子例行子程序是不需要的. 比如示例程序的主程序加了\verb|integer :: combinatorial|一句, 因为整型是函数\verb|combinatorial|的结果\verb|comb|的类型.
+    \item 从\texttt{function ...}到\texttt{end function ...}便是函数子程序了. 和子例行子程序一样, 可以和主程序放在一个文件里, 顺序也随便, 但通常是单独放在另一个文件里. \texttt{function}和\texttt{end function}后的\texttt{XX} (示例中为\texttt{combinatorial})一样称为函数子程序名. 一般存这个子程序的文件也一样会取成\texttt{XX.f90}.
+    \item 函数子程序名后的\texttt{()}里的当然是哑参量, \texttt{()}后的\texttt{result(...)}里的变量\texttt{...} (示例中为\texttt{comb})相当于一个只写哑参量, 称为结果(result), 但结果本身不是哑参量. 声明结果时不需也不能加\texttt{,intent(out)}.
+    \item 调用函数子程序后, 结果赋值给函数名和其之后的括号及括号内的内容组成的整体. 示例中, 一开始主程序里\texttt{7}和\texttt{3}赋值给子程序里\texttt{n}和\texttt{m}, 最后子程序里结果\texttt{comb}赋值给主程序里\texttt{combinatorial(7, 3)}这一整个长串, \texttt{combinatorial(7, 3)}就成为一个数据实体, 因此可以再赋值给主程序里的\texttt{result}变量.
+    \item 调用函数子程序前必须对函数子程序本身进行声明(声明的类型和种别是函数子程序的结果的类型和种别), 子例行子程序是不需要的. 比如示例程序的主程序加了\texttt{integer :: combinatorial}一句, 因为整型是函数\texttt{combinatorial}的结果\texttt{comb}的类型.
 \end{enumerate}
 按照当今的规范, 我们必须保证函数子程序的所有哑参量都是只读的(结果不是哑参量). 如果不遵守此规范, 我保证同志们之后会无比头痛.
 
@@ -363,7 +363,7 @@ end function factorial
 \subsection{固有过程}
 
 \newcommand{\ip}[1]{\href{https://fortranwiki.org/fortran/show/#1}{\texttt{#1}}}
-为了让我们能快乐地玩轮子, 合格的Fortran编译器都已经自己造好了一大堆轮子, 称为固有过程(intrinsic procedure), 我们直接调用就可以了. 固有过程有哪些怎么用请猛戳\href{https://fortranwiki.org/fortran/show/Intrinsic+procedures}{这个链接}查询. 同志们造轮子前都应该先查查有没有已经造好的固有轮子可以用. 比如我们如果想算$\pi$, 如果我们很熟悉固有轮子的话, 我们就会想到有个轮子\verb|acos|, 是算反余弦的, 我们用它算$\arccos (-1)$即可. 注意, \verb|acos|是个函数, 要声明的.
+为了让我们能快乐地玩轮子, 合格的Fortran编译器都已经自己造好了一大堆轮子, 称为固有过程(intrinsic procedure), 我们直接调用就可以了. 固有过程有哪些怎么用请猛戳\href{https://fortranwiki.org/fortran/show/Intrinsic+procedures}{这个链接}查询. 同志们造轮子前都应该先查查有没有已经造好的固有轮子可以用. 比如我们如果想算$\pi$, 如果我们很熟悉固有轮子的话, 我们就会想到有个轮子\texttt{acos}, 是算反余弦的, 我们用它算$\arccos (-1)$即可. 注意, \texttt{acos}是个函数, 要声明的.
 \begin{lstlisting}
 program main
     use iso_fortran_env, only: qp => real128
@@ -377,9 +377,9 @@ end program main
 
 \subsection{parameter属性}\label{fortran_parameter}
 
-我们在玩轮子的时候经常会遇到这么个问题, 比如我们需要反复进行一些和$\pi$有关的计算, 假设我们的程序以双精度运行, 我们会造一个实型双精度变量\verb|pi|, 然后赋值\verb|acos(-1.0_dp)|, 其中\verb|dp|为\verb|real64|, 这本来没什么问题, 但如果我们一不小心写错了程序, 悄咪咪地又给这个\verb|pi|赋了个别的值, 那就出了大问题, 而且编译器还不会告诉我们, 我们就会死都找不出哪里写错了. 如果我们把\verb|pi|改成\verb|3.141592653589793_dp|或\verb|acos(-1.0_dp)|, 那倒是不大会出错了, 但每次看轮子, 我们脑子都要反复判断出\verb|3.141592653589793_dp|\\或\verb|acos(-1.0_dp)|其实就是$\pi$, 我们的眼睛和脑子就会觉得好伤心好难过呜呜呜呜.
+我们在玩轮子的时候经常会遇到这么个问题, 比如我们需要反复进行一些和$\pi$有关的计算, 假设我们的程序以双精度运行, 我们会造一个实型双精度变量\texttt{pi}, 然后赋值\texttt{acos(-1.0\_{}dp)}, 其中\texttt{dp}为\texttt{real64}, 这本来没什么问题, 但如果我们一不小心写错了程序, 悄咪咪地又给这个\texttt{pi}赋了个别的值, 那就出了大问题, 而且编译器还不会告诉我们, 我们就会死都找不出哪里写错了. 如果我们把\texttt{pi}改成\texttt{3.141592653589793\_{}dp}或\texttt{acos(-1.0\_{}dp)}, 那倒是不大会出错了, 但每次看轮子, 我们脑子都要反复判断出\texttt{3.141592653589793\_{}dp}\\或\texttt{acos(-1.0\_{}dp)}其实就是$\pi$, 我们的眼睛和脑子就会觉得好伤心好难过呜呜呜呜.
 
-这时候我们就可以给\verb|pi|加上parameter属性\footnote{属性的含义见第\ref{fortran_attribute}章.}, 造一个具名常量(named constant). 比如下面这个程序, 我们在声明\verb|pi|时加了\verb|,parameter|, 并在声明的同时给\verb|pi|赋值\verb|acos(-1.0_dp)|, 这个\verb|pi|就永远是\verb|acos(-1.0_dp)|改不了了, 比如我们下面又把\verb|pi|赋成\verb|exp(1.0_dp)|, 合格的编译器就会立即跳出来把我们打回去重新改程序.
+这时候我们就可以给\texttt{pi}加上parameter属性\footnote{属性的含义见第\ref{fortran_attribute}章.}, 造一个具名常量(named constant). 比如下面这个程序, 我们在声明\texttt{pi}时加了\texttt{,parameter}, 并在声明的同时给\texttt{pi}赋值\texttt{acos(-1.0\_{}dp)}, 这个\texttt{pi}就永远是\texttt{acos(-1.0\_{}dp)}改不了了, 比如我们下面又把\texttt{pi}赋成\texttt{exp(1.0\_{}dp)}, 合格的编译器就会立即跳出来把我们打回去重新改程序.
 \begin{lstlisting}
 program main
     use iso_fortran_env, only: dp => real64
@@ -392,7 +392,7 @@ end program main
 
 \subsection{save属性}
 
-和parameter属性有一丢丢像的是save属性. 下面这个程序, 连续输出三个\verb|1|, 这当然没有问题.
+和parameter属性有一丢丢像的是save属性. 下面这个程序, 连续输出三个\texttt{1}, 这当然没有问题.
 \begin{lstlisting}
 program main
     use iso_fortran_env, only: dp => real64
@@ -410,7 +410,7 @@ subroutine count()
     print *, n
 end subroutine count
 \end{lstlisting}
-但下面这个程序输出的却是\verb|1|, \verb|2|, \verb|3|. 在这个程序里, 子程序\verb|count|里的\verb|n|声明的时候加了\verb|,save|, 并赋值\verb|0|. 第一次调用\verb|count|的时候, \verb|n|一开始是\verb|0|, 然后\verb|n = n+1|, \verb|n|就是\verb|1|. 而第二次调用\verb|count|的时候, \verb|n|一开始并没有重新被赋值成\verb|0|, 而是保存着上一次调用到最后的值\verb|1|, 所以再次\verb|n = n+1|后\verb|n|变成\verb|2|. 第三次调用\verb|count|的时候, \verb|n|一开始是\verb|2|, 所以最后是\verb|3|.
+但下面这个程序输出的却是\texttt{1}, \texttt{2}, \texttt{3}. 在这个程序里, 子程序\texttt{count}里的\texttt{n}声明的时候加了\texttt{,save}, 并赋值\texttt{0}. 第一次调用\texttt{count}的时候, \texttt{n}一开始是\texttt{0}, 然后\texttt{n = n+1}, \texttt{n}就是\texttt{1}. 而第二次调用\texttt{count}的时候, \texttt{n}一开始并没有重新被赋值成\texttt{0}, 而是保存着上一次调用到最后的值\texttt{1}, 所以再次\texttt{n = n+1}后\texttt{n}变成\texttt{2}. 第三次调用\texttt{count}的时候, \texttt{n}一开始是\texttt{2}, 所以最后是\texttt{3}.
 \begin{lstlisting}
 program main
     use iso_fortran_env, only: dp => real64
@@ -427,7 +427,7 @@ subroutine count()
     print *, n
 end subroutine count
 \end{lstlisting}
-有的同志可能会尝试在变量声明的时候直接给变量赋值, 因为这样可以偷一点懒, 但这么做是非常危险的, 因为这么做的时候, 即使没加\verb|,save|, 变量也悄咪咪地带上save属性了. 比如下面这个程序和上面那个程序是一样的, 但因为没写\verb|,save|, 同志们可能就会忘记变量\verb|n|有save属性!
+有的同志可能会尝试在变量声明的时候直接给变量赋值, 因为这样可以偷一点懒, 但这么做是非常危险的, 因为这么做的时候, 即使没加\texttt{,save}, 变量也悄咪咪地带上save属性了. 比如下面这个程序和上面那个程序是一样的, 但因为没写\texttt{,save}, 同志们可能就会忘记变量\texttt{n}有save属性!
 \begin{lstlisting}
 program main
     use iso_fortran_env, only: dp => real64
@@ -446,7 +446,7 @@ subroutine count()
     print *, n
 end subroutine count
 \end{lstlisting}
-因此, 不要这么写, 除非前面已经标好\verb|,parameter|或\verb|,save|.
+因此, 不要这么写, 除非前面已经标好\texttt{,parameter}或\texttt{,save}.
 
 \begin{convention}
     除非已经明确标明变量有\emph{parameter}属性或\emph{save}属性, 否则不要在声明变量的时候直接给变量赋值.
@@ -476,7 +476,7 @@ function norm_1(r) result(norm)
     norm = sum(abs(r))
 end function
 \end{lstlisting}
-其中主程序里的\verb|r|和函数里的\verb|r|, 形状都大大咧咧的写在那里, 这就叫显式形状数组(explicit-shape array). 但我们上面这个程序大有问题, 如果我们要算$(-1,2,-3)$的$1$范数, 因为函数里的\verb|r|形状被定死为\verb|[2]|, 所以要出事儿. 这时我们可以这么写.\label{adjustable_array}
+其中主程序里的\texttt{r}和函数里的\texttt{r}, 形状都大大咧咧的写在那里, 这就叫显式形状数组(explicit-shape array). 但我们上面这个程序大有问题, 如果我们要算$(-1,2,-3)$的$1$范数, 因为函数里的\texttt{r}形状被定死为\texttt{[2]}, 所以要出事儿. 这时我们可以这么写.\label{adjustable_array}
 \begin{lstlisting}
 program main
     use iso_fortran_env, only: dp => real64
@@ -498,7 +498,7 @@ function norm_1(r, size_r) result(norm)
     norm = sum(abs(r))
 end function
 \end{lstlisting}
-这个程序, 函数里哑参量\verb|r|的形状是由哑参量\verb|size_r|决定的, 这样的哑参量数组就叫可调数组(adjustable array), 定义为显式形状数组中的一种. 虽然\verb|size_r|的声明在\verb|r|下面, 但放心, 声明\verb|r|的时候会先查看\verb|size_r|的值的.
+这个程序, 函数里哑参量\texttt{r}的形状是由哑参量\texttt{size\_{}r}决定的, 这样的哑参量数组就叫可调数组(adjustable array), 定义为显式形状数组中的一种. 虽然\texttt{size\_{}r}的声明在\texttt{r}下面, 但放心, 声明\texttt{r}的时候会先查看\texttt{size\_{}r}的值的.
 
 第\pageref{hw_2}页的小作业二是计算一个奇怪矩阵的所有元素的和, 我们可以把问题扩大点, 算任意$n\times n$的那种矩阵的所有元素的和, 我们则可以这么写.
 \begin{lstlisting}
@@ -524,7 +524,7 @@ function strange_mat_element_sum(n) result(s)
     s = sum(mat)
 end function
 \end{lstlisting}
-这个程序, 函数里\verb|mat|的形状是由哑参量\verb|n|决定的, 这样的数组就叫自动数组(automatic array), 也定义为显式形状数组中的一种. 自动数组和可调数组的区别是可调数组一定是哑参量, 自动数组一定不是.
+这个程序, 函数里\texttt{mat}的形状是由哑参量\texttt{n}决定的, 这样的数组就叫自动数组(automatic array), 也定义为显式形状数组中的一种. 自动数组和可调数组的区别是可调数组一定是哑参量, 自动数组一定不是.
 
 \subsubsection{假定形状数组}
 
@@ -550,7 +550,7 @@ function norm_1(r) result(norm)
     norm = sum(abs(r))
 end function
 \end{lstlisting}
-在这个程序里, 函数中\verb|r|就是假定形状数组, 其声明的时候写\verb|r(:)|, 1个\verb|:|表示其必须是1维数组, 形状是其对应的实参量的形状, 这样就不用每次都计算实参量的大小然后哑实结合了. 不过上面这个轮子Gfortran是跑不了的, 因为按Fortran的语法, 有假定形状数组哑参量的过程, 必须带过程接口(见\ref{fortran_interface}节), 所以要写成下面这个样子才行. Ifort能跑, 但结果是错的\dots\label{assumed-shape_array_program}
+在这个程序里, 函数中\texttt{r}就是假定形状数组, 其声明的时候写\texttt{r(:)}, 1个\texttt{:}表示其必须是1维数组, 形状是其对应的实参量的形状, 这样就不用每次都计算实参量的大小然后哑实结合了. 不过上面这个轮子Gfortran是跑不了的, 因为按Fortran的语法, 有假定形状数组哑参量的过程, 必须带过程接口(见\ref{fortran_interface}节), 所以要写成下面这个样子才行. Ifort能跑, 但结果是错的\dots\label{assumed-shape_array_program}
 \begin{lstlisting}
 program main
     use iso_fortran_env, only: dp => real64
@@ -580,7 +580,7 @@ function norm_1(r) result(norm)
     norm = sum(abs(r))
 end function
 \end{lstlisting}
-使用假定形状数组的时候, 我们还可以指定假定形状数组每一维的下界. 比如下面这个程序, 函数里的\verb|r|是2维数组, 第1维下界是0, 第2维下界没写, 默认是1.
+使用假定形状数组的时候, 我们还可以指定假定形状数组每一维的下界. 比如下面这个程序, 函数里的\texttt{r}是2维数组, 第1维下界是0, 第2维下界没写, 默认是1.
 \begin{lstlisting}
 program main
     use iso_fortran_env, only: dp => real64
@@ -679,7 +679,7 @@ end function identity
 \end{itemize}
 那么就一定要加特定接口\footnote{一定要加特定接口的情形还有很多, 其他同志们暂时不需要掌握.}. 这不一定需要背, 编译器应该是要告诉我们的. 我们可以先不加接口, 然后如果编译器告诉我们``Explicit interface required for \dots''或``Expected a procedure for argument \dots''或其他七七八八的话, 那就是要加接口了.
 
-特定接口都放在从\verb|interface|到\verb|end interface|的一整块里, 这一整块称为接口块(interface block), 一个接口块里可以放一堆接口. 接口是过程的一部分, 我们只要把过程的变量声明部分下面的执行部分都删掉, 然后变量声明部分, 除了哑参量和结果的声明, 其他声明都删掉, 然后复制粘贴到接口块里就可以了.
+特定接口都放在从\texttt{interface}到\texttt{end interface}的一整块里, 这一整块称为接口块(interface block), 一个接口块里可以放一堆接口. 接口是过程的一部分, 我们只要把过程的变量声明部分下面的执行部分都删掉, 然后变量声明部分, 除了哑参量和结果的声明, 其他声明都删掉, 然后复制粘贴到接口块里就可以了.
 
 我们通过实战来熟悉这个过程. 假设我们现在想搞个算单位矩阵的轮子, 我们正常地这么一写, 结果跑不得.
 \begin{lstlisting}
@@ -704,7 +704,7 @@ function eye(n) result(mat)
     !----------------------------------------
 end function eye
 \end{lstlisting}
-我们需要在主程序中加个接口. 我们先在主程序的声明部分写上\verb|interface|\\和\verb|end interface|, 然后把整个\verb|eye|子程序复制粘贴进去. (我们还可以用列选择\footnote{不知道什么是列选择的同志请自行了解.}来调整格式)
+我们需要在主程序中加个接口. 我们先在主程序的声明部分写上\texttt{interface}\\和\texttt{end interface}, 然后把整个\texttt{eye}子程序复制粘贴进去. (我们还可以用列选择\footnote{不知道什么是列选择的同志请自行了解.}来调整格式)
 \begin{lstlisting}
 program main
     use iso_fortran_env, only: dp => real64
@@ -743,7 +743,7 @@ function eye(n) result(mat)
     !----------------------------------------
 end function eye
 \end{lstlisting}
-然后我们定睛一看, 两个注释行中间的部分, 第一行是\verb|i|的声明, \verb|i|既不是哑参量也不是结果, 所以删去, 后面几行是执行部分也删去. 删完以后就成下面这个样子.
+然后我们定睛一看, 两个注释行中间的部分, 第一行是\texttt{i}的声明, \texttt{i}既不是哑参量也不是结果, 所以删去, 后面几行是执行部分也删去. 删完以后就成下面这个样子.
 \begin{lstlisting}
 program main
     use iso_fortran_env, only: dp => real64
@@ -778,7 +778,7 @@ end function eye
 
 同志们会不会觉得这么做挺麻烦的? 俺也觉得, 可是这也是没办法的. Fortran在设置这个接口规则的时候可是经过深思熟虑的, 因为造编译器的凭他们的经验告诉我们, 有些情况(比如上面列出来的), 如果没有接口, 会出大事情. 不过还是有办法能让我们少费点脑子, 那就是使用模块(见第\ref{fortran_module}章), 但如果不需要加接口, 那么造一个模块反而比较费事\dots
 
-这里还有个问题, 如果我们碰到个固有过程需要接口怎么办, 比如我们如果要算$\sin$的积分, 我们用固有过程\verb|sin|直接干算不得.
+这里还有个问题, 如果我们碰到个固有过程需要接口怎么办, 比如我们如果要算$\sin$的积分, 我们用固有过程\texttt{sin}直接干算不得.
 \begin{lstlisting}
 program main
     use iso_fortran_env, only: dp => real64
@@ -921,7 +921,7 @@ function sgn_real128(x) result(y)
     end if
 end function sgn_real128
 \end{lstlisting}
-这就让我们有点小小的不开心, Fortran的语法也太严格了! 我们希望能造个\verb|sgn|, 又能算双精度又能算四精度. 用泛型接口, 我们就可以偷鸡摸狗地``做成''这件事, 把上面的\verb|sgn_real64|和\verb|sgn_real128| ``粘起来''.
+这就让我们有点小小的不开心, Fortran的语法也太严格了! 我们希望能造个\texttt{sgn}, 又能算双精度又能算四精度. 用泛型接口, 我们就可以偷鸡摸狗地``做成''这件事, 把上面的\texttt{sgn\_{}real64}和\texttt{sgn\_{}real128} ``粘起来''.
 \begin{lstlisting}
 program main
     use iso_fortran_env, only: dp => real64, qp => real128
@@ -972,9 +972,9 @@ function sgn_real128(x) result(y)
     end if
 end function sgn_real128
 \end{lstlisting}
-我们会发现泛型接口和特定接口很像, 只不过\verb|interface|后多了一串(示例中为\verb|sgn|). 这么写后, 电脑看到\verb|sgn(10.0_dp)|, 就会发现\verb|10.0_dp|是双精度的, 然后电脑就会在标\verb|sgn|的泛型接口里找, 发现\verb|sgn_real64|这个函数参量是双精度的, 匹配, \verb|sgn_real128|这个函数参量是四精度的, 不匹配, 于是乎电脑就会自动把\verb|sgn(10.0_dp)|里的\verb|sgn|当成\verb|sgn_real64|了, 然后电脑看到\verb|sgn(10.0_qp)|, 也是一样, 只不过最后是把\verb|sgn|当成\verb|sgn_real128|. 这样就仿佛有一个又能算双精度又能算四精度的\verb|sgn|了!
+我们会发现泛型接口和特定接口很像, 只不过\texttt{interface}后多了一串(示例中为\texttt{sgn}). 这么写后, 电脑看到\texttt{sgn(10.0\_{}dp)}, 就会发现\texttt{10.0\_{}dp}是双精度的, 然后电脑就会在标\texttt{sgn}的泛型接口里找, 发现\texttt{sgn\_{}real64}这个函数参量是双精度的, 匹配, \texttt{sgn\_{}real128}这个函数参量是四精度的, 不匹配, 于是乎电脑就会自动把\texttt{sgn(10.0\_{}dp)}里的\texttt{sgn}当成\texttt{sgn\_{}real64}了, 然后电脑看到\texttt{sgn(10.0\_{}qp)}, 也是一样, 只不过最后是把\texttt{sgn}当成\texttt{sgn\_{}real128}. 这样就仿佛有一个又能算双精度又能算四精度的\texttt{sgn}了!
 
-哑实结合时的类型--种别--维数匹配(type-kind-rank compatibility, TKR compatibility), 我们用泛型接口便能有所突破, 这当然是大好事. 但同志们还是可能不开心, 因为同志们会发现上面的\verb|sgn_real64|和\verb|sgn_real128|其实长得一模一样, 就是变量种别不同, 如果我们还要造单精度的轮子, 还要造整型的轮子, 岂不是要复制粘贴写一大堆一模一样的过程, 读起来还脑壳疼? 非常遗憾, 据我的了解, Fortran自己确实就只能这么玩儿了. 不过用预处理器(见第\ref{fortran_preprocessor}章)的话, 应该可以省事儿不少还易读, 但这已经是超Fortran的内容了.
+哑实结合时的类型--种别--维数匹配(type-kind-rank compatibility, TKR compatibility), 我们用泛型接口便能有所突破, 这当然是大好事. 但同志们还是可能不开心, 因为同志们会发现上面的\texttt{sgn\_{}real64}和\texttt{sgn\_{}real128}其实长得一模一样, 就是变量种别不同, 如果我们还要造单精度的轮子, 还要造整型的轮子, 岂不是要复制粘贴写一大堆一模一样的过程, 读起来还脑壳疼? 非常遗憾, 据我的了解, Fortran自己确实就只能这么玩儿了. 不过用预处理器(见第\ref{fortran_preprocessor}章)的话, 应该可以省事儿不少还易读, 但这已经是超Fortran的内容了.
 
 \subsection{抽象接口}
 
@@ -1072,6 +1072,6 @@ function minkowski(n) result(eta)
     end do
 end function minkowski
 \end{lstlisting}
-和特定接口相比, 抽象接口的\verb|interface|前多了个\verb|abstract|. 接口块里过程名\verb|dim2mat|的接口和过程\verb|eye|, \verb|minkowski|的特定接口长得``一样'': 都是函数, 都只有一个整型只读参量等等. 至于抽象接口里函数名是\verb|dim2mat|, 参量名是\verb|dim|, 结果名是\verb|mat|, 无关紧要, 这些名称都是可以随便取的\footnote{如果碰上了什么规矩, 编译器会告诉我们.}, 只要在接口块里一致即可. 然后我们只需要再写\verb|procedure(dim2mat) :: ...|就相当于给\verb|...|加特定接口了, 但前提是\verb|...|必须是和\verb|dim2mat|特征相同的过程(如\verb|eye|和\verb|minkowski|).
+和特定接口相比, 抽象接口的\texttt{interface}前多了个\texttt{abstract}. 接口块里过程名\texttt{dim2mat}的接口和过程\texttt{eye}, \texttt{minkowski}的特定接口长得``一样'': 都是函数, 都只有一个整型只读参量等等. 至于抽象接口里函数名是\texttt{dim2mat}, 参量名是\texttt{dim}, 结果名是\texttt{mat}, 无关紧要, 这些名称都是可以随便取的\footnote{如果碰上了什么规矩, 编译器会告诉我们.}, 只要在接口块里一致即可. 然后我们只需要再写\texttt{procedure(dim2mat) :: ...}就相当于给\texttt{...}加特定接口了, 但前提是\texttt{...}必须是和\texttt{dim2mat}特征相同的过程(如\texttt{eye}和\texttt{minkowski}).
 
 在第\pageref{dummy_procedure_program}页的轮子里, 我在声明哑过程的时候用了抽象接口, 这个地方, 根据我自己的实验, 非用抽象接口不可. 按我的理解, 这是因为哑过程根本不是一个``真''过程: 既不是我们用代码定义的过程, 也不是编译器定义好的固有过程. 只有``真''过程能有特定接口, 因为电脑碰到特定接口的时候, 会去查特定接口对应的过程的定义, 而哑过程只有声明没有定义, 所以声明哑过程的时候就只能用抽象接口了.

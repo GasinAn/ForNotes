@@ -12,9 +12,9 @@
 
 用数组之前当然要声明它. 数组的声明和标量的声明还是很像的, 也是需要给一个数据类型(整型/实型/复型), 还可以给一个种别. 数组的类型和种别就是数组中每一个元素的类型和种别.
 
-为表明声明的变量是个数组, 还需给出$j_1,\dots,j_n,k_1,\dots,k_n$. 有两种方法可行, 一种是在变量名后加\verb|(j1:k1,...,jn:kn)|, 另一种是在类型和种别后加\verb|,dimension(j1:k1,...,jn:kn)|. 所有\verb|ji|, \verb|ki|都必须是整型常量或整型常量表达式\footnote{
+为表明声明的变量是个数组, 还需给出$j_1,\dots,j_n,k_1,\dots,k_n$. 有两种方法可行, 一种是在变量名后加\texttt{(j1:k1,...,jn:kn)}, 另一种是在类型和种别后加\texttt{,dimension(j1:k1,...,jn:kn)}. 所有\texttt{ji}, \texttt{ki}都必须是整型常量或整型常量表达式\footnote{
     就是只含整型常量的表达式.
-}. 可以省略任意\verb|ji:|, 如果省略\verb|ji:|, 则\verb|ji|为\verb|1|\footnote{这和Matlab的默认情形一样, 但和C/Python的默认情形不一样!}.
+}. 可以省略任意\texttt{ji:}, 如果省略\texttt{ji:}, 则\texttt{ji}为\texttt{1}\footnote{这和Matlab的默认情形一样, 但和C/Python的默认情形不一样!}.
 
 请大家猛戳\href{https://fortran-lang.org/learn/quickstart/arrays_strings#array-declaration}{这个链接}获取数组声明示例.
 
@@ -22,21 +22,21 @@
     方法同标量声明.
 }, 这时第一种方式反而不好使了, 大家就喜欢用第二种方式.
 
-和字符串一样, 有些时候我们并不清楚到底要用一个什么样的数组, 这时我们就可以和字符串一样, 先在类型和种别后加\verb|,allocatable|, 然后再在变量名后加\verb|(:,...,:)|或在类型和种别后加\verb|,dimension(:,...,:)|, 其中\verb|:|的个数等于数组的维数, 这样我们就搞出一个延迟形状数组(deferred-shape array). 假如我们声明的数组叫\verb|a|, 接下来我们就可以像延迟长度字符串那样, 用\verb|allocate(a(j1:k1,...,jn:kn))|把$j_1,\dots,j_n,k_1,\dots,k_n$确定下来(仍可省略\verb|ji:|), 用\verb|deallocate(a)|将$j_1,\dots,j_n,k_1,\dots,k_n$重新变成未定义的, 然后再来个\verb|allocate(a(j1:k1,...,jn:kn))|\dots
+和字符串一样, 有些时候我们并不清楚到底要用一个什么样的数组, 这时我们就可以和字符串一样, 先在类型和种别后加\texttt{,allocatable}, 然后再在变量名后加\texttt{(:,...,:)}或在类型和种别后加\texttt{,dimension(:,...,:)}, 其中\texttt{:}的个数等于数组的维数, 这样我们就搞出一个延迟形状数组(deferred-shape array). 假如我们声明的数组叫\texttt{a}, 接下来我们就可以像延迟长度字符串那样, 用\texttt{allocate(a(j1:k1,...,jn:kn))}把$j_1,\dots,j_n,k_1,\dots,k_n$确定下来(仍可省略\texttt{ji:}), 用\texttt{deallocate(a)}将$j_1,\dots,j_n,k_1,\dots,k_n$重新变成未定义的, 然后再来个\texttt{allocate(a(j1:k1,...,jn:kn))}\dots
 
 请大家猛戳\href{https://fortran-lang.org/learn/quickstart/arrays_strings#allocatable-dynamic-arrays}{这个链接}获取延迟形状数组声明示例.
 
 \section{数组构造}
 
-数组构造器(array constructor)是一维数组常量, 形如\verb|[e1,...,em]|, 其中\verb|ei|可以是标量也可以是数组. 若将\verb|[e1,...,em]|记为$(a_1,\dots,a_n)$, \verb|ei|的大小记为$S_i$\footnote{
+数组构造器(array constructor)是一维数组常量, 形如\texttt{[e1,...,em]}, 其中\texttt{ei}可以是标量也可以是数组. 若将\texttt{[e1,...,em]}记为$(a_1,\dots,a_n)$, \texttt{ei}的大小记为$S_i$\footnote{
     标量的大小当然是$1$.
-}, 则$a_{(S_1+\dots+S_{i-1}+l)}$为\verb|ei|的第$l$个元素. 如果\verb|ei|维数大于$1$, 则按本章开头``数组元素顺序''找到第$l$个元素.
+}, 则$a_{(S_1+\dots+S_{i-1}+l)}$为\texttt{ei}的第$l$个元素. 如果\texttt{ei}维数大于$1$, 则按本章开头``数组元素顺序''找到第$l$个元素.
 
-直接了当的说法是: 把所有\verb|ei|重新排成一维数组并保证元素顺序不变, 然后首尾相接拼起来.
+直接了当的说法是: 把所有\texttt{ei}重新排成一维数组并保证元素顺序不变, 然后首尾相接拼起来.
 
-在数组构造器\uline{中}还可以使用一种神奇的隐式do循环(implied \verb|do| loop), 这玩意儿形如\verb|((...(e(i1,...,in),i1=p1,q1,r1)...),in=pn,qn,rn)|, 里头\verb|e(i1,...,in)|是个数据实体, 通常是个含有\verb|i1|,\dots ,\verb|in|的表达式, \verb|i1|,\dots ,\verb|in|是一堆事先声明过的整型变量, 整个隐式do循环相当于\uline{一维}数组. 下面这样的两个程序总是等价的\footnote{
+在数组构造器\uline{中}还可以使用一种神奇的隐式do循环(implied \texttt{do} loop), 这玩意儿形如\texttt{((...(e(i1,...,in),i1=p1,q1,r1)...),in=pn,qn,rn)}, 里头\texttt{e(i1,...,in)}是个数据实体, 通常是个含有\texttt{i1},\dots ,\texttt{in}的表达式, \texttt{i1},\dots ,\texttt{in}是一堆事先声明过的整型变量, 整个隐式do循环相当于\uline{一维}数组. 下面这样的两个程序总是等价的\footnote{
 看懂这两个程序, 同志们可能需要先读\ref{fortran_array_assignment}节.
-}. 自然任意\verb|,ri|都可以省略(默认为\verb|1|).
+}. 自然任意\texttt{,ri}都可以省略(默认为\texttt{1}).
 \begin{lstlisting}
 program normal_do_loop
     ...
@@ -68,9 +68,9 @@ end program implied_do_loop
 
 隐式do循环属于比较高级的语法, 还是稍稍让人不好理解滴. 幸好不用隐式do循环也总是可以完成任务, 所以可以干脆不用. Python中也有一个类似的叫列表推导式的东东, 不过当年老师好像根本没讲过, 我也只是在耍帅时会用这玩楞.
 
-用Ifort的话, 可以用\verb|p:q:r|代替\verb|(i1,i1=p,q,r)|, 当然\verb|:r|可以省略. 这是Ifort的器规, Gfortran是不认的\footnote{
+用Ifort的话, 可以用\texttt{p:q:r}代替\texttt{(i1,i1=p,q,r)}, 当然\texttt{:r}可以省略. 这是Ifort的器规, Gfortran是不认的\footnote{
 所以造轮子时最好不用这东东.
-}. \verb|(i1,i1=p,q,r)|这样的一重简单隐式do循环比较常用, 是要掌握的. 我再把上一对示例程序的简单情形重新列一下, 其中\verb|a(i) = i1|的意思就是令$a_i$为那时的$i_1$.
+}. \texttt{(i1,i1=p,q,r)}这样的一重简单隐式do循环比较常用, 是要掌握的. 我再把上一对示例程序的简单情形重新列一下, 其中\texttt{a(i) = i1}的意思就是令$a_i$为那时的$i_1$.
 \begin{lstlisting}
 program normal_do_loop
     ...
@@ -105,9 +105,9 @@ program main
 end program main
 \end{lstlisting}
 
-我们可以对先前构造出来的一维数组进行变形(reshape)操作来获取多维数组, 只需来个\verb|a_new = reshape(a_old,s)|就成. \verb|a_new|和\verb|a_old|是两个数组, \verb|s|是\verb|a_new|的形状(当然得是整型一维数组), \verb|a_new|的第$l$个元素和\verb|a_old|的第$l$个元素总是相同的\footnote{
+我们可以对先前构造出来的一维数组进行变形(reshape)操作来获取多维数组, 只需来个\texttt{a\_{}new = reshape(a\_{}old,s)}就成. \texttt{a\_{}new}和\texttt{a\_{}old}是两个数组, \texttt{s}是\texttt{a\_{}new}的形状(当然得是整型一维数组), \texttt{a\_{}new}的第$l$个元素和\texttt{a\_{}old}的第$l$个元素总是相同的\footnote{
 不考虑赋值时的类型和种别转化的情况下.
-}. 整个变形操作说白了就是: 将数组\verb|a_old|中的元素复制到形状为\verb|s|的数组\verb|a_new|中, 并保证元素顺序不变, 比如下面这样.
+}. 整个变形操作说白了就是: 将数组\texttt{a\_{}old}中的元素复制到形状为\texttt{s}的数组\texttt{a\_{}new}中, 并保证元素顺序不变, 比如下面这样.
 \begin{lstlisting}
 program main
     implicit none
@@ -118,11 +118,11 @@ end program main
 
 \section{数组切片}
 
-数组切片(slicing)是用一个数组得到另一个数组的操作. 现假设有一个维数为\verb|n|的数组\verb|a|, 则\verb|a(e1,...,en)|是另一个数组, 其中\verb|e1|,\dots ,\verb|en|乃整型一维数组或整型标量. 如何确定\verb|a(e1,...,en)|?
+数组切片(slicing)是用一个数组得到另一个数组的操作. 现假设有一个维数为\texttt{n}的数组\texttt{a}, 则\texttt{a(e1,...,en)}是另一个数组, 其中\texttt{e1},\dots ,\texttt{en}乃整型一维数组或整型标量. 如何确定\texttt{a(e1,...,en)}?
 
-引入\verb|v1|,\dots ,\verb|vn|, 保证若\verb|ei|为数组则\verb|vi|为\verb|ei|, 若\verb|ei|为标量则\verb|vi|为\verb|[ei]|. 这样\verb|a(v1,...,vn)|等于\verb|b|. 记\verb|vi|为$(v_{i;1},\dots,v_{i;{l_i}})$, 则$b_{{\iota_1},\dots,{\iota_n}}=a_{{v_{1;\iota_1}},\dots,{v_{n;\iota_n}}}$.
+引入\texttt{v1},\dots ,\texttt{vn}, 保证若\texttt{ei}为数组则\texttt{vi}为\texttt{ei}, 若\texttt{ei}为标量则\texttt{vi}为\texttt{[ei]}. 这样\texttt{a(v1,...,vn)}等于\texttt{b}. 记\texttt{vi}为$(v_{i;1},\dots,v_{i;{l_i}})$, 则$b_{{\iota_1},\dots,{\iota_n}}=a_{{v_{1;\iota_1}},\dots,{v_{n;\iota_n}}}$.
 
-假设\verb|e1|,\dots ,\verb|en|中\verb|ei1|,\dots ,\verb|eim|\ ($i_1\!<\!\dots\!<\!i_m$)是长度为$l_{i_1},\dots,l_{i_m}$的数组, 其他是标量, 则可将\verb|b|变形成形状为$(l_{i_1},\dots,l_{i_m})$的\verb|c|, \verb|c|就是\verb|a(e1,...,en)|.
+假设\texttt{e1},\dots ,\texttt{en}中\texttt{ei1},\dots ,\texttt{eim}\ ($i_1\!<\!\dots\!<\!i_m$)是长度为$l_{i_1},\dots,l_{i_m}$的数组, 其他是标量, 则可将\texttt{b}变形成形状为$(l_{i_1},\dots,l_{i_m})$的\texttt{c}, \texttt{c}就是\texttt{a(e1,...,en)}.
 
 我本来处心积虑地想再来几段话来把这切片讲得更明白些, 然后我就放弃了, 只好先来个示例给同志们做练习. 我敢保证自己写的东东肯定是真实不虚的, 但看来是很难理解记忆了. 幸好非常复杂的数组切片一般是用不上的. 如果老师敢考那些难死人的切片, 我们就当即暴动$\!\text{\~{}}$
 \begin{lstlisting}
@@ -139,7 +139,7 @@ end program main
 
 先前用向量下标(vector subscript)来切片, 我们还可以用三元下标(triplet subscript)\footnote{
 官方文档里用的是``subscript triplet''.
-}, 以\verb|p:q:r|代替\verb|(i,i=p,q,r)|, 当然\verb|:r|可以省略. 这不是器规, 是通用的. 而且三元下标中\verb|p|和\verb|q|也可以省略(但是注意\verb|p|和\verb|q|之间的\verb|:|不能省), \verb|p|省略就等于那一维的下界, \verb|q|省略就等于那一维的上界. 这样的切片简单且比较常用(尤其是省略\verb|:r|的时候), 是要掌握的. 比如我们可以方便地摘出$1$到$9$中的奇数.
+}, 以\texttt{p:q:r}代替\texttt{(i,i=p,q,r)}, 当然\texttt{:r}可以省略. 这不是器规, 是通用的. 而且三元下标中\texttt{p}和\texttt{q}也可以省略(但是注意\texttt{p}和\texttt{q}之间的\texttt{:}不能省), \texttt{p}省略就等于那一维的下界, \texttt{q}省略就等于那一维的上界. 这样的切片简单且比较常用(尤其是省略\texttt{:r}的时候), 是要掌握的. 比如我们可以方便地摘出$1$到$9$中的奇数.
 \begin{lstlisting}
 program main
     implicit none
@@ -149,7 +149,7 @@ program main
     odds = singles(::2) ! singles(1:9:2)
 end program main
 \end{lstlisting}
-还有, 如果\verb|i1,...,in|都是整型标量, 则\verb|a(i1,...,in)|就是$a_{i_1\dots i_n}$, 这更要掌握. 问: \verb|a(i1,...,in)|和\verb|a(i1:i1,...,in:in)|有什么区别?
+还有, 如果\texttt{i1,...,in}都是整型标量, 则\texttt{a(i1,...,in)}就是$a_{i_1\dots i_n}$, 这更要掌握. 问: \texttt{a(i1,...,in)}和\texttt{a(i1:i1,...,in:in)}有什么区别?
 
 对数组切片, 可以得到一个新数组, 看起来可以对这个新数组再切片. 然而这是不成的, 原因在于对数组切片得到的新数组, 其每一维的上下界其实都是不确定的\footnote{
 虽然在介绍切片规则时看起来有确定的上下界, 那只是为了说话方便.
@@ -157,7 +157,7 @@ end program main
 
 \section{数组运算}
 
-有了数组, 总是要用数组来算些什么东西. 现在我们可以在表达式中混用数组, 标量和\ref{fortran_opration}节中的所有运算符. 运算符的优先级, 和之前是一样的, \verb|+|和\verb|-|之前如果什么也没有, 也还是默认有个\verb|0|. 只需要知道, 当运算符两边出现数组时会有什么结果, 我们就能推理出任意表达式的结果了. 这又分两种情况.
+有了数组, 总是要用数组来算些什么东西. 现在我们可以在表达式中混用数组, 标量和\ref{fortran_opration}节中的所有运算符. 运算符的优先级, 和之前是一样的, \texttt{+}和\texttt{-}之前如果什么也没有, 也还是默认有个\texttt{0}. 只需要知道, 当运算符两边出现数组时会有什么结果, 我们就能推理出任意表达式的结果了. 这又分两种情况.
 \begin{itemize}
 \item 运算符两边都是数组.
 \item 运算符一边是标量, 另一边是数组.
@@ -189,10 +189,10 @@ end program main
 
 \section{数组赋值}\label{fortran_array_assignment}
 
-数组赋值可分两种, 一种``\verb|=|''右侧是数组, 另一种``\verb|=|''右侧是标量.
+数组赋值可分两种, 一种``\texttt{=}''右侧是数组, 另一种``\texttt{=}''右侧是标量.
 
-如果``\verb|=|''右侧是数组, 则俩玩楞形状必须一样滴. 假设我们要令\verb|a=b|, 并设$n$维数组$a$和$b$的下界分别为$j_{a;1},\dots,j_{a;n}$和$j_{b;1},\dots,j_{b;n}$, 则$a$和$b$的元素自然能一一对应. 首先我们要搞一个$\tilde{b}$, 使得$\tilde{b}_{(i_1-j_{b;1}+j_{a;1})\dots(i_n-j_{b;n}+j_{a;n})}=b_{i_1\dots i_n}$, 然后令$a$等于$\tilde{b}$即可. 简单来说就是令$a$和$b$中两两对应的元素相等. 这里$b$的上下界可能是不确定的, 但赋值给$a$后, $a$先前声明过, 所以其上下界一定是确定的.
+如果``\texttt{=}''右侧是数组, 则俩玩楞形状必须一样滴. 假设我们要令\texttt{a=b}, 并设$n$维数组$a$和$b$的下界分别为$j_{a;1},\dots,j_{a;n}$和$j_{b;1},\dots,j_{b;n}$, 则$a$和$b$的元素自然能一一对应. 首先我们要搞一个$\tilde{b}$, 使得$\tilde{b}_{(i_1-j_{b;1}+j_{a;1})\dots(i_n-j_{b;n}+j_{a;n})}=b_{i_1\dots i_n}$, 然后令$a$等于$\tilde{b}$即可. 简单来说就是令$a$和$b$中两两对应的元素相等. 这里$b$的上下界可能是不确定的, 但赋值给$a$后, $a$先前声明过, 所以其上下界一定是确定的.
 
-如果``\verb|=|''右侧是标量, 比如数组是$a$, 标量是$b$, 则先把$b$变成和$a$形状相同的数组$c$, 使得$c$中任意元素都是$b$, 然后令\verb|a=c|即可.
+如果``\texttt{=}''右侧是标量, 比如数组是$a$, 标量是$b$, 则先把$b$变成和$a$形状相同的数组$c$, 使得$c$中任意元素都是$b$, 然后令\texttt{a=c}即可.
 
 对于数组, 我们还可以用一些特殊东东来赋值, 比如forall, where和do concurrent, 不过这些东东我自己貌似会用, 却研究不出它们的明确规则. 我计划在第\ref{fortran_parallel_conpute}章介绍它们.

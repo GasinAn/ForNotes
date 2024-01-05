@@ -41,10 +41,10 @@ Windows系统安装方式如下.
 
 \subsubsection{使用CLI}
 
-Windows系统中, 打开开始菜单内Intel oneAPI 2023文件夹中的Intel oneAPI command prompt for Intel 64 for Visual Studio 2022 (或Intel oneAPI command prompt for IA32 for Visual Studio 2022). 然后可以使用cmd的命令(比如\verb|cd|之类的).
+Windows系统中, 打开开始菜单内Intel oneAPI 2023文件夹中的Intel oneAPI command prompt for Intel 64 for Visual Studio 2022 (或Intel oneAPI command prompt for IA32 for Visual Studio 2022). 然后可以使用cmd的命令(比如\texttt{cd}之类的).
 
 \paragraph{示例1}
-新建一个名为\verb|main.f90|的文件, 写入下面的内容并保存.
+新建一个名为\texttt{main.f90}的文件, 写入下面的内容并保存.
 \begin{lstlisting}
 program main
     implicit none
@@ -52,20 +52,20 @@ program main
 end program main
 \end{lstlisting}
 
-然后\verb|cd|到\verb|main.f90|所在的目录后执行下面这条命令\footnote{这里\texttt{ifort}对应的其实是Intel\r{} Fortran Compiler Classic, 想用真Intel\r{} Fortran Compiler, 请换成\texttt{ifx}. 本书所有示例程序都是用\texttt{ifort}测试的, 懒得改了, 大家凑合看吧!}.
+然后\texttt{cd}到\texttt{main.f90}所在的目录后执行下面这条命令\footnote{这里\texttt{ifort}对应的其实是Intel\r{} Fortran Compiler Classic, 想用真Intel\r{} Fortran Compiler, 请换成\texttt{ifx}. 本书所有示例程序都是用\texttt{ifort}测试的, 懒得改了, 大家凑合看吧!}.
 \begin{lstlisting}
 ifort main.f90
 \end{lstlisting}
-就把\verb|main.f90|编译好啦, 生成了文件\verb|main.obj|和\verb|main.exe|.
+就把\texttt{main.f90}编译好啦, 生成了文件\texttt{main.obj}和\texttt{main.exe}.
 
 执行下面这条命令.
 \begin{lstlisting}
 main.exe
 \end{lstlisting}
-``\verb|Hello, world!|''被打出来啦!
+``\texttt{Hello, world!}''被打出来啦!
 
 \paragraph{示例2}
-删掉\verb|main.obj|和\verb|main.exe|, 在\verb|main.f90|所在目录再新建一个名为\\\verb|helloworld.f90|的文件, 写入下面的内容并保存.
+删掉\texttt{main.obj}和\texttt{main.exe}, 在\texttt{main.f90}所在目录再新建一个名为\\\texttt{helloworld.f90}的文件, 写入下面的内容并保存.
 \begin{lstlisting}
 subroutine helloworld
     implicit none
@@ -73,7 +73,7 @@ subroutine helloworld
 end subroutine helloworld
 \end{lstlisting}
 
-把\verb|main.f90|修改成下面这样.
+把\texttt{main.f90}修改成下面这样.
 \begin{lstlisting}
 program main
     implicit none
@@ -85,68 +85,68 @@ end program main
 \begin{lstlisting}
 ifort main.f90 helloworld.f90
 \end{lstlisting}
-生成了\verb|main.obj|,~\verb|helloworld.obj|和\verb|main.exe|.
+生成了\texttt{main.obj},~\texttt{helloworld.obj}和\texttt{main.exe}.
 
 然后再次执行下面的命令.
 \begin{lstlisting}
 main.exe
 \end{lstlisting}
-``\verb|Hello, world!|''被打出来啦!
+``\texttt{Hello, world!}''被打出来啦!
 
 \paragraph{示例3}
-以后搞一些大事情时,~\verb|ifort|后要跟一大堆文件.
+以后搞一些大事情时,~\texttt{ifort}后要跟一大堆文件.
 
 一个个打文件名显然要死人.这时可以使用通配符.
 
-删掉\verb|main.obj|,~\verb|helloworld.obj|和\verb|main.exe|.执行命令.
+删掉\texttt{main.obj},~\texttt{helloworld.obj}和\texttt{main.exe}.执行命令.
 \begin{lstlisting}
 ifort *.f90
 \end{lstlisting}
-就相当于\verb|ifort|后跟了当前目录所有最后是\verb|.f90|的文件的文件名. 但注意, 这回生成的不是\verb|main.exe|, 而是\verb|helloworld.exe|, 字母表中h可是排在m前面呢.
+就相当于\texttt{ifort}后跟了当前目录所有最后是\texttt{.f90}的文件的文件名. 但注意, 这回生成的不是\texttt{main.exe}, 而是\texttt{helloworld.exe}, 字母表中h可是排在m前面呢.
 
 执行命令.
 \begin{lstlisting}
 helloworld.exe
 \end{lstlisting}
-``\verb|Hello, world!|''被打出来啦!
+``\texttt{Hello, world!}''被打出来啦!
 
 \paragraph{示例4}
-文件太多时, 使用通配符后可能不清楚最后\verb|.exe|文件的文件名是什么. 这时可以干脆直接指定文件名.
+文件太多时, 使用通配符后可能不清楚最后\texttt{.exe}文件的文件名是什么. 这时可以干脆直接指定文件名.
 
-删掉\verb|main.obj|,~\verb|helloworld.obj|和\verb|helloworld.exe|. 执行命令.
+删掉\texttt{main.obj},~\texttt{helloworld.obj}和\texttt{helloworld.exe}. 执行命令.
 \begin{lstlisting}
 ifort *.f90 -o a
 \end{lstlisting}
-这回生成的不是\verb|helloworld.exe|, 而是\verb|a.exe|.
+这回生成的不是\texttt{helloworld.exe}, 而是\texttt{a.exe}.
 
 执行命令.
 \begin{lstlisting}
 a.exe
 \end{lstlisting}
-``\verb|Hello, world!|''被打出来啦!
+``\texttt{Hello, world!}''被打出来啦!
 
 \paragraph{示例5}
-删掉\verb|main.obj|,~\verb|helloworld.obj|和\verb|a.exe|. 执行命令.
+删掉\texttt{main.obj},~\texttt{helloworld.obj}和\texttt{a.exe}. 执行命令.
 \begin{lstlisting}
 ifort -c helloworld.f90
 \end{lstlisting}
-这回只生成了文件\verb|helloworld.obj|.
+这回只生成了文件\texttt{helloworld.obj}.
 
 执行命令.
 \begin{lstlisting}
 ifort main.f90 helloworld.obj
 \end{lstlisting}
-生成了\verb|main.obj|和\verb|main.exe|.
+生成了\texttt{main.obj}和\texttt{main.exe}.
 
 执行命令.
 \begin{lstlisting}
 main.exe
 \end{lstlisting}
-``\verb|Hello, world!|''被打出来啦!
+``\texttt{Hello, world!}''被打出来啦!
 
-Ifort的工作流程是, 先把每个源文件都变成对应的\verb|.obj|文件, 再把它们合起来后变成\verb|.exe|文件. 遇到一些一万年也不会改, 而且会反复使用的文件(比如轮子\footnote{
+Ifort的工作流程是, 先把每个源文件都变成对应的\texttt{.obj}文件, 再把它们合起来后变成\texttt{.exe}文件. 遇到一些一万年也不会改, 而且会反复使用的文件(比如轮子\footnote{
     这里玩了个``重新制造轮子''的梗.
-}里的文件), 我们就可以先把它们统统变成\verb|.obj|文件, 然后反复用, 以节省时间.
+}里的文件), 我们就可以先把它们统统变成\texttt{.obj}文件, 然后反复用, 以节省时间.
 
 \subsubsection{使用GUI}
 
@@ -154,21 +154,21 @@ Ifort的工作流程是, 先把每个源文件都变成对应的\verb|.obj|文�
 
 然后搜索``Empty Project'', 找到下面标有``Fortran'', ``Windows'', ``控制台''的``Empty Project'', 选择之, 然后点击``下一步''.
 
-然后把``项目名称''改成HelloWorld, ``位置''选择自己喜欢的路径(下面用\verb|[dir]|表示这个路径), 点击``创建''.
+然后把``项目名称''改成HelloWorld, ``位置''选择自己喜欢的路径(下面用\texttt{[dir]}表示这个路径), 点击``创建''.
 
-然后就出现了编辑界面, 并且\verb|[dir]|内多出了一个\verb|HelloWorld|文件夹.
+然后就出现了编辑界面, 并且\texttt{[dir]}内多出了一个\texttt{HelloWorld}文件夹.
 
 默认使用的是Ifort. 欲用Ifx, 右键右边``解决方案资源管理器''里的``Console1 (IFORT)'', 点最下面的``属性'', 左边选``配置属性''$\rightarrow$``General'' (应已自动选上), 点``Use Compiler''右边的``IFORT Intel$\,\text{\textregistered}$ Fortran Compiler Classic'', 点最右边的带向下标志的按钮, 改选成`IFX Intel$\,\text{\textregistered}$ Fortran Compiler'', 点``应用'', 点``确定'', 看到右边``Console1 (IFORT)''变成``Console1 (IFX)''即成功.
 
 64位系统, 若上面Debug后是x86, 则可能需要将上面Debug后的x86改成x64 (如不需要, 也最好改改). 点x86右边的向下箭头可以改, 若没有x64, 可以点``配置管理器\dots''后尝试把x64调出来.
 
-右击右边``解决方案资源管理器''中的``Source Files'', 选择``添加''$\rightarrow$``现有项\dots'', 然后把之前的\verb|main.f90|和\verb|helloworld.f90|添加进来. 然后双击文件名即可打开文件.
+右击右边``解决方案资源管理器''中的``Source Files'', 选择``添加''$\rightarrow$``现有项\dots'', 然后把之前的\texttt{main.f90}和\texttt{helloworld.f90}添加进来. 然后双击文件名即可打开文件.
 
 点击上面的``调试'', 然后点``开始执行(不调试)''.
 
-``\verb|Hello, world!|''被打出来啦!
+``\texttt{Hello, world!}''被打出来啦!
 
-右击右边``解决方案资源管理器''中的``Source Files'', 选择``添加''$\rightarrow$``新建项\dots'', 可以新建文件, 默认在\verb|HelloWorld|文件夹里的\verb|HelloWorld|文件夹里.右击任意一个文件的文件名后, 可以点击``删除''或``重命名''进行删除或重命名操作.
+右击右边``解决方案资源管理器''中的``Source Files'', 选择``添加''$\rightarrow$``新建项\dots'', 可以新建文件, 默认在\texttt{HelloWorld}文件夹里的\texttt{HelloWorld}文件夹里.右击任意一个文件的文件名后, 可以点击``删除''或``重命名''进行删除或重命名操作.
 
 关掉Visual Studio, 重新打开, 左边多出了个HelloWorld.sln, 点它就能回到编辑界面了.
 
@@ -183,14 +183,14 @@ Windows系统安装方式如下.\footnote{
     \item 访问~\href{https://github.com/niXman/mingw-builds-binaries/releases}
     {MinGW-Builds-binaries releases}, 选择最新的release进入.
     \item 选带posix的; 64位系统选带x86\_64的, 32位系统选带i686的; Win 10及以上选带ucrt的, Win 10以下选带msvcrt的. 下载并解压.
-    \item 把解压出来的名为\verb|mingw64|的文件夹剪切到随便哪个目录. 暂称粘贴到的目录为\verb|[dir]|.
-    \item 在系统环境变量\verb|Path|中加入\verb|[dir]\mingw64\bin|. 举个例子, 如果刚才粘贴到\verb|C:\Program Files|, 就加入\verb|C:\Program Files\mingw64\bin|.
+    \item 把解压出来的名为\texttt{mingw64}的文件夹剪切到随便哪个目录. 暂称粘贴到的目录为\texttt{[dir]}.
+    \item 在系统环境变量\texttt{Path}中加入\texttt{[dir]\bs{}mingw64\bs{}bin}. 举个例子, 如果刚才粘贴到\texttt{C:\bs{}Program Files}, 就加入\texttt{C:\bs{}Program Files\bs{}mingw64\bs{}bin}.
     \item 下载~\href{https://code.visualstudio.com/sha/download?build=stable&os=win32-x64-user}
     {Visual Studio Code}~并安装.
     \item 打开Visual Studio Code, 点击左边四个正方形飞出一个的图标, 搜索C/C++, Modern Fortran和Code Runner并安装.
     \item[] 如果已经装了Python, 装Modern Fortran前先用pip\footnote{有conda当然用conda啦$\!\text{\~{}}$}装fortls.
-    \item 按Ctrl+Shift+P, 然后选择``Preferences: Open Settings (JSON)'', 打开名为\verb|settings.json|的JSON文件.
-    \item 在\verb|settings.json|里加入下面这些键值对.
+    \item 按Ctrl+Shift+P, 然后选择``Preferences: Open Settings (JSON)'', 打开名为\texttt{settings.json}的JSON文件.
+    \item 在\texttt{settings.json}里加入下面这些键值对.
     \begin{lstlisting}
 "code-runner.executorMap": {
     "FortranFreeForm":
@@ -203,14 +203,14 @@ Windows系统安装方式如下.\footnote{
     \end{lstlisting}
 \end{enumerate}
 
-最后一步其实和在VS Code的设置里点点点是一样滴, 我其实就是在设置里凭感觉点点点后把\verb|settings.json|里的东东弄出来了, 如果玩代码的时候感觉不舒服, 自己解决, 我可不管. 注意
+最后一步其实和在VS Code的设置里点点点是一样滴, 我其实就是在设置里凭感觉点点点后把\texttt{settings.json}里的东东弄出来了, 如果玩代码的时候感觉不舒服, 自己解决, 我可不管. 注意
 \begin{itemize}
-    \item \verb|[cmd]|要替换成编译并执行程序的整套命令.可以参考\ref{use_gfortran}小节, 按自己的需求替换, 也可以戳\href{https://zhuanlan.zhihu.com/p/362328064}{这里}搬运现成的.
-    \item \verb|[dir]|要替换成上文提到的\verb|[dir]|.
+    \item \texttt{[cmd]}要替换成编译并执行程序的整套命令.可以参考\ref{use_gfortran}小节, 按自己的需求替换, 也可以戳\href{https://zhuanlan.zhihu.com/p/362328064}{这里}搬运现成的.
+    \item \texttt{[dir]}要替换成上文提到的\texttt{[dir]}.
 \end{itemize}
 
 还有加入键值对的时候要符合JSON的规则. 举两个例子.
-如果一开始\verb|settings.json|里是空的, 加入键值对后可能长这样.
+如果一开始\texttt{settings.json}里是空的, 加入键值对后可能长这样.
 \begin{lstlisting}
 {
   "code-runner.executorMap": {
@@ -223,7 +223,7 @@ Windows系统安装方式如下.\footnote{
   "code-runner.saveAllFilesBeforeRun": true
 }
 \end{lstlisting}
-如果一开始\verb|settings.json|长这样,
+如果一开始\texttt{settings.json}长这样,
 \begin{lstlisting}
 {
   "editor.wordWrap": "wordWrapColumn",
@@ -254,18 +254,18 @@ Windows系统安装方式如下.\footnote{
 \subsubsection{使用CLI}
 Gfortran的用法和\ref{use_ifort}小节中Ifort的用法非常像, 不同点是:
 \begin{itemize}
-  \item 使用\verb|gfortran|命令代替\verb|ifort|命令;
-  \item 中间过程生成的是\verb|.o|文件,不是\verb|.obj|文件;
-  \item 默认生成文件\verb|a.exe|,且不会生成\verb|.o|文件.
+  \item 使用\texttt{gfortran}命令代替\texttt{ifort}命令;
+  \item 中间过程生成的是\texttt{.o}文件,不是\texttt{.obj}文件;
+  \item 默认生成文件\texttt{a.exe},且不会生成\texttt{.o}文件.
 \end{itemize}
 
-直接打开命令行(cmd或powershell), 即可使用\verb|gfortran|命令.
+直接打开命令行(cmd或powershell), 即可使用\texttt{gfortran}命令.
 
-在VS Code中, 可以直接点上面``Terminal''后点``New Terminal''来调出命令行. 默认调出的是powershell. 若想让默认调出的命令行是cmd, 可在\verb|settings.json|里加入下面这个键值对.
+在VS Code中, 可以直接点上面``Terminal''后点``New Terminal''来调出命令行. 默认调出的是powershell. 若想让默认调出的命令行是cmd, 可在\texttt{settings.json}里加入下面这个键值对.
 \begin{lstlisting}
 "terminal.integrated.shell.windows":
 "C:\\Windows\\System32\\cmd.exe"
 \end{lstlisting}
 
 \subsubsection{使用GUI}
-点击右上方的白色三角儿即可编译并执行! 除非之前\verb|[cmd]|设错啦$\!\text{\~{}}$
+点击右上方的白色三角儿即可编译并执行! 除非之前\texttt{[cmd]}设错啦$\!\text{\~{}}$

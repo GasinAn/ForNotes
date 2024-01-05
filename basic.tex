@@ -6,14 +6,14 @@
     显然, 程序, 源代码和源代码文件是高度相关的, 所以今后将不再区分这三者.
 }.
 
-比如, 在一个名为\verb|helloworld.f90|的文件内写入下面这些内容并保存.
+比如, 在一个名为\texttt{helloworld.f90}的文件内写入下面这些内容并保存.
 \begin{lstlisting}
 program main
     implicit none
     print *, 'Hello, world!'
 end program main
 \end{lstlisting}
-这个\verb|helloworld.f90|文件就是一个源代码文件, 里面的四行字符就是一份源代码, 这份源代码代表四条指令, 这四条指令组合起来就是一个程序.
+这个\texttt{helloworld.f90}文件就是一个源代码文件, 里面的四行字符就是一份源代码, 这份源代码代表四条指令, 这四条指令组合起来就是一个程序.
 
 \section{字符集}
 
@@ -43,7 +43,7 @@ END PROGRAM MAIN
 
 \section{源代码格式}
 
-Fortran的源代码格式(source form)分两种: 自由格式(free form)和固定格式(fixed form). 自由格式的源代码需要保存在拓展名为\verb|.f90|的文件中, 可能可以保存在拓展名为\verb|.F90|, \verb|.f03|, \verb|.F03|, \verb|.f08|, \verb|.F08|, \verb|.f18|, \verb|.F18|, \verb|.fypp|, \verb|.FYPP|的文件中. 固定格式的源代码需要保存在拓展名为\verb|.for|或\verb|.f|的文件中, 可能可以保存在拓展名为\verb|.FOR|, \verb|.F|, \verb|.ftn|, \verb|.FTN|, \verb|.fpp|, \verb|.FPP|的文件中. 上述``可能''要看编译器承认不承认, 也就是能不能执行(见\ref{run_fortran}节).
+Fortran的源代码格式(source form)分两种: 自由格式(free form)和固定格式(fixed form). 自由格式的源代码需要保存在拓展名为\texttt{.f90}的文件中, 可能可以保存在拓展名为\texttt{.F90}, \texttt{.f03}, \texttt{.F03}, \texttt{.f08}, \texttt{.F08}, \texttt{.f18}, \texttt{.F18}, \texttt{.fypp}, \texttt{.FYPP}的文件中. 固定格式的源代码需要保存在拓展名为\texttt{.for}或\texttt{.f}的文件中, 可能可以保存在拓展名为\texttt{.FOR}, \texttt{.F}, \texttt{.ftn}, \texttt{.FTN}, \texttt{.fpp}, \texttt{.FPP}的文件中. 上述``可能''要看编译器承认不承认, 也就是能不能执行(见\ref{run_fortran}节).
 
 写固定格式的程序会遇到各种各样的问题. 自由格式就是为了替代固定格式而创立的. 本书Fortran部分的全部内容都基于自由格式程序.
 
@@ -93,7 +93,7 @@ Fortran的源代码格式(source form)分两种: 自由格式(free form)和固�
 
 \subsection{注释}
 
-程序每一行中, \verb|!|及后面的所有内容, 通常都会被无视(不会被无视的地方见\ref{fortran_char}节), 也就相当于\verb|!|后面的内容不存在. 会被无视的\verb|!|及后面的内容称为注释(comment), 只包含注释的行称为注释行(comment line).
+程序每一行中, \texttt{!}及后面的所有内容, 通常都会被无视(不会被无视的地方见\ref{fortran_char}节), 也就相当于\texttt{!}后面的内容不存在. 会被无视的\texttt{!}及后面的内容称为注释(comment), 只包含注释的行称为注释行(comment line).
 
 注释写什么无所谓, 但这么强大的东东还是要充分利用的. 普通的小程序, 可以在程序中复杂深奥的部分加上注释, 写上这部分是怎么运作的, 干了什么事, 得到什么结果等. 只要自己看程序的一部分, 觉得头大, 就加上注释吧. 优秀的轮子里都有非常完善的注释, 包括程序每部分的功能, 作者姓名, 机构, 修改时间, 和版权声明等, 注释比程序本身还长是常有的事.
 
@@ -105,7 +105,7 @@ Fortran的源代码格式(source form)分两种: 自由格式(free form)和固�
 
 \subsection{续行}
 
-有时可能遇到一行太长的情况, 这时可以使用\verb|&|来把一行拆成两行写.
+有时可能遇到一行太长的情况, 这时可以使用\texttt{\&{}}来把一行拆成两行写.
 
 下面这个程序就用了续行(continuation).
 \begin{lstlisting}
@@ -123,7 +123,7 @@ program main
 end program main
 \end{lstlisting}
 
-如果用一个续行符\verb|&|续行后, 一行还是太长, 可以接着用续行符再续. 比如下面这个程序和上面两个程序是一样的.
+如果用一个续行符\texttt{\&{}}续行后, 一行还是太长, 可以接着用续行符再续. 比如下面这个程序和上面两个程序是一样的.
 \begin{lstlisting}
 program main
     implicit none
@@ -158,14 +158,14 @@ program main
     ! This is invalid!
 end program main
     \end{lstlisting}
-    \item 没法在注释中使用续行符, 因为注释中的\verb|&|会被当成是注释的一部分.\\比如, 下面这个程序是不成的.\begin{lstlisting}
+    \item 没法在注释中使用续行符, 因为注释中的\texttt{\&{}}会被当成是注释的一部分.\\比如, 下面这个程序是不成的.\begin{lstlisting}
 program main
     implicit none
     print *, 'Loooooooooooooooooooooooooooooooong!'
     ! This is &
       invalid!
 end program main
-    \end{lstlisting}在VS code这样合格的编辑器中, 上面这个程序的第四行和第五行颜色会不一样, 并且第四行中\verb|&|的颜色会和第四行其他字符的颜色一样. 这就提示我们\verb|&|是注释的一部分, 并且第五行不被当成是注释.
+    \end{lstlisting}在VS code这样合格的编辑器中, 上面这个程序的第四行和第五行颜色会不一样, 并且第四行中\texttt{\&{}}的颜色会和第四行其他字符的颜色一样. 这就提示我们\texttt{\&{}}是注释的一部分, 并且第五行不被当成是注释.
     \item 续行符后的所有空格会被无视, 并且可以在续行符后加注释.\\比如, 下面这个程序是成的.\begin{lstlisting}
 program main
     implicit none
@@ -189,7 +189,7 @@ end program main
     在合适的地方使用续行符, 并保证续行符前有一个空格.
 \end{convention}
 
-用VS Code的话, 可以在\verb|settings.json|里加入下面这两个键值对.
+用VS Code的话, 可以在\texttt{settings.json}里加入下面这两个键值对.
 \begin{lstlisting}
 "editor.wordWrap": "wordWrapColumn",
 "editor.wordWrapColumn": 80
@@ -251,15 +251,15 @@ program [program-name]
     ...
 end program [program-name]
 \end{lstlisting}
-其中, \verb|[program-name]|处是一个名称(name). 名称指的是由字母, 数字和下划线``\verb|_|''\footnote{
+其中, \texttt{[program-name]}处是一个名称(name). 名称指的是由字母, 数字和下划线``\texttt{\_{}}''\footnote{
     下划线是空格的替代字符, 长得还是蛮像滴!
-}组成的, 开头是字母的字符串. ``\verb|...|''处则是各种指令, 一行一条.
+}组成的, 开头是字母的字符串. ``\texttt{...}''处则是各种指令, 一行一条.
 
 \ref{use_ifort}小节和\ref{use_gfortran}小节中已经介绍了程序运行/执行(run/execute)的部分方法(我觉着掌握这些就够了). 所谓运行就是让电脑按程序中的指令干活. 程序运行的规则是:
 \begin{enumerate}
-    \item 首先运行\verb|program [program-name]|.
+    \item 首先运行\texttt{program [program-name]}.
     \item 运行一行指令后, 紧接着运行下一行指令, 除非先前运行的指令中有指明接下来应该运行哪一行指令(见第\ref{fortran_construct}章, 第\ref{fortran_procedure}章, 第\ref{fortran_module}章, 第\ref{fortran_submodule}章).
-    \item 一旦运行\verb|end program [program-name]|, 就不再运行任何指令.
+    \item 一旦运行\texttt{end program [program-name]}, 就不再运行任何指令.
 \end{enumerate}
 
 \section{异常}\label{fortran_exception}
@@ -270,9 +270,9 @@ end program [program-name]
 
 电脑运行程序, 运行着运行着, 可能会突然发现自己没法儿干活了, 这时电脑就只好告诉我们, 它莫得干(这就是抛出错误), 然后直接罢工了.
 
-当然如果老是这样, 俺们和电脑们都会浑身难受, 因为在碰上错误前, 电脑还执行了其他指令, 这可能会白费相当多的时间. 所以在生成\verb|.exe|文件前, 电脑会先把整份代码读一遍, 瞅一瞅看是不是有地方电脑是不能干活的, 如果有, 电脑会提前抛出错误, 这样就不会白费太多时间了. 当然有时候, 电脑在事先没有办法判断某些个地方是没法干活的, 那它就只能等真执行到那里时再抛出错误了.
+当然如果老是这样, 俺们和电脑们都会浑身难受, 因为在碰上错误前, 电脑还执行了其他指令, 这可能会白费相当多的时间. 所以在生成\texttt{.exe}文件前, 电脑会先把整份代码读一遍, 瞅一瞅看是不是有地方电脑是不能干活的, 如果有, 电脑会提前抛出错误, 这样就不会白费太多时间了. 当然有时候, 电脑在事先没有办法判断某些个地方是没法干活的, 那它就只能等真执行到那里时再抛出错误了.
 
-比如, 运行这样一个程序(文件名\verb|main.f90|).
+比如, 运行这样一个程序(文件名\texttt{main.f90}).
 \begin{lstlisting}
 program main
     implicit none
@@ -302,7 +302,7 @@ Error: Missing leading left parenthesis in format string at
 (1)
 \end{lstlisting}
 
-由于程序第三行不符合规则(\verb|print|后少了\verb|*,|), 电脑不知怎么干活了, 只好报个错儿. 这个错儿是在生成\verb|.exe|文件时就查出了.
+由于程序第三行不符合规则(\texttt{print}后少了\texttt{*,}), 电脑不知怎么干活了, 只好报个错儿. 这个错儿是在生成\texttt{.exe}文件时就查出了.
 
 再比如, (Windows下)运行这样一个程序.
 \begin{lstlisting}
@@ -312,7 +312,7 @@ program main
 end program main
 \end{lstlisting}
 
-这回生成\verb|.exe|文件时, Ifort和Gfortran都表现得很正常, 然后就出事. 虽然所有命令都是符合规则的, 然而Windows文件名里不能有\verb|*|, 电脑没法干活, 只好报个错儿.
+这回生成\texttt{.exe}文件时, Ifort和Gfortran都表现得很正常, 然后就出事. 虽然所有命令都是符合规则的, 然而Windows文件名里不能有\texttt{*}, 电脑没法干活, 只好报个错儿.
 
 一个程序会不会报错儿, 其实还和编译器有关. 比如运行下面这个程序.
 \begin{lstlisting}
@@ -335,7 +335,7 @@ end program main
 
 有些时候电脑能够执行指令, 但它觉得这些个指令十分``危险'', 很有可能指令的实际执行过程并不是我们预想的那样, 这时电脑就会抛出警告. 什么时候应该给个错误, 不同编译器的观点还是比较一致的, 但什么时候给个警告, 那就全看编译器心情了.
 
-比如, 运行这样一个程序(文件名\verb|main.f90|).
+比如, 运行这样一个程序(文件名\texttt{main.f90}).
 \begin{lstlisting}
 program main
     implicit none
@@ -352,9 +352,9 @@ main.f90(3): warning #6384: The INTEGER(KIND=4) value is out
 -------------------^
 \end{lstlisting}
 
-Ifort认为\verb|1000000000000|过大, 无法正确存储, 于是就给个警告, 但程序仍然可以运行. 运行后输出\verb|-727379968|, 果然很奇怪! 至于Gfortran嘛, 它也认为\verb|1000000000000|过大, 但它不是给出警告, 而是直接报错.
+Ifort认为\texttt{1000000000000}过大, 无法正确存储, 于是就给个警告, 但程序仍然可以运行. 运行后输出\texttt{-727379968}, 果然很奇怪! 至于Gfortran嘛, 它也认为\texttt{1000000000000}过大, 但它不是给出警告, 而是直接报错.
 
-再比如, 运行这样一个程序(文件名\verb|main.f90|).
+再比如, 运行这样一个程序(文件名\texttt{main.f90}).
 \begin{lstlisting}
 program main
     implicit none
@@ -373,4 +373,4 @@ Warning: Extension: Conversion from LOGICAL(4) to INTEGER(4)
  at (1)
 \end{lstlisting}
 
-Gfortran觉得令整数\verb|i|等于逻辑``真''的操作其实是标准规则不允许的, 是自己放水才能这么干的, 于是就给个警告, 但程序仍然可以运行. 运行后输出\verb|1|. 至于Ifort嘛, 它倒是不报错也不给警告, 干脆利落地运行了, 但运行后输出的是\verb|-1|\dots
+Gfortran觉得令整数\texttt{i}等于逻辑``真''的操作其实是标准规则不允许的, 是自己放水才能这么干的, 于是就给个警告, 但程序仍然可以运行. 运行后输出\texttt{1}. 至于Ifort嘛, 它倒是不报错也不给警告, 干脆利落地运行了, 但运行后输出的是\texttt{-1}\dots
