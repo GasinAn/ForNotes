@@ -10,7 +10,6 @@
 \usepackage{verbatim}
 \usepackage{xcolor}
 %\syntaxonly
-\pagestyle{plain}
 \makeatletter
 \newcommand{\starttoc}{
     \chapter*{\contentsname}
@@ -42,14 +41,13 @@
 \title{Fortran笔记}
 \author{GasinAn}
 \begin{document}
-    \maketitle
+    \frontmatter
     \pagestyle{empty}
-    ~\newpage
+    \maketitle
     \include{copyright.tex}
-    ~\newpage
     \tableofcontents
+    \mainmatter
     \pagestyle{plain}
-    \setcounter{page}{1}
     \include{preface.tex}
     \include{compiler.tex}
     \include{basic.tex}
@@ -59,4 +57,6 @@
     \include{array.tex}
     \include{procedure.tex}
     \include{io.tex}
+    \appendix
+    \backmatter
 \end{document}
