@@ -12,8 +12,7 @@
 %\syntaxonly
 \makeatletter
 \newcommand{\starttoc}{
-    \chapter*{\contentsname}
-    \thispagestyle{empty}\@starttoc{toc}\thispagestyle{empty}
+    \chapter*{\contentsname}\@starttoc{toc}
 }
 \makeatother
 \renewcommand{\tableofcontents}{\twocolumn\starttoc\onecolumn}
@@ -41,14 +40,13 @@
 \title{Fortran笔记}
 \author{GasinAn}
 \begin{document}
+    \pagestyle{plain}
     \frontmatter
-    \pagestyle{empty}
     \maketitle
     \include{copyright.tex}
-    \tableofcontents
-    \pagestyle{plain}
     \setcounter{page}{1}
     \include{preface.tex}
+    \tableofcontents
     \mainmatter
     \include{introduction.tex}
     \include{compiler.tex}
