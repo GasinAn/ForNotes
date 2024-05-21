@@ -22,19 +22,25 @@ end subroutine helloworld
 
 \section{程序单元}\label{program_unit}
 
-Fortran程序由若干程序单元(program unit)组成, 程序单元可能是主程序(main program), 或外部子程序(external subprogram, 见第\ref{fortran_procedure}章), 或模块(module, 见第\ref{fortran_module}章), 或子模块(submodule, 见第\ref{fortran_submodule}章). 一个Fortran程序中必须有且只有一个主程序, 其他程序单元数目任意.
+每个 Fortran 程序都由若干程序单元(program unit)组成. 程序单元可能是主程序(main program), 或外部子程序(external subprogram), 或模块(module), 或子模块(submodule). 一个 Fortran 程序中必须有且只有一个主程序, 其他程序单元数目随便.
 
-主程序必须满足下面的格式\footnote{
-    其实头尾还可能可以省略一部分, 但还是写全为好.
-}.
+主程序长下面这样.
 \begin{lstlisting}
 program [program-name]
     ...
 end program [program-name]
 \end{lstlisting}
-其中, \texttt{[program-name]}处是一个名称(name). 名称指的是由字母, 数字和下划线``\texttt{\_{}}''\footnote{
+其中 \texttt{[program-name]}处是一个名称(name), 名称指的是由字母, 数字和下划线``\texttt{\_{}}''\footnote{
     下划线是空格的替代字符, 长得还是蛮像滴!
-}组成的, 开头是字母的字符串. ``\texttt{...}''处则是各种指令, 一行一条.
+}组成的, 开头是字母的字符串, ``\texttt{...}''处则是各种指令, 一行一条. 比如, 之前 \ref{fortran_program} 节里 \texttt{main.f90} 里的程序就是一个名称为 \texttt{main} 的主程序\footnote{安安习惯把主程序的名称取做 \texttt{main} 并放在 \texttt{main.f90} 里.} \\( \texttt{helloworld.f90} 里的程序则是一个外部子程序).
+
+外部子程序在第\ref{fortran_procedure}章里讲, 模块在第\ref{fortran_module}章里讲, 子模块在第\ref{fortran_submodule}章里讲.\footnote{??\mbox{}的内容安安会在猴年马月写好的!}
+
+每个 Fortran 源代码文件里都可以放若干完整的程序单元, 但习惯上一个源代码文件里只放一个程序单元, 并且文件名和文件里的程序单元名相同(比如主程序 \texttt{main} 放在 \texttt{main.f90} 里).
+\begin{convention}
+    一个源代码文件里只放一个程序单元, 并且文件名和文件里的程序单元名相同.
+\end{convention}
+当然, 安安偶尔也会在一个源代码文件里放多个程序单元, 比如安安在玩 \href{https://iausofa.org/}{SOFA} 的时候, 习惯把除 \texttt{t\_{}sofa\_{}f.for} 外的所有文件里的东东通通复制粘贴到一个名为 \texttt{sofa.for} 的新文件里, 这个文件里就有一大堆外部子程序了.
 
 \section{字符集}
 
