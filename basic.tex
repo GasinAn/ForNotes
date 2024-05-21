@@ -15,6 +15,22 @@ end program main
 \end{lstlisting}
 这个\texttt{helloworld.f90}文件就是一个源代码文件, 里面的四行字符就是一份源代码, 这份源代码代表四条指令, 这四条指令组合起来就是一个程序.
 
+\section{程序单元}
+
+Fortran程序由若干程序单元(program unit)组成, 程序单元可能是主程序(main program), 或外部子程序(external subprogram, 见第\ref{fortran_procedure}章), 或模块(module, 见第\ref{fortran_module}章), 或子模块(submodule, 见第\ref{fortran_submodule}章). 一个Fortran程序中必须有且只有一个主程序, 其他程序单元数目任意.
+
+主程序必须满足下面的格式\footnote{
+    其实头尾还可能可以省略一部分, 但还是写全为好.
+}.
+\begin{lstlisting}
+program [program-name]
+    ...
+end program [program-name]
+\end{lstlisting}
+其中, \texttt{[program-name]}处是一个名称(name). 名称指的是由字母, 数字和下划线``\texttt{\_{}}''\footnote{
+    下划线是空格的替代字符, 长得还是蛮像滴!
+}组成的, 开头是字母的字符串. ``\texttt{...}''处则是各种指令, 一行一条.
+
 \section{字符集}
 
 Fortran可以在程序中使用键盘能直接打出的所有字符. 其他字符(比如汉字, 汉语标点)等能不能出现在程序中, 要看编译器认不认, 也就是能不能执行(见\ref{run_fortran}节). 注意, 英文标点和中文标点是不同的!
@@ -250,20 +266,6 @@ end program main
 \subsection{return 语句}
 
 \section{运行}\label{run_fortran}
-
-Fortran程序由若干程序单元(program unit)组成, 程序单元可能是主程序(main program), 或外部子程序(external subprogram, 见第\ref{fortran_procedure}章), 或模块(module, 见第\ref{fortran_module}章), 或子模块(submodule, 见第\ref{fortran_submodule}章). 一个Fortran程序中必须有且只有一个主程序, 其他程序单元数目任意.
-
-主程序必须满足下面的格式\footnote{
-    其实头尾还可能可以省略一部分, 但还是写全为好.
-}.
-\begin{lstlisting}
-program [program-name]
-    ...
-end program [program-name]
-\end{lstlisting}
-其中, \texttt{[program-name]}处是一个名称(name). 名称指的是由字母, 数字和下划线``\texttt{\_{}}''\footnote{
-    下划线是空格的替代字符, 长得还是蛮像滴!
-}组成的, 开头是字母的字符串. ``\texttt{...}''处则是各种指令, 一行一条.
 
 \ref{use_ifort}小节和\ref{use_gfortran}小节中已经介绍了程序运行/执行(run/execute)的部分方法(我觉着掌握这些就够了). 所谓运行就是让电脑按程序中的指令干活. 程序运行的规则是:
 \begin{enumerate}
