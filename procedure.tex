@@ -140,7 +140,7 @@ end subroutine ab2bc_then_sumabc
 \begin{enumerate}
     \item 从\texttt{subroutine ...}到\texttt{end subroutine ...}便是子例行子程序了. 这部分可以和主程序放在一个文件里, 顺序也随便, 但通常是单独放在另一个文件里.
     \item \texttt{subroutine}和\texttt{end subroutine}后的\texttt{XX} (示例中为\texttt{ab2bc\_{}then\_{}sumabc})称为子例行子程序名. 一般存这个子程序的文件就会取成\texttt{XX.f90} (比如示例中的子程序就可以存入名为\texttt{ab2bc\_{}then\_{}sumabc.f90}的文件中). 当然, 子程序名得尽量表明子程序的功能.
-    \item 子程序和主程序一样都是程序单元(见\ref{run_fortran}节), 一样得变量声明一波, 所以\texttt{implicit none}得加, 要用种别的话\texttt{use iso\_{}fortran\_{}env}也得加.
+    \item 子程序和主程序一样都是程序单元(见\ref{program_unit}节), 一样得变量声明一波, 所以\texttt{implicit none}得加, 要用种别的话\texttt{use iso\_{}fortran\_{}env}也得加.
     \item 子程序里有三个变量\texttt{a}, \texttt{b}, \texttt{c}, 我在声明时加了\texttt{,intent(...)}, 这三个变量在\texttt{ab2bc\_{}then\_{}sumabc}后的\texttt{()}里出现, 在\texttt{()}里出现的称为哑参量(dummy argument), 只有哑参量能在声明时加\texttt{,intent(...)}. 我称加\texttt{,intent(in)}的为只读(read-only)参量, 加\texttt{,intent(inout)}的为读写(read-write)参量, 加\texttt{,intent(out)}的为只写(write-only)参量.
     \item 主程序里也有三个变量\texttt{a}, \texttt{b}, \texttt{c}, 但只是变量名和子程序里的\texttt{a}, \texttt{b}, \texttt{c}一样, 实际上是不同的三个变量. 看我这示例, 子程序里\texttt{a}, \texttt{b}, \texttt{c}变来变去, 花里胡哨, 主程序里\texttt{a}, \texttt{b}, \texttt{c}岿然不动.
     \item 主程序里出现\texttt{call ab2bc\_{}then\_{}sumabc(x, y, z)}, \texttt{()}里的\texttt{x}, \texttt{y}, \texttt{z}称为实参量(actual argument). 实参量可以是任意数据实体, 也就是说实参量可以是变量, 也可以是常量或其他东东. 子程序里三个哑参量排排坐, 主程序里三个实参量排排坐, 位置一样的哑参量和实参量(\texttt{a}和\texttt{x}, \texttt{b}和\texttt{y}, \texttt{c}和\texttt{z})称为对应的. 对应的参量在程序运行时会相互赋值来赋值去, 这称为参量结合(argument association), 我们一般称为哑实结合.
