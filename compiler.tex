@@ -47,13 +47,13 @@ Windows系统安装方式如下.
 \begin{lstlisting}
 program main
     implicit none
-    call helloworld
+    call helloworld()
 end program main
 \end{lstlisting}
 
 打开 \texttt{helloworld.f90} , 写入下面的内容并保存.
 \begin{lstlisting}
-subroutine helloworld
+subroutine helloworld()
     implicit none
     print *, 'Hello, world!'
 end subroutine helloworld

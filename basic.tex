@@ -8,12 +8,12 @@
 \begin{lstlisting}
 program main
     implicit none
-    call helloworld
+    call helloworld()
 end program main
 \end{lstlisting}
 在另一个名为 \texttt{helloworld.f90} 的文件内写入下面这些内容并保存.
 \begin{lstlisting}
-subroutine helloworld
+subroutine helloworld()
     implicit none
     print *, 'Hello, world!'
 end subroutine helloworld
