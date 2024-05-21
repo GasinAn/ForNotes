@@ -2,18 +2,23 @@
 
 \section{程序}\label{fortran_program}
 
-程序(program)是指挥电脑工作的一堆指令. 这些指令是要用一堆字符表示的, 表示指令的字符的整体称为源代码(source code). 源代码需要被保存在文件中, 保存源代码的文件称为源代码文件(source code file)\footnote{
-    显然, 程序, 源代码和源代码文件是高度相关的, 所以今后将不再区分这三者.
-}.
+程序(program)是指挥电脑工作的一堆指令. 这堆指令要用一堆字符表示, 表示指令的所有字符合起来称为源代码(source code). 源代码需要被保存在文件中, 保存源代码的所有文件合起来称为源代码文件(source code file).
 
-比如, 在一个名为\texttt{helloworld.f90}的文件内写入下面这些内容并保存.
+比如, 在一个名为 \texttt{main.f90} 的文件内写入下面这些内容并保存.
 \begin{lstlisting}
 program main
     implicit none
-    print *, 'Hello, world!'
+    call helloworld
 end program main
 \end{lstlisting}
-这个\texttt{helloworld.f90}文件就是一个源代码文件, 里面的四行字符就是一份源代码, 这份源代码代表四条指令, 这四条指令组合起来就是一个程序.
+在另一个名为 \texttt{helloworld.f90} 的文件内写入下面这些内容并保存.
+\begin{lstlisting}
+subroutine helloworld
+    implicit none
+    print *, 'Hello, world!'
+end subroutine helloworld
+\end{lstlisting}
+那么 \texttt{main.f90} 和 \texttt{helloworld.f90} 就是源代码文件, 两个源代码文件里头一共写着8行字符, 这些字符合起来是源代码, 表示的指令是``开始运行主程序 \texttt{main} ; 禁止隐式声明; 运行子程序 \texttt{helloworld} ; 开始运行子程序 \texttt{helloworld} ; 禁止隐式声明; 让标准输出(电脑屏幕)上出现`Hello, world!'; 结束运行子程序 \texttt{helloworld} ; 结束运行主程序 \texttt{main} '', 这一大堆指令合起来是程序.
 
 \section{程序单元}\label{program_unit}
 
