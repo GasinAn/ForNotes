@@ -18,7 +18,41 @@ subroutine helloworld()
     print *, 'Hello, world!'
 end subroutine helloworld
 \end{lstlisting}
-那么 \texttt{main.f90} 和 \texttt{helloworld.f90} 就是源代码文件, 两个源代码文件里头一共写着8行字符, 这些字符合起来是源代码, 表示的指令是``开始运行主程序 \texttt{main} ; 禁止隐式声明; 运行子程序 \texttt{helloworld} ; 开始运行子程序 \texttt{helloworld} ; 禁止隐式声明; 让标准输出(电脑屏幕)上出现`Hello, world!'; 结束运行子程序 \texttt{helloworld} ; 结束运行主程序 \texttt{main} '', 这一大堆指令合起来是程序.
+那么 \texttt{main.f90} 和 \texttt{helloworld.f90} 就是源代码文件, 这俩文件里头一共有 8 行字符, 这些字符合起来就是源代码, 表示的指令如表 \ref{source_and_command_main} 和表 \ref{source_and_command_helloworld} 所示, 这一大堆指令合起来就是程序.
+\begin{table}[!htbp]
+    \centering
+    \begin{tabular}{|p{0.42\textwidth}|p{0.48\textwidth}|}
+        \hline
+        \multicolumn{1}{|c|}{源代码}&\multicolumn{1}{|c|}{指令}\\
+        \hline
+        \texttt{program main}&开始运行主程序 \texttt{main}\\
+        \hline
+        \texttt{implicit none}&禁止隐式声明\\
+        \hline
+        \texttt{call helloworld()}&调用子程序 \texttt{helloworld}\\
+        \hline
+        \texttt{end program main}&结束运行主程序 \texttt{main}\\
+        \hline
+    \end{tabular}
+    \caption{\texttt{main.f90} 中源代码与指令的对照}\label{source_and_command_main}
+\end{table}
+\begin{table}[!htbp]
+    \centering
+    \begin{tabular}{|p{0.42\textwidth}|p{0.48\textwidth}|}
+        \hline
+        \multicolumn{1}{|c|}{源代码}&\multicolumn{1}{|c|}{指令}\\
+        \hline
+        \texttt{subroutine helloworld()}&开始运行子例行 \texttt{helloworld}\\
+        \hline
+        \texttt{implicit none}&禁止隐式声明\\
+        \hline
+        \texttt{print *, 'Hello, world!'}&让电脑屏幕上出现``Hello, world!''\\
+        \hline
+        \texttt{end subroutine helloworld}&结束运行子例行 \texttt{helloworld}\\
+        \hline
+    \end{tabular}
+    \caption{\texttt{helloworld.f90} 中源代码与指令的对照}\label{source_and_command_helloworld}
+\end{table}
 
 \section{程序单元}\label{program_unit}
 
@@ -284,6 +318,41 @@ end program main
     \item 运行一行指令后, 紧接着运行下一行指令, 除非先前运行的指令中有指明接下来应该运行哪一行指令(见第\ref{fortran_construct}章, 第\ref{fortran_procedure}章, 第\ref{fortran_module}章, 第\ref{fortran_submodule}章).
     \item 一旦运行\texttt{end program [program-name]}, 就不再运行任何指令.
 \end{enumerate}
+
+\begin{table}[!htbp]
+    \centering
+    \begin{tabular}{|p{0.42\textwidth}|p{0.48\textwidth}|}
+        \hline
+        \multicolumn{1}{|c|}{源代码}&\multicolumn{1}{|c|}{指令}\\
+        \hline
+        \texttt{program main}&1.开始运行主程序 \texttt{main}\\
+        \hline
+        \texttt{implicit none}&2.禁止隐式声明\\
+        \hline
+        \texttt{call helloworld()}&3.调用子程序 \texttt{helloworld}\\
+        \hline
+        \texttt{end program main}&8.结束运行主程序 \texttt{main}\\
+        \hline
+    \end{tabular}
+    \caption{\texttt{main.f90} 中源代码与指令的对照}
+\end{table}
+\begin{table}[!htbp]
+    \centering
+    \begin{tabular}{|p{0.42\textwidth}|p{0.48\textwidth}|}
+        \hline
+        \multicolumn{1}{|c|}{源代码}&\multicolumn{1}{|c|}{指令}\\
+        \hline
+        \texttt{subroutine helloworld()}&4.开始运行子例行 \texttt{helloworld}\\
+        \hline
+        \texttt{implicit none}&5.禁止隐式声明\\
+        \hline
+        \texttt{print *, 'Hello, world!'}&6.让电脑屏幕上出现``Hello, world!''\\
+        \hline
+        \texttt{end subroutine helloworld}&7.结束运行子例行 \texttt{helloworld}\\
+        \hline
+    \end{tabular}
+    \caption{\texttt{helloworld.f90} 中源代码与指令的对照}
+\end{table}
 
 \section{异常}\label{fortran_exception}
 
