@@ -68,7 +68,7 @@ end program implied_do_loop
 
 隐式do循环属于比较高级的语法, 还是稍稍让人不好理解滴. 幸好不用隐式do循环也总是可以完成任务, 所以可以干脆不用. Python中也有一个类似的叫列表推导式的东东, 不过当年老师好像根本没讲过, 我也只是在耍帅时会用这玩楞.
 
-用Ifort的话, 可以用\texttt{p:q:r}代替\texttt{(i1,i1=p,q,r)}, 当然\texttt{:r}可以省略. 这是Ifort的器规, Gfortran是不认的\footnote{
+用Ifx的话, 可以用\texttt{p:q:r}代替\texttt{(i1,i1=p,q,r)}, 当然\texttt{:r}可以省略. 这是Ifx的器规, Gfortran是不认的\footnote{
 所以造轮子时最好不用这东东.
 }. \texttt{(i1,i1=p,q,r)}这样的一重简单隐式do循环比较常用, 是要掌握的. 我再把上一对示例程序的简单情形重新列一下, 其中\texttt{a(i) = i1}的意思就是令$a_i$为那时的$i_1$.
 \begin{lstlisting}

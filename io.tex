@@ -191,7 +191,7 @@ program main
 end program main
 \end{lstlisting}
 
-把文件单位换成字符串变量即可读取和写入内部文件了. 注意内部文件是不需要也没法打开或关闭的, 所以没法加\texttt{position=...}, 每次读取或写入都是从内部文件的开头第一个字符开始的, 不论之前读取写入几次. 下面这个轮子, Ifort可以把$e^\pi$写入\texttt{f}并读取至\texttt{val}\footnote{这就实现了数字型和字符型的相互转换.}, 但Gfortran不行, 要让Gfortran行, \texttt{f}的长度必须大于\texttt{16}. 原因见\ref{fortran_edit_descriptor}节.\label{internal_file}
+把文件单位换成字符串变量即可读取和写入内部文件了. 注意内部文件是不需要也没法打开或关闭的, 所以没法加\texttt{position=...}, 每次读取或写入都是从内部文件的开头第一个字符开始的, 不论之前读取写入几次. 下面这个轮子, Ifx可以把$e^\pi$写入\texttt{f}并读取至\texttt{val}\footnote{这就实现了数字型和字符型的相互转换.}, 但Gfortran不行, 要让Gfortran行, \texttt{f}的长度必须大于\texttt{16}. 原因见\ref{fortran_edit_descriptor}节.\label{internal_file}
 \begin{lstlisting}
 program main
     implicit none
@@ -234,7 +234,7 @@ end program main
 
 \section{编辑符}\label{fortran_edit_descriptor}
 
-如果我们分别用Ifort和Gfortran跑下面这个处心积虑造出来的简单轮子, 我们会发现结果的格式有点区别, Ifort的结果是用科学计数法表示的而Gfortran的不是.
+如果我们分别用Ifx和Gfortran跑下面这个处心积虑造出来的简单轮子, 我们会发现结果的格式有点区别, Ifx的结果是用科学计数法表示的而Gfortran的不是.
 \begin{lstlisting}
 
 program main
@@ -242,9 +242,9 @@ program main
     print *, 7.0e7
 end program main
 \end{lstlisting}
-这是由于我们让编译器自己决定输入输出的格式, 有时这会出事情, 比如之前第\pageref{internal_file}页有个轮子, Ifort跑得了但Gfortran跑不了, 原因在于Gfortran在把\texttt{exp(1.0)**acos(-1.0)}写入内部文件\texttt{f}时会在数字前后补上些空格之类的, 按Gfortran自己的规定, 最少要写入17个字符(包含1个换行符), 而\texttt{f}长度只有16不够长, Ifort规定不同, 就没这个问题.
+这是由于我们让编译器自己决定输入输出的格式, 有时这会出事情, 比如之前第\pageref{internal_file}页有个轮子, Ifx跑得了但Gfortran跑不了, 原因在于Gfortran在把\texttt{exp(1.0)**acos(-1.0)}写入内部文件\texttt{f}时会在数字前后补上些空格之类的, 按Gfortran自己的规定, 最少要写入17个字符(包含1个换行符), 而\texttt{f}长度只有16不够长, Ifx规定不同, 就没这个问题.
 
-我们可以自己规定输入输出的格式, 比如下面这个轮子\footnote{Ifort编译时会出现一个``remark'', 是些建议, 我们选择无视, 不过听从Ifort的建议也是好事.}, 第一个输出的结果一定不是科学计数法表示的, 第二个一定是. 
+我们可以自己规定输入输出的格式, 比如下面这个轮子\footnote{Ifx编译时会出现一个``remark'', 是些建议, 我们选择无视, 不过听从Ifx的建议也是好事.}, 第一个输出的结果一定不是科学计数法表示的, 第二个一定是. 
 \begin{lstlisting}
 program main
     implicit none
@@ -364,7 +364,7 @@ program main
     close(10)
 end program main
 \end{lstlisting}
-每个数据编辑符还都对应于一种数据类型, 比如下面这个轮子照道理是跑不得的, 因为\texttt{I1}是整型编辑符而\texttt{0.0}是实型的, 但Ifort居然能跑, 可恶的器规又出现了\dots
+每个数据编辑符还都对应于一种数据类型, 比如下面这个轮子照道理是跑不得的, 因为\texttt{I1}是整型编辑符而\texttt{0.0}是实型的, 但Ifx居然能跑, 可恶的器规又出现了\dots
 \begin{lstlisting}
 program main
     implicit none

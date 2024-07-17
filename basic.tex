@@ -80,7 +80,7 @@ end program [program-name]
 \end{lstlisting}
 其中 \texttt{[program-name]}处是一个名称(name), 名称指的是由字母, 数字和下划线``\texttt{\_{}}''\footnote{
     下划线是空格的替代字符, 长得还是蛮像滴!
-}组成的, 开头是字母的字符串, ``\texttt{...}''处则是各种指令, 一行一条. 比如, 之前 \ref{fortran_program} 节里 \texttt{main.f90} 里的程序就是一个名称为 \texttt{main} 的主程序\footnote{安安习惯把主程序的名称取做 \texttt{main} 并放在 \texttt{main.f90} 里.} \\( \texttt{helloworld.f90} 里的程序则是一个外部子程序).
+}组成的, 开头是字母的字符串, ``\texttt{...}''处则是各种指令, 一行一条. 比如, 之前 \ref{fortran_program} 节里 \texttt{main.f90} 里的程序就是一个名称为 \texttt{main} 的主程序\footnote{安安习惯把主程序的名称取做 \texttt{main} 并放在 \texttt{main.f90} 里.} \\(\texttt{helloworld.f90} 里的程序则是一个外部子程序).
 
 外部子程序在第\ref{fortran_procedure}章里讲, 模块在第\ref{fortran_module}章里讲, 子模块在第\ref{fortran_submodule}章里讲.\footnote{??\mbox{}的内容安安会在猴年马月写好的!}
 
@@ -94,7 +94,7 @@ end program [program-name]
 
 Fortran可以在程序中使用键盘能直接打出的所有字符. 其他字符(比如汉字, 汉语标点)等能不能出现在程序中, 要看编译器认不认, 也就是能不能执行(见\ref{run_fortran}节). 注意, 英文标点和中文标点是不同的!
 
-经测试, Ifort和Gfortran都是可以支持汉字和汉语标点的, 但直接把汉字或汉语标点打在屏幕上可能会出现乱码(这可以解决).
+经测试, Ifx和Gfortran都是可以支持汉字和汉语标点的, 但直接把汉字或汉语标点打在屏幕上可能会出现乱码(这可以解决).
 
 为避免各种各样的问题, 还是只用正常字符为好.
 
@@ -326,7 +326,7 @@ end program main
 
 \section{运行}\label{run_fortran}
 
-\ref{use_ifort}小节和\ref{use_gfortran}小节中已经介绍了程序运行/执行(run/execute)的部分方法(我觉着掌握这些就够了). 所谓运行就是让电脑按程序中的指令干活. 程序运行的规则是:
+\ref{use_Ifx}小节和\ref{use_gfortran}小节中已经介绍了程序运行/执行(run/execute)的部分方法(我觉着掌握这些就够了). 所谓运行就是让电脑按程序中的指令干活. 程序运行的规则是:
 \begin{enumerate}
     \item 首先运行\texttt{program [program-name]}.
     \item 运行一行指令后, 紧接着运行下一行指令, 除非先前运行的指令中有指明接下来应该运行哪一行指令(见第\ref{fortran_construct}章, 第\ref{fortran_procedure}章, 第\ref{fortran_module}章, 第\ref{fortran_submodule}章).
@@ -386,7 +386,7 @@ program main
 end program main
 \end{lstlisting}
 
-Ifort给出的结果如下\footnote{
+Ifx给出的结果如下\footnote{
     假定屏幕每行仅能容纳60字符, 且略去版权声明等无关紧要的内容, 下同.
 }.
 \begin{lstlisting}
@@ -418,7 +418,7 @@ program main
 end program main
 \end{lstlisting}
 
-这回生成\texttt{.exe}文件时, Ifort和Gfortran都表现得很正常, 然后就出事. 虽然所有命令都是符合规则的, 然而Windows文件名里不能有\texttt{*}, 电脑没法干活, 只好报个错儿.
+这回生成\texttt{.exe}文件时, Ifx和Gfortran都表现得很正常, 然后就出事. 虽然所有命令都是符合规则的, 然而Windows文件名里不能有\texttt{*}, 电脑没法干活, 只好报个错儿.
 
 一个程序会不会报错儿, 其实还和编译器有关. 比如运行下面这个程序.
 \begin{lstlisting}
@@ -427,7 +427,7 @@ program main
     print *, 1.0/0.0
 end program main
 \end{lstlisting}
-(默认情形下)~Gfortran会报错儿说不能除以0, 但Ifort就不会报错, 会给个无穷大. 有趣的是, 如果运行下面这个程序, 则Gfortran和Ifort一样, 都会算出个无穷大来.
+(默认情形下)~Gfortran会报错儿说不能除以0, 但Ifx就不会报错, 会给个无穷大. 有趣的是, 如果运行下面这个程序, 则Gfortran和Ifx一样, 都会算出个无穷大来.
 \begin{lstlisting}
 program main
     implicit none
@@ -450,7 +450,7 @@ program main
 end program main
 \end{lstlisting}
 
-Ifort给出这样的结果.
+Ifx给出这样的结果.
 \begin{lstlisting}
 main.f90(3): warning #6384: The INTEGER(KIND=4) value is out
 -of-range.   [1000000000000]
@@ -458,7 +458,7 @@ main.f90(3): warning #6384: The INTEGER(KIND=4) value is out
 -------------------^
 \end{lstlisting}
 
-Ifort认为\texttt{1000000000000}过大, 无法正确存储, 于是就给个警告, 但程序仍然可以运行. 运行后输出\texttt{-727379968}, 果然很奇怪! 至于Gfortran嘛, 它也认为\texttt{1000000000000}过大, 但它不是给出警告, 而是直接报错.
+Ifx认为\texttt{1000000000000}过大, 无法正确存储, 于是就给个警告, 但程序仍然可以运行. 运行后输出\texttt{-727379968}, 果然很奇怪! 至于Gfortran嘛, 它也认为\texttt{1000000000000}过大, 但它不是给出警告, 而是直接报错.
 
 再比如, 运行这样一个程序(文件名\texttt{main.f90}).
 \begin{lstlisting}
@@ -479,4 +479,4 @@ Warning: Extension: Conversion from LOGICAL(4) to INTEGER(4)
  at (1)
 \end{lstlisting}
 
-Gfortran觉得令整数\texttt{i}等于逻辑``真''的操作其实是标准规则不允许的, 是自己放水才能这么干的, 于是就给个警告, 但程序仍然可以运行. 运行后输出\texttt{1}. 至于Ifort嘛, 它倒是不报错也不给警告, 干脆利落地运行了, 但运行后输出的是\texttt{-1}\dots
+Gfortran觉得令整数\texttt{i}等于逻辑``真''的操作其实是标准规则不允许的, 是自己放水才能这么干的, 于是就给个警告, 但程序仍然可以运行. 运行后输出\texttt{1}. 至于Ifx嘛, 它倒是不报错也不给警告, 干脆利落地运行了, 但运行后输出的是\texttt{-1}\dots

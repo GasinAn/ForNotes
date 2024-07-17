@@ -44,7 +44,7 @@ end program main
 
 上面这个程序一口气声明了六个默认种别的整型变量.
 
-64位电脑上,~Ifort和Gfortran都支持四个整型种别: \texttt{int8}, \texttt{int16}, \texttt{int32}和\texttt{int64}. 指明整型字面常量的种别, 在其后面用下划线连上种别名就成. 但种别名不能直接用, 出现在\texttt{use, intrinsic :: iso\_{}fortran\_{}env}后就可以用了, 像下面这样. 注意\texttt{use ...}要摆在\texttt{implicit none}上面.
+64位电脑上,~Ifx和Gfortran都支持四个整型种别: \texttt{int8}, \texttt{int16}, \texttt{int32}和\texttt{int64}. 指明整型字面常量的种别, 在其后面用下划线连上种别名就成. 但种别名不能直接用, 出现在\texttt{use, intrinsic :: iso\_{}fortran\_{}env}后就可以用了, 像下面这样. 注意\texttt{use ...}要摆在\texttt{implicit none}上面.
 \begin{lstlisting}
 program main
     use, intrinsic :: iso_fortran_env, &
@@ -57,7 +57,7 @@ program main
 end program main
 \end{lstlisting}
 
-Ifort和Gfortran默认的整型种别都是\texttt{int32}.
+Ifx和Gfortran默认的整型种别都是\texttt{int32}.
 
 指明整型变量的种别, 在\texttt{integer}后加括号, 然后填上种别名.
 \begin{lstlisting}
@@ -87,7 +87,7 @@ program main
 end program main
 \end{lstlisting}
 
-整型种别名最后的数字实际上表示数字在电脑中用几个单位空间来存储. 设存储的单位空间数为$n$, Ifort能存储$-2^{n-1}$到$2^{n-1}-1$的整数, Gfortran能存储$-2^{n-1}+1$到$2^{n-1}-1$的整数. 如果选择的种别``太小'', 空间不足却强令电脑存储数字, Ifort会给警告然后算出个奇奇怪怪的结果, Gfortran会直接报错. 后面实型和复型也是如此.
+整型种别名最后的数字实际上表示数字在电脑中用几个单位空间来存储. 设存储的单位空间数为$n$, Ifx能存储$-2^{n-1}$到$2^{n-1}-1$的整数, Gfortran能存储$-2^{n-1}+1$到$2^{n-1}-1$的整数. 如果选择的种别``太小'', 空间不足却强令电脑存储数字, Ifx会给警告然后算出个奇奇怪怪的结果, Gfortran会直接报错. 后面实型和复型也是如此.
 
 选择什么整型种别, 看需要, 一般选默认的就成.
 
@@ -114,7 +114,7 @@ end program main
 
 我们还可以一口气声明多个同类型同种别的变量, 方法同整型变量.
 
-64位电脑上,~Ifort和Gfortran都支持三种实型种别: \texttt{real32}, \texttt{real64}和\\\texttt{real128}, 分别称为单精度, 双精度和四精度. 指明实型字面常量或变量的种别的方式, 还有给实型种别取别名的方式, 都和整型一样.
+64位电脑上,~Ifx和Gfortran都支持三种实型种别: \texttt{real32}, \texttt{real64}和\\\texttt{real128}, 分别称为单精度, 双精度和四精度. 指明实型字面常量或变量的种别的方式, 还有给实型种别取别名的方式, 都和整型一样.
 
 同样, 实型种别名最后的数字实际上表示数字在电脑中用几个单位空间来存储. 原则上存储的单位空间数越多, 实型量有效位数就越多, 并且可取得的范围也越广, 也就是说既能取超级大的数, 也能取超级小的数.
 

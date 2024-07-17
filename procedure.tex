@@ -185,7 +185,7 @@ subroutine factorial(n, fact)
 end subroutine factorial
 \end{lstlisting}
 
-子程序灰常管用, 但也是要遵守一些禁令的. 首先哑实结合时, 哑参量和实参量的类型和种别\uline{都要相等}, 也就是说莫得类型种别转化了. 比如下面这个程序, Gfortran日常严格, 会出警告, 输出\texttt{0.00000000}, Ifort日常宽松, 不出警告, 但也输出\texttt{0.0000000E+00}\dots
+子程序灰常管用, 但也是要遵守一些禁令的. 首先哑实结合时, 哑参量和实参量的类型和种别\uline{都要相等}, 也就是说莫得类型种别转化了. 比如下面这个程序, Gfortran日常严格, 会出警告, 输出\texttt{0.00000000}, Ifx日常宽松, 不出警告, 但也输出\texttt{0.0000000E+00}\dots
 \begin{lstlisting}
 program main
     use iso_fortran_env, only: sp => real32
@@ -203,7 +203,7 @@ subroutine add_one(a)
     a = a+1.0_dp
 end subroutine add_one
 \end{lstlisting}
-然后只读的(加\texttt{,intent(in)}的)哑参量不能在子程序运行的时候被赋值(哑实结合当然还是可以的), 比如下面这个程序跑不得, Ifort和Gfortran都是如此. 这个规则是非常适当的, 因为如果我们可以确定一个哑参量在程序中是不应当被赋值的, 我们就可以让其成为只读的, 这样如果我们一不小心写错了, 在程序中给这个哑参量赋值了, 就能马上查出来.
+然后只读的(加\texttt{,intent(in)}的)哑参量不能在子程序运行的时候被赋值(哑实结合当然还是可以的), 比如下面这个程序跑不得, Ifx和Gfortran都是如此. 这个规则是非常适当的, 因为如果我们可以确定一个哑参量在程序中是不应当被赋值的, 我们就可以让其成为只读的, 这样如果我们一不小心写错了, 在程序中给这个哑参量赋值了, 就能马上查出来.
 \begin{lstlisting}
 program main
     use iso_fortran_env, only: dp => real64
@@ -221,7 +221,7 @@ subroutine add_one(a)
     a = a+1.0_dp
 end subroutine add_one
 \end{lstlisting}
-注意间接的赋值也是不行的, 比如下面这个程序, \texttt{call add\_{}one\_{}(a)}实际上给\texttt{add\_{}one}里的\texttt{a}赋值了. 但这样``隐晦的''赋值, 编译器就不一定会查了, Gfortran会给警告, Ifort直接放行. 但无论如何这么写都是不对的!\label{secret_assignment}
+注意间接的赋值也是不行的, 比如下面这个程序, \texttt{call add\_{}one\_{}(a)}实际上给\texttt{add\_{}one}里的\texttt{a}赋值了. 但这样``隐晦的''赋值, 编译器就不一定会查了, Gfortran会给警告, Ifx直接放行. 但无论如何这么写都是不对的!\label{secret_assignment}
 \begin{lstlisting}
 program main
     use iso_fortran_env, only: dp => real64
@@ -247,7 +247,7 @@ subroutine add_one_(a)
     a = a+1.0_dp
 end subroutine add_one_
 \end{lstlisting}
-还有只写的(加\texttt{,intent(out)}的)哑参量, 在子程序运行的一开始是没有被赋值的, 所以下面这程序是天也不知会出什么结果的. 但Ifort和Gfortran有器规, 会把只写参量当成读写参量(我猜是这样了啦), 一开始也实参量赋值给哑参量了, 所以结果没事. 但无论如何这么写都是不对的!
+还有只写的(加\texttt{,intent(out)}的)哑参量, 在子程序运行的一开始是没有被赋值的, 所以下面这程序是天也不知会出什么结果的. 但Ifx和Gfortran有器规, 会把只写参量当成读写参量(我猜是这样了啦), 一开始也实参量赋值给哑参量了, 所以结果没事. 但无论如何这么写都是不对的!
 \begin{lstlisting}
 program main
     use iso_fortran_env, only: dp => real64
@@ -550,7 +550,7 @@ function norm_1(r) result(norm)
     norm = sum(abs(r))
 end function
 \end{lstlisting}
-在这个程序里, 函数中\texttt{r}就是假定形状数组, 其声明的时候写\texttt{r(:)}, 1个\texttt{:}表示其必须是1维数组, 形状是其对应的实参量的形状, 这样就不用每次都计算实参量的大小然后哑实结合了. 不过上面这个轮子Gfortran是跑不了的, 因为按Fortran的语法, 有假定形状数组哑参量的过程, 必须带过程接口(见\ref{fortran_interface}节), 所以要写成下面这个样子才行. Ifort能跑, 但结果是错的\dots\label{assumed-shape_array_program}
+在这个程序里, 函数中\texttt{r}就是假定形状数组, 其声明的时候写\texttt{r(:)}, 1个\texttt{:}表示其必须是1维数组, 形状是其对应的实参量的形状, 这样就不用每次都计算实参量的大小然后哑实结合了. 不过上面这个轮子Gfortran是跑不了的, 因为按Fortran的语法, 有假定形状数组哑参量的过程, 必须带过程接口(见\ref{fortran_interface}节), 所以要写成下面这个样子才行. Ifx能跑, 但结果是错的\dots\label{assumed-shape_array_program}
 \begin{lstlisting}
 program main
     use iso_fortran_env, only: dp => real64
