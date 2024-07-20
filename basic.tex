@@ -60,7 +60,7 @@ end subroutine helloworld
 
 不太好玩儿的是, 虽然 Fortran 语法已由现行标准规定好了, Fortran 编译器们却偶尔不按 Fortran 标准来干活儿, 自己制定了一些规则, 还有些时候, Fortran 标准直接就把权利赋予编译器, 让他们自定一些规则. 这样, Fortran 编译器们时不时就有和``官规''不同的``器规'' .
 
-编程语言的标准是``硬规则'', 除此之外还有``软规则'', 称为规范(convention). 所谓``规范'', 就是被代码毒打的前人总结的血泪教训. 不遵守规范, 也不一定会出什么问题, 但一旦出了问题, 就不知道问题出在哪儿啦. 请同学们尽量遵守本笔记列出的 Fortran 规范, 不然期末挂了不要怪 Fortran 哟!
+编程语言的标准是``硬规则'', 除此之外还有``软规则'', 称为规范(convention). 所谓``规范'', 就是被代码毒打的前人总结的血泪教训. 不遵守规范, 也不一定会出什么问题, 但一旦出了问题, 就不知道问题出在哪儿啦. 请同学们尽量遵守本笔记列出的 Fortran 规范, 不然期末挂了不要怪 Fortran 哟! 不过有时不遵守规范也确实不会出什么问题, 安安会适时说明的.
 
 编译器各有各的器规, 这可能会出事. 想象一下, 同学们期末考写好程序, Ifx 和 Gfortran 说程序没问题, 同学们兴冲冲地交卷了, 然后老师掏出 Visual Fortran (某老款编译器), Visual Fortran 说程序有问题, 同学们就挂科啦. 为防止这种悲惨情形发生, 我们需要避免使用Fortran 标准没规定而编译器自定的规则.
 \begin{convention}
@@ -92,29 +92,30 @@ end program [program-name]
 
 \section{字符集}
 
-Fortran可以在程序中使用键盘能直接打出的所有字符. 其他字符(比如汉字, 汉语标点)等能不能出现在程序中, 要看编译器认不认, 也就是能不能执行(见\ref{run_fortran}节). 注意, 英文标点和中文标点是不同的!
+Fortran 可以在程序中使用英语输入法能直接打出的所有字符, 其他字符(比如汉字, 汉语标点)能否在程序中用则由器规决定. 注意, 英文标点和中文标点是\uline{完全不同}的\footnote{用 VS Code 的同学会发现英文标点和中文标点显示出来完全不一样.}, 英文标点是``半角标点'', 中文标点是``全角标点''哟!\footnote{本笔记里使用的全部是英文标点呢, 这也是中文数学, 物理学, 天文学书籍的惯例(不信同学们可以翻翻手头的教科书).}
 
-经测试, Ifx和Gfortran都是可以支持汉字和汉语标点的, 但直接把汉字或汉语标点打在屏幕上可能会出现乱码(这可以解决).
+经俺测试, Ifx 和 Gfortran 都是支持汉字和汉语标点的, 但直接让电脑屏幕上出现汉字或汉语标点可能会出现``穞堵臸猭畍\footnote{不认识这东东的同学请自行搜索.}''之类的乱码(这可以解决).
 
 为避免各种各样的问题, 还是只用正常字符为好.
-
 \begin{convention}
-    不要在程序中使用键盘不能直接打出的字符.
+    只在程序中使用英语输入法能直接打出的所有字符.
 \end{convention}
 
-Fortran是大小写不敏感的(case-insensitive), 也就是说, 很多情况下程序中的字母大写小写效果是完全相同的(效果不同的地方见\ref{fortran_char}节). 比如, 下面这个程序和\ref{fortran_program}节中的程序是完全等价的.
+Fortran 是大小写不敏感的(case-insensitive), 也就是说, 很多情况下程序里的字母大写小写效果是完全相同的(效果不同的地方见 \ref{fortran_char} 节和 \ref{character_string_edit_descriptor} 小节). 比如, 下面这个程序和 \ref{fortran_program} 节的 \texttt{main.f90} 内的程序是完全等价的.
 \begin{lstlisting}
 PROGRAM MAIN
     IMPLICIT NONE
-    PRINT *, 'Hello, world!'
+    CALL HELLOWORLD()
 END PROGRAM MAIN
 \end{lstlisting}
 
-相信我, 在程序中混用大小写字母是很容易出事的.
+Fortran 大小写不分是有历史原因的. 当年电脑太烂了, 为节省存储空间, 一开始 Fortran 只许用大写字母, 后来电脑不那么烂了, 能用小写字母了, Fortran 大概是因为想尽量保证老程序能用, 所以直接规定大小写不分, 结果挖了个如今没法儿填的史诗级奆坑, 学 Fortran 玩 Fortran 的历来都深受其害. 举个例子, 当年俺搞毕设, 需要解 Kepler 方程 $E=M+e\cos E$ , 在程序里对应地写成 \texttt{E = M + e*cos(E)} , 然而 Fortran 是大小写不分的, 所以 \texttt{E = M + e*cos(E)} 其实对应于 $e=M+e\cos e$ 或 $E=M+E\cos E$ , 然后俺忘了这茬, 结果死活找不出自己哪里写错了\dots{}
 
+被 Fortran 反复毒打后, 人们决定做些什么来避免被毒打. 既然 Fortran 大小写不分, 那避免混淆的最好办法就是在程序里统一只用小写或大写字母(俺搞毕设时知道这事, 但俺偷懒了, 结果惨遭报应\dots{}). 因为单词写成小写字母比写成大写字母好认, 所以现在人们都统一只用小写字母.
 \begin{convention}
-    尽量在程序中使用小写字母.
+    只在程序中使用小写字母.\label{lower_case_convention}
 \end{convention}
+如上所述, 有时 Fortran 大小写是分的, 这时规范 \ref{lower_case_convention} 没法儿遵守, 当然就不遵守了. 除此之外, 规范 \ref{lower_case_convention} 还有其他一些可以不遵守的情形, 俺留着后面说. 这样, \texttt{E = M + e*cos(E)} 就得改写了. 因为 Kepler 方程里 $E$ 是偏近点角, 是个角, 所以 \texttt{E} 可以写成 \texttt{e\_{}angle} (也可以写成 \texttt{angle\_{}e} , 但绝不能写成 \texttt{E\_{}angle} !!!), $e$ 则是离心率, 虽然写成 \texttt{e} 也可以和 \texttt{e\_{}angle} 区别开, 但为了让区别更明显, 可以写成 \texttt{ecc} (eccentricity 的缩写).
 
 \section{源代码格式}
 
@@ -240,7 +241,7 @@ program main
     ! This is &
       invalid!
 end program main
-    \end{lstlisting}在VS code这样合格的编辑器中, 上面这个程序的第四行和第五行颜色会不一样, 并且第四行中\texttt{\&{}}的颜色会和第四行其他字符的颜色一样. 这就提示我们\texttt{\&{}}是注释的一部分, 并且第五行不被当成是注释.
+    \end{lstlisting}在VS Code这样合格的编辑器中, 上面这个程序的第四行和第五行颜色会不一样, 并且第四行中\texttt{\&{}}的颜色会和第四行其他字符的颜色一样. 这就提示我们\texttt{\&{}}是注释的一部分, 并且第五行不被当成是注释.
     \item 续行符后的所有空格会被无视, 并且可以在续行符后加注释.\\比如, 下面这个程序是成的.\begin{lstlisting}
 program main
     implicit none
