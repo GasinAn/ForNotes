@@ -71,7 +71,7 @@ end function factorial
 \end{lstlisting}
 写成这样, 确实能少打几个字儿. 不知道我写的是什么也可以先猜猜猜看. 把\texttt{function ...}到\texttt{end function ...}单看成一个程序, \texttt{result(p)}里的\texttt{p}就是\texttt{factorial(n)}里的\texttt{n}的阶乘, 如是这般, \texttt{factorial(7)}就是\texttt{7}的阶乘, \texttt{factorial(3)}就是\texttt{3}的阶乘, \texttt{factorial(7-3)}就是\texttt{7-3}的阶乘, 非常完美! 那算CG系数也简单多了, 只要算\texttt{X}的阶乘的时候无脑写上\texttt{factorial(X)}就成了, 不用\texttt{do}来\texttt{do}去了!
 
-于是乎我们便发现, 想要玩Fortran而不是被Fortran玩, 就必须懂过程(procedure). 过程的定义是``封装可以在程序执行期间直接调用的任意操作序列的实体'', 玄玄乎乎的, 我们不理它. 我们可以直接把过程理解成程序运行时的一个操作, 比如上面的例子中\texttt{function ...}到\texttt{end function ...}就是``计算\texttt{n}的阶乘''这一操作. 使用过程后, 我们就进入面向过程程序设计(procedure-oriented programming, POP)阶段了. 啥叫面向过程呢? 众所周知, 置象于冰箱中, 步骤有三: 一开冰箱, 二塞大象, 三关冰箱. 用Fortran来写便这般.
+于是乎我们便发现, 想要玩Fortran而不是被Fortran玩, 就必须懂过程(procedure). 过程的定义是``封装可以在程序执行期间直接调用的任意操作序列的实体'' , 玄玄乎乎的, 我们不理它. 我们可以直接把过程理解成程序运行时的一个操作, 比如上面的例子中\texttt{function ...}到\texttt{end function ...}就是``计算\texttt{n}的阶乘''这一操作. 使用过程后, 我们就进入面向过程程序设计(procedure-oriented programming, POP)阶段了. 啥叫面向过程呢? 众所周知, 置象于冰箱中, 步骤有三: 一开冰箱, 二塞大象, 三关冰箱. 用Fortran来写便这般.
 \begin{lstlisting}
 program main
     ...
@@ -145,7 +145,7 @@ end subroutine ab2bc_then_sumabc
     \item 主程序里也有三个变量\texttt{a}, \texttt{b}, \texttt{c}, 但只是变量名和子程序里的\texttt{a}, \texttt{b}, \texttt{c}一样, 实际上是不同的三个变量. 看我这示例, 子程序里\texttt{a}, \texttt{b}, \texttt{c}变来变去, 花里胡哨, 主程序里\texttt{a}, \texttt{b}, \texttt{c}岿然不动.
     \item 主程序里出现\texttt{call ab2bc\_{}then\_{}sumabc(x, y, z)}, \texttt{()}里的\texttt{x}, \texttt{y}, \texttt{z}称为实参量(actual argument). 实参量可以是任意数据实体, 也就是说实参量可以是变量, 也可以是常量或其他东东. 子程序里三个哑参量排排坐, 主程序里三个实参量排排坐, 位置一样的哑参量和实参量(\texttt{a}和\texttt{x}, \texttt{b}和\texttt{y}, \texttt{c}和\texttt{z})称为对应的. 对应的参量在程序运行时会相互赋值来赋值去, 这称为参量结合(argument association), 我们一般称为哑实结合.
     \item 现在分析示例程序的运行过程. 程序当然从\texttt{program main}开始运行了. 按顺序一行一行运行, 前面不需讲解. 到\texttt{call ...}, 就要说道说道了. 我们可以把主程序和子程序当成两个小人儿.\begin{enumerate}
-        \item \texttt{call ab2bc\_{}then\_{}sumabc(x, y, z)}: 跳到子程序的开头, 也就是\texttt{subroutine ab2bc\_{}then\_{}sumabc(a, b, c)}. \texttt{call ...}这里程序运行的操作称为``主程序调用(invoke/call)子程序''.
+        \item \texttt{call ab2bc\_{}then\_{}sumabc(x, y, z)}: 跳到子程序的开头, 也就是\texttt{subroutine ab2bc\_{}then\_{}sumabc(a, b, c)}. \texttt{call ...}这里程序运行的操作称为``主程序调用(invoke/call)子程序'' .
         \item \texttt{subroutine ab2bc\_{}then\_{}sumabc(a, b, c)}: 子程序先按后面的变量声明语句声明好变量, 然后把所有只读的和读写的实参量赋值给对应的哑参量(主程序里的\texttt{x}赋给子程序里的\texttt{a}, 主程序里的\texttt{y}赋给子程序里的\texttt{b}, 这当然就是传说中的哑实结合啦).
         \item 向下一行一行运行, 直到\texttt{end subroutine ab2bc\_{}then\_{}sumabc}. 啰嗦一下具体过程. 首先主程序里的\texttt{x}赋给子程序里的\texttt{a}, 主程序里的\texttt{y}赋给子程序里的\texttt{b}, 所以子程序里的\texttt{a}为\texttt{4.0\_{}dp}, 子程序里的\texttt{b}为\texttt{5.0\_{}dp}. 然后\texttt{c = b}, 子程序里的\texttt{c}为\texttt{5.0\_{}dp}, 然后\texttt{b = a}, 子程序里的\texttt{b}为\texttt{4.0\_{}dp}, 然后\texttt{s = a+b+c}, \texttt{s}为\texttt{13.0\_{}dp}, 最后输出\texttt{s}的值\texttt{13.0\_{}dp}.
         \item \texttt{end subroutine ab2bc\_{}then\_{}sumabc}: 把所有读写的和只写的哑参量赋值给对应的实参量(子程序里的\texttt{b}赋给主程序里的\texttt{y}, 子程序里的\texttt{c}赋给主程序里的\texttt{z}, 这当然也是传说中的哑实结合啦), 然后跳到\texttt{call ab2bc\_{}then\_{}sumabc(x, y, z)}的下一行.
@@ -921,7 +921,7 @@ function sgn_real128(x) result(y)
     end if
 end function sgn_real128
 \end{lstlisting}
-这就让我们有点小小的不开心, Fortran的语法也太严格了! 我们希望能造个\texttt{sgn}, 又能算双精度又能算四精度. 用泛型接口, 我们就可以偷鸡摸狗地``做成''这件事, 把上面的\texttt{sgn\_{}real64}和\texttt{sgn\_{}real128} ``粘起来''.
+这就让我们有点小小的不开心, Fortran的语法也太严格了! 我们希望能造个\texttt{sgn}, 又能算双精度又能算四精度. 用泛型接口, 我们就可以偷鸡摸狗地``做成''这件事, 把上面的\texttt{sgn\_{}real64}和\texttt{sgn\_{}real128} ``粘起来'' .
 \begin{lstlisting}
 program main
     use iso_fortran_env, only: dp => real64, qp => real128
@@ -1028,7 +1028,7 @@ function minkowski(n) result(eta)
     end do
 end function minkowski
 \end{lstlisting}
-这个程序, 接口块里写了两个过程的接口, 这当然没有问题. 但同志们会发现这两个过程其实接口长得``一样'', 都是函数, 都只有一个整型只读参量, 结果的类型, 种别和形状也一样, 只不过各种名称(过程名, 参量名, 结果名)不一样而已. 接口长得``一样''的过程, 我们称为特征相同的. 能不能趁机偷一小点懒? 能, 像下面这样.
+这个程序, 接口块里写了两个过程的接口, 这当然没有问题. 但同志们会发现这两个过程其实接口长得``一样'' , 都是函数, 都只有一个整型只读参量, 结果的类型, 种别和形状也一样, 只不过各种名称(过程名, 参量名, 结果名)不一样而已. 接口长得``一样''的过程, 我们称为特征相同的. 能不能趁机偷一小点懒? 能, 像下面这样.
 \begin{lstlisting}
 program main
     use iso_fortran_env, only: dp => real64

@@ -87,7 +87,7 @@ program main
 end program main
 \end{lstlisting}
 
-整型种别名最后的数字实际上表示数字在电脑中用几个单位空间来存储. 设存储的单位空间数为$n$, Ifx能存储$-2^{n-1}$到$2^{n-1}-1$的整数, Gfortran能存储$-2^{n-1}+1$到$2^{n-1}-1$的整数. 如果选择的种别``太小'', 空间不足却强令电脑存储数字, Ifx会给警告然后算出个奇奇怪怪的结果, Gfortran会直接报错. 后面实型和复型也是如此.
+整型种别名最后的数字实际上表示数字在电脑中用几个单位空间来存储. 设存储的单位空间数为$n$, Ifx能存储$-2^{n-1}$到$2^{n-1}-1$的整数, Gfortran能存储$-2^{n-1}+1$到$2^{n-1}-1$的整数. 如果选择的种别``太小'' , 空间不足却强令电脑存储数字, Ifx会给警告然后算出个奇奇怪怪的结果, Gfortran会直接报错. 后面实型和复型也是如此.
 
 选择什么整型种别, 看需要, 一般选默认的就成.
 
@@ -147,11 +147,11 @@ end program main
 
 字符串用\texttt{'...'}或\texttt{"..."}表示, 其中\texttt{...}是字符串的内容, 可以没有.
 
-下面这个程序使用了字符型字面常量\texttt{'!@\#{}\${}\%{}\^{}\&{}*'}, 代表'!@\#{}\${}\%{}\^{}\&{}*', 还有字符型常量\texttt{''}, 代表一个字符也无的``空字符串''.
+下面这个程序使用了字符型字面常量\texttt{'!@\#{}\${}\%{}\^{}\&{}*'}, 代表'!@\#{}\${}\%{}\^{}\&{}*', 还有字符型常量\texttt{''}, 代表一个字符也无的``空字符串'' .
 \begin{lstlisting}
 program main
     implicit none
-    print *, '!@#$%^&*', '', '!@#$%^&*'
+    print *, '!@#$%^&*', '' , '!@#$%^&*'
 end program main
 \end{lstlisting}
 
@@ -174,7 +174,7 @@ end program main
 \begin{lstlisting}
 program main2
     implicit none
-    print *, 'GasinAn said, "I love using ''wheels'','
+    print *, 'GasinAn said, "I love using ''wheels'' ,'
     print *, "especially the 'liber' ones."""
 end program main2
 \end{lstlisting}
@@ -205,7 +205,7 @@ program main
 end program main
 \end{lstlisting}
 
-有些时候非常尴尬, 程序运行前我们并不知道字符型变量的长度应该取多少, 这时我们可以在声明中加上\texttt{,allocatable}, 并将长度设成一个冒号``\texttt{:}'', 造一个延迟长度字符型变量(deferred-length character variable). 随后我们可以用allocate语句(statement)将字符型变量的长度变成一个确定值. 接着我们还可以用deallocate语句将字符型变量的长度重新变成不确定的, 然后再对字符型变量使用allocate语句\dots
+有些时候非常尴尬, 程序运行前我们并不知道字符型变量的长度应该取多少, 这时我们可以在声明中加上\texttt{,allocatable}, 并将长度设成一个冒号``\texttt{:}'' , 造一个延迟长度字符型变量(deferred-length character variable). 随后我们可以用allocate语句(statement)将字符型变量的长度变成一个确定值. 接着我们还可以用deallocate语句将字符型变量的长度重新变成不确定的, 然后再对字符型变量使用allocate语句\dots
 
 使用延迟长度字符型变量的示例如下.
 \begin{lstlisting}
@@ -240,4 +240,4 @@ end program main
 
 \section{逻辑型}
 
-逻辑型字面常量只有两个: \texttt{.true.}和\texttt{.false.}, 分别对应于逻辑中的``真''和``假''. 声明逻辑型变量用\texttt{logical}关键词.
+逻辑型字面常量只有两个: \texttt{.true.}和\texttt{.false.}, 分别对应于逻辑中的``真''和``假'' . 声明逻辑型变量用\texttt{logical}关键词.

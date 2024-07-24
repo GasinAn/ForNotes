@@ -42,7 +42,7 @@ Fortran是强\footnote{
 
 如果是``精度高''的数据实体转化成``精度低''的数据实体, 事情就比较复杂.
 
-如果是实型转整型, 我也不清楚标准规则怎么说, 但Ifx和Gfortran都是``向0取整''. 可以运行下面这个程序来感受一下.
+如果是实型转整型, 我也不清楚标准规则怎么说, 但Ifx和Gfortran都是``向0取整'' . 可以运行下面这个程序来感受一下.
 \begin{lstlisting}
 program main
     implicit none
@@ -156,7 +156,7 @@ program main
 end program main
 \end{lstlisting}
 
-严格上来说, Fortran有七个算数运算符, 另两个也是``\texttt{+}''和``\texttt{-}''. 众所周知, 数学中``$+$''和``$-$''前面可以没有数. Fortran中也一样. 对于任意一个数据实体\texttt{[q]}, \texttt{+[q1]}/\texttt{-[q1]}就相当于\texttt{[zero]+[q1]}/\texttt{[zero]-[q1]}, 其中\texttt{[zero]}是精度最低的种别的\texttt{0}.
+严格上来说, Fortran有七个算数运算符, 另两个也是``\texttt{+}''和``\texttt{-}'' . 众所周知, 数学中``$+$''和``$-$''前面可以没有数. Fortran中也一样. 对于任意一个数据实体\texttt{[q]}, \texttt{+[q1]}/\texttt{-[q1]}就相当于\texttt{[zero]+[q1]}/\texttt{[zero]-[q1]}, 其中\texttt{[zero]}是精度最低的种别的\texttt{0}.
 
 看下面这个例子就懂了.
 \begin{lstlisting}
@@ -191,7 +191,7 @@ end program main
 
 然后电脑再算\texttt{2**0}, 结果自然是\texttt{1}.
 
-也就是说, 将两个整型数据实体相``除'', 实际上是将它们整除!
+也就是说, 将两个整型数据实体相``除'' , 实际上是将它们整除!
 
 再来看下面这个程序.
 
@@ -318,7 +318,7 @@ program main
 end program main
 \end{lstlisting}
 
-要做``连续的关系运算'', 标准做法是把``连续的关系运算''拆分成``单独的关系运算'', 然后用\texttt{.and.}连起来, 像下面这样.
+要做``连续的关系运算'' , 标准做法是把``连续的关系运算''拆分成``单独的关系运算'' , 然后用\texttt{.and.}连起来, 像下面这样.
 \begin{lstlisting}
 program main
     implicit none
@@ -343,9 +343,9 @@ end program main
     \item 如果两边的字符串前$n$个字符都相同, 且左边字符串第$(n+1)$个字符后于右边字符串第$(n+1)$个字符, 则左边字符串``\texttt{>}''右边字符串.
     \item 如果两边的字符串完全相同, 则左边字符串``\texttt{==}''右边字符串.
 \end{itemize}
-自然, ``\texttt{>=}''就是不``\texttt{<}'', ``\texttt{<=}''就是不``\texttt{>}'', ``\texttt{/=}''就是不``\texttt{==}''.
+自然, ``\texttt{>=}''就是不``\texttt{<}'' , ``\texttt{<=}''就是不``\texttt{>}'' , ``\texttt{/=}''就是不``\texttt{==}'' .
 
-注意, 上面``补空格''的一步只是暂时的, 比较前后变量本身没有改变. 比如下面这个程序, 比较前后\texttt{c}都是``\texttt{I}'', 没有变成``\texttt{I  }''\footnote{
+注意, 上面``补空格''的一步只是暂时的, 比较前后变量本身没有改变. 比如下面这个程序, 比较前后\texttt{c}都是``\texttt{I}'' , 没有变成``\texttt{I  }''\footnote{
 否则长度就变成3了, 这不符合``字符串变量长度不变''的规则.
 }.
 \begin{lstlisting}

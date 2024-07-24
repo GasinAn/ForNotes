@@ -2,7 +2,7 @@
 
 之前我们都只是小打小闹而已, 现在我们来干一些大活儿. 我们来玩玩\href{https://cdsarc.cds.unistra.fr/viz-bin/cat/I/355}{Gaia DR3}. 我们想知道Gaia DR3里的哪个源距银道面最远且最远有多远, 比较不动脑筋地做这件事呢, 我们想知道哪个源的$\left\lvert \sin b\right\rvert/p$最大, 其中$p$是源的视差, $b$是源的银纬. 但这里有一个问题, 就是Gaia DR3显然太大了, 同志们得交个几十杯奶茶钱的网费, 所以我们先用Gaia DR3的一个小样本试试水.
 
-首先我们要在\href{https://cdsarc.cds.unistra.fr/viz-bin/cat/I/355}{这个页面}里找到\href{https://cdsarc.cds.unistra.fr/viz-bin/ReadMe/I/355?format=html&tex=true}{ReadMe}点进去, 找到``File Summary''.
+首先我们要在\href{https://cdsarc.cds.unistra.fr/viz-bin/cat/I/355}{这个页面}里找到\href{https://cdsarc.cds.unistra.fr/viz-bin/ReadMe/I/355?format=html&tex=true}{ReadMe}点进去, 找到``File Summary'' .
 \begin{lstlisting}
    File Summary:
    --------------------------------------------------------
@@ -15,7 +15,7 @@
 \end{lstlisting}
 从这个``File Summary''可知, \texttt{gaiadr3.sam}是星表\footnote{认不得英文词儿的请上\href{https://nadc.china-vo.org/astrodict/}{天文学名词词典}查询.}, 一共1000行, 每行1788个字符. 不对呀, 后面明明写着一共1811709771个源嘛, 怎么只有1000行? 那当然是因为这只是个1000个源的样本啦, 文件名后缀可是\texttt{.sam}呢. 于是乎我们要在\href{https://cdsarc.cds.unistra.fr/viz-bin/cat/I/355}{这个页面}里找到\href{https://cdsarc.cds.unistra.fr/ftp/I/355}{FTP}, 里头找到\href{https://cdsarc.cds.unistra.fr/ftp/I/355/gaiadr3.sam.gz}{\texttt{gaiadr3.sam.gz}}下载下来然后解压得到\texttt{gaiadr3.sam}.
 
-回到ReadMe, 下面有\texttt{gaiadr3.sam}的``Byte-by-byte Description''.
+回到ReadMe, 下面有\texttt{gaiadr3.sam}的``Byte-by-byte Description'' .
 \begin{lstlisting}
 
    Byte-by-byte Description of file: gaiadr3.sam
@@ -112,7 +112,7 @@ end program main
 
 上面这个轮子还有些细节. \texttt{action=}后的字符串如果是\texttt{'READ'}, 表示打开的文件是只读的, 不能写入. \texttt{action=}后的字符串如果是\texttt{'WRITE'}, 表示打开的文件是只写的, 不能读取. \texttt{action=}后的字符串如果是\texttt{'READWRITE'}, 表示打开的文件是读写的, 读取写入皆可. 这和之前\ref{arguments}小节的只读参量只写参量读写参量是很像的. 如果不加\texttt{action=...}, 则是编译器自己决定是只读的只写的还是读写的, 这又有点危险了, 所以\texttt{action=...}还是要加的\footnote{同脚注\ref{no_add}.}.
 
-\texttt{position=...}则指明打开文件后的``文件定位'', 加\texttt{position=...}的原因还是不加的话文件定位会由编译器自己决定\footnote{同脚注\ref{no_add}.}. 同志们不需知道文件定位是什么, 只需记得只写文件加\texttt{position='APPEND'}, 写入时会写入在文件的最后, 只读文件加\texttt{position='REWIND'}, 读取时会从文件的开头读取. 读写文件嘛, 我们选择不玩儿. 下面用一个长长的轮子来详细讲解.
+\texttt{position=...}则指明打开文件后的``文件定位'' , 加\texttt{position=...}的原因还是不加的话文件定位会由编译器自己决定\footnote{同脚注\ref{no_add}.}. 同志们不需知道文件定位是什么, 只需记得只写文件加\texttt{position='APPEND'}, 写入时会写入在文件的最后, 只读文件加\texttt{position='REWIND'}, 读取时会从文件的开头读取. 读写文件嘛, 我们选择不玩儿. 下面用一个长长的轮子来详细讲解.
 \begin{lstlisting}
 program main
     implicit none
@@ -204,7 +204,7 @@ program main
 end program main
 \end{lstlisting}
 
-我们还可以再把字符串变量换成\texttt{*}, 输出的话\texttt{*}通常代表电脑屏幕. 比如下面这个轮子就会把\texttt{Hello, world!}``写入电脑屏幕'', 电脑屏幕上就出现\texttt{Hello, world!}了. 要是问我\texttt{write(*,*)}和\texttt{print *,}有什么区别, 我的回答是没有区别\dots
+我们还可以再把字符串变量换成\texttt{*}, 输出的话\texttt{*}通常代表电脑屏幕. 比如下面这个轮子就会把\texttt{Hello, world!}``写入电脑屏幕'' , 电脑屏幕上就出现\texttt{Hello, world!}了. 要是问我\texttt{write(*,*)}和\texttt{print *,}有什么区别, 我的回答是没有区别\dots
 \begin{lstlisting}
 program main
     implicit none
@@ -244,7 +244,7 @@ end program main
 \end{lstlisting}
 这是由于我们让编译器自己决定输入输出的格式, 有时这会出事情, 比如之前第\pageref{internal_file}页有个轮子, Ifx跑得了但Gfortran跑不了, 原因在于Gfortran在把\texttt{exp(1.0)**acos(-1.0)}写入内部文件\texttt{f}时会在数字前后补上些空格之类的, 按Gfortran自己的规定, 最少要写入17个字符(包含1个换行符), 而\texttt{f}长度只有16不够长, Ifx规定不同, 就没这个问题.
 
-我们可以自己规定输入输出的格式, 比如下面这个轮子\footnote{Ifx编译时会出现一个``remark'', 是些建议, 我们选择无视, 不过听从Ifx的建议也是好事.}, 第一个输出的结果一定不是科学计数法表示的, 第二个一定是. 
+我们可以自己规定输入输出的格式, 比如下面这个轮子\footnote{Ifx编译时会出现一个``remark'' , 是些建议, 我们选择无视, 不过听从Ifx的建议也是好事.}, 第一个输出的结果一定不是科学计数法表示的, 第二个一定是. 
 \begin{lstlisting}
 program main
     implicit none
@@ -291,7 +291,7 @@ program main
 end program main
 \end{lstlisting}
 
-每个格式声明都由\texttt{()}里的一堆编辑符(edit descriptor)组成, 编辑符间用\texttt{,}隔开, 每个编辑符都代指一个操作, 比如上面的轮子读取时编辑符依次是\texttt{128X}, \texttt{F9.4}, \texttt{849X}, \texttt{F15.11}, 依次代表跳过128个字符不读, 读占9个字符的4位小数的实数, 跳过849个字符不读, 读占15个字符的11位小数的实数. 话说我是怎么知道这么读就行的? 我们再次打开\href{https://cdsarc.cds.unistra.fr/viz-bin/ReadMe/I/355?format=html&tex=true}{ReadMe}里的\texttt{gaiadr3.sam}的``Byte-by-byte Description'', 里头写着.
+每个格式声明都由\texttt{()}里的一堆编辑符(edit descriptor)组成, 编辑符间用\texttt{,}隔开, 每个编辑符都代指一个操作, 比如上面的轮子读取时编辑符依次是\texttt{128X}, \texttt{F9.4}, \texttt{849X}, \texttt{F15.11}, 依次代表跳过128个字符不读, 读占9个字符的4位小数的实数, 跳过849个字符不读, 读占15个字符的11位小数的实数. 话说我是怎么知道这么读就行的? 我们再次打开\href{https://cdsarc.cds.unistra.fr/viz-bin/ReadMe/I/355?format=html&tex=true}{ReadMe}里的\texttt{gaiadr3.sam}的``Byte-by-byte Description'' , 里头写着.
 \begin{lstlisting}
   Byte-by-byte Description of file: gaiadr3.sam
   ------------------------...-------------------------------
@@ -305,7 +305,7 @@ end program main
     987-1001 F15.11 deg   ... Galactic latitude (b)
       ...     ....   ...         ......
 \end{lstlisting}
-同志们看表里分明写着视差的格式是``F9.4'', 银纬的格式是``F15.11'', 这不就是编辑符么. 首先视差从第129个字符开始, 所以我们要先跳过前128个字符, 写上\texttt{128X}, 然后把\texttt{F9.4}无脑抄过去, 然后本来是读到第138个字符, 但银纬从第987个字符开始, 所以要再跳过$987-138=849$个字符, 写上\texttt{849X}, 然后无脑抄上\texttt{F15.11}, 因为每次\texttt{read}完再\texttt{read}都会从下一行开始, 所以后面的字符就不用管了. 给同志们留一个看完本章后的作业: 再次修改上面的轮子, 输出第\texttt{maxloc(d)}个源的``Unique source designation''.
+同志们看表里分明写着视差的格式是``F9.4'' , 银纬的格式是``F15.11'' , 这不就是编辑符么. 首先视差从第129个字符开始, 所以我们要先跳过前128个字符, 写上\texttt{128X}, 然后把\texttt{F9.4}无脑抄过去, 然后本来是读到第138个字符, 但银纬从第987个字符开始, 所以要再跳过$987-138=849$个字符, 写上\texttt{849X}, 然后无脑抄上\texttt{F15.11}, 因为每次\texttt{read}完再\texttt{read}都会从下一行开始, 所以后面的字符就不用管了. 给同志们留一个看完本章后的作业: 再次修改上面的轮子, 输出第\texttt{maxloc(d)}个源的``Unique source designation'' .
 
 如果我们把一些编辑符用\texttt{()}起来, 前面加个数, 数是几就表示把\texttt{()}里的编辑符重复几遍, 比如下面这个轮子写入和读取时格式声明是一样的(要不然就不知道读出什么东西了).
 \begin{lstlisting}
@@ -539,7 +539,7 @@ program main
 end program main
 \end{lstlisting}
 
-有时我们会碰到一些奇奇怪怪的数: $+\infty$, $-\infty$, 和$\text{NaN}$. $+\infty$和$-\infty$好理解, $\text{NaN}$名为``非数'', 表示``Not a Number'', 遇到什么不定式呀多值函数呀结果连$\pm\infty$都没法表示的时候结果就是$\text{NaN}$. Fortran规定输入输出时用前面加正负号的字符串\texttt{INF}或\texttt{INFINITY}表示$\pm\infty$, 用字符串\texttt{NAN}表示$\text{NaN}$, 这些字符串不分大小写. 如果遇到$\pm\infty$或$\text{NaN}$, 则不论输入输出F$w.d$的$.d$都会被无视\footnote{虽然Fortran官方规则中没写明, 但想来是这样的.\label{edit_IEEE}}, 比如下面的轮子里$d$可以随便乱写, 只需保证$d\geqslant0$.
+有时我们会碰到一些奇奇怪怪的数: $+\infty$, $-\infty$, 和$\text{NaN}$. $+\infty$和$-\infty$好理解, $\text{NaN}$名为``非数'' , 表示``Not a Number'' , 遇到什么不定式呀多值函数呀结果连$\pm\infty$都没法表示的时候结果就是$\text{NaN}$. Fortran规定输入输出时用前面加正负号的字符串\texttt{INF}或\texttt{INFINITY}表示$\pm\infty$, 用字符串\texttt{NAN}表示$\text{NaN}$, 这些字符串不分大小写. 如果遇到$\pm\infty$或$\text{NaN}$, 则不论输入输出F$w.d$的$.d$都会被无视\footnote{虽然Fortran官方规则中没写明, 但想来是这样的.\label{edit_IEEE}}, 比如下面的轮子里$d$可以随便乱写, 只需保证$d\geqslant0$.
 \begin{lstlisting}
 program main
     implicit none
@@ -866,7 +866,7 @@ program main
 end program main
 \end{lstlisting}
 
-SS编辑符表示之后输出正数时最开头都不带正号, SP编辑符则表示都带正号.\footnote{``S''代表``sign''. ``S''代表``suppress'', ``P''代表``plus''.}
+SS编辑符表示之后输出正数时最开头都不带正号, SP编辑符则表示都带正号.\footnote{``S''代表``sign'' . ``S''代表``suppress'' , ``P''代表``plus'' .}
 \begin{lstlisting}
 program main
     implicit none
@@ -909,7 +909,7 @@ program main
 end program main
 \end{lstlisting}
 
-在输出实数的时候, 我们只能输出若干位有效数字, 所以这里有个舍入的问题. 比如测量值我们希望四舍五入但不确定度我们希望向上舍入. 我们可以用RU, RD, RZ, RC编辑符, 这四个编辑符分别表示之后输出实数时都向上舍入, 都向下舍入, 都向零舍入, 都四舍五入.\footnote{``R''代表``round''. ``U''代表``up'', ``D''代表``down'', ``Z''代表``zero'', ``C''代表``compatible''.}
+在输出实数的时候, 我们只能输出若干位有效数字, 所以这里有个舍入的问题. 比如测量值我们希望四舍五入但不确定度我们希望向上舍入. 我们可以用RU, RD, RZ, RC编辑符, 这四个编辑符分别表示之后输出实数时都向上舍入, 都向下舍入, 都向零舍入, 都四舍五入.\footnote{``R''代表``round'' . ``U''代表``up'' , ``D''代表``down'' , ``Z''代表``zero'' , ``C''代表``compatible'' .}
 \begin{lstlisting}
 program main
     implicit none

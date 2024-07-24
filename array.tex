@@ -138,7 +138,7 @@ end program main
 \end{lstlisting}
 
 先前用向量下标(vector subscript)来切片, 我们还可以用三元下标(triplet subscript)\footnote{
-官方文档里用的是``subscript triplet''.
+官方文档里用的是``subscript triplet'' .
 }, 以\texttt{p:q:r}代替\texttt{(i,i=p,q,r)}, 当然\texttt{:r}可以省略. 这不是器规, 是通用的. 而且三元下标中\texttt{p}和\texttt{q}也可以省略(但是注意\texttt{p}和\texttt{q}之间的\texttt{:}不能省), \texttt{p}省略就等于那一维的下界, \texttt{q}省略就等于那一维的上界. 这样的切片简单且比较常用(尤其是省略\texttt{:r}的时候), 是要掌握的. 比如我们可以方便地摘出$1$到$9$中的奇数.
 \begin{lstlisting}
 program main

@@ -56,11 +56,11 @@ end subroutine helloworld
 
 \section{标准与规范}
 
-任何编程\uline{语言}都有自己的句法/语法(syntax), 例如``让电脑屏幕上出现`A' '', Fortran的写法是\texttt{print *, "A"}, C的写法是\texttt{printf("A");}, Python 2的写法是\texttt{print "A"}, Python 3的写法是\texttt{print("A")}. 编程语言对语法的统一规定称为标准(standard). Fortran 的现行标准是 Fortran 2023 (第\ref{introduction}章中已介绍), 之前还有旧标准 FORTRAN 66, FORTRAN 77, Fortran 90, Fortran 95, Fortran 2003, Fortran 2008, Fortran 2018.
+任何编程\uline{语言}都有自己的句法/语法(syntax), 例如``让电脑屏幕上出现`A' '' , Fortran 的写法是 \texttt{print *, "A"} , C 的写法是 \texttt{printf("A");} , Python 2 的写法是 \texttt{print "A"} , Python 3 的写法是 \texttt{print("A")} . 编程语言对语法的统一规定称为标准(standard). Fortran 的现行标准是 Fortran 2023 (第\ref{introduction}章中已介绍), 之前还有旧标准 FORTRAN 66, FORTRAN 77, Fortran 90, Fortran 95, Fortran 2003, Fortran 2008, Fortran 2018.
 
 不太好玩儿的是, 虽然 Fortran 语法已由现行标准规定好了, Fortran 编译器们却偶尔不按 Fortran 标准来干活儿, 自己制定了一些规则, 还有些时候, Fortran 标准直接就把权利赋予编译器, 让他们自定一些规则. 这样, Fortran 编译器们时不时就有和``官规''不同的``器规'' .
 
-编程语言的标准是``硬规则'', 除此之外还有``软规则'', 称为规范(convention). 所谓``规范'', 就是被代码毒打的前人总结的血泪教训. 不遵守规范, 也不一定会出什么问题, 但一旦出了问题, 就不知道问题出在哪儿啦. 请同学们尽量遵守本笔记列出的 Fortran 规范, 不然期末挂了不要怪 Fortran 哟! 不过有时不遵守规范也确实不会出什么问题, 安安会适时说明的.
+编程语言的标准是``硬规则'' , 除此之外还有``软规则'' , 称为规范(convention). 所谓``规范'' , 就是被代码毒打的前人总结的血泪教训. 不遵守规范, 也不一定会出什么问题, 但一旦出了问题, 就不知道问题出在哪儿啦. 请同学们尽量遵守本笔记列出的 Fortran 规范, 不然期末挂了不要怪 Fortran 哟! 不过有时不遵守规范也确实不会出什么问题, 安安会适时说明的.
 
 编译器各有各的器规, 这可能会出事. 想象一下, 同学们期末考写好程序, Ifx 和 Gfortran 说程序没问题, 同学们兴冲冲地交卷了, 然后老师掏出 Visual Fortran (某老款编译器), Visual Fortran 说程序有问题, 同学们就挂科啦. 为防止这种悲惨情形发生, 我们需要避免使用Fortran 标准没规定而编译器自定的规则.
 \begin{convention}
@@ -86,19 +86,19 @@ end program [program-name]
 
 每个 Fortran 源代码文件里都可以放若干完整的程序单元, 但习惯上一个源代码文件里只放一个程序单元, 并且文件名和文件里的程序单元名相同(比如主程序 \texttt{main} 放在 \texttt{main.f90} 里).
 \begin{convention}
-    一个源代码文件里只放一个程序单元, 并且文件名和文件里的程序单元名相同.
+    一个源代码文件里只放一个程序单元, 并且文件名和文件里的程序单元名相同.\label{one_program_unit}
 \end{convention}
 当然, 安安偶尔也会在一个源代码文件里放多个程序单元, 比如安安在玩 \href{https://iausofa.org/}{SOFA} 的时候, 习惯把除 \texttt{t\_{}sofa\_{}f.for} 外的所有文件里的东东通通复制粘贴到一个名为 \texttt{sofa.for} 的新文件里, 这个文件里就有一大堆外部子程序了.
 
 \section{字符集}
 
-Fortran 可以在程序中使用英语输入法能直接打出的所有字符, 其他字符(比如汉字, 汉语标点)能否在程序中用则由器规决定. 注意, 英文标点和中文标点是\uline{完全不同}的\footnote{用 VS Code 的同学会发现英文标点和中文标点显示出来完全不一样.}, 英文标点是``半角标点'', 中文标点是``全角标点''哟!\footnote{本笔记里使用的全部是英文标点呢, 这也是中文数学, 物理学, 天文学书籍的惯例(不信同学们可以翻翻手头的教科书).}
+Fortran 可以在程序中使用所有能直接用英语输入法打出的字符, 其他字符(比如汉字, 汉语标点)能否在程序中用则由器规决定. 注意, 英文标点和中文标点是\uline{完全不同}的\footnote{用 VS Code 的同学会发现英文标点和中文标点显示出来完全不一样.}, 英文标点是``半角标点'' , 中文标点是``全角标点''哟!\footnote{本笔记里使用的全部是英文标点呢, 这也是中文数学, 物理学, 天文学书籍的惯例(不信同学们可以翻翻手头的教科书).}
 
 经俺测试, Ifx 和 Gfortran 都是支持汉字和汉语标点的, 但直接让电脑屏幕上出现汉字或汉语标点可能会出现``穞堵臸猭畍\footnote{不认识这东东的同学请自行搜索.}''之类的乱码(这可以解决).
 
-为避免各种各样的问题, 还是只用正常字符为好.
+为避免各种各样的问题, 还是只用正常字符为好. 另外源代码文件名最好也如此, 不然编译器可能会无法识别源代码文件呢.
 \begin{convention}
-    只在程序中使用英语输入法能直接打出的所有字符.
+    在程序和源代码文件名中只使用能直接用英语输入法打出的字符.
 \end{convention}
 
 Fortran 是大小写不敏感的(case-insensitive), 也就是说, 很多情况下程序里的字母大写小写效果是完全相同的(效果不同的地方见 \ref{fortran_char} 节和 \ref{character_string_edit_descriptor} 小节). 比如, 下面这个程序和 \ref{fortran_program} 节的 \texttt{main.f90} 内的程序是完全等价的.
@@ -119,23 +119,17 @@ Fortran 大小写不分是有历史原因的. 当年电脑太烂了, 为节省�
 
 \section{源代码格式}
 
-Fortran的源代码格式(source form)分两种: 自由格式(free form)和固定格式(fixed form). 自由格式的源代码需要保存在拓展名为\texttt{.f90}的文件中, 可能可以保存在拓展名为\texttt{.F90}, \texttt{.f03}, \texttt{.F03}, \texttt{.f08}, \texttt{.F08}, \texttt{.f18}, \texttt{.F18}, \texttt{.fypp}, \texttt{.FYPP}的文件中. 固定格式的源代码需要保存在拓展名为\texttt{.for}或\texttt{.f}的文件中, 可能可以保存在拓展名为\texttt{.FOR}, \texttt{.F}, \texttt{.ftn}, \texttt{.FTN}, \texttt{.fpp}, \texttt{.FPP}的文件中. 上述``可能''要看编译器承认不承认, 也就是能不能执行(见\ref{run_fortran}节).
-
-写固定格式的程序会遇到各种各样的问题. 自由格式就是为了替代固定格式而创立的. 本书Fortran部分的全部内容都基于自由格式程序.
-
+Fortran 有两种源代码格式(source form): 自由格式(free form)和固定格式(fixed form). 固定格式是不应使用的老格式. 安安的笔记里只讲自由格式.
 \begin{convention}
     永远编写自由格式的程序.
 \end{convention}
 
-源代码文件名除拓展名外可以随便取, 但乱取文件名是要粗事情滴.
-
+根据 \href{https://cdrdv2.intel.com/v1/dl/getContent/824360?fileName=fortran-compiler_developer-guide-reference_2024.2-767251-824360.pdf}{Ifx 文档} 和 \href{https://gcc.gnu.org/onlinedocs/gcc-13.2.0/gfortran.pdf}{Gfortran 文档}, 请同学们把自由格式的 Fortran 程序保存在拓展名为 \texttt{.f90} 的文件里, 以保证它们俩能认得. 自由格式源代码文件拓展名为 \texttt{.f90} 也是 Fortran 编译器的惯例, 要是某 Fortran 编译器竟不认, 我们就把它卸载了\dots{}
 \begin{convention}
-    将源代码文件名取成能表示程序功能的字符串.
+    保证自由格式源代码文件拓展名为 \texttt{.f90} .
 \end{convention}
 
-\begin{convention}
-    不要在源代码文件名中使用汉字等特殊字符.
-\end{convention}
+这里需澄清, 有习惯说法是把自由格式程序说成`` Fortran 90 程序'' , 把固定格式程序说成`` FORTRAN 77 程序'' . 这种说法的根源是 Fortran 历史上有一场巨变: FORTRAN 77 只有固定格式, 而 Fortran 90 新引入了自由格式. 然而, 这并不意味着固定格式程序中不能使用 Fortran 90 及以后的标准新出的语法.
 
 \subsection{缩进}
 
@@ -145,9 +139,9 @@ Fortran的源代码格式(source form)分两种: 自由格式(free form)和固�
     在程序中加入适当的缩进, 最好以$4$个空格为单位.
 \end{convention}
 
-``以4个空格为单位'', 是指保持缩进为4个空格, 或8个空格, 或12个空格, 以此类推. 合格的文本编辑器(text editor), 比如VS Code, 会自动在程序中加上合适的缩进. 有些人可能更喜欢以2个空格或8个空格为单位的缩进.
+``以4个空格为单位'' , 是指保持缩进为4个空格, 或8个空格, 或12个空格, 以此类推. 合格的文本编辑器(text editor), 比如VS Code, 会自动在程序中加上合适的缩进. 有些人可能更喜欢以2个空格或8个空格为单位的缩进.
 
-注意, 在文本编辑器中按[Tab]键, 也会出现一长串``空格'', 但实际上对电脑而言, 按[Tab]键和按一堆空格, 效果是不同的. 智能的文本编辑器, 比如VS Code, 会自动把[Tab]转换为适当数目的空格, 但还是不保险. 一些经典的优秀编辑器, 比如Vim, 好像是会严格区分[Tab]和空格的\footnote{
+注意, 在文本编辑器中按[Tab]键, 也会出现一长串``空格'' , 但实际上对电脑而言, 按[Tab]键和按一堆空格, 效果是不同的. 智能的文本编辑器, 比如VS Code, 会自动把[Tab]转换为适当数目的空格, 但还是不保险. 一些经典的优秀编辑器, 比如Vim, 好像是会严格区分[Tab]和空格的\footnote{
     这并不见得是坏事, 因为有些特殊文件是默认必须使用[Tab]的.
 }, 除非另装外挂. 一些编译器可能会接受在程序编辑中使用[Tab]键, 但这也不保险. 总而言之, 使用[Tab]键, 实在不清楚会不会出问题.
 
@@ -165,7 +159,7 @@ Fortran的源代码格式(source form)分两种: 自由格式(free form)和固�
     在程序中加入适当的空行.
 \end{convention}
 
-正如\ref{fortran_program}节所说, 程序是指令的集合. 空行代表的指令是``啥事也不做''.
+正如\ref{fortran_program}节所说, 程序是指令的集合. 空行代表的指令是``啥事也不做'' .
 
 \subsection{注释}
 
@@ -440,7 +434,7 @@ end program main
 
 \subsection{警告}\label{fortran_warning}
 
-有些时候电脑能够执行指令, 但它觉得这些个指令十分``危险'', 很有可能指令的实际执行过程并不是我们预想的那样, 这时电脑就会抛出警告. 什么时候应该给个错误, 不同编译器的观点还是比较一致的, 但什么时候给个警告, 那就全看编译器心情了.
+有些时候电脑能够执行指令, 但它觉得这些个指令十分``危险'' , 很有可能指令的实际执行过程并不是我们预想的那样, 这时电脑就会抛出警告. 什么时候应该给个错误, 不同编译器的观点还是比较一致的, 但什么时候给个警告, 那就全看编译器心情了.
 
 比如, 运行这样一个程序(文件名\texttt{main.f90}).
 \begin{lstlisting}
