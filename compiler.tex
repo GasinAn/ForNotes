@@ -9,41 +9,40 @@
         \hline
         类型&专有软件&自由软件\\
         \hline
-        总空间占用&约5.2G&约780M\\
+        总空间占用&约 5.2G&约 780M\\
         \hline
-        语法支持&略多于Gfortran, 较宽松&略少于Ifx, 较严格\\
+        语法支持&略多于 Gfortran, 较宽松&略少于 Ifx, 较严格\\
         \hline
         自动纠错和自动补全&无&有\\
         \hline
-        编译提示信息&次于Gfortran&优于Ifx\\
+        编译提示信息&次于 Gfortran&优于 Ifx\\
         \hline
-        平均运行速度&快于Gfortran&慢于Ifx\\
+        平均运行速度&快于 Gfortran&慢于 Ifx\\
         \hline
     \end{tabular}
-    \caption{Ifx (+VS)与Gfortran (+VS Code)的对比}
+    \caption{Ifx (+VS) 与 Gfortran (+VS Code) 的对比}
 \end{table}
 
 \section[Intel\r{} Fortran Compiler]{Intel\r{} Fortran Compiler (Ifx)}
 
 \subsection{安装}
 
-Windows系统安装方式如下.
+Windows 系统安装方式如下.
 \begin{enumerate}
-    \item 安装~\href{https://visualstudio.microsoft.com/zh-hans/thank-you-downloading-visual-studio/?sku=Community&channel=Release&version=VS2022&source=VSLandingPage&cid=2030&passive=false}
+    \item 安装 \href{https://visualstudio.microsoft.com/zh-hans/thank-you-downloading-visual-studio/?sku=Community&channel=Release&version=VS2022&source=VSLandingPage&cid=2030&passive=false}
     {Visual Studio Community 2022}. 安装时可选择语言为中文.
-    \item ``工作负载''选择``使用C++的桌面开发'' .
-    \item 安装~\href{https://registrationcenter-download.intel.com/akdlm/IRC_NAS/7feb5647-59dd-420d-8753-345d31e177dc/w_fortran-compiler_p_2024.2.0.424.exe}
-    {Intel\r{} Fortran Compiler}.
-    \item 找到开始菜单内Intel oneAPI 2023文件夹中的Intel oneAPI command prompt for Intel 64 for Visual Studio 2022和Intel oneAPI command prompt for IA32 for Visual Studio 2022, 右键选择``更多''$\rightarrow$``打开文件位置'' , 可以找这两个东东的快捷方式. 然后右键这两个快捷方式, 选择``属性'' , 把``起始路径''改成自己最常访问的路径(比如桌面的路径), 然后点``应用'' , 点``继续'' , 点``确定'' .\label{to_desktop}
+    \item ``工作负载'' 选择 ``使用 C++ 的桌面开发''.
+    \item 安装 \href{https://registrationcenter-download.intel.com/akdlm/IRC_NAS/7feb5647-59dd-420d-8753-345d31e177dc/w_fortran-compiler_p_2024.2.0.424.exe}{Intel\r{} Fortran Compiler}.
+    \item 找到开始菜单内 Intel oneAPI 2023 文件夹中的 Intel oneAPI command prompt for Intel 64 for Visual Studio 2022 和 Intel oneAPI command prompt for IA32 for Visual Studio 2022, 右键选择 ``更多'' $\rightarrow$ ``打开文件位置'', 可以找这两个东东的快捷方式. 然后右键这两个快捷方式, 选择 ``属性'', 把 ``起始路径'' 改成自己最常访问的路径 (比如桌面的路径), 然后点 ``应用'', 点 ``继续'', 点 ``确定''.\label{to_desktop}
 \end{enumerate}
 
 \subsection{使用}\label{use_ifx}
 
-\subsubsection{使用CLI}
+\subsubsection{使用 CLI}
 
-现在俺们通过一个实例来掌握CLI的用法! 我们先在任意一个文件夹里新建两个空白文本文档(默认的文件名应该是``\textsf{新建}\texttt{\ }\textsf{文本文档}\texttt{.txt}''), 分别把文件名改为 \texttt{main.f90} 和 \texttt{helloworld.f90} (注意要把拓展名 \texttt{.txt} 也给改掉, 不要改成 \texttt{main.f90.txt} 和 \texttt{helloworld.f90.txt} 哟).
+现在俺们通过一个实例来掌握 CLI 的用法! 我们先在任意一个文件夹里新建两个空白文本文档 (默认的文件名应该是 ``\textsf{新建}\texttt{\ }\textsf{文本文档}\texttt{.txt}''), 分别把文件名改为 \texttt{main.f90} 和 \texttt{helloworld.f90} (注意要把拓展名 \texttt{.txt} 也给改掉, 不要改成 \texttt{main.f90.txt} 和 \texttt{helloworld.f90.txt} 哟).
 
-打开 \texttt{main.f90} , 写入下面的内容并保存.
+打开 \texttt{main.f90}, 写入下面的内容并保存.
 \begin{lstlisting}
 program main
     implicit none
@@ -51,7 +50,7 @@ program main
 end program main
 \end{lstlisting}
 
-打开 \texttt{helloworld.f90} , 写入下面的内容并保存.
+打开 \texttt{helloworld.f90}, 写入下面的内容并保存.
 \begin{lstlisting}
 subroutine helloworld()
     implicit none
@@ -59,67 +58,66 @@ subroutine helloworld()
 end subroutine helloworld
 \end{lstlisting}
 
-然后打开开始菜单内Intel oneAPI 2023文件夹中的Intel oneAPI command prompt for Intel 64 for Visual Studio 2022 (32位系统请打开 Intel oneAPI command prompt for IA32 for Visual Studio 2022), 这样会蹦出一个可怕的黑框框.
+然后打开开始菜单内 Intel oneAPI 2023 文件夹中的 Intel oneAPI command prompt for Intel 64 for Visual Studio 2022 (32 位系统请打开 Intel oneAPI command prompt for IA32 for Visual Studio 2022), 这样会蹦出一个可怕的黑框框.
 
-接下来俺们要``\texttt{cd}''到 \texttt{main.f90} 和 \texttt{helloworld.f90} 所在的文件夹去. 安安把 \texttt{main.f90} 和 \texttt{helloworld.f90} 放在桌面, 安安桌面的路径是\texttt{C:\bs{}Users\bs{}GasinAn\bs{}Desktop} , 所以安安要在黑框框里输入
+接下来俺们要 ``\texttt{cd}'' 到 \texttt{main.f90} 和 \texttt{helloworld.f90} 所在的文件夹去. 安安把 \texttt{main.f90} 和 \texttt{helloworld.f90} 放在桌面, 安安桌面的路径是 \texttt{C:\bs{}Users\bs{}GasinAn\bs{}Desktop}, 所以安安要在黑框框里输入
 \begin{verbatim}
 cd /D C:\Users\GasinAn\Desktop
 \end{verbatim}
-然后按回车, 这样黑框框里最后一行``\texttt{>}''的左边就会变成桌面的路径. 不过安安其实不用干这一步, 因为在安装时, 第 \ref{to_desktop} 步已经设置好打开黑框框时默认``\texttt{cd}''到桌面了. 假如 \texttt{main.f90} 和 \texttt{helloworld.f90} 不在桌面而在 \texttt{D:\bs{}Documents} 文件夹, 安安就得输入 \texttt{cd /D D:\bs{}Documents} 了.
+然后按回车, 这样黑框框里最后一行 ``\texttt{>}'' 的左边就会变成桌面的路径. 不过安安其实不用干这一步, 因为在安装时, 第 \ref{to_desktop} 步已经设置好打开黑框框时默认 ``\texttt{cd}'' 到桌面了. 假如 \texttt{main.f90} 和 \texttt{helloworld.f90} 不在桌面而在 \texttt{D:\bs{}Documents} 文件夹, 安安就得输入 \texttt{cd /D D:\bs{}Documents} 了.
 
-然后俺们要编译 \texttt{main.f90} 和 \texttt{helloworld.f90} , 在黑框框里输入
+然后俺们要编译 \texttt{main.f90} 和 \texttt{helloworld.f90}, 在黑框框里输入
 \begin{verbatim}
 ifx *.f* /o a.exe
 \end{verbatim}
-然后按回车, 这样桌面会多出个 \texttt{a.exe} 文件来\footnote{还会多出 \texttt{main.obj} 和 \texttt{helloworld.obj} , 这些拓展名是 \texttt{.obj}的文件初学 Fortran 的小盆友们请无视, 删了也没关系.}. 这步俺们干的是``把文件名(连同拓展名)里带`\texttt{.f}'的文件编译成 \texttt{a.exe} '' , 万一 \texttt{main.f90} 和 \texttt{helloworld.f90} 所在的文件夹里还有其他文件名里带``\texttt{.f}''的文件, 就会坏事, 请同学们自行请这些文件暂时搬家到别的地方去.
+然后按回车, 这样桌面会多出个 \texttt{a.exe} 文件来\footnote{还会多出 \texttt{main.obj} 和 \texttt{helloworld.obj}, 这些拓展名是 \texttt{.obj} 的文件初学 Fortran 的小盆友们请无视, 删了也没关系.}. 这步俺们干的是 ``把文件名 (连同拓展名) 里带 `\texttt{.f}' 的文件编译成 \texttt{a.exe}'', 万一 \texttt{main.f90} 和 \texttt{helloworld.f90} 所在的文件夹里还有其他文件名里带 ``\texttt{.f}'' 的文件, 就会坏事, 请同学们自行请这些文件暂时搬家到别的地方去.
 
-最后我们要运行 \texttt{a.exe} , 在黑框框里输入
+最后我们要运行 \texttt{a.exe}, 在黑框框里输入
 \begin{verbatim}
 a.exe
 \end{verbatim}
 然后按回车, 看到黑框框里蹦出 \texttt{Hello, world!} 就大成功!
 
-\subsubsection{使用GUI}
+\subsubsection{使用 GUI}
 
-打开 Visual Studio , 点``创建新项目'' .
+打开 Visual Studio, 点 ``创建新项目''.
 
-然后搜索``Empty Project'' , 找到下面标有``Fortran'' , ``Windows'' , ``控制台''的``Empty Project'' , 选择之, 然后点击``下一步'' .
+然后搜索 ``Empty Project'', 找到下面标有 ``Fortran'', ``Windows'', ``控制台'' 的 ``Empty Project'', 选择之, 然后点击 ``下一步''.
 
-然后把``项目名称''改成``HelloWorld'' , ``位置''选择自己喜欢的文件夹(比如桌面)的路径(下面用\texttt{[dir]}表示这个路径), 点击``创建'' .
+然后把 ``项目名称'' 改成 ``HelloWorld'', ``位置'' 选择自己喜欢的文件夹 (比如桌面) 的路径 (下面用 \texttt{[dir]} 表示这个路径), 点击 ``创建''.
 
-然后就出现了编辑界面, 并且\texttt{[dir]}内多出了一个\texttt{HelloWorld}文件夹.
+然后就出现了编辑界面, 并且 \texttt{[dir]} 内多出了一个 \texttt{HelloWorld} 文件夹.
 
-默认使用的是 Ifort\footnote{Intel\r{} Fortran Compiler Classic, 这玩意儿 Intel\r{} 不想玩儿了, 要用 Ifx 来代替.} . 欲用 Ifx , 右键右边``解决方案资源管理器''里的``Console1 (Ifx)'' , 点最下面的``属性'' , 左边选``配置属性''$\rightarrow$``General'' (应已自动选上), 点``Use Compiler''右边的``Ifx Intel$\,\text{\textregistered}$ Fortran Compiler Classic'' , 点最右边的带向下标志的按钮, 改选成``IFX Intel$\,\text{\textregistered}$ Fortran Compiler'' , 点``应用'' , 点``确定'' , 看到右边``Console1 (Ifx)''变成``Console1 (IFX)''即成功.
+默认使用的是 Ifort\footnote{Intel\r{} Fortran Compiler Classic,这玩意儿 Intel\r{} 不想玩儿了,要用 Ifx 来代替.}.欲用 Ifx, 右键右边 ``解决方案资源管理器'' 里的 ``Console1 (Ifx)'',点最下面的 ``属性'', 左边选 ``配置属性'' $\rightarrow$ ``General'' (应已自动选上), 点 ``Use Compiler'' 右边的 ``Ifx Intel$\,\text{\textregistered}$ Fortran Compiler Classic'', 点最右边的带向下标志的按钮, 改选成``IFX Intel$\,\text{\textregistered}$ Fortran Compiler'', 点 ``应用'', 点 ``确定'',看到右边 ``Console1 (Ifx)'' 变成 ``Console1 (IFX)'' 即成功.
 
-64 位系统, 若上面 Debug 后是 x86 , 则可能需要将上面 Debug 后的 x86 改成 x64 (如不需要, 也最好改改). 点 x86 右边的向下箭头可以改, 若没有 x64 , 可以点``配置管理器\dots''后尝试把x64调出来.
+64 位系统, 若上面 Debug 后是 x86, 则可能需要将上面 Debug 后的 x86 改成 x64 (如不需要, 也最好改改). 点 x86 右边的向下箭头可以改, 若没有 x64, 可以点 ``配置管理器\dots'' 后尝试把x64调出来.
 
-右击右边``解决方案资源管理器''中的``Source Files'' , 选择``添加''$\rightarrow$``现有项\dots'' , 然后把之前的 \texttt{main.f90} 和 \texttt{helloworld.f90} 添加进来. 然后双击文件名即可打开文件.
+右击右边 ``解决方案资源管理器'' 中的 ``Source Files'', 选择 ``添加'' $\rightarrow$ ``现有项\dots'', 然后把之前的 \texttt{main.f90} 和 \texttt{helloworld.f90} 添加进来. 然后双击文件名即可打开文件.
 
-点击上面的``调试'' , 然后点``开始执行(不调试)'' , 看到下面框框里蹦出 \texttt{Hello, world!} 就大成功!
+点击上面的 ``调试'', 然后点 ``开始执行 (不调试)'', 看到下面框框里蹦出 \texttt{Hello, world!} 就大成功!
 
-右击右边``解决方案资源管理器''中的``Source Files'' , 选择``添加''$\rightarrow$``新建项\dots'' , 可以新建文件, 默认在 \texttt{HelloWorld} 文件夹里的 \texttt{HelloWorld} 文件夹里. 右击任意一个文件的文件名后, 可以点击``删除''或``重命名''进行删除或重命名操作.
+右击右边 ``解决方案资源管理器'' 中的 ``Source Files'', 选择 ``添加'' $\rightarrow$ ``新建项\dots'', 可以新建文件, 默认在 \texttt{HelloWorld} 文件夹里的 \texttt{HelloWorld} 文件夹里. 右击任意一个文件的文件名后, 可以点击 ``删除'' 或 ``重命名'' 进行删除或重命名操作.
 
-关掉 Visual Studio , 重新打开, 左边多出了个 HelloWorld.sln , 点它就能回到编辑界面了.
+关掉 Visual Studio, 重新打开, 左边多出了个 HelloWorld.sln, 点它就能回到编辑界面了.
 
 \section[GNU Fortran Compiler]{GNU Fortran Compiler (Gfortran)}
 
 \subsection{安装}
 
-Windows系统安装方式如下.\footnote{
-    以下是直接安装MinGW-w64来安装Gfortran的, 但如果有Python, 也许能直接通过Pip~(或Conda)来安装Gfortran~(或MinGW-w64, MSYS2, \dots)? 我也不知\dots
+Windows 系统安装方式如下.\footnote{
+    以下是直接安装 MinGW-w64 来安装 Gfortran 的, 但如果有 Python, 也许能直接通过 Pip (或 Conda) 来安装 Gfortran (或 MinGW-w64, MSYS2, \dots)? 我也不知\dots
 }
 \begin{enumerate}
-    \item 访问~\href{https://github.com/niXman/mingw-builds-binaries/releases}
-    {MinGW-Builds-binaries releases}~, 选择最新的 release 进入.
+    \item 访问 \href{https://github.com/niXman/mingw-builds-binaries/releases}
+    {MinGW-Builds-binaries releases}, 选择最新的 release 进入.
     \item 选带 posix 的; 64 位系统选带 x86\_{}64 的, 32 位系统选带 i686 的; Win 10 及以上选带 ucrt 的, Win 10 以下选带 msvcrt 的. 下载并解压.
-    \item 把解压出来的名为 \texttt{mingw64} 的文件夹剪切到随便哪个目录. 暂称粘贴到的目录为 \texttt{[dir]} .
-    \item 在系统环境变量 \texttt{Path} 中加入 \texttt{[dir]\bs{}mingw64\bs{}bin} . 举个例子, 如果刚才粘贴到 \texttt{C:\bs{}Program Files} , 就加入 \texttt{C:\bs{}Program Files\bs{}mingw64\bs{}bin}.
-    \item 下载~\href{https://code.visualstudio.com/sha/download?build=stable&os=win32-x64-user}
-    {Visual Studio Code}~并安装.
-    \item 打开 Visual Studio Code , 点击左边四个正方形飞出一个的图标, 搜索 C/C++ , Modern Fortran 和 Code Runner 并安装.
-    \item[] 如果已经装了 Python , 装 Modern Fortran 前先用 Pip\footnote{有Conda当然用Conda啦!} 装 fortls .
-    \item 按 Ctrl+Shift+P , 然后选择``Preferences: Open Settings (JSON)'' , 打开名为\texttt{settings.json}的 JSON 文件.
-    \item 在\texttt{settings.json}里加入下面这些键值对.\label{add_key_value}
+    \item 把解压出来的名为 \texttt{mingw64} 的文件夹剪切到随便哪个目录. 暂称粘贴到的目录为 \texttt{[dir]}.
+    \item 在系统环境变量 \texttt{Path} 中加入 \texttt{[dir]\bs{}mingw64\bs{}bin}.比如, 如果刚才粘贴到 \texttt{C:\bs{}Program Files}, 就加入 \texttt{C:\bs{}Program Files\bs{}mingw64\bs{}bin}.
+    \item 下载 \href{https://code.visualstudio.com/sha/download?build=stable&os=win32-x64-user}{Visual Studio Code} 并安装.
+    \item 打开 Visual Studio Code, 点击左边四个正方形飞出一个的图标, 搜索 C/C++,Modern Fortran 和 Code Runner 并安装.
+    \item[] 如果已经装了 Python, 装 Modern Fortran 前先用 Pip\footnote{有 Conda 当然用 Conda 啦!} 装 fortls .
+    \item 按 Ctrl+Shift+P, 然后选择 ``Preferences: Open Settings (JSON)'', 打开名为 \texttt{settings.json} 的 JSON 文件.
+    \item 在 \texttt{settings.json} 里加入下面这些键值对.\label{add_key_value}
     \begin{verbatim}
 "code-runner.executorMap": {
     "FortranFreeForm":
@@ -180,17 +178,17 @@ Windows系统安装方式如下.\footnote{
 
 \subsection{使用}\label{use_gfortran}
 
-\subsubsection{使用CLI}
+\subsubsection{使用 CLI}
 
 Gfortran 的用法和之前 \ref{use_ifx} 小节中 Ifx 的用法是很像的.
 
-首先俺们需要打开 Powershell , 可以按 Win+R , 输入``powershell''后点``确定'' , 也可以在 Visual Studio Code 中, 点上面``Terminal''后点``New Terminal'' .
+首先俺们需要打开 Powershell, 可以按 Win+R, 输入 ``powershell'' 后点 ``确定'', 也可以在 Visual Studio Code 中, 点上面 ``Terminal'' 后点 ``New Terminal''.
 
-然后``\texttt{cd}''那步, 输入的东东要去掉``\texttt{/D}'' , 示例如下.
+然后 ``\texttt{cd}'' 那步, 输入的东东要去掉 ``\texttt{/D}'', 示例如下.
 \begin{verbatim}
 cd C:\Users\GasinAn\Desktop
 \end{verbatim}
-这里我们没有设置好打开 Powershell 时默认``\texttt{cd}''到桌面, 所以不好偷懒. 同志们如果想设置来偷懒, 可以仿照 Ifx 安装第 \ref{to_desktop} 步, 对 Powershell 也同样来波操作.
+这里我们没有设置好打开 Powershell 时默认 ``\texttt{cd}'' 到桌面, 所以不好偷懒. 同志们如果想设置来偷懒, 可以仿照 Ifx 安装第 \ref{to_desktop} 步, 对 Powershell 也同样来波操作.
 
 之后编译那步, 输入的东东如下.
 \begin{verbatim}
@@ -199,6 +197,6 @@ gfortran *.f*
 
 最后运行那步是一样的.
 
-\subsubsection{使用GUI}
+\subsubsection{使用 GUI}
 
-用 Visual Studio Code 打开 \texttt{main.f90}\footnote{之后同学们学 \ref{program_unit} 节, 会明白 \texttt{main.f90} 里写的是``主程序'' , 所以打开它.} , 然后点右上方的白色三角儿即可大功告成!
+用 Visual Studio Code 打开 \texttt{main.f90}\footnote{之后同学们学 \ref{program_unit} 节,会明白 \texttt{main.f90} 里写的是``主程序'',所以打开它.}, 然后点右上方的白色三角儿即可大功告成!
