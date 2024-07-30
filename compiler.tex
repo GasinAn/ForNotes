@@ -90,7 +90,7 @@ a.exe
 
 默认使用的是 Ifort\footnote{Intel\r{} Fortran Compiler Classic,这玩意儿 Intel\r{} 不想玩儿了,要用 Ifx 来代替.}.欲用 Ifx, 右键右边 ``解决方案资源管理器'' 里的 ``Console1 (Ifx)'',点最下面的 ``属性'', 左边选 ``配置属性'' $\rightarrow$ ``General'' (应已自动选上), 点 ``Use Compiler'' 右边的 ``Ifx Intel$\,\text{\textregistered}$ Fortran Compiler Classic'', 点最右边的带向下标志的按钮, 改选成``IFX Intel$\,\text{\textregistered}$ Fortran Compiler'', 点 ``应用'', 点 ``确定'',看到右边 ``Console1 (Ifx)'' 变成 ``Console1 (IFX)'' 即成功.
 
-64 位系统, 若上面 Debug 后是 x86, 则可能需要将上面 Debug 后的 x86 改成 x64 (如不需要, 也最好改改). 点 x86 右边的向下箭头可以改, 若没有 x64, 可以点 ``配置管理器\dots'' 后尝试把x64调出来.
+64 位系统, 若上面 Debug 后是 x86, 则可能需要将上面 Debug 后的 x86 改成 x64 (如不需要, 也最好改改). 点 x86 右边的向下箭头可以改, 若没有 x64, 可以点 ``配置管理器\dots'' 后尝试把 x64 调出来.
 
 右击右边 ``解决方案资源管理器'' 中的 ``Source Files'', 选择 ``添加'' $\rightarrow$ ``现有项\dots'', 然后把之前的 \texttt{main.f90} 和 \texttt{helloworld.f90} 添加进来. 然后双击文件名即可打开文件.
 
@@ -151,15 +151,15 @@ Windows 系统安装方式如下.\footnote{
 }
 \end{verbatim}
 如果一开始 \texttt{settings.json} 里长这样,
-\begin{lstlisting}
+\begin{verbatim}
 {
   "editor.wordWrap": "wordWrapColumn",
   "editor.wordWrapColumn": 80,
   "workbench.colorTheme": "Red"
 }
-\end{lstlisting}
+\end{verbatim}
 则加入键值对后可能长这样.
-\begin{lstlisting}
+\begin{verbatim}
 {
   "editor.wordWrap": "wordWrapColumn",
   "editor.wordWrapColumn": 80,
@@ -173,7 +173,7 @@ Windows 系统安装方式如下.\footnote{
   "code-runner.runInTerminal": true,
   "code-runner.saveAllFilesBeforeRun": true
 }
-\end{lstlisting}
+\end{verbatim}
 注意第 4 行最后要多加一个逗号来隔开键值对.
 
 \subsection{使用}\label{use_gfortran}

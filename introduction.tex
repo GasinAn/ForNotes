@@ -4,9 +4,9 @@ Fortran 是一门历史悠久的, 专为科学计算设计的编程语言.
 
 Fortran 的优点\footnote{这些是 Fortran 自己的\href{https://fortran-lang.org/}{官网}上写着的, 安安表示同意.}有:
 \begin{itemize}
-    \item Fortran 是一种相对较小的语言, 令人惊讶地易于学习和使用. 在大型数组上表达大多数数学和算术运算, 就像在白板上写方程一样简单.\\安安锐评: 这点天文系的师兄师姐师弟师妹们估计统统会反对, 然而这件事其实是真的. 觉得 Fortran 超级无敌巨 TM 难学, 恐怕全是老师花式折磨的结果. 安安自己当年上课的时候其实也是啥也没学会, 后来努力自学 Modern Fortran , 发现其实 Modern Fortran 在 Fortran 官方的努力下, 已经基本上没啥坑了, 自己在本科毕设的时候也是完全使用 Modern Fortran 来进行计算\footnote{安安在 Github 上留下了\href{https://github.com/GasinAn/echo1}{证据}}, 基本上没遇到什么困难.
+    \item Fortran 是一种相对较小的语言, 令人惊讶地易于学习和使用. 在大型数组上表达大多数数学和算术运算, 就像在白板上写方程一样简单.\\安安锐评: 这点天文系的师兄师姐师弟师妹们估计统统会反对, 然而这件事其实是真的. 觉得 Fortran 超级无敌巨 TM 难学, 恐怕全是老师花式折磨的结果. 安安自己当年上课的时候其实也是啥也没学会, 后来努力自学 Modern Fortran, 发现其实 Modern Fortran 在 Fortran 官方的努力下, 已经基本上没啥坑了, 自己在本科毕设的时候也是完全使用 Modern Fortran 来进行计算\footnote{安安在 Github 上留下了\href{https://github.com/GasinAn/echo1}{证据}}, 基本上没遇到什么困难.
     \item Fortran 语法严格, 使得编译器可以在早期捕捉许多编程错误\footnote{太惨了, 都是考点啊!}, 也使得编译器能够生成高效的二进制代码.
-    \item Fortran 是``多范式''的, 允许以最适合问题的编程风格来书写代码: 命令式, 函数式, 面向对象式皆可.\footnote{本笔记会涉及命令式编程和函数式编程, 由于安安完全是用爱写笔记(没钱赚), 面向对象式编程在本笔记中出现恐怕遥遥无期\dots{}}
+    \item Fortran 是 ``多范式'' 的, 允许以最适合问题的编程风格来书写代码: 命令式, 函数式, 面向对象式皆可.\footnote{本笔记会涉及命令式编程和函数式编程, 由于安安完全是用爱写笔记 (没钱赚), 面向对象式编程在本笔记中出现恐怕遥遥无期\dots{}}
     \item Fortran 是一种原生的并行编程语言, 具有直观的类似数组的语法\footnote{有志于伟大天文事业的天文系本科小盆友们必学 Numpy (一个无比基础的 Python 包), 它继承了这样的语法.}, 可以在 CPU 之间进行数据通信, 可以在单个 CPU, 共享内存多核系统或分布式内存 HPC 或基于云的系统上运行几乎相同的代码.
     \item Fortran 专为科学和工程中的计算密集型应用程序而设计, 成熟且经过实战考验的编译器和库\footnote{刚学 Fortran 的天文系本科小盆友们以后会在天体测量学课上遇到 SOFA 和 NOVAS, 所以不好好学 Fortran 可是要挂俩门的啊!\dots{}}允许快速编写贴近硬件运行的代码.
 \end{itemize}
@@ -14,8 +14,8 @@ Fortran 的优点\footnote{这些是 Fortran 自己的\href{https://fortran-lang
 Fortran 的不足有:
 \begin{itemize}
     \item 由于 Fortran 出现的时候, 硬件条件和程序设计观念都不足, 历史上 Fortran 有着许多令人费解的语法特性, 也就是老师们用来花式折磨同学们的坑. 虽然现在 Fortran 官方已经非常努力地填坑了, Modern Fortran 也已经基本上将这些坑填上了, 但还是留下一些没填上的坑 (比如大小写不分之类的).\footnote{这些剩下的坑恐怕是实在不好填, 估计是不会填了, 俺们只得举手投降\dots{}}
-    \item 由于 Fortran 专为科学计算设计, 领域有局限, 而且从前某些时候 Fortran 填坑不积极, 填得也有问题, 加之新新编程语言不断出现, Fortran 用的人已经变得太少\footnote{在 Fortran 官方的不懈努力下, 根据 \href{https://www.tiobe.com/tiobe-index/}{TIOBE 排行}, Fortran 流行度已经和 Matlab 差不多了.}, 可供学习的资料也太少而且很可能内容已经 out 了.
+    \item 由于 Fortran 专为科学计算设计, 领域有局限, 而且从前某些时候 Fortran 填坑不积极, 填得也有问题, 加之新新编程语言不断出现, Fortran 用的人已经变得太少\footnote{在 Fortran 官方的不懈努力下, 根据 \href{https://www.tiobe.com/tiobe-index/}{TIOBE 排行}, Fortran 流行度已经和 Matlab 差不多啦!}, 可供学习的资料也太少而且很可能内容已经 out 了.
     \item 因为 Fortran 用的人太少, 所以 Fortran 编译器开发不足, 如今 Fortran 已经不再是运行速度最快的语言了.\footnote{目前 C/C++ 运行速度比 Fortran 快一点, Cython 则比 Fortran 慢一点, 不过他们的运行速度都在同数量级, 差不多.}
 \end{itemize}
 
-目前 Fortran 有自己的\href{https://fortran-lang.org/}{官网}\footnote{没校园网可能打不开, 同志们自己看着办吧!}, 内有 Fortran 的简单教程和许多 Fortran 的资源链接. 现行 Fortran 标准 Fortran 2023 由\href{https://j3-fortran.org/doc/year/24/24-007.pdf}{标准解释文档}\footnote{\href{https://www.iso.org/standard/82170.html}{真$\cdot$标准文档}要花大钱买了才能读, 实在是太可恶啦! 不过这两个文档的内容应该是一致的.}\footnote{这篇文档虽然绝对正确但超级无敌巨 TM 难读, 同学们还是别碰了, 可直接读\href{https://github.com/GasinAn/AdvForNotes}{高级 Fortran 笔记}.}规定.
+目前 Fortran 有自己的\href{https://fortran-lang.org/}{官网}\footnote{没校园网可能打不开, 同志们自己看着办吧!}, 内有 Fortran 的简单教程和许多 Fortran 的资源链接. 现行 Fortran 标准 Fortran 2023 由\href{https://j3-fortran.org/doc/year/24/24-007.pdf}{标准解释文档}\footnote{\href{https://www.iso.org/standard/82170.html}{真$\cdot$标准文档}要花大钱买了才能读, 实在是太可恶啦! 不过这两个文档的内容应该是一致的.}\footnote{这篇文档虽然绝对正确但超级无敌巨 TM 难读, 同学们还是别碰了\dots{}}规定.

@@ -1,42 +1,42 @@
 \chapter{过程}\label{fortran_procedure}
 
-假如我们需要用Fortran算阶乘$10!$, 那还是很容易滴.
+假如我们需要用Fortran算阶乘$10!$,那还是很容易滴.
 \begin{lstlisting}
 program main
     implicit none
-    integer :: i, p
+    integer :: i,p
     p = 1
-    do i = 1, 10
+    do i = 1,10
         p = p*i
     end do
-    print *, p
+    print *,p
 end program main
 \end{lstlisting}
 
-假如我们需要用Fortran算组合数$\text{C}_7^3=\frac{7!}{3!(7-3)!}$, 那就有点麻烦.
+假如我们需要用Fortran算组合数$\text{C}_7^3=\frac{7!}{3!(7-3)!}$,那就有点麻烦.
 \begin{lstlisting}
 program main
     implicit none
-    integer :: i, c1, c2, c3, c
+    integer :: i,c1,c2,c3,c
     c1 = 1
-    do i = 1, 7
+    do i = 1,7
         c1 = c1*i
     end do
     c2 = 1
-    do i = 1, 3
+    do i = 1,3
         c2 = c2*i
     end do
 
 
     c3 = 1
-    do i = 1, 7-3
+    do i = 1,7-3
         c3 = c3*i
     end do
     c = c1/(c2*c3)
-    print *, c
+    print *,c
 end program main
 \end{lstlisting}
-麻烦的地方在于那个阶乘老是要\texttt{do}来\texttt{do}去, 不过就\texttt{do}三回, 还能活.
+麻烦的地方在于那个阶乘老是要\texttt{do}来\texttt{do}去,不过就\texttt{do}三回,还能活.
 
 假如我们需要用Fortran算CG系数$\left\langle 3,2;5,4|7,6\right\rangle $,
 \begin{align*}
@@ -48,15 +48,15 @@ end program main
     &\cdot(j_1-m_1-\nu)!(j_2+m_2-\nu)!\\
     &\cdot(j_3-j_1-m_2+\nu)!(j_3-j_2+m_1+\nu)!],
 \end{align*}
-那不知要\texttt{do}多少回, 算个大头鬼哟! 不算了, 准备卸Fortran了!
+那不知要\texttt{do}多少回,算个大头鬼哟! 不算了,准备卸Fortran了!
 
-桥豆麻袋, Fortran是有法子能偷懒滴(如果没有我第一个卸Fortran), 比如算$\text{C}_7^3$可以这样.
+桥豆麻袋,Fortran是有法子能偷懒滴(如果没有我第一个卸Fortran),比如算$\text{C}_7^3$可以这样.
 \begin{lstlisting}
 program main
     implicit none
-    integer :: c, factorial
+    integer :: c,factorial
     c = factorial(7)/(factorial(3)*factorial(7-3))
-    print *, c
+    print *,c
 end program main
 
 function factorial(n) result(p)
@@ -64,14 +64,14 @@ function factorial(n) result(p)
     integer :: p
     integer :: i 
     p = 1
-    do i = 1, n
+    do i = 1,n
         p = p*i
     end do
 end function factorial
 \end{lstlisting}
-写成这样, 确实能少打几个字儿. 不知道我写的是什么也可以先猜猜猜看. 把\texttt{function ...}到\texttt{end function ...}单看成一个程序, \texttt{result(p)}里的\texttt{p}就是\texttt{factorial(n)}里的\texttt{n}的阶乘, 如是这般, \texttt{factorial(7)}就是\texttt{7}的阶乘, \texttt{factorial(3)}就是\texttt{3}的阶乘, \texttt{factorial(7-3)}就是\texttt{7-3}的阶乘, 非常完美! 那算CG系数也简单多了, 只要算\texttt{X}的阶乘的时候无脑写上\texttt{factorial(X)}就成了, 不用\texttt{do}来\texttt{do}去了!
+写成这样,确实能少打几个字儿.不知道我写的是什么也可以先猜猜猜看.把\texttt{function ...}到\texttt{end function ...}单看成一个程序,\texttt{result(p)}里的\texttt{p}就是\texttt{factorial(n)}里的\texttt{n}的阶乘,如是这般,\texttt{factorial(7)}就是\texttt{7}的阶乘,\texttt{factorial(3)}就是\texttt{3}的阶乘,\texttt{factorial(7-3)}就是\texttt{7-3}的阶乘,非常完美! 那算CG系数也简单多了,只要算\texttt{X}的阶乘的时候无脑写上\texttt{factorial(X)}就成了,不用\texttt{do}来\texttt{do}去了!
 
-于是乎我们便发现, 想要玩Fortran而不是被Fortran玩, 就必须懂过程(procedure). 过程的定义是``封装可以在程序执行期间直接调用的任意操作序列的实体'' , 玄玄乎乎的, 我们不理它. 我们可以直接把过程理解成程序运行时的一个操作, 比如上面的例子中\texttt{function ...}到\texttt{end function ...}就是``计算\texttt{n}的阶乘''这一操作. 使用过程后, 我们就进入面向过程程序设计(procedure-oriented programming, POP)阶段了. 啥叫面向过程呢? 众所周知, 置象于冰箱中, 步骤有三: 一开冰箱, 二塞大象, 三关冰箱. 用Fortran来写便这般.
+于是乎我们便发现,想要玩Fortran而不是被Fortran玩,就必须懂过程(procedure).过程的定义是``封装可以在程序执行期间直接调用的任意操作序列的实体'',玄玄乎乎的,我们不理它.我们可以直接把过程理解成程序运行时的一个操作,比如上面的例子中\texttt{function ...}到\texttt{end function ...}就是``计算\texttt{n}的阶乘''这一操作.使用过程后,我们就进入面向过程程序设计(procedure-oriented programming,POP)阶段了.啥叫面向过程呢?众所周知,置象于冰箱中,步骤有三: 一开冰箱,二塞大象,三关冰箱.用Fortran来写便这般.
 \begin{lstlisting}
 program main
     ...
@@ -95,12 +95,12 @@ subroutine close_door()
     ...
 end subroutine close_door
 \end{lstlisting}
-这样一看就知道这程序干仨事儿: 第一步\texttt{call open\_{}door()}开冰箱, 第二步\texttt{call put\_{}in(elephant)}塞大象, 第三步\texttt{call close\_{}door()}关冰箱. 至于到底咋么开的冰箱, 咋么塞的大象, 咋么关的冰箱, 看对应的\texttt{subroutine}到\texttt{end subroutine}
-里咋写的就知道了. 把整个程序(冰箱塞大象)拆成一个个步骤(开冰箱, 塞大象, 关冰箱), 然后每个步骤造个过程, 这就是面向过程. 那为什么塞大象要写成\texttt{put\_{}in(elephant)}而不是\texttt{put\_{}elephant\_{}in()}? 这是因为说不准以后要把别的东西放进冰箱, 真有那天, 把\texttt{elephant}换掉就行了, 哦, 还要把大象拿出来, 再多造个过程\dots
+这样一看就知道这程序干仨事儿: 第一步\texttt{call open\_{}door()}开冰箱,第二步\texttt{call put\_{}in(elephant)}塞大象,第三步\texttt{call close\_{}door()}关冰箱.至于到底咋么开的冰箱,咋么塞的大象,咋么关的冰箱,看对应的\texttt{subroutine}到\texttt{end subroutine}
+里咋写的就知道了.把整个程序(冰箱塞大象)拆成一个个步骤(开冰箱,塞大象,关冰箱),然后每个步骤造个过程,这就是面向过程.那为什么塞大象要写成\texttt{put\_{}in(elephant)}而不是\texttt{put\_{}elephant\_{}in()}?这是因为说不准以后要把别的东西放进冰箱,真有那天,把\texttt{elephant}换掉就行了,哦,还要把大象拿出来,再多造个过程\dots
 
 \section{外部过程}
 
-我们先细掰一些基本概念. 任何过程都是要用一堆字符表示的, 这堆字符便称为子程序(subprogram). 过程和子程序的关系, 就像程序和源代码(见\ref{fortran_program}节), 法律和法律条文的关系一样, 后者是表述前者的一堆字符\footnote{今后不再区分过程和子程序.}. 子程序按摆的位置, 分为外部子程序(external subprogram), 内部子程序(internal subprogram)和模块子程序(module subprogram). 内部子程序瞅着没啥用还容易让同志们脑壳疼, 俺不打算讲, 模块子程序见第\ref{fortran_module}章, 本章只讲外部子程序. 子程序按长的样子, 又分为子例行子程序(subroutine subprogram)和函数子程序(function subprogram).
+我们先细掰一些基本概念.任何过程都是要用一堆字符表示的,这堆字符便称为子程序(subprogram).过程和子程序的关系,就像程序和源代码(见\ref{fortran_program}节),法律和法律条文的关系一样,后者是表述前者的一堆字符\footnote{今后不再区分过程和子程序.}.子程序按摆的位置,分为外部子程序(external subprogram),内部子程序(internal subprogram)和模块子程序(module subprogram).内部子程序瞅着没啥用还容易让同志们脑壳疼,俺不打算讲,模块子程序见第\ref{fortran_module}章,本章只讲外部子程序.子程序按长的样子,又分为子例行子程序(subroutine subprogram)和函数子程序(function subprogram).
 
 \subsection{子例行子程序}
 
@@ -109,23 +109,23 @@ end subroutine close_door
 
 
 program main
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
-    real(dp) :: a, b, c
-    real(dp) :: x, y, z
+    real(dp) :: a,b,c
+    real(dp) :: x,y,z
     a = 1.0_dp
     b = 2.0_dp
     c = 3.0_dp
     x = 4.0_dp
     y = 5.0_dp
     z = 6.0_dp
-    call ab2bc_then_sumabc(x, y, z)
-    print *, a, b, c
-    print *, x, y, z
+    call ab2bc_then_sumabc(x,y,z)
+    print *,a,b,c
+    print *,x,y,z
 end program main
 
-subroutine ab2bc_then_sumabc(a, b, c)
-    use iso_fortran_env, only: dp => real64
+subroutine ab2bc_then_sumabc(a,b,c)
+    use iso_fortran_env,only: dp => real64
     implicit none
     real(dp),intent(in) :: a
     real(dp),intent(inout) :: b
@@ -134,211 +134,211 @@ subroutine ab2bc_then_sumabc(a, b, c)
     c = b
     b = a
     s = a+b+c
-    print *, s
+    print *,s
 end subroutine ab2bc_then_sumabc
 \end{lstlisting}
 \begin{enumerate}
-    \item 从\texttt{subroutine ...}到\texttt{end subroutine ...}便是子例行子程序了. 这部分可以和主程序放在一个文件里, 顺序也随便, 但通常是单独放在另一个文件里.
-    \item \texttt{subroutine}和\texttt{end subroutine}后的\texttt{XX} (示例中为\texttt{ab2bc\_{}then\_{}sumabc})称为子例行子程序名. 一般存这个子程序的文件就会取成\texttt{XX.f90} (比如示例中的子程序就可以存入名为\texttt{ab2bc\_{}then\_{}sumabc.f90}的文件中). 当然, 子程序名得尽量表明子程序的功能.
-    \item 子程序和主程序一样都是程序单元(见\ref{program_unit}节), 一样得变量声明一波, 所以\texttt{implicit none}得加, 要用种别的话\texttt{use iso\_{}fortran\_{}env}也得加.
-    \item 子程序里有三个变量\texttt{a}, \texttt{b}, \texttt{c}, 我在声明时加了\texttt{,intent(...)}, 这三个变量在\texttt{ab2bc\_{}then\_{}sumabc}后的\texttt{()}里出现, 在\texttt{()}里出现的称为哑参量(dummy argument), 只有哑参量能在声明时加\texttt{,intent(...)}. 我称加\texttt{,intent(in)}的为只读(read-only)参量, 加\texttt{,intent(inout)}的为读写(read-write)参量, 加\texttt{,intent(out)}的为只写(write-only)参量.
-    \item 主程序里也有三个变量\texttt{a}, \texttt{b}, \texttt{c}, 但只是变量名和子程序里的\texttt{a}, \texttt{b}, \texttt{c}一样, 实际上是不同的三个变量. 看我这示例, 子程序里\texttt{a}, \texttt{b}, \texttt{c}变来变去, 花里胡哨, 主程序里\texttt{a}, \texttt{b}, \texttt{c}岿然不动.
-    \item 主程序里出现\texttt{call ab2bc\_{}then\_{}sumabc(x, y, z)}, \texttt{()}里的\texttt{x}, \texttt{y}, \texttt{z}称为实参量(actual argument). 实参量可以是任意数据实体, 也就是说实参量可以是变量, 也可以是常量或其他东东. 子程序里三个哑参量排排坐, 主程序里三个实参量排排坐, 位置一样的哑参量和实参量(\texttt{a}和\texttt{x}, \texttt{b}和\texttt{y}, \texttt{c}和\texttt{z})称为对应的. 对应的参量在程序运行时会相互赋值来赋值去, 这称为参量结合(argument association), 我们一般称为哑实结合.
-    \item 现在分析示例程序的运行过程. 程序当然从\texttt{program main}开始运行了. 按顺序一行一行运行, 前面不需讲解. 到\texttt{call ...}, 就要说道说道了. 我们可以把主程序和子程序当成两个小人儿.\begin{enumerate}
-        \item \texttt{call ab2bc\_{}then\_{}sumabc(x, y, z)}: 跳到子程序的开头, 也就是\texttt{subroutine ab2bc\_{}then\_{}sumabc(a, b, c)}. \texttt{call ...}这里程序运行的操作称为``主程序调用(invoke/call)子程序'' .
-        \item \texttt{subroutine ab2bc\_{}then\_{}sumabc(a, b, c)}: 子程序先按后面的变量声明语句声明好变量, 然后把所有只读的和读写的实参量赋值给对应的哑参量(主程序里的\texttt{x}赋给子程序里的\texttt{a}, 主程序里的\texttt{y}赋给子程序里的\texttt{b}, 这当然就是传说中的哑实结合啦).
-        \item 向下一行一行运行, 直到\texttt{end subroutine ab2bc\_{}then\_{}sumabc}. 啰嗦一下具体过程. 首先主程序里的\texttt{x}赋给子程序里的\texttt{a}, 主程序里的\texttt{y}赋给子程序里的\texttt{b}, 所以子程序里的\texttt{a}为\texttt{4.0\_{}dp}, 子程序里的\texttt{b}为\texttt{5.0\_{}dp}. 然后\texttt{c = b}, 子程序里的\texttt{c}为\texttt{5.0\_{}dp}, 然后\texttt{b = a}, 子程序里的\texttt{b}为\texttt{4.0\_{}dp}, 然后\texttt{s = a+b+c}, \texttt{s}为\texttt{13.0\_{}dp}, 最后输出\texttt{s}的值\texttt{13.0\_{}dp}.
-        \item \texttt{end subroutine ab2bc\_{}then\_{}sumabc}: 把所有读写的和只写的哑参量赋值给对应的实参量(子程序里的\texttt{b}赋给主程序里的\texttt{y}, 子程序里的\texttt{c}赋给主程序里的\texttt{z}, 这当然也是传说中的哑实结合啦), 然后跳到\texttt{call ab2bc\_{}then\_{}sumabc(x, y, z)}的下一行.
-    \end{enumerate}然后主程序继续按顺序一行一行运行至\texttt{end program main}结束. 再啰嗦啰嗦, 子程序里的\texttt{b}赋给主程序里的\texttt{y}, 子程序里的\texttt{c}赋给主程序里的\texttt{z}, 所以\texttt{x}还是\texttt{4.0\_{}dp}, \texttt{y}则变为\texttt{4.0\_{}dp}, \texttt{z}则变为\texttt{5.0\_{}dp}.
+    \item 从\texttt{subroutine ...}到\texttt{end subroutine ...}便是子例行子程序了.这部分可以和主程序放在一个文件里,顺序也随便,但通常是单独放在另一个文件里.
+    \item \texttt{subroutine}和\texttt{end subroutine}后的\texttt{XX} (示例中为\texttt{ab2bc\_{}then\_{}sumabc})称为子例行子程序名.一般存这个子程序的文件就会取成\texttt{XX.f90} (比如示例中的子程序就可以存入名为\texttt{ab2bc\_{}then\_{}sumabc.f90}的文件中).当然,子程序名得尽量表明子程序的功能.
+    \item 子程序和主程序一样都是程序单元(见\ref{program_unit}节),一样得变量声明一波,所以\texttt{implicit none}得加,要用种别的话\texttt{use iso\_{}fortran\_{}env}也得加.
+    \item 子程序里有三个变量\texttt{a},\texttt{b},\texttt{c},我在声明时加了\texttt{,intent(...)},这三个变量在\texttt{ab2bc\_{}then\_{}sumabc}后的\texttt{()}里出现,在\texttt{()}里出现的称为哑参量(dummy argument),只有哑参量能在声明时加\texttt{,intent(...)}.我称加\texttt{,intent(in)}的为只读(read-only)参量,加\texttt{,intent(inout)}的为读写(read-write)参量,加\texttt{,intent(out)}的为只写(write-only)参量.
+    \item 主程序里也有三个变量\texttt{a},\texttt{b},\texttt{c},但只是变量名和子程序里的\texttt{a},\texttt{b},\texttt{c}一样,实际上是不同的三个变量.看我这示例,子程序里\texttt{a},\texttt{b},\texttt{c}变来变去,花里胡哨,主程序里\texttt{a},\texttt{b},\texttt{c}岿然不动.
+    \item 主程序里出现\texttt{call ab2bc\_{}then\_{}sumabc(x,y,z)},\texttt{()}里的\texttt{x},\texttt{y},\texttt{z}称为实参量(actual argument).实参量可以是任意数据实体,也就是说实参量可以是变量,也可以是常量或其他东东.子程序里三个哑参量排排坐,主程序里三个实参量排排坐,位置一样的哑参量和实参量(\texttt{a}和\texttt{x},\texttt{b}和\texttt{y},\texttt{c}和\texttt{z})称为对应的.对应的参量在程序运行时会相互赋值来赋值去,这称为参量结合(argument association),我们一般称为哑实结合.
+    \item 现在分析示例程序的运行过程.程序当然从\texttt{program main}开始运行了.按顺序一行一行运行,前面不需讲解.到\texttt{call ...},就要说道说道了.我们可以把主程序和子程序当成两个小人儿.\begin{enumerate}
+        \item \texttt{call ab2bc\_{}then\_{}sumabc(x,y,z)}: 跳到子程序的开头,也就是\texttt{subroutine ab2bc\_{}then\_{}sumabc(a,b,c)}.\texttt{call ...}这里程序运行的操作称为``主程序调用(invoke/call)子程序''.
+        \item \texttt{subroutine ab2bc\_{}then\_{}sumabc(a,b,c)}: 子程序先按后面的变量声明语句声明好变量,然后把所有只读的和读写的实参量赋值给对应的哑参量(主程序里的\texttt{x}赋给子程序里的\texttt{a},主程序里的\texttt{y}赋给子程序里的\texttt{b},这当然就是传说中的哑实结合啦).
+        \item 向下一行一行运行,直到\texttt{end subroutine ab2bc\_{}then\_{}sumabc}.啰嗦一下具体过程.首先主程序里的\texttt{x}赋给子程序里的\texttt{a},主程序里的\texttt{y}赋给子程序里的\texttt{b},所以子程序里的\texttt{a}为\texttt{4.0\_{}dp},子程序里的\texttt{b}为\texttt{5.0\_{}dp}.然后\texttt{c = b},子程序里的\texttt{c}为\texttt{5.0\_{}dp},然后\texttt{b = a},子程序里的\texttt{b}为\texttt{4.0\_{}dp},然后\texttt{s = a+b+c},\texttt{s}为\texttt{13.0\_{}dp},最后输出\texttt{s}的值\texttt{13.0\_{}dp}.
+        \item \texttt{end subroutine ab2bc\_{}then\_{}sumabc}: 把所有读写的和只写的哑参量赋值给对应的实参量(子程序里的\texttt{b}赋给主程序里的\texttt{y},子程序里的\texttt{c}赋给主程序里的\texttt{z},这当然也是传说中的哑实结合啦),然后跳到\texttt{call ab2bc\_{}then\_{}sumabc(x,y,z)}的下一行.
+    \end{enumerate}然后主程序继续按顺序一行一行运行至\texttt{end program main}结束.再啰嗦啰嗦,子程序里的\texttt{b}赋给主程序里的\texttt{y},子程序里的\texttt{c}赋给主程序里的\texttt{z},所以\texttt{x}还是\texttt{4.0\_{}dp},\texttt{y}则变为\texttt{4.0\_{}dp},\texttt{z}则变为\texttt{5.0\_{}dp}.
 \end{enumerate}
 
-啊! 上面那个程序终于分析完毕! 不仅是主程序能调用子程序, 任何程序单元都能调用子程序, 所以我们还可以玩点更花的. 假如我们现在要算组合数$\text{C}_7^3$, 我们可以造一个主程序, 一个算组合数的子程序, 一个算阶乘的子程序, 然后让主程序调用算组合数的子程序, 算组合数的子程序调用算阶乘的子程序, 就像下面这样. 请同志们自己分析其运行过程.\label{fact_comb}
+啊! 上面那个程序终于分析完毕! 不仅是主程序能调用子程序,任何程序单元都能调用子程序,所以我们还可以玩点更花的.假如我们现在要算组合数$\text{C}_7^3$,我们可以造一个主程序,一个算组合数的子程序,一个算阶乘的子程序,然后让主程序调用算组合数的子程序,算组合数的子程序调用算阶乘的子程序,就像下面这样.请同志们自己分析其运行过程.\label{fact_comb}
 \begin{lstlisting}
 program main
     implicit none
     integer :: result
-    call combinatorial(7, 3, result)
-    print *, result
+    call combinatorial(7,3,result)
+    print *,result
 end program main
 
-subroutine combinatorial(n, m, comb)
+subroutine combinatorial(n,m,comb)
     implicit none
     integer,intent(in) :: n
     integer,intent(in) :: m
     integer,intent(out) :: comb
-    integer :: a, b, c
-    call factorial(n, a)
-    call factorial(m, b)
-    call factorial(n-m, c)
+    integer :: a,b,c
+    call factorial(n,a)
+    call factorial(m,b)
+    call factorial(n-m,c)
     comb = a/(b*c)
 end subroutine combinatorial
 
-subroutine factorial(n, fact)
+subroutine factorial(n,fact)
     implicit none
     integer,intent(in) :: n
     integer,intent(out) :: fact
     integer :: i
     fact = 1
-    do i = 1, n
+    do i = 1,n
         fact = fact*i
     end do
 end subroutine factorial
 \end{lstlisting}
 
-子程序灰常管用, 但也是要遵守一些禁令的. 首先哑实结合时, 哑参量和实参量的类型和种别\uline{都要相等}, 也就是说莫得类型种别转化了. 比如下面这个程序, Gfortran日常严格, 会出警告, 输出\texttt{0.00000000}, Ifx日常宽松, 不出警告, 但也输出\texttt{0.0000000E+00}\dots
+子程序灰常管用,但也是要遵守一些禁令的.首先哑实结合时,哑参量和实参量的类型和种别\uline{都要相等},也就是说莫得类型种别转化了.比如下面这个程序,Gfortran日常严格,会出警告,输出\texttt{0.00000000},Ifx日常宽松,不出警告,但也输出\texttt{0.0000000E+00}\dots
 \begin{lstlisting}
 program main
-    use iso_fortran_env, only: sp => real32
+    use iso_fortran_env,only: sp => real32
     implicit none
     real(sp) :: a
     a = 10.0_sp
     call add_one(a)
-    print *, a
+    print *,a
 end program main
 
 subroutine add_one(a)
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     real(dp),intent(inout) :: a
     a = a+1.0_dp
 end subroutine add_one
 \end{lstlisting}
-然后只读的(加\texttt{,intent(in)}的)哑参量不能在子程序运行的时候被赋值(哑实结合当然还是可以的), 比如下面这个程序跑不得, Ifx和Gfortran都是如此. 这个规则是非常适当的, 因为如果我们可以确定一个哑参量在程序中是不应当被赋值的, 我们就可以让其成为只读的, 这样如果我们一不小心写错了, 在程序中给这个哑参量赋值了, 就能马上查出来.
+然后只读的(加\texttt{,intent(in)}的)哑参量不能在子程序运行的时候被赋值(哑实结合当然还是可以的),比如下面这个程序跑不得,Ifx和Gfortran都是如此.这个规则是非常适当的,因为如果我们可以确定一个哑参量在程序中是不应当被赋值的,我们就可以让其成为只读的,这样如果我们一不小心写错了,在程序中给这个哑参量赋值了,就能马上查出来.
 \begin{lstlisting}
 program main
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     real(dp) :: a
     a = 10.0_dp
     call add_one(a)
-    print *, a
+    print *,a
 end program main
 
 subroutine add_one(a)
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     real(dp),intent(in) :: a
     a = a+1.0_dp
 end subroutine add_one
 \end{lstlisting}
-注意间接的赋值也是不行的, 比如下面这个程序, \texttt{call add\_{}one\_{}(a)}实际上给\texttt{add\_{}one}里的\texttt{a}赋值了. 但这样``隐晦的''赋值, 编译器就不一定会查了, Gfortran会给警告, Ifx直接放行. 但无论如何这么写都是不对的!\label{secret_assignment}
+注意间接的赋值也是不行的,比如下面这个程序,\texttt{call add\_{}one\_{}(a)}实际上给\texttt{add\_{}one}里的\texttt{a}赋值了.但这样``隐晦的''赋值,编译器就不一定会查了,Gfortran会给警告,Ifx直接放行.但无论如何这么写都是不对的!\label{secret_assignment}
 \begin{lstlisting}
 program main
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     real(dp) :: a
     a = 10.0_dp
     call add_one(a)
-    print *, a
+    print *,a
 end program main
 
 
 subroutine add_one(a)
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     real(dp),intent(in) :: a
     call add_one_(a)
 end subroutine add_one
 
 subroutine add_one_(a)
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     real(dp),intent(inout) :: a
     a = a+1.0_dp
 end subroutine add_one_
 \end{lstlisting}
-还有只写的(加\texttt{,intent(out)}的)哑参量, 在子程序运行的一开始是没有被赋值的, 所以下面这程序是天也不知会出什么结果的. 但Ifx和Gfortran有器规, 会把只写参量当成读写参量(我猜是这样了啦), 一开始也实参量赋值给哑参量了, 所以结果没事. 但无论如何这么写都是不对的!
+还有只写的(加\texttt{,intent(out)}的)哑参量,在子程序运行的一开始是没有被赋值的,所以下面这程序是天也不知会出什么结果的.但Ifx和Gfortran有器规,会把只写参量当成读写参量(我猜是这样了啦),一开始也实参量赋值给哑参量了,所以结果没事.但无论如何这么写都是不对的!
 \begin{lstlisting}
 program main
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     real(dp) :: a
     a = 10.0_dp
     call add_one(a)
-    print *, a
+    print *,a
 end program main
 
 subroutine add_one(a)
     ! Dummy argument may not be defined here!
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     real(dp),intent(out) :: a
     a = a+1.0_dp
 end subroutine add_one
 \end{lstlisting}
 
-正确标注哑参量为只读参量, 只写参量或读写参量\label{arguments}(加\texttt{intent(...)}), 是灰常灰常必要的, 血泪教训告诉我们这么做能避免踩很多很多坑. 同志们一定不能怕麻烦, 老老实实一个个标注. 如果哑参量除哑实结合时外不被赋值, 就标只读, 如果哑参量在哑实结合时不需要被赋值, 就标只写, 剩下的标读写.
+正确标注哑参量为只读参量,只写参量或读写参量\label{arguments}(加\texttt{intent(...)}),是灰常灰常必要的,血泪教训告诉我们这么做能避免踩很多很多坑.同志们一定不能怕麻烦,老老实实一个个标注.如果哑参量除哑实结合时外不被赋值,就标只读,如果哑参量在哑实结合时不需要被赋值,就标只写,剩下的标读写.
 
 \begin{convention}
-    正确标注每个哑参量为只读参量, 只写参量或读写参量.
+    正确标注每个哑参量为只读参量,只写参量或读写参量.
 \end{convention}
 
-子程序还有很多禁令, 我安排同志们自己写程序测试, 编译器会告诉大家答案的. 比如, 子程序名能和主程序名一样嘛? 子程序名能和子程序里的变量的变量名一样嘛? 子程序名能和调用子程序的程序单元里的变量的变量名一样嘛? 子程序能直接或间接地调用自己嘛?\dots
+子程序还有很多禁令,我安排同志们自己写程序测试,编译器会告诉大家答案的.比如,子程序名能和主程序名一样嘛?子程序名能和子程序里的变量的变量名一样嘛?子程序名能和调用子程序的程序单元里的变量的变量名一样嘛?子程序能直接或间接地调用自己嘛?\dots
 
 \subsection{函数子程序}
 
-如果同志们没被子例行子程序弄晕, 那理解函数子程序便轻而易举了. 我们还是写一个计算组合数的子例行子程序, 不过我用\texttt{...}省略一部分, 想来同志们自己补上没问题.
+如果同志们没被子例行子程序弄晕,那理解函数子程序便轻而易举了.我们还是写一个计算组合数的子例行子程序,不过我用\texttt{...}省略一部分,想来同志们自己补上没问题.
 \begin{lstlisting}
 program main
     implicit none
     integer :: result
-    call combinatorial(7, 3, result)
-    print *, result
+    call combinatorial(7,3,result)
+    print *,result
 end program main
 
-subroutine combinatorial(n, m, comb)
+subroutine combinatorial(n,m,comb)
     implicit none
     integer,intent(in) :: n
     integer,intent(in) :: m
     integer,intent(out) :: comb
-    integer :: a, b, c
+    integer :: a,b,c
     integer :: i
     ...
     comb = a/(b*c)
 end subroutine combinatorial
 \end{lstlisting}
-上面这个程序完全可以用函数子程序改写成下面这样, 请同志们对比改写前后的样子.
+上面这个程序完全可以用函数子程序改写成下面这样,请同志们对比改写前后的样子.
 \begin{lstlisting}
 program main
     implicit none
     integer :: combinatorial
     integer :: result
-    result = combinatorial(7, 3)
-    print *, result
+    result = combinatorial(7,3)
+    print *,result
 end program main
 
-function combinatorial(n, m) result(comb)
+function combinatorial(n,m) result(comb)
     implicit none
     integer,intent(in) :: n
     integer,intent(in) :: m
     integer :: comb
-    integer :: a, b, c
+    integer :: a,b,c
     integer :: i
     ...
     comb = a/(b*c)
 end function combinatorial
 \end{lstlisting}
 \begin{enumerate}
-    \item 从\texttt{function ...}到\texttt{end function ...}便是函数子程序了. 和子例行子程序一样, 可以和主程序放在一个文件里, 顺序也随便, 但通常是单独放在另一个文件里. \texttt{function}和\texttt{end function}后的\texttt{XX} (示例中为\texttt{combinatorial})一样称为函数子程序名. 一般存这个子程序的文件也一样会取成\texttt{XX.f90}.
-    \item 函数子程序名后的\texttt{()}里的当然是哑参量, \texttt{()}后的\texttt{result(...)}里的变量\texttt{...} (示例中为\texttt{comb})相当于一个只写哑参量, 称为结果(result), 但结果本身不是哑参量. 声明结果时不需也不能加\texttt{,intent(out)}.
-    \item 调用函数子程序后, 结果赋值给函数名和其之后的括号及括号内的内容组成的整体. 示例中, 一开始主程序里\texttt{7}和\texttt{3}赋值给子程序里\texttt{n}和\texttt{m}, 最后子程序里结果\texttt{comb}赋值给主程序里\texttt{combinatorial(7, 3)}这一整个长串, \texttt{combinatorial(7, 3)}就成为一个数据实体, 因此可以再赋值给主程序里的\texttt{result}变量.
-    \item 调用函数子程序前必须对函数子程序本身进行声明(声明的类型和种别是函数子程序的结果的类型和种别), 子例行子程序是不需要的. 比如示例程序的主程序加了\texttt{integer :: combinatorial}一句, 因为整型是函数\texttt{combinatorial}的结果\texttt{comb}的类型.
+    \item 从\texttt{function ...}到\texttt{end function ...}便是函数子程序了.和子例行子程序一样,可以和主程序放在一个文件里,顺序也随便,但通常是单独放在另一个文件里.\texttt{function}和\texttt{end function}后的\texttt{XX} (示例中为\texttt{combinatorial})一样称为函数子程序名.一般存这个子程序的文件也一样会取成\texttt{XX.f90}.
+    \item 函数子程序名后的\texttt{()}里的当然是哑参量,\texttt{()}后的\texttt{result(...)}里的变量\texttt{...} (示例中为\texttt{comb})相当于一个只写哑参量,称为结果(result),但结果本身不是哑参量.声明结果时不需也不能加\texttt{,intent(out)}.
+    \item 调用函数子程序后,结果赋值给函数名和其之后的括号及括号内的内容组成的整体.示例中,一开始主程序里\texttt{7}和\texttt{3}赋值给子程序里\texttt{n}和\texttt{m},最后子程序里结果\texttt{comb}赋值给主程序里\texttt{combinatorial(7,3)}这一整个长串,\texttt{combinatorial(7,3)}就成为一个数据实体,因此可以再赋值给主程序里的\texttt{result}变量.
+    \item 调用函数子程序前必须对函数子程序本身进行声明(声明的类型和种别是函数子程序的结果的类型和种别),子例行子程序是不需要的.比如示例程序的主程序加了\texttt{integer :: combinatorial}一句,因为整型是函数\texttt{combinatorial}的结果\texttt{comb}的类型.
 \end{enumerate}
-按照当今的规范, 我们必须保证函数子程序的所有哑参量都是只读的(结果不是哑参量). 如果不遵守此规范, 我保证同志们之后会无比头痛.
+按照当今的规范,我们必须保证函数子程序的所有哑参量都是只读的(结果不是哑参量).如果不遵守此规范,我保证同志们之后会无比头痛.
 
 \begin{convention}
     标注函数子程序的所有哑参量为只读参量.
 \end{convention}
 
-使用函数子程序的好处是调用函数子程序后会生成一个数据实体, 经验表明多数情况下这样能让我们偷懒少打几个字, 即便使用函数子程序前必须多加一行函数子程序的声明. 我把之前第\pageref{fact_comb}页用计算阶乘的子程序计算组合数的程序用函数子程序改写如下, 同志们会不会觉得看着简单一点?
+使用函数子程序的好处是调用函数子程序后会生成一个数据实体,经验表明多数情况下这样能让我们偷懒少打几个字,即便使用函数子程序前必须多加一行函数子程序的声明.我把之前第\pageref{fact_comb}页用计算阶乘的子程序计算组合数的程序用函数子程序改写如下,同志们会不会觉得看着简单一点?
 \begin{lstlisting}
 program main
     implicit none
     integer :: combinatorial
-    print *, combinatorial(7, 3)
+    print *,combinatorial(7,3)
 end program main
 
-function combinatorial(n, m) result(comb)
+function combinatorial(n,m) result(comb)
     implicit none
     integer,intent(in) :: n
     integer,intent(in) :: m
@@ -354,7 +354,7 @@ function factorial(n) result(fact)
     integer :: fact
     integer :: i
     fact = 1
-    do i = 1, n
+    do i = 1,n
         fact = fact*i
     end do
 end function factorial
@@ -363,13 +363,13 @@ end function factorial
 \subsection{固有过程}
 
 \newcommand{\ip}[1]{\href{https://fortranwiki.org/fortran/show/#1}{\texttt{#1}}}
-为了让我们能快乐地玩轮子, 合格的Fortran编译器都已经自己造好了一大堆轮子, 称为固有过程(intrinsic procedure), 我们直接调用就可以了. 固有过程有哪些怎么用请猛戳\href{https://fortranwiki.org/fortran/show/Intrinsic+procedures}{这个链接}查询. 同志们造轮子前都应该先查查有没有已经造好的固有轮子可以用. 比如我们如果想算$\pi$, 如果我们很熟悉固有轮子的话, 我们就会想到有个轮子\texttt{acos}, 是算反余弦的, 我们用它算$\arccos (-1)$即可. 注意, \texttt{acos}是个函数, 要声明的.
+为了让我们能快乐地玩轮子,合格的Fortran编译器都已经自己造好了一大堆轮子,称为固有过程(intrinsic procedure),我们直接调用就可以了.固有过程有哪些怎么用请猛戳\href{https://fortranwiki.org/fortran/show/Intrinsic+procedures}{这个链接}查询.同志们造轮子前都应该先查查有没有已经造好的固有轮子可以用.比如我们如果想算$\pi$,如果我们很熟悉固有轮子的话,我们就会想到有个轮子\texttt{acos},是算反余弦的,我们用它算$\arccos (-1)$即可.注意,\texttt{acos}是个函数,要声明的.
 \begin{lstlisting}
 program main
-    use iso_fortran_env, only: qp => real128
+    use iso_fortran_env,only: qp => real128
     implicit none
     real(qp) :: acos
-    print *, acos(-1.0_qp)
+    print *,acos(-1.0_qp)
 end program main
 \end{lstlisting}
 
@@ -377,25 +377,25 @@ end program main
 
 \subsection{parameter属性}\label{fortran_parameter}
 
-我们在玩轮子的时候经常会遇到这么个问题, 比如我们需要反复进行一些和$\pi$有关的计算, 假设我们的程序以双精度运行, 我们会造一个实型双精度变量\texttt{pi}, 然后赋值\texttt{acos(-1.0\_{}dp)}, 其中\texttt{dp}为\texttt{real64}, 这本来没什么问题, 但如果我们一不小心写错了程序, 悄咪咪地又给这个\texttt{pi}赋了个别的值, 那就出了大问题, 而且编译器还不会告诉我们, 我们就会死都找不出哪里写错了. 如果我们把\texttt{pi}改成\texttt{3.141592653589793\_{}dp}或\texttt{acos(-1.0\_{}dp)}, 那倒是不大会出错了, 但每次看轮子, 我们脑子都要反复判断出\texttt{3.141592653589793\_{}dp}\\或\texttt{acos(-1.0\_{}dp)}其实就是$\pi$, 我们的眼睛和脑子就会觉得好伤心好难过呜呜呜呜.
+我们在玩轮子的时候经常会遇到这么个问题,比如我们需要反复进行一些和$\pi$有关的计算,假设我们的程序以双精度运行,我们会造一个实型双精度变量\texttt{pi},然后赋值\texttt{acos(-1.0\_{}dp)},其中\texttt{dp}为\texttt{real64},这本来没什么问题,但如果我们一不小心写错了程序,悄咪咪地又给这个\texttt{pi}赋了个别的值,那就出了大问题,而且编译器还不会告诉我们,我们就会死都找不出哪里写错了.如果我们把\texttt{pi}改成\texttt{3.141592653589793\_{}dp}或\texttt{acos(-1.0\_{}dp)},那倒是不大会出错了,但每次看轮子,我们脑子都要反复判断出\texttt{3.141592653589793\_{}dp}\\或\texttt{acos(-1.0\_{}dp)}其实就是$\pi$,我们的眼睛和脑子就会觉得好伤心好难过呜呜呜呜.
 
-这时候我们就可以给\texttt{pi}加上parameter属性\footnote{属性的含义见第\ref{fortran_attribute}章.}, 造一个具名常量(named constant). 比如下面这个程序, 我们在声明\texttt{pi}时加了\texttt{,parameter}, 并在声明的同时给\texttt{pi}赋值\texttt{acos(-1.0\_{}dp)}, 这个\texttt{pi}就永远是\texttt{acos(-1.0\_{}dp)}改不了了, 比如我们下面又把\texttt{pi}赋成\texttt{exp(1.0\_{}dp)}, 合格的编译器就会立即跳出来把我们打回去重新改程序.
+这时候我们就可以给\texttt{pi}加上parameter属性\footnote{属性的含义见第\ref{fortran_attribute}章.},造一个具名常量(named constant).比如下面这个程序,我们在声明\texttt{pi}时加了\texttt{,parameter},并在声明的同时给\texttt{pi}赋值\texttt{acos(-1.0\_{}dp)},这个\texttt{pi}就永远是\texttt{acos(-1.0\_{}dp)}改不了了,比如我们下面又把\texttt{pi}赋成\texttt{exp(1.0\_{}dp)},合格的编译器就会立即跳出来把我们打回去重新改程序.
 \begin{lstlisting}
 program main
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     real(dp),parameter :: pi=acos(-1.0_dp)
     pi = exp(1.0_dp) ! It is impossible to change pi!
 end program main
 \end{lstlisting}
-同志们可以自己尝试用子程序给具名常量赋值, 看看会出什么事, 可以把第\pageref{secret_assignment}页的``隐晦赋值''程序改一改来考验考验编译器.
+同志们可以自己尝试用子程序给具名常量赋值,看看会出什么事,可以把第\pageref{secret_assignment}页的``隐晦赋值''程序改一改来考验考验编译器.
 
 \subsection{save属性}
 
-和parameter属性有一丢丢像的是save属性. 下面这个程序, 连续输出三个\texttt{1}, 这当然没有问题.
+和parameter属性有一丢丢像的是save属性.下面这个程序,连续输出三个\texttt{1},这当然没有问题.
 \begin{lstlisting}
 program main
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     call count()
     call count()
@@ -407,13 +407,13 @@ subroutine count()
     integer :: n
     n = 0
     n = n+1
-    print *, n
+    print *,n
 end subroutine count
 \end{lstlisting}
-但下面这个程序输出的却是\texttt{1}, \texttt{2}, \texttt{3}. 在这个程序里, 子程序\texttt{count}里的\texttt{n}声明的时候加了\texttt{,save}, 并赋值\texttt{0}. 第一次调用\texttt{count}的时候, \texttt{n}一开始是\texttt{0}, 然后\texttt{n = n+1}, \texttt{n}就是\texttt{1}. 而第二次调用\texttt{count}的时候, \texttt{n}一开始并没有重新被赋值成\texttt{0}, 而是保存着上一次调用到最后的值\texttt{1}, 所以再次\texttt{n = n+1}后\texttt{n}变成\texttt{2}. 第三次调用\texttt{count}的时候, \texttt{n}一开始是\texttt{2}, 所以最后是\texttt{3}.
+但下面这个程序输出的却是\texttt{1},\texttt{2},\texttt{3}.在这个程序里,子程序\texttt{count}里的\texttt{n}声明的时候加了\texttt{,save},并赋值\texttt{0}.第一次调用\texttt{count}的时候,\texttt{n}一开始是\texttt{0},然后\texttt{n = n+1},\texttt{n}就是\texttt{1}.而第二次调用\texttt{count}的时候,\texttt{n}一开始并没有重新被赋值成\texttt{0},而是保存着上一次调用到最后的值\texttt{1},所以再次\texttt{n = n+1}后\texttt{n}变成\texttt{2}.第三次调用\texttt{count}的时候,\texttt{n}一开始是\texttt{2},所以最后是\texttt{3}.
 \begin{lstlisting}
 program main
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     call count() ! 0 -> 1
     call count() ! 1 -> 2
@@ -424,13 +424,13 @@ subroutine count()
     implicit none
     integer,save :: n = 0
     n = n+1
-    print *, n
+    print *,n
 end subroutine count
 \end{lstlisting}
-有的同志可能会尝试在变量声明的时候直接给变量赋值, 因为这样可以偷一点懒, 但这么做是非常危险的, 因为这么做的时候, 即使没加\texttt{,save}, 变量也悄咪咪地带上save属性了. 比如下面这个程序和上面那个程序是一样的, 但因为没写\texttt{,save}, 同志们可能就会忘记变量\texttt{n}有save属性!
+有的同志可能会尝试在变量声明的时候直接给变量赋值,因为这样可以偷一点懒,但这么做是非常危险的,因为这么做的时候,即使没加\texttt{,save},变量也悄咪咪地带上save属性了.比如下面这个程序和上面那个程序是一样的,但因为没写\texttt{,save},同志们可能就会忘记变量\texttt{n}有save属性!
 \begin{lstlisting}
 program main
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
 
 
@@ -441,56 +441,56 @@ end program main
 
 subroutine count()
     implicit none
-    integer :: n = 0 ! n has SAVE attribute, though no ,save is here!
+    integer :: n = 0 ! n has SAVE attribute,though no,save is here!
     n = n+1
-    print *, n
+    print *,n
 end subroutine count
 \end{lstlisting}
-因此, 不要这么写, 除非前面已经标好\texttt{,parameter}或\texttt{,save}.
+因此,不要这么写,除非前面已经标好\texttt{,parameter}或\texttt{,save}.
 
 \begin{convention}
-    除非已经明确标明变量有\emph{parameter}属性或\emph{save}属性, 否则不要在声明变量的时候直接给变量赋值.
+    除非已经明确标明变量有\emph{parameter}属性或\emph{save}属性,否则不要在声明变量的时候直接给变量赋值.
 \end{convention}
 
 \subsection{过程中的数组}
 
-在用子程序的时候碰上数组, 就会比较麻烦, 因为哑实结合还和数组的形状有关. 我们必须细掰细掰.
+在用子程序的时候碰上数组,就会比较麻烦,因为哑实结合还和数组的形状有关.我们必须细掰细掰.
 
 \subsubsection{显式形状数组}
-一个$n$维向量$r=(r_1,\dots,r_n)$的$1$范数为$\left\lVert r\right\rVert_1:=\sum_{i=1}^n\left\lvert r_i\right\rvert $. 假如我们要算$(-1,2)$的$1$范数, 写个轮子还是很容易的.
+一个$n$维向量$r=(r_1,\dots,r_n)$的$1$范数为$\left\lVert r\right\rVert_1:=\sum_{i=1}^n\left\lvert r_i\right\rvert $.假如我们要算$(-1,2)$的$1$范数,写个轮子还是很容易的.
 \begin{lstlisting}
 program main
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     real(dp) :: r(2)
     real(dp) :: norm_1
     r = [-1.0_dp,2.0_dp]
-    print *, norm_1(r)
+    print *,norm_1(r)
 end program main
 
 function norm_1(r) result(norm)
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     real(dp),intent(in) :: r(2)
     real(dp) :: norm
     norm = sum(abs(r))
 end function
 \end{lstlisting}
-其中主程序里的\texttt{r}和函数里的\texttt{r}, 形状都大大咧咧的写在那里, 这就叫显式形状数组(explicit-shape array). 但我们上面这个程序大有问题, 如果我们要算$(-1,2,-3)$的$1$范数, 因为函数里的\texttt{r}形状被定死为\texttt{[2]}, 所以要出事儿. 这时我们可以这么写.\label{adjustable_array}
+其中主程序里的\texttt{r}和函数里的\texttt{r},形状都大大咧咧的写在那里,这就叫显式形状数组(explicit-shape array).但我们上面这个程序大有问题,如果我们要算$(-1,2,-3)$的$1$范数,因为函数里的\texttt{r}形状被定死为\texttt{[2]},所以要出事儿.这时我们可以这么写.\label{adjustable_array}
 \begin{lstlisting}
 program main
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
-    real(dp) :: r_2(2), r_3(3)
+    real(dp) :: r_2(2),r_3(3)
     real(dp) :: norm_1
     r_2 = [-1.0_dp,2.0_dp]
     r_3 = [-1.0_dp,2.0_dp,-3.0_dp]
-    print *, norm_1(r_2, size(r_2))
-    print *, norm_1(r_3, size(r_3))
+    print *,norm_1(r_2,size(r_2))
+    print *,norm_1(r_3,size(r_3))
 end program main
 
-function norm_1(r, size_r) result(norm)
-    use iso_fortran_env, only: dp => real64
+function norm_1(r,size_r) result(norm)
+    use iso_fortran_env,only: dp => real64
     implicit none
     real(dp),intent(in) :: r(size_r)
     integer,intent(in) :: size_r
@@ -498,67 +498,67 @@ function norm_1(r, size_r) result(norm)
     norm = sum(abs(r))
 end function
 \end{lstlisting}
-这个程序, 函数里哑参量\texttt{r}的形状是由哑参量\texttt{size\_{}r}决定的, 这样的哑参量数组就叫可调数组(adjustable array), 定义为显式形状数组中的一种. 虽然\texttt{size\_{}r}的声明在\texttt{r}下面, 但放心, 声明\texttt{r}的时候会先查看\texttt{size\_{}r}的值的.
+这个程序,函数里哑参量\texttt{r}的形状是由哑参量\texttt{size\_{}r}决定的,这样的哑参量数组就叫可调数组(adjustable array),定义为显式形状数组中的一种.虽然\texttt{size\_{}r}的声明在\texttt{r}下面,但放心,声明\texttt{r}的时候会先查看\texttt{size\_{}r}的值的.
 
-第\pageref{hw_2}页的小作业二是计算一个奇怪矩阵的所有元素的和, 我们可以把问题扩大点, 算任意$n\times n$的那种矩阵的所有元素的和, 我们则可以这么写.
+第\pageref{hw_2}页的小作业二是计算一个奇怪矩阵的所有元素的和,我们可以把问题扩大点,算任意$n\times n$的那种矩阵的所有元素的和,我们则可以这么写.
 \begin{lstlisting}
 program main
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     real(dp) :: strange_mat_element_sum
-    print *, strange_mat_element_sum(50)
+    print *,strange_mat_element_sum(50)
 end program main
 
 function strange_mat_element_sum(n) result(s)
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     integer,intent(in) :: n
     real(dp) :: s
     real(dp) :: mat(n,n)
-    integer :: i, j
-    do i = 1, n
-        do j = 1, n
+    integer :: i,j
+    do i = 1,n
+        do j = 1,n
             mat(i,j) = sqrt(real(i+j-1))
         end do
     end do
     s = sum(mat)
 end function
 \end{lstlisting}
-这个程序, 函数里\texttt{mat}的形状是由哑参量\texttt{n}决定的, 这样的数组就叫自动数组(automatic array), 也定义为显式形状数组中的一种. 自动数组和可调数组的区别是可调数组一定是哑参量, 自动数组一定不是.
+这个程序,函数里\texttt{mat}的形状是由哑参量\texttt{n}决定的,这样的数组就叫自动数组(automatic array),也定义为显式形状数组中的一种.自动数组和可调数组的区别是可调数组一定是哑参量,自动数组一定不是.
 
 \subsubsection{假定形状数组}
 
-之前第\pageref{adjustable_array}页用可调数组的轮子, 每次都要算数组的大小, 然后和子程序哑实结合, 还是麻烦. 用假定形状数组(assumed-shape array)就可以这么解决这个问题.
+之前第\pageref{adjustable_array}页用可调数组的轮子,每次都要算数组的大小,然后和子程序哑实结合,还是麻烦.用假定形状数组(assumed-shape array)就可以这么解决这个问题.
 \begin{lstlisting}
 
 program main
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
-    real(dp) :: r_2(2), r_3(3)
+    real(dp) :: r_2(2),r_3(3)
     real(dp) :: norm_1
     r_2 = [-1.0_dp,2.0_dp]
     r_3 = [-1.0_dp,2.0_dp,-3.0_dp]
-    print *, norm_1(r_2)
-    print *, norm_1(r_3)
+    print *,norm_1(r_2)
+    print *,norm_1(r_3)
 end program main
 
 function norm_1(r) result(norm)
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     real(dp),intent(in) :: r(:)
     real(dp) :: norm
     norm = sum(abs(r))
 end function
 \end{lstlisting}
-在这个程序里, 函数中\texttt{r}就是假定形状数组, 其声明的时候写\texttt{r(:)}, 1个\texttt{:}表示其必须是1维数组, 形状是其对应的实参量的形状, 这样就不用每次都计算实参量的大小然后哑实结合了. 不过上面这个轮子Gfortran是跑不了的, 因为按Fortran的语法, 有假定形状数组哑参量的过程, 必须带过程接口(见\ref{fortran_interface}节), 所以要写成下面这个样子才行. Ifx能跑, 但结果是错的\dots\label{assumed-shape_array_program}
+在这个程序里,函数中\texttt{r}就是假定形状数组,其声明的时候写\texttt{r(:)},1个\texttt{:}表示其必须是1维数组,形状是其对应的实参量的形状,这样就不用每次都计算实参量的大小然后哑实结合了.不过上面这个轮子Gfortran是跑不了的,因为按Fortran的语法,有假定形状数组哑参量的过程,必须带过程接口(见\ref{fortran_interface}节),所以要写成下面这个样子才行.Ifx能跑,但结果是错的\dots\label{assumed-shape_array_program}
 \begin{lstlisting}
 program main
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
-    real(dp) :: r_2(2), r_3(3)
+    real(dp) :: r_2(2),r_3(3)
     interface
         function norm_1(r) result(norm)
-            use iso_fortran_env, only: dp => real64
+            use iso_fortran_env,only: dp => real64
             implicit none
 
 
@@ -568,27 +568,27 @@ program main
     end interface
     r_2 = [-1.0_dp,2.0_dp]
     r_3 = [-1.0_dp,2.0_dp,-3.0_dp]
-    print *, norm_1(r_2)
-    print *, norm_1(r_3)
+    print *,norm_1(r_2)
+    print *,norm_1(r_3)
 end program main
 
 function norm_1(r) result(norm)
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     real(dp),intent(in) :: r(:)
     real(dp) :: norm
     norm = sum(abs(r))
 end function
 \end{lstlisting}
-使用假定形状数组的时候, 我们还可以指定假定形状数组每一维的下界. 比如下面这个程序, 函数里的\texttt{r}是2维数组, 第1维下界是0, 第2维下界没写, 默认是1.
+使用假定形状数组的时候,我们还可以指定假定形状数组每一维的下界.比如下面这个程序,函数里的\texttt{r}是2维数组,第1维下界是0,第2维下界没写,默认是1.
 \begin{lstlisting}
 program main
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
-    real(dp) :: r_2(2,1), r_3(3,1)
+    real(dp) :: r_2(2,1),r_3(3,1)
     interface
         function norm_1(r) result(norm)
-            use iso_fortran_env, only: dp => real64
+            use iso_fortran_env,only: dp => real64
             implicit none
             real(dp),intent(in) :: r(0:,:)
             real(dp) :: norm
@@ -597,12 +597,12 @@ program main
 
     r_2 = reshape([0.0_dp,-1.0_dp],[2,1])
     r_3 = reshape([0.0_dp,-1.0_dp,2.0_dp],[3,1])
-    print *, norm_1(r_2)
-    print *, norm_1(r_3)
+    print *,norm_1(r_2)
+    print *,norm_1(r_3)
 end program main
 
 function norm_1(r) result(norm)
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     real(dp),intent(in) :: r(0:,:)
     real(dp) :: norm
@@ -611,29 +611,29 @@ end function
 \end{lstlisting}
 
 \subsection{哑过程}
-有的时候我们需要把子程序本身当成参量, 比如我们如果要造个定积分的轮子, 我们就要被积函数, 下界, 上界三个参量, 被积函数参量当然得是函数啦. 是哑参量的过程称为哑过程(dummy procedure). 下面就是个定积分轮子, 虽然看着非常复杂, 但确实能跑. 这个轮子将在\ref{fortran_interface}节中讲解.\label{dummy_procedure_program}
+有的时候我们需要把子程序本身当成参量,比如我们如果要造个定积分的轮子,我们就要被积函数,下界,上界三个参量,被积函数参量当然得是函数啦.是哑参量的过程称为哑过程(dummy procedure).下面就是个定积分轮子,虽然看着非常复杂,但确实能跑.这个轮子将在\ref{fortran_interface}节中讲解.\label{dummy_procedure_program}
 \begin{lstlisting}
 program main
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     interface
         function identity(x) result(y)
-            use iso_fortran_env, only: dp => real64
+            use iso_fortran_env,only: dp => real64
             implicit none
             real(dp),intent(in) :: x
             real(dp) :: y
         end function
     end interface
     real(dp) :: integrate
-    print *, integrate(identity, 0.0_dp, 1.0_dp)
+    print *,integrate(identity,0.0_dp,1.0_dp)
 end program main
 
-function integrate(f, a, b) result(s) ! trapezoidal rule
-    use iso_fortran_env, only: dp => real64
+function integrate(f,a,b) result(s) ! trapezoidal rule
+    use iso_fortran_env,only: dp => real64
     implicit none
     abstract interface
         function func(x) result(y)
-            use iso_fortran_env, only: dp => real64
+            use iso_fortran_env,only: dp => real64
             implicit none
             real(dp),intent(in) :: x
             real(dp) :: y
@@ -647,14 +647,14 @@ function integrate(f, a, b) result(s) ! trapezoidal rule
     integer :: i
     h = (b-a)/10000
     s = (f(a)+f(b))/2
-    do i = 1, 9999
+    do i = 1,9999
         s = s+f(a+i*h)
     end do
     s = s*h
 end function integrate
 
 function identity(x) result(y)
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     real(dp),intent(in) :: x
     real(dp) :: y
@@ -664,54 +664,54 @@ end function identity
 
 \section{过程接口}\label{fortran_interface}
 
-之前第\pageref{assumed-shape_array_program}页和第\pageref{dummy_procedure_program}页的轮子用了过程接口(procedure interface). 过程接口可分为三类: 特定接口(specific interface), 泛型接口(generic interface)和抽象接口(abstract interface).
+之前第\pageref{assumed-shape_array_program}页和第\pageref{dummy_procedure_program}页的轮子用了过程接口(procedure interface).过程接口可分为三类: 特定接口(specific interface),泛型接口(generic interface)和抽象接口(abstract interface).
 
 \subsection{特定接口}
 
-特定接口相当于过程的声明. 通常情况下, 子例行不需要声明, 函数也只需要声明结果就可以了. 但如果碰上了以下情形之一:
+特定接口相当于过程的声明.通常情况下,子例行不需要声明,函数也只需要声明结果就可以了.但如果碰上了以下情形之一:
 \begin{itemize}
-    \item 过程有一个哑参量, 此哑参量满足下列条件之一:\begin{itemize}
+    \item 过程有一个哑参量,此哑参量满足下列条件之一:\begin{itemize}
         \item 是延迟长度字符型变量(见\ref{fortran_char}节)或延迟形状数组(见\ref{fortran_array_specification}节),
         \item 是假定形状数组,
     \end{itemize}
     \item 过程是函数且结果是数组,
     \item 过程是另一个过程的实参量,
 \end{itemize}
-那么就一定要加特定接口\footnote{一定要加特定接口的情形还有很多, 其他同志们暂时不需要掌握.}. 这不一定需要背, 编译器应该是要告诉我们的. 我们可以先不加接口, 然后如果编译器告诉我们``Explicit interface required for \dots''或``Expected a procedure for argument \dots''或其他七七八八的话, 那就是要加接口了.
+那么就一定要加特定接口\footnote{一定要加特定接口的情形还有很多,其他同志们暂时不需要掌握.}.这不一定需要背,编译器应该是要告诉我们的.我们可以先不加接口,然后如果编译器告诉我们``Explicit interface required for \dots''或``Expected a procedure for argument \dots''或其他七七八八的话,那就是要加接口了.
 
-特定接口都放在从\texttt{interface}到\texttt{end interface}的一整块里, 这一整块称为接口块(interface block), 一个接口块里可以放一堆接口. 接口是过程的一部分, 我们只要把过程的变量声明部分下面的执行部分都删掉, 然后变量声明部分, 除了哑参量和结果的声明, 其他声明都删掉, 然后复制粘贴到接口块里就可以了.
+特定接口都放在从\texttt{interface}到\texttt{end interface}的一整块里,这一整块称为接口块(interface block),一个接口块里可以放一堆接口.接口是过程的一部分,我们只要把过程的变量声明部分下面的执行部分都删掉,然后变量声明部分,除了哑参量和结果的声明,其他声明都删掉,然后复制粘贴到接口块里就可以了.
 
-我们通过实战来熟悉这个过程. 假设我们现在想搞个算单位矩阵的轮子, 我们正常地这么一写, 结果跑不得.
+我们通过实战来熟悉这个过程.假设我们现在想搞个算单位矩阵的轮子,我们正常地这么一写,结果跑不得.
 \begin{lstlisting}
 program main
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     real(dp) :: i(3,3)
     i = eye(3)
 end program main
 
 function eye(n) result(mat)
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     integer,intent(in) :: n
     real(dp) :: mat(n,n)
     !----------------------------------------
     integer :: i
     mat = 0.0_dp
-    do i = 1, n
+    do i = 1,n
         mat(i,i) = 1.0_dp
     end do
     !----------------------------------------
 end function eye
 \end{lstlisting}
-我们需要在主程序中加个接口. 我们先在主程序的声明部分写上\texttt{interface}\\和\texttt{end interface}, 然后把整个\texttt{eye}子程序复制粘贴进去. (我们还可以用列选择\footnote{不知道什么是列选择的同志请自行了解.}来调整格式)
+我们需要在主程序中加个接口.我们先在主程序的声明部分写上\texttt{interface}\\和\texttt{end interface},然后把整个\texttt{eye}子程序复制粘贴进去.(我们还可以用列选择\footnote{不知道什么是列选择的同志请自行了解.}来调整格式)
 \begin{lstlisting}
 program main
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     interface
         function eye(n) result(mat)
-            use iso_fortran_env, only: dp => real64
+            use iso_fortran_env,only: dp => real64
             implicit none
             integer,intent(in) :: n
             real(dp) :: mat(n,n)
@@ -719,7 +719,7 @@ program main
             integer :: i
             mat = 0.0_dp
 
-            do i = 1, n
+            do i = 1,n
                 mat(i,i) = 1.0_dp
             end do
             !----------------------------------------
@@ -730,27 +730,27 @@ program main
 end program main
 
 function eye(n) result(mat)
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     integer,intent(in) :: n
     real(dp) :: mat(n,n)
     !----------------------------------------
     integer :: i
     mat = 0.0_dp
-    do i = 1, n
+    do i = 1,n
         mat(i,i) = 1.0_dp
     end do
     !----------------------------------------
 end function eye
 \end{lstlisting}
-然后我们定睛一看, 两个注释行中间的部分, 第一行是\texttt{i}的声明, \texttt{i}既不是哑参量也不是结果, 所以删去, 后面几行是执行部分也删去. 删完以后就成下面这个样子.
+然后我们定睛一看,两个注释行中间的部分,第一行是\texttt{i}的声明,\texttt{i}既不是哑参量也不是结果,所以删去,后面几行是执行部分也删去.删完以后就成下面这个样子.
 \begin{lstlisting}
 program main
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     interface
         function eye(n) result(mat)
-            use iso_fortran_env, only: dp => real64
+            use iso_fortran_env,only: dp => real64
             implicit none
             integer,intent(in) :: n
             real(dp) :: mat(n,n)
@@ -761,39 +761,39 @@ program main
 end program main
 
 function eye(n) result(mat)
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     integer,intent(in) :: n
     real(dp) :: mat(n,n)
     !----------------------------------------
     integer :: i
     mat = 0.0_dp
-    do i = 1, n
+    do i = 1,n
         mat(i,i) = 1.0_dp
     end do
     !----------------------------------------
 end function eye
 \end{lstlisting}
-然后这个轮子就能跑了, 欧耶!
+然后这个轮子就能跑了,欧耶!
 
-同志们会不会觉得这么做挺麻烦的? 俺也觉得, 可是这也是没办法的. Fortran在设置这个接口规则的时候可是经过深思熟虑的, 因为造编译器的凭他们的经验告诉我们, 有些情况(比如上面列出来的), 如果没有接口, 会出大事情. 不过还是有办法能让我们少费点脑子, 那就是使用模块(见第\ref{fortran_module}章), 但如果不需要加接口, 那么造一个模块反而比较费事\dots
+同志们会不会觉得这么做挺麻烦的?俺也觉得,可是这也是没办法的.Fortran在设置这个接口规则的时候可是经过深思熟虑的,因为造编译器的凭他们的经验告诉我们,有些情况(比如上面列出来的),如果没有接口,会出大事情.不过还是有办法能让我们少费点脑子,那就是使用模块(见第\ref{fortran_module}章),但如果不需要加接口,那么造一个模块反而比较费事\dots
 
-这里还有个问题, 如果我们碰到个固有过程需要接口怎么办, 比如我们如果要算$\sin$的积分, 我们用固有过程\texttt{sin}直接干算不得.
+这里还有个问题,如果我们碰到个固有过程需要接口怎么办,比如我们如果要算$\sin$的积分,我们用固有过程\texttt{sin}直接干算不得.
 \begin{lstlisting}
 program main
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     real(dp) :: integrate
 
-    print *, integrate(sin, 0.0_dp, 1.0_dp)
+    print *,integrate(sin,0.0_dp,1.0_dp)
 end program main
 
-function integrate(f, a, b) result(s) ! trapezoidal rule
-    use iso_fortran_env, only: dp => real64
+function integrate(f,a,b) result(s) ! trapezoidal rule
+    use iso_fortran_env,only: dp => real64
     implicit none
     abstract interface
         function func(x) result(y)
-            use iso_fortran_env, only: dp => real64
+            use iso_fortran_env,only: dp => real64
             implicit none
             real(dp),intent(in) :: x
             real(dp) :: y
@@ -807,27 +807,27 @@ function integrate(f, a, b) result(s) ! trapezoidal rule
     integer :: i
     h = (b-a)/10000
     s = (f(a)+f(b))/2
-    do i = 1, 9999
+    do i = 1,9999
         s = s+f(a+i*h)
     end do
     s = s*h
 end function integrate
 \end{lstlisting}
-最无脑的办法就是我们再造个过程, 把固有过程变成外部过程, 像下面这样, 然后再加上接口即可. 请同志们自己给下面这个程序补上接口.
+最无脑的办法就是我们再造个过程,把固有过程变成外部过程,像下面这样,然后再加上接口即可.请同志们自己给下面这个程序补上接口.
 \begin{lstlisting}
 program main
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     real(dp) :: integrate
-    print *, integrate(sin_, 0.0_dp, 1.0_dp)
+    print *,integrate(sin_,0.0_dp,1.0_dp)
 end program main
 
-function integrate(f, a, b) result(s) ! trapezoidal rule
-    use iso_fortran_env, only: dp => real64
+function integrate(f,a,b) result(s) ! trapezoidal rule
+    use iso_fortran_env,only: dp => real64
     implicit none
     abstract interface
         function func(x) result(y)
-            use iso_fortran_env, only: dp => real64
+            use iso_fortran_env,only: dp => real64
             implicit none
             real(dp),intent(in) :: x
             real(dp) :: y
@@ -841,14 +841,14 @@ function integrate(f, a, b) result(s) ! trapezoidal rule
     integer :: i
     h = (b-a)/10000
     s = (f(a)+f(b))/2
-    do i = 1, 9999
+    do i = 1,9999
         s = s+f(a+i*h)
     end do
     s = s*h
 end function integrate
 
 function sin_(x) result(y)
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
 
     real(dp),intent(in) :: x
@@ -859,17 +859,17 @@ end function sin_
 
 \subsection{泛型接口}
 
-泛型接口是一个比较妙的东东. 假如我们现在要造个算符号函数$\sgn$的轮子, 那是轻而易举的.
+泛型接口是一个比较妙的东东.假如我们现在要造个算符号函数$\sgn$的轮子,那是轻而易举的.
 \begin{lstlisting}
 program main
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     real(dp) :: sgn
-    print *, sgn(10.0_dp)
+    print *,sgn(10.0_dp)
 end program main
 
 function sgn(x) result(y)
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     real(dp),intent(in) :: x
     real(dp) :: y
@@ -882,19 +882,19 @@ function sgn(x) result(y)
     end if
 end function sgn
 \end{lstlisting}
-但有个问题就是假如如果我们要算四精度, 只能另造个轮子.
+但有个问题就是假如如果我们要算四精度,只能另造个轮子.
 \begin{lstlisting}
 program main
-    use iso_fortran_env, only: dp => real64, qp => real128
+    use iso_fortran_env,only: dp => real64,qp => real128
     implicit none
     real(dp) :: sgn_real64
     real(qp) :: sgn_real128
-    print *, sgn_real64(10.0_dp)
-    print *, sgn_real128(10.0_qp)
+    print *,sgn_real64(10.0_dp)
+    print *,sgn_real128(10.0_qp)
 end program main
 
 function sgn_real64(x) result(y)
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     real(dp),intent(in) :: x
     real(dp) :: y
@@ -908,7 +908,7 @@ function sgn_real64(x) result(y)
 end function sgn_real64
 
 function sgn_real128(x) result(y)
-    use iso_fortran_env, only: qp => real128
+    use iso_fortran_env,only: qp => real128
     implicit none
     real(qp),intent(in) :: x
     real(qp) :: y
@@ -921,31 +921,31 @@ function sgn_real128(x) result(y)
     end if
 end function sgn_real128
 \end{lstlisting}
-这就让我们有点小小的不开心, Fortran的语法也太严格了! 我们希望能造个\texttt{sgn}, 又能算双精度又能算四精度. 用泛型接口, 我们就可以偷鸡摸狗地``做成''这件事, 把上面的\texttt{sgn\_{}real64}和\texttt{sgn\_{}real128} ``粘起来'' .
+这就让我们有点小小的不开心,Fortran的语法也太严格了! 我们希望能造个\texttt{sgn},又能算双精度又能算四精度.用泛型接口,我们就可以偷鸡摸狗地``做成''这件事,把上面的\texttt{sgn\_{}real64}和\texttt{sgn\_{}real128} ``粘起来''.
 \begin{lstlisting}
 program main
-    use iso_fortran_env, only: dp => real64, qp => real128
+    use iso_fortran_env,only: dp => real64,qp => real128
     implicit none
     interface sgn
         function sgn_real64(x) result(y)
-            use iso_fortran_env, only: dp => real64
+            use iso_fortran_env,only: dp => real64
             implicit none
             real(dp),intent(in) :: x
             real(dp) :: y
         end function sgn_real64
         function sgn_real128(x) result(y)
-            use iso_fortran_env, only: qp => real128
+            use iso_fortran_env,only: qp => real128
             implicit none
             real(qp),intent(in) :: x
             real(qp) :: y
         end function sgn_real128
     end interface
-    print *, sgn(10.0_dp)
-    print *, sgn(10.0_qp)
+    print *,sgn(10.0_dp)
+    print *,sgn(10.0_qp)
 end program main
 
 function sgn_real64(x) result(y)
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     real(dp),intent(in) :: x
     real(dp) :: y
@@ -959,7 +959,7 @@ function sgn_real64(x) result(y)
 end function sgn_real64
 
 function sgn_real128(x) result(y)
-    use iso_fortran_env, only: qp => real128
+    use iso_fortran_env,only: qp => real128
     implicit none
     real(qp),intent(in) :: x
     real(qp) :: y
@@ -972,106 +972,106 @@ function sgn_real128(x) result(y)
     end if
 end function sgn_real128
 \end{lstlisting}
-我们会发现泛型接口和特定接口很像, 只不过\texttt{interface}后多了一串(示例中为\texttt{sgn}). 这么写后, 电脑看到\texttt{sgn(10.0\_{}dp)}, 就会发现\texttt{10.0\_{}dp}是双精度的, 然后电脑就会在标\texttt{sgn}的泛型接口里找, 发现\texttt{sgn\_{}real64}这个函数参量是双精度的, 匹配, \texttt{sgn\_{}real128}这个函数参量是四精度的, 不匹配, 于是乎电脑就会自动把\texttt{sgn(10.0\_{}dp)}里的\texttt{sgn}当成\texttt{sgn\_{}real64}了, 然后电脑看到\texttt{sgn(10.0\_{}qp)}, 也是一样, 只不过最后是把\texttt{sgn}当成\texttt{sgn\_{}real128}. 这样就仿佛有一个又能算双精度又能算四精度的\texttt{sgn}了!
+我们会发现泛型接口和特定接口很像,只不过\texttt{interface}后多了一串(示例中为\texttt{sgn}).这么写后,电脑看到\texttt{sgn(10.0\_{}dp)},就会发现\texttt{10.0\_{}dp}是双精度的,然后电脑就会在标\texttt{sgn}的泛型接口里找,发现\texttt{sgn\_{}real64}这个函数参量是双精度的,匹配,\texttt{sgn\_{}real128}这个函数参量是四精度的,不匹配,于是乎电脑就会自动把\texttt{sgn(10.0\_{}dp)}里的\texttt{sgn}当成\texttt{sgn\_{}real64}了,然后电脑看到\texttt{sgn(10.0\_{}qp)},也是一样,只不过最后是把\texttt{sgn}当成\texttt{sgn\_{}real128}.这样就仿佛有一个又能算双精度又能算四精度的\texttt{sgn}了!
 
-哑实结合时的类型--种别--维数匹配(type-kind-rank compatibility, TKR compatibility), 我们用泛型接口便能有所突破, 这当然是大好事. 但同志们还是可能不开心, 因为同志们会发现上面的\texttt{sgn\_{}real64}和\texttt{sgn\_{}real128}其实长得一模一样, 就是变量种别不同, 如果我们还要造单精度的轮子, 还要造整型的轮子, 岂不是要复制粘贴写一大堆一模一样的过程, 读起来还脑壳疼? 非常遗憾, 据我的了解, Fortran自己确实就只能这么玩儿了. 不过用预处理器(见第\ref{fortran_preprocessor}章)的话, 应该可以省事儿不少还易读, 但这已经是超Fortran的内容了.
+哑实结合时的类型--种别--维数匹配(type-kind-rank compatibility,TKR compatibility),我们用泛型接口便能有所突破,这当然是大好事.但同志们还是可能不开心,因为同志们会发现上面的\texttt{sgn\_{}real64}和\texttt{sgn\_{}real128}其实长得一模一样,就是变量种别不同,如果我们还要造单精度的轮子,还要造整型的轮子,岂不是要复制粘贴写一大堆一模一样的过程,读起来还脑壳疼?非常遗憾,据我的了解,Fortran自己确实就只能这么玩儿了.不过用预处理器(见第\ref{fortran_preprocessor}章)的话,应该可以省事儿不少还易读,但这已经是超Fortran的内容了.
 
 \subsection{抽象接口}
 
-特定接口只对应一个过程, 而抽象接口则对应所有特征(characteristic)相同的过程, 我们来看下面这个程序.
+特定接口只对应一个过程,而抽象接口则对应所有特征(characteristic)相同的过程,我们来看下面这个程序.
 \begin{lstlisting}
 program main
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     interface
         function eye(n) result(mat)
-            use iso_fortran_env, only: dp => real64
+            use iso_fortran_env,only: dp => real64
             implicit none
             integer,intent(in) :: n
             real(dp) :: mat(0:n-1,0:n-1)
         end function eye
         function minkowski(n) result(eta)
-            use iso_fortran_env, only: dp => real64
+            use iso_fortran_env,only: dp => real64
             implicit none
             integer,intent(in) :: n
             real(dp) :: eta(0:n-1,0:n-1)
         end function minkowski
     end interface
-    real(dp),dimension(0:3,0:3) :: mat_i, mat_m
+    real(dp),dimension(0:3,0:3) :: mat_i,mat_m
     mat_i = eye(4)
     mat_m = minkowski(4)
 end program main
 
 function eye(n) result(mat)
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     integer,intent(in) :: n
     real(dp) :: mat(0:n-1,0:n-1)
     integer :: i
     mat = 0.0_dp
 
-    do i = 0, n-1
+    do i = 0,n-1
         mat(i,i) = 1.0_dp
     end do
 end function eye
 
 function minkowski(n) result(eta)
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     integer,intent(in) :: n
     real(dp) :: eta(0:n-1,0:n-1)
     integer :: i
     eta = 0.0_dp
     eta(0,0) = -1.0_dp
-    do i = 1, n-1
+    do i = 1,n-1
         eta(i,i) = 1.0_dp
     end do
 end function minkowski
 \end{lstlisting}
-这个程序, 接口块里写了两个过程的接口, 这当然没有问题. 但同志们会发现这两个过程其实接口长得``一样'' , 都是函数, 都只有一个整型只读参量, 结果的类型, 种别和形状也一样, 只不过各种名称(过程名, 参量名, 结果名)不一样而已. 接口长得``一样''的过程, 我们称为特征相同的. 能不能趁机偷一小点懒? 能, 像下面这样.
+这个程序,接口块里写了两个过程的接口,这当然没有问题.但同志们会发现这两个过程其实接口长得``一样'',都是函数,都只有一个整型只读参量,结果的类型,种别和形状也一样,只不过各种名称(过程名,参量名,结果名)不一样而已.接口长得``一样''的过程,我们称为特征相同的.能不能趁机偷一小点懒?能,像下面这样.
 \begin{lstlisting}
 program main
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     abstract interface
         function dim2mat(dim) result(mat)
-            use iso_fortran_env, only: dp => real64
+            use iso_fortran_env,only: dp => real64
             implicit none
             integer,intent(in) :: dim
             real(dp) :: mat(0:dim-1,0:dim-1)
         end function dim2mat
     end interface
-    procedure(dim2mat) :: eye, minkowski
-    real(dp),dimension(0:3,0:3) :: mat_i, mat_m
+    procedure(dim2mat) :: eye,minkowski
+    real(dp),dimension(0:3,0:3) :: mat_i,mat_m
     mat_i = eye(4)
     mat_m = minkowski(4)
 end program main
 
 function eye(n) result(mat)
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     integer,intent(in) :: n
     real(dp) :: mat(0:n-1,0:n-1)
     integer :: i
     mat = 0.0_dp
-    do i = 0, n-1
+    do i = 0,n-1
         mat(i,i) = 1.0_dp
     end do
 end function eye
 
 function minkowski(n) result(eta)
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,only: dp => real64
     implicit none
     integer,intent(in) :: n
     real(dp) :: eta(0:n-1,0:n-1)
     integer :: i
     eta = 0.0_dp
     eta(0,0) = -1.0_dp
-    do i = 1, n-1
+    do i = 1,n-1
         eta(i,i) = 1.0_dp
     end do
 end function minkowski
 \end{lstlisting}
-和特定接口相比, 抽象接口的\texttt{interface}前多了个\texttt{abstract}. 接口块里过程名\texttt{dim2mat}的接口和过程\texttt{eye}, \texttt{minkowski}的特定接口长得``一样'': 都是函数, 都只有一个整型只读参量等等. 至于抽象接口里函数名是\texttt{dim2mat}, 参量名是\texttt{dim}, 结果名是\texttt{mat}, 无关紧要, 这些名称都是可以随便取的\footnote{如果碰上了什么规矩, 编译器会告诉我们.}, 只要在接口块里一致即可. 然后我们只需要再写\texttt{procedure(dim2mat) :: ...}就相当于给\texttt{...}加特定接口了, 但前提是\texttt{...}必须是和\texttt{dim2mat}特征相同的过程(如\texttt{eye}和\texttt{minkowski}).
+和特定接口相比,抽象接口的\texttt{interface}前多了个\texttt{abstract}.接口块里过程名\texttt{dim2mat}的接口和过程\texttt{eye},\texttt{minkowski}的特定接口长得``一样'': 都是函数,都只有一个整型只读参量等等.至于抽象接口里函数名是\texttt{dim2mat},参量名是\texttt{dim},结果名是\texttt{mat},无关紧要,这些名称都是可以随便取的\footnote{如果碰上了什么规矩,编译器会告诉我们.},只要在接口块里一致即可.然后我们只需要再写\texttt{procedure(dim2mat) :: ...}就相当于给\texttt{...}加特定接口了,但前提是\texttt{...}必须是和\texttt{dim2mat}特征相同的过程(如\texttt{eye}和\texttt{minkowski}).
 
-在第\pageref{dummy_procedure_program}页的轮子里, 我在声明哑过程的时候用了抽象接口, 这个地方, 根据我自己的实验, 非用抽象接口不可. 按我的理解, 这是因为哑过程根本不是一个``真''过程: 既不是我们用代码定义的过程, 也不是编译器定义好的固有过程. 只有``真''过程能有特定接口, 因为电脑碰到特定接口的时候, 会去查特定接口对应的过程的定义, 而哑过程只有声明没有定义, 所以声明哑过程的时候就只能用抽象接口了.
+在第\pageref{dummy_procedure_program}页的轮子里,我在声明哑过程的时候用了抽象接口,这个地方,根据我自己的实验,非用抽象接口不可.按我的理解,这是因为哑过程根本不是一个``真''过程: 既不是我们用代码定义的过程,也不是编译器定义好的固有过程.只有``真''过程能有特定接口,因为电脑碰到特定接口的时候,会去查特定接口对应的过程的定义,而哑过程只有声明没有定义,所以声明哑过程的时候就只能用抽象接口了.
