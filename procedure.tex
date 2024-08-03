@@ -526,7 +526,7 @@ end function
 \end{lstlisting}
 这个程序,函数里\texttt{mat}的形状是由哑参量\texttt{n}决定的,这样的数组就叫自动数组(automatic array),也定义为显式形状数组中的一种.自动数组和可调数组的区别是可调数组一定是哑参量,自动数组一定不是.
 
-\subsubsection{假定形状数组}
+\subsubsection{假定形状数组}\label{assumed-shape}
 
 之前第\pageref{adjustable_array}页用可调数组的轮子,每次都要算数组的大小,然后和子程序哑实结合,还是麻烦.用假定形状数组(assumed-shape array)就可以这么解决这个问题.
 \begin{lstlisting}

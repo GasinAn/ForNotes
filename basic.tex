@@ -80,11 +80,11 @@ end program [program-name]
 \end{lstlisting}
 其中 \texttt{[program-name]} 处是一个名称 (name), 名称指的是由字母, 数字和下划线 ``\texttt{\_{}}''\footnote{
     下划线是空格的替代字符,长得还是蛮像滴!
-} 组成的, 开头是字母的字符串, ``\texttt{...}''处则是各种指令, 一行一条. 比如, 之前 \ref{fortran_program} 节里 \texttt{main.f90} 里的程序就是一个名称为 \texttt{main} 的主程序\footnote{安安习惯把主程序的名称取做 \texttt{main} 并放在 \texttt{main.f90} 里.} \\(\texttt{helloworld.f90} 里的程序则是一个外部子程序).
+} 组成的, 开头是字母的字符串\footnote{后文中的 ``某某名'' 若不另加说明则都是名称, 不再赘述.}, ``\texttt{...}'' 处则是各种指令, 一行一条. 比如, 之前 \ref{fortran_program} 节里 \texttt{main.f90} 里的程序就是一个名称为 \texttt{main} 的主程序\footnote{安安习惯把主程序的名称取做 \texttt{main} 并放在 \texttt{main.f90} 里.} \\(\texttt{helloworld.f90} 里的程序则是一个外部子程序).
 
 外部子程序在第\ref{fortran_procedure}章里讲, 模块在第\ref{fortran_module}章里讲, 子模块在第\ref{fortran_submodule}章里讲.\footnote{??\mbox{}的内容安安会在猴年马月写好的!}
 
-每个 Fortran 源代码文件里都可以放若干完整的程序单元, 但习惯上一个源代码文件里只放一个程序单元, 并且文件名和文件里的程序单元名相同(比如主程序 \texttt{main} 放在 \texttt{main.f90} 里).
+每个 Fortran 源代码文件里都可以放若干完整的程序单元, 但习惯上一个源代码文件里只放一个程序单元, 并且文件名和文件里的程序单元名相同 (比如主程序 \texttt{main} 放在 \texttt{main.f90} 里).
 \begin{convention}
     一个源代码文件里只放一个程序单元, 并且文件名和文件里的程序单元名相同.\label{one_program_unit}
 \end{convention}
@@ -263,18 +263,12 @@ Fortran 可以在程序中使用所有能直接用英语输入法打出的字符
     在程序和源代码文件名中只使用能直接用英语输入法打出的字符.\label{english_character_convention}
 \end{convention}
 
-Fortran 是大小写不敏感的 (case-insensitive), 也就是说, 很多情况下程序里的字母大写小写效果是完全相同的 (效果不同的地方见 \ref{fortran_char} 节和 \ref{character_string_edit_descriptor} 小节). 比如, 下面这两个程序和 \ref{fortran_program} 节的 \texttt{main.f90} 和 \texttt{helloworld.f90} 内的程序是完全等价的.
+Fortran 是大小写不敏感的 (case-insensitive), 也就是说, 很多情况下程序里的字母大写小写效果是完全相同的 (效果不同的地方见 \ref{fortran_char} 节和 \ref{character_string_edit_descriptor} 小节). 比如, 下面这两个程序和 \ref{fortran_program} 节的 \texttt{main.f90} 内的程序是完全等价的.
 \begin{lstlisting}
 PROGRAM MAIN
     IMPLICIT NONE
     CALL HELLOWORLD()
 END PROGRAM MAIN
-\end{lstlisting}
-\begin{lstlisting}
-SUBROUTINE HELLOWORLD()
-    IMPLICIT NONE
-    PRINT *, "Hello, world!"
-END SUBROUTINE HELLOWORLD
 \end{lstlisting}
 
 Fortran 大小写不分是有历史原因的. 当年电脑太烂了, 为节省存储空间, 一开始 Fortran 只许用大写字母, 后来电脑不那么烂了, 能用小写字母了, Fortran 大概是因为想尽量保证老程序能用, 所以直接规定大小写不分, 结果挖了个如今没法儿填的史诗级奆坑, 学 Fortran 玩 Fortran 的历来都深受其害. 举个例子, 当年俺搞毕设, 需要解 Kepler 方程 $E=M+e\cos E$,在程序里对应地写成 \texttt{E = M + e*cos(E)}, 然而 Fortran 是大小写不分的, 所以 \texttt{E = M + e*cos(E)} 其实对应于 $e=M+e\cos e$ 或 $E=M+E\cos E$, 然后俺忘了这茬, 结果死活找不出自己哪里写错了\dots{}
@@ -614,7 +608,7 @@ end program main
 
 \subsection{标签}
 
-在一些特殊的地方 (见 \ref{fortran_exit} 小节和 \ref{fortran_cycle} 小节) 可以加标签\footnote{\href{https://j3-fortran.org/doc/year/24/24-007.pdf}{标准解释文档}里没这个词, 但\href{https://fortran-lang.org/learn/quickstart/}{官网教程}里有.} (tag). 标签名和程序单元名一样也是名称, 由字母, 数字和下划线 ``\texttt{\_{}}'' 组成, 开头是字母. 下面的程序第四行和第六行使用了标签.
+在程序中某些特殊的地方 (见 \ref{fortran_exit} 小节和 \ref{fortran_cycle} 小节) 可以加标签\footnote{\href{https://j3-fortran.org/doc/year/24/24-007.pdf}{标准解释文档}里没这个词, 但\href{https://fortran-lang.org/learn/quickstart/}{官网教程}里有.} (tag). 标签用其标签名表示. 下面的程序第四行和第六行使用了标签名为 \texttt{tag} 的标签.
 \begin{lstlisting}
 program main
     implicit none
