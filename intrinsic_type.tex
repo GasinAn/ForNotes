@@ -243,6 +243,7 @@ program main
     ! Now len(deferred_len_char) is 0.
 end program main
 \end{lstlisting}
+使用 allocate 语句和 deallocate 语句需遵守的规范放在 \ref{fortran_array_specification} 节讲.
 
 可以对字符串进行切片 (slicing) 操作. 切片就是在字符串后加上个形如 \texttt{(nl:nu)} 的东东, 表示用字符串的第 \texttt{nl} 到第 \texttt{nu} 个字符组成一个新字符串. \texttt{nl} 和 \texttt{nu} 必须是整型数据实体. \texttt{nl} 和 \texttt{nu} 都可以不写. 如果 \texttt{nl} 不写, \texttt{nl} 就等于 \texttt{1}. 如果 \texttt{nu} 不写, \texttt{nu} 就等于旧字符串的长度. 示例如下.
 \begin{lstlisting}
