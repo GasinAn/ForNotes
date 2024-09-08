@@ -2,78 +2,136 @@
 
 \section{赋值}\label{fortran_assignment}
 
-赋值\footnote{
-    实际上按标准来说,赋值有两种: 固有赋值(intrinsic assignment)和超载赋值(defined assignment).本章``赋值''仅指固有赋值.
-}(assignment)是将一个数据实体的值拷贝给一个变量的操作.
+Fortran 中的赋值 (assignment), 其一般含义可总结为把数据拷贝到一个数据实体中, 分为四种: (普通的) 固有赋值 (intrinsic assignment), 掩码数组赋值 (masked array assignment), 指针赋值 (pointer assignment), 和超载赋值 (defined assignment). 本节只讲固有赋值的最简单情形, 固有赋值的其他情形一和掩码数组赋值一起放在 \ref{fortran_array_assignment} 节讲, 固有赋值的其他情形二和指针赋值一起放在 \ref{fortran_pointer_assignment} 节讲, 超载赋值放在 \ref{fortran_defined_assignment} 节讲.
 
-用形如\texttt{a = b}的语句即可将\texttt{b}中的内容拷贝给\texttt{a}.请看下面的例子.
-\begin{lstlisting}
-program main
-
-    implicit none
-    integer :: a,b
-
-    ! Assign 1 to a.
-    a = 1
-    ! Now "print *,a" will return 1.
-
-    ! Assign a to b.
-    b = a
-    ! Now "print *,b" will return 1.
-
-end program main
-\end{lstlisting}
-
-Fortran是强\footnote{
-    事实上``强''和``弱''的定义是模糊的,不过一般都将Fortran归为强类型语言.
-}类型语言(strongly typed language),这意味着Fortran在赋值时``不允许''类型转化,数字型数据实体只能赋给数字型变量,字符型数据实体只能赋给字符型变量,逻辑型数据实体只能赋给逻辑型变量.
-
-官方规则是这么说,实际却不完全是这样.Ifx和Gfortran在\uline{不同程度}上是允许数字型数据实体和逻辑型数据实体相互赋值的,赋值时遵循的规则还不太一样.我懒得总结Ifx和Gfortran在这方面的``器规''了,同志们自己试试,自己总结.
-
-\begin{convention}
-    即使编译器允许,也不要跨类型赋值.
-\end{convention}
-
-赋值的时候,``\texttt{=}''两边的类型或种别可能不一样,这时自然有个类型和种别转化的问题.Fortran是静态类型语言,所以转化的总则必然是: 把``\texttt{=}''右边的数据实体转化成类型和种别与``\texttt{=}''左边变量相同的数据实体,然后赋值.
-
-任何一个Fortran数字型数据实体都对应于一个数.要细说来,数字型数据实体赋值时的转化规则是非常复杂的,我也说不清楚.但基本原则是确定的,就是``尽量''让转化前后的数据实体对应的数接近.如果是``精度低''的数据实体转化成``精度高''的数据实体,只要能转化,那么转化前后的数据实体对应的数就是相等的.比如整型转实型\footnote{
-    一般情形下整型转实型都是``无损''的,但有些极端情形不是这样.幸好这些极端情形是很难碰上的.
-},实型转复型,低精度种别转高精度种别,都是这样,这时我们就可以放心大胆地赋值,反正赋值后数据实体的实际意义不变.
-
-如果是``精度高''的数据实体转化成``精度低''的数据实体,事情就比较复杂.
-
-如果是实型转整型,我也不清楚标准规则怎么说,但Ifx和Gfortran都是``向0取整''.可以运行下面这个程序来感受一下.
+固有赋值的形式是 \ttt{[var] = [expr]}. \ttt{[var]} 可以是很多东东, 最常见的情况是 \ttt{[var]} 是一个变量, 其他情况安安将一一列举. \ttt{[expr]} 是一个表达式 (expression), 放在 \ref{fortran_opration} 节详细介绍. 运行 \ttt{[var] = [expr]} 时, 程序会先对 \ttt{[expr]} 进行求值 (evaluation) 并得到一个结果 (result), 此结果是一个数据实体, 然后将得到的结果中的数据拷贝到 \ttt{[var]} 里去. 下面的例子中, 第四行对表达式 \ttt{10.0} 进行求值, 得到的结果中的数据 $10.0$ 拷贝到 \ttt{a} 里去, 第五行对表达式 \ttt{a + a*a - a/a} 进行求值, 得到的结果中的数据 $109.0$ 还拷贝到 \ttt{a} 里去, 所以最后 \ttt{a} 里的数据是 $109.0$.
 \begin{lstlisting}
 program main
     implicit none
-    integer :: i
-    i = +9.87654321
-    print *,i
-    i = -9.87654321
-    print *,i
+    real :: a
+    a = 10.0
+    a = a + a*a - a/a
+    print *, a
 end program main
 \end{lstlisting}
 
-如果是复型转实型,自然是取实部.
+为避免后面讲解时啰里巴嗦的, 安安需要先啰嗦几句. 如果数据实体中有 Fortran 程序拷贝到其中存储的数据, 安安就称数据实体中存储的数据为数据实体的值 (value), 例如上面的程序第四行运行后 \ttt{a} 的值是 $10.0$. 如果数据实体的值和一个字面常量的值相同, 安安也称数据实体的值为那个字面常量, 例如上面的程序第四行运行后 \ttt{a} 的值是 \ttt{10.0}. 安安还把对表达式进行求值得到的结果的值简称为表达式的值, 例如上面的程序第五行运行时表达式 \ttt{a + a*a - a/a} 的值是 \ttt{109.0}.
 
-如果是复型转整型,则是先转实型,再转整型.
+因为赋值会修改数据实体的值, 所以字面常量是不能被赋值的, 例如下面这个程序是不成的.
+\begin{lstlisting}
+program main
+    implicit none
+    10.0 = 10.0
+end program main
+\end{lstlisting}
+而具名常量也是不能被赋值的, 这就出现了具名常量的值如何确定的问题. 具名常量的值需要且必须由初始化 (initialization) 确定, 所谓初始化实际上就是在声明的同时赋值\footnote{这话儿其实不太对, 因为按\href{https://j3-fortran.org/doc/year/24/24-007.pdf}{标准解释文档}的定义, 初始化和赋值是不同的东东, 但通常人们都会觉得初始化就是在声明的同时赋值, 同学们就这么认为拉倒吧!}, 方法是在声明时在具名常量名 \ttt{[name]} 后加 \ttt{ = [value]}, 其中 \ttt{[value]} 是字面常量. 下面这个程序声明了具名常量 \ttt{ten}, 并令其值为 \ttt{10.0}
+\begin{lstlisting}
+program main
+    implicit none
+    real, parameter :: ten = 10.0
+end program main
+\end{lstlisting}
+如果是声明字符型具名常量, 那么初始化时还有个长度匹配的问题. 我们可以在声明时把长度写成 \ttt{*}, 这样字符型具名常量的长度直接由字面常量 \ttt{[value]} 确定为 \ttt{[value]} 的长度. 下面这个程序声明了具名常量 \ttt{author}, 它的长度直接由字面常量 \ttt{'GasinAn'} 确定为 $7$.
+\begin{lstlisting}
+program main
+    implicit none
+    character(*), parameter :: author = 'GasinAn'
+    print *, author, len(author)
+end program main
+\end{lstlisting}
 
-还有很多具体情况(比如同类型``高精度''种别向``低精度''种别转化)的规则我也不清楚,但实型和复型数据实体都是比较精确的,``\texttt{=}''左右的数据实体,对应的数非常接近,一般其中的区别可以不用管.
+如果一个变量在程序运行的时候第一次被赋值, 我们也称这个变量被初始化, 而如果一个变量在程序运行的时候没被赋值, 我们则称这个变量是未定义的. 在下面这个程序中, \ttt{a} 有被初始化, 而 \ttt{b} 没被初始化, 从始至终一直是未定义的.
+\begin{lstlisting}
+program main
+    implicit none
+    real :: a, b
+    a = 0.0
+    print *, a, b
+end program main
+\end{lstlisting}
+但同学们会发现上面这个程序运行到最后, \ttt{a} 和 \ttt{b} 里头都有数据. 其中, \ttt{a} 里头的数据是我们用程序清清楚楚地指挥电脑赋给 \ttt{a} 的有意义的数据, 而 \ttt{b} 里头的数据是我们用程序指挥电脑创建 \ttt{b} 的时候 \ttt{b} 会随机拥有的无意义的数据. 如果一个变量是未定义的, 存在那个变量中的数据是无意义的, 那么取用那个变量中的数据也是无意义的, 程序必然有毛病. 然而 Fortran 和 C 这样古早的语言, 它们的编译器不一定会检查变量在取用时是否未定义, 程序因此容易出现检查不出的毛病, 同学们只好自己小心. Python 吸取教训, 不存在这个问题, 例如在 Python 3 中, 如果 \ttt{b} 未定义, 那么 \ttt{print(b)} 会直接报错.
 
-总而言之,数字型数据实体赋值时的转化规则是非常复杂,但一般情况下可以不管这些规则.原因有以下三点:
+Fortran 是强类型语言 (strongly typed language), 因为 Fortran 程序赋值时用于赋值的和被赋值的数据实体的类型要一致, 数字型数据实体只能赋值给数字型数据实体, 字符型数据实体只能赋值给字符型数据实体, 逻辑型数据实体只能赋值给逻辑型数据实体. 不过官规虽是这么说, Ifx 和 Gfortran 却会在某些情况下允许数字型数据实体和逻辑型数据实体相互赋值, 根据规范 \ref{use_standard_only}, 同学们不许这么做.
+
+数字型数据实体赋值给数字型数据实体的时候, ``\ttt{=}'' 两边的类型或种别可能不一样, 这时自然有个类型和种别转化的问题. 因为 Fortran 是静态类型语言, 所以赋值时 ``\ttt{=}'' 左边数据实体的类型和种别不会变, 而右边数据实体的类型和种别会\uline{临时}转化成左边数据实体的类型和种别. 安安努力查阅\href{https://j3-fortran.org/doc/year/24/24-007.pdf}{标准解释文档}后, 把 Fortran 数字型数据实体类型和种别转化时的规则总结成表 \ref{numeric_type_convert}, 其中的术语解释如下:
 \begin{itemize}
-    \item 除了复型转实型,复型转整型,和实型转整型,转换前后有较大的区别外,其他情况下转换前后的区别通常可以忽略;
-    \item 复型转实型,复型转整型,和实型转整型的规则是比较明确的;
-    \item (最重要的一点)通常在计算时都是使用同种别的实型(和复型),基本没有类型转化的时候(这时候就根本不需要去记这些个复杂的规则啦).
+    \item 值相等: 转化后的值和转化前的值相等.
+    \item 值近似: 转化后的值和转化前的值近似相等, 如何近似则由编译器自己决定.
+    \item 实部近似虚部0: 转化后的值的实部和转化前的值的实部近似相等, 转化后的值的虚部为 $0$, 如何近似则由编译器自己决定.
+    \item 向0取整: 转化后的值由转化前的值向 $0$ 取整而成. 即转化后的值的绝对值是不大于转化前的值的绝对值的最大的整数, 转化后的值的符号和转化前的值的符号相同.
+    \item 二次转化: 先转化成实型, 再转化成整型.
+\end{itemize}
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        \diagbox{转化前}{转化后} & 整型 & 实型 & 复型 \\
+        \hline
+        整型 & 值相等 & 值近似 & 实部近似虚部0 \\
+        \hline
+        实型 & 向0取整 & 值近似 & 实部近似虚部0 \\
+        \hline
+        复型 & 二次转化 & 实部近似虚部0 & 值近似 \\
+        \hline
+    \end{tabular}
+    \caption{Fortran 数字型数据实体转化表}
+    \label{numeric_type_convert}
+\end{table}
+
+同学们莫要被这表吓破了胆, 我们可以简化记忆. 首先, 编译器们在自己决定 ``如何近似''的时候, 总是尽可能地近似 (敢不如此我们就卸载), 以至于引入的计算误差没人考虑, 因此我们可以把所有的 ``近似相等'' 直接当成 ``相等''. 这样, 表 \ref{numeric_type_convert} 就简化成表 \ref{simplified_numeric_type_convert}.
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        \diagbox{转化前}{转化后} & 整型 & 实型 & 复型 \\
+        \hline
+        整型 & 值相等 & 值相等 & 值相等 \\
+        \hline
+        实型 & 向0取整 & 值相等 & 值相等 \\
+        \hline
+        复型 & 二次转化 & 实部近似虚部0 & 值相等 \\
+        \hline
+    \end{tabular}
+    \caption{简化 Fortran 数字型数据实体转化表}
+    \label{simplified_numeric_type_convert}
+\end{table}
+
+最后同学们会发现只需记下面的内容即可:
+\begin{itemize}
+    \item 实型转整型: 向0取整.
+    \item 复型转实型: 取实部.
+    \item 复型转整型: 先转实型, 再转整型.
+    \item 其他: 直接令值相等.
 \end{itemize}
 
-统一使用同种别的实型(和复型),能防止很多意料之外的情况出现.
+我们用一个示例来强化一下认识. 在下面的程序中, 第七行应使 \ttt{b} 的值为 $-5.5$, 然后第八行需要类型转化. 看 ``\ttt{=}'' 右边 \ttt{b} 是实型, 左边 \ttt{a} 是整型, 实型转整型向0取整, $-5.5$ 向0取整是 $-5$, 所以 \ttt{a} 的值为 $-5$. 但这里同学们常犯一个错误, 就是认为第八行后 \ttt{b} 的值也变为 $-5$ 了, 而实际上右边的类型和种别是\uline{临时}转化成左边的类型和种别, 所以第八行后 \ttt{b} 的类型和种别不会变, 值也不会变, 还是 $-5.5$.
+\begin{lstlisting}
+program main
+    implicit none
+    integer :: a
+    real :: b
+    b = -5.5
+    a = b
+    print *, a, b
+end program main
+\end{lstlisting}
 
-\begin{convention}\label{fortran_use_real}
-    尽量使用同种别的实型$(\text{和复型})$常量和变量.
+默认情形下 Fortran 和 C 的的类型和种别转化是 ``隐式'' 的转化, 意思是, 在类型和种别转化的时候 Fortran 程序和 C 程序里没有一个明确的标记来说明, 需要仔细分析各个数据实体的类型和种别然后判断出有转化. 于是乎老师就可以借机整出一堆怪题来疯狂折磨同学们了, 并且实际人们用 Fortran 和 C 干活的时候, 也很容易没看出程序某某地方有类型和种别转化. Python 没有这个问题, 因为 Python 不是静态类型语言.\footnote{详细说来, Fortran 和 C 因为是静态类型语言, ``\ttt{=}'' 左边的类型和种别不能变, 所以赋值时是 ``右配合左'', 把 ``\ttt{=}'' 右边的类型和种别 (临时) 变成左边的类型和种别, 这样在实型转整型, 复型转实型, 复型转整型的时候, ``\ttt{=}'' 左右两边的值可能是不一样的. 而 Python 因为不是静态类型语言, ``\ttt{=}'' 左边的类型和种别能变, 所以赋值时是 ``左配合右'', 把 ``\ttt{=}'' 左边的类型和种别变成右边的类型和种别, 这样 ``\ttt{=}'' 左右两边的值永远是一样的, 不会折磨人, 所以 Python 大家都爱用. 然而这并不意味着 Python 无敌了, 正因为 Python ``\ttt{=}'' 左边的类型和种别能变, 所以电脑在运行 Python 程序的时候老是要查看变量的类型和种别到底是什么, 这样运行 Python 程序的时候就快不起来了\dots{}} 这样就有必要在 Fortran 程序和 C 程序里使用 ``显式'' 的转化. 对 Fortran 而言, 在实型转整型, 复型转实型, 复型转整型的时候, 转化前后的值可能会不一样, 我们应当用 \ttt{int([entity])}/\ttt{real([entity])} 来说明数据实体 \ttt{[entity]} 被转化成整型/实型. 其他情形下, 转化前后的值一样, 就没必要啰嗦了. 例如上面的程序应该改写成下面的程序, 这样看到明确的标记 \ttt{int} 就可以直接判断出 \ttt{b} 被转化成整型了. 仍要注意类型和种别转化只是\uline{临时}的, 第八行后 \ttt{b} 的值还是 $-5.5$.
+\begin{lstlisting}
+program main
+    implicit none
+    integer :: a
+    real :: b
+    b = -5.5
+    a = int(b)
+    print *, a, b
+end program main
+\end{lstlisting}
+\begin{convention}
+    在实型转整型, 复型转实型, 复型转整型的时候, 用 \ttt{\emph{int([entity])}} /\ttt{\emph{real([entity])}} 来说明数据实体 \ttt{\emph{[entity]}} 被转化成整型/实型.
 \end{convention}
 
-字符串赋值时还有个长度匹配的问题.如果``\texttt{=}''左边字符串的长度小于右边字符串的长度,则把右边字符串尾巴多出的部分砍掉,然后赋值.如果``\texttt{=}''左边字符串的长度大于右边字符串的长度,则在右边字符串尾巴处补上空格让长度一样,然后赋值.
+字符型数据实体赋值给字符型数据实体的时候, ``\ttt{=}'' 两边的长度可能不一样, 这时自然有个长度转化的问题. 如果 ``\ttt{=}'' 左边字符串的长度小于右边字符串的长度, 则\uline{临时}把右边字符串尾巴多出的部分砍掉, 然后赋值. 如果 ``\ttt{=}'' 左边字符串的长度大于右边字符串的长度, 则\uline{临时}在右边字符串尾巴处补上空格让长度一样, 然后赋值. 示例如下. 仍要注意长度转化只是\uline{临时}的.
 \begin{lstlisting}
 program main
     implicit none
@@ -81,24 +139,37 @@ program main
     character(5) :: nc
     character(6) :: lc
     sc = 'hello'
-    print *, '"',sc,'"'
+    print *, '"', sc, '"'
     nc = 'hello'
-    print *, '"',nc,'"'
+    print *, '"', nc, '"'
     lc = 'hello'
-    print *, '"',lc,'"'
+    print *, '"', lc, '"'
 end program main
 \end{lstlisting}
-我们还可以给字符串的切片赋值,这样只会修改切片的那部分.
+
+最后介绍 ``对变量的一部分赋值''. 对任意复型变量 \ttt{[z]}, 我们可以直接对 \ttt{[z]\%{}re}/\ttt{[z]\%{}im} 赋值以改变 \ttt{[z]} 的实部/虚部 而不改变 \ttt{[z]} 的虚部/实部. 示例如下.
+\begin{lstlisting}
+program main
+    implicit none
+    complex :: i
+    i%re = 0.0
+    i%im = 1.0
+    print *, i
+end program main
+\end{lstlisting}
+在 \ref{fortran_complex} 节我们介绍过可以用 \ttt{real([z])}/\ttt{aimag([z])} 获取 \ttt{[z]} 的实部/虚部, 但 \ttt{real([z])}/\ttt{aimag([z])} 不能用在 ``\ttt{=}'' 左边. \ttt{[z]\%{}re}/\ttt{[z]\%{}im} 虽然可能可以用在 ``\ttt{=}'' 右边, 但同学们去用的时候, 程序就经常会报错, 这是由于 Fortran 的语法有缺陷, 而在 ``\ttt{=}'' 右边用 \ttt{real([z])}/\ttt{aimag([z])} 就永远不会出问题. Python 的语法简洁优美, 类似 \ttt{[z]\%{}re}/\ttt{[z]\%{}im} 的语法用在 ``\ttt{=}'' 左右两边都没问题, 而类似 \ttt{real([z])}/\ttt{aimag([z])} 的语法只能用在 ``\ttt{=}'' 右边. C 就麻烦了, 复型都不是基本类型, 所以用复型的时候老费劲儿了\dots{}
+
+对任意字符型变量 \ttt{[c]}, 我们可以直接对 \ttt{[c](nl:nu)} 赋值以改变 \ttt{[c]} 的第 \ttt{nl} 到第 \ttt{nu} 个字符而不改变其他字符. 这个语法和字符串切片的语法在形式上是一样的. \ttt{nl} 和 \ttt{nu} 必须是整型数据实体. \ttt{nl} 和 \ttt{nu} 都可以不写. 如果 \ttt{nl} 不写, \ttt{nl} 就等于 \ttt{1}. 如果 \ttt{nu} 不写, \ttt{nu} 就等于 \ttt{[c]} 的长度. 示例如下. 这个示例需要解释一下, 第五行我们把 \ttt{'HELLO, WORLD!'} 赋给 \ttt{hello\_{}world} 的第 \ttt{1} 到第 \ttt{1} 个字符, 但 \ttt{hello\_{}world} 的第 \ttt{1} 到第 \ttt{1} 个字符长度只为 $1$, 所以根据字符串赋值规则, \ttt{'HELLO, WORLD!'} 的尾巴被砍掉, 只剩最前面的 \ttt{'H'} 赋给\ttt{hello\_{}world} 的第 \ttt{1} 到第 \ttt{1} 个字符.
 \begin{lstlisting}
 program main
     implicit none
     character(13) :: hello_world
-    hello_world = 'hello,world!'
-    print *,hello_world
-    hello_world(1:1) = 'H'
-    print *,hello_world
+    hello_world = 'hello, world!'
+    hello_world(1:1) = 'HELLO, WORLD!'
+    print *, hello_world
 end program main
 \end{lstlisting}
+Python 的语法简洁优美, 但 Python 不允许直接修改字符串的一部分, 同学们需另寻他法. C 就可怕了, 详细说来, C 的字符串有两种定义法, 方法一定义的字符串能直接修改整个字符串但不能直接修改字符串中的单个字符, 方法二定义的字符串能直接修改字符串中的单个字符但不能直接修改整个字符串\dots{}
 
 \section{运算}\label{fortran_opration}
 
@@ -106,29 +177,29 @@ end program main
     实际上按标准来说,运算有两种: 固有运算(intrinsic operation)和超载运算(defined operation).本章``运算''仅指固有运算.
 }(operation)是由一个或两个数据实体得到另一个数据实体的操作,其中很多是与数学中的运算是对应的.运算是要使用运算符(operator)的,运算符分四类: 算数运算符(numeric operator),字符运算符(character operator),逻辑运算符(logical operator),关系运算符(relational operator).
 
-如果一个运算符将一个数据实体变为另一个数据实体,则其一定要按\texttt{[op][q]}的方式使用,其中\texttt{[op]}是运算符,\texttt{[q]}是一个数据实体.如果一个运算符将两个数据实体变为另一个数据实体,则其一定要按\texttt{[q1][op][q2]}的方式使用,其中\texttt{[op]}是运算符,\texttt{[q1]}和\texttt{[q2]}是两个数据实体.
+如果一个运算符将一个数据实体变为另一个数据实体,则其一定要按\ttt{[op][q]}的方式使用,其中\ttt{[op]}是运算符,\ttt{[q]}是一个数据实体.如果一个运算符将两个数据实体变为另一个数据实体,则其一定要按\ttt{[q1][op][q2]}的方式使用,其中\ttt{[op]}是运算符,\ttt{[q1]}和\ttt{[q2]}是两个数据实体.
 
-形如\texttt{[op][q]}或\texttt{[q1][op][q2]}的东东称为表达式(expression),表达式本身也是数据实体,这就形成一个套娃定义.
+形如\ttt{[op][q]}或\ttt{[q1][op][q2]}的东东称为表达式(expression),表达式本身也是数据实体,这就形成一个套娃定义.
 
-形如\texttt{[q1][op12][q2][op23][q3]}的东东,按套娃定义,这也是一个表达式.问题是这个表达式有两种解释.
+形如\ttt{[q1][op12][q2][op23][q3]}的东东,按套娃定义,这也是一个表达式.问题是这个表达式有两种解释.
 \begin{enumerate}
-    \item 先把\texttt{[q1][op12][q2]}算出来,得到一个数据实体\texttt{[q12]},\\则\texttt{[q1][op12][q2][op23][q3]}等同于\texttt{[q12][op23][q3]}.
-    \item 先把\texttt{[q2][op23][q3]}算出来,得到一个数据实体\texttt{[q23]},\\则\texttt{[q1][op12][q2][op23][q3]}等同于\texttt{[q1][op12][q23]}.
+    \item 先把\ttt{[q1][op12][q2]}算出来,得到一个数据实体\ttt{[q12]},\\则\ttt{[q1][op12][q2][op23][q3]}等同于\ttt{[q12][op23][q3]}.
+    \item 先把\ttt{[q2][op23][q3]}算出来,得到一个数据实体\ttt{[q23]},\\则\ttt{[q1][op12][q2][op23][q3]}等同于\ttt{[q1][op12][q23]}.
 \end{enumerate}
 按两种解释方式分别计算,最后得到的结果可能不同,怎么办?数学中的运算符可能有优先级,比如乘除优先于加减.Fortran中的任何一个运算符都有优先级,对应地,Fortran中的运算有两个规则:
 \begin{enumerate}
-    \item 若\texttt{[op12]}的优先级不低于\texttt{[op23]},\\则对于表达式\texttt{[q1][op12][q2][op23][q3]},先计算\texttt{[q1][op12][q2]}.\footnote{
+    \item 若\ttt{[op12]}的优先级不低于\ttt{[op23]},\\则对于表达式\ttt{[q1][op12][q2][op23][q3]},先计算\ttt{[q1][op12][q2]}.\footnote{
         有特例,见\ref{fortran_numeric_operator}.
     }
-    \item 若\texttt{[op12]}的优先级低于\texttt{[op23]},\\则对于表达式\texttt{[q1][op12][q2][op23][q3]},先计算\texttt{[q2][op23][q3]}.
+    \item 若\ttt{[op12]}的优先级低于\ttt{[op23]},\\则对于表达式\ttt{[q1][op12][q2][op23][q3]},先计算\ttt{[q2][op23][q3]}.
 \end{enumerate}
 这和数学中的运算是完全对应的.
 
-可以加\texttt{()},来强制让\texttt{()}里的部分先算,这和数学也是对应的.需要注意的是,不能用\texttt{[]}和\texttt{{}},统统用\texttt{()}代替.
+可以加\ttt{()},来强制让\ttt{()}里的部分先算,这和数学也是对应的.需要注意的是,不能用\ttt{[]}和\ttt{{}},统统用\ttt{()}代替.
 
 \subsection{算数运算}\label{fortran_numeric_operator}
 
-算数运算符一共五个: \texttt{+},\texttt{-},\texttt{*},\texttt{/},\texttt{**},分别对应于加,减,乘,除,乘方.
+算数运算符一共五个: \ttt{+},\ttt{-},\ttt{*},\ttt{/},\ttt{**},分别对应于加,减,乘,除,乘方.
 \begin{lstlisting}
 program main
     implicit none
@@ -156,7 +227,7 @@ program main
 end program main
 \end{lstlisting}
 
-严格上来说,Fortran有七个算数运算符,另两个也是``\texttt{+}''和``\texttt{-}''.众所周知,数学中``$+$''和``$-$''前面可以没有数.Fortran中也一样.对于任意一个数据实体\texttt{[q]},\texttt{+[q1]}/\texttt{-[q1]}就相当于\texttt{[zero]+[q1]}/\texttt{[zero]-[q1]},其中\texttt{[zero]}是精度最低的种别的\texttt{0}.
+严格上来说,Fortran有七个算数运算符,另两个也是``\ttt{+}''和``\ttt{-}''.众所周知,数学中``$+$''和``$-$''前面可以没有数.Fortran中也一样.对于任意一个数据实体\ttt{[q]},\ttt{+[q1]}/\ttt{-[q1]}就相当于\ttt{[zero]+[q1]}/\ttt{[zero]-[q1]},其中\ttt{[zero]}是精度最低的种别的\ttt{0}.
 
 看下面这个例子就懂了.
 \begin{lstlisting}
@@ -171,7 +242,7 @@ end program main
 
 数学中,$-a^2$也是表示$-(a^2)$哟!
 
-运算符两边的类型相同时,结果就是那个类型.运算符两边的类型和种别都相同时,结果就是那个类型那个种别.运算符两边的类型或种别不同时,又遇到类型转化或种别转化的问题了.转化的基本规则就是两个数据实体中哪个更精确,结果就转化成那个数据实体的类型和种别.比如上面的程序,把\texttt{2.0}改成\texttt{2},结果不变.因为无论是\texttt{a}还是\texttt{-a},都是实型,肯定比整型的\texttt{2}精确,所以结果就是实型的\texttt{-1.0}和\texttt{1.0}.
+运算符两边的类型相同时,结果就是那个类型.运算符两边的类型和种别都相同时,结果就是那个类型那个种别.运算符两边的类型或种别不同时,又遇到类型转化或种别转化的问题了.转化的基本规则就是两个数据实体中哪个更精确,结果就转化成那个数据实体的类型和种别.比如上面的程序,把\ttt{2.0}改成\ttt{2},结果不变.因为无论是\ttt{a}还是\ttt{-a},都是实型,肯定比整型的\ttt{2}精确,所以结果就是实型的\ttt{-1.0}和\ttt{1.0}.
 
 表达式既然是数据实体,自然可以赋值给变量.注意赋值时还要遵循赋值的类型和种别转化规则.
 
@@ -187,9 +258,9 @@ end program main
 
 乍一看,这个程序非常聪明地将$\sqrt[4]{2}$算了出来,然而一运行,就会发现不对.为什么?让我们来一点一点分析电脑是怎么干活的.
 
-首先,电脑先算\texttt{1/4}.$1/4=0.25$,这没什么问题.然而,根据刚才说的类型转化规则,\texttt{1/4}的结果必须转化成整型.转化后什么结果?和赋值时一样的规则,向0取整,结果是\texttt{0}.所以\texttt{1/4}就是\texttt{0}!
+首先,电脑先算\ttt{1/4}.$1/4=0.25$,这没什么问题.然而,根据刚才说的类型转化规则,\ttt{1/4}的结果必须转化成整型.转化后什么结果?和赋值时一样的规则,向0取整,结果是\ttt{0}.所以\ttt{1/4}就是\ttt{0}!
 
-然后电脑再算\texttt{2**0},结果自然是\texttt{1}.
+然后电脑再算\ttt{2**0},结果自然是\ttt{1}.
 
 也就是说,将两个整型数据实体相``除'',实际上是将它们整除!
 
@@ -208,19 +279,19 @@ end program main
 \end{lstlisting}
 这个程序的结果也不大对.让我们再来分析分析这个程序.
 
-首先给\texttt{p}和\texttt{q}分别赋上\texttt{1.0}和\texttt{4.0}.然而,\texttt{p}和\texttt{q}都是整型的.根据赋值时的类型转化规则,\texttt{p}和\texttt{q}分别是\texttt{1}和\texttt{4}.
+首先给\ttt{p}和\ttt{q}分别赋上\ttt{1.0}和\ttt{4.0}.然而,\ttt{p}和\ttt{q}都是整型的.根据赋值时的类型转化规则,\ttt{p}和\ttt{q}分别是\ttt{1}和\ttt{4}.
 
-然后计算\texttt{p/q}并赋给\texttt{r}.\texttt{p}是\texttt{1},\texttt{q}是\texttt{4},$1/4=0.25$.然而\texttt{p}和\texttt{q}都是整型,所以结果是\texttt{0}.虽然\texttt{r}是实型,然而并没有什么卵用.因为是先计算,再赋值,所以计算时会先进行一次类型转化,转化完了赋值时再进行一次类型转化.先计算\texttt{p/q},类型转化后得到\texttt{0},然后赋给\texttt{r},再类型转化,所以\texttt{r}是\texttt{0.0}.
+然后计算\ttt{p/q}并赋给\ttt{r}.\ttt{p}是\ttt{1},\ttt{q}是\ttt{4},$1/4=0.25$.然而\ttt{p}和\ttt{q}都是整型,所以结果是\ttt{0}.虽然\ttt{r}是实型,然而并没有什么卵用.因为是先计算,再赋值,所以计算时会先进行一次类型转化,转化完了赋值时再进行一次类型转化.先计算\ttt{p/q},类型转化后得到\ttt{0},然后赋给\ttt{r},再类型转化,所以\ttt{r}是\ttt{0.0}.
 
-最后计算\texttt{2.0**r},结果自然是\texttt{1.0}.
+最后计算\ttt{2.0**r},结果自然是\ttt{1.0}.
 
 这个坑非常经典,好多程序语言都有,就连Python2默认都会如此\dots
 
 有一个非常简单的方法能避开上面所说的坑,就是遵守规范\ref{fortran_use_real},也就是: 统统用实型.这可真是血泪教训啊!
 
-最后还有一个小坑,就是乘方从右边先算(非常特殊).比如\texttt{a**b**c},到底是${a^b}^c$,还是$a^{b^c}$?答案是$a^{b^c}$,也就是先算$b^c$.可以这么记: \texttt{(a**b)**c}其实等于\texttt{a**(b*c)},如果\texttt{a**b**c}是\texttt{(a**b)**c},就显得太傻了,还不如直接写\texttt{a**(b*c)}\footnote{
+最后还有一个小坑,就是乘方从右边先算(非常特殊).比如\ttt{a**b**c},到底是${a^b}^c$,还是$a^{b^c}$?答案是$a^{b^c}$,也就是先算$b^c$.可以这么记: \ttt{(a**b)**c}其实等于\ttt{a**(b*c)},如果\ttt{a**b**c}是\ttt{(a**b)**c},就显得太傻了,还不如直接写\ttt{a**(b*c)}\footnote{
     乘法应该比乘方快\dots
-},所以\texttt{a**b**c}应该是\texttt{a**(b**c)}.
+},所以\ttt{a**b**c}应该是\ttt{a**(b**c)}.
 \begin{lstlisting}
 
 program main
@@ -233,13 +304,13 @@ program main
 end program main
 \end{lstlisting}
 
-只要记得这里有个坑就好了.真遇到连着两个\texttt{**},不清楚哪个先算,加个括号呀.即使自己清楚,也最好加个括号,一是让自己更清楚,二是照顾照顾别人(造轮子的时候),因为别人很可能忘了到底哪个\texttt{**}先算.
+只要记得这里有个坑就好了.真遇到连着两个\ttt{**},不清楚哪个先算,加个括号呀.即使自己清楚,也最好加个括号,一是让自己更清楚,二是照顾照顾别人(造轮子的时候),因为别人很可能忘了到底哪个\ttt{**}先算.
 
 \begin{convention}\label{use_barket}
     在表达式中适当地多用括号以保证表达式能被轻松理解.
 \end{convention}
 
-还有一个小细节.严格意义上说,\texttt{+}和\texttt{-}前面直接跟运算符是非法的.然而器有器规呀,Gfortran只是送个警告,Ifx直接放行.不过还是多加一个括号吧.可以运行运行下面这个程序来看看结果.
+还有一个小细节.严格意义上说,\ttt{+}和\ttt{-}前面直接跟运算符是非法的.然而器有器规呀,Gfortran只是送个警告,Ifx直接放行.不过还是多加一个括号吧.可以运行运行下面这个程序来看看结果.
 \begin{lstlisting}
 program main
     implicit none
@@ -256,7 +327,7 @@ end program main
 
 \subsection{字符运算}\label{fortran_char_operator}
 
-字符运算符只有一个: \texttt{//},其作用是把左右两边的字符串连起来得到一个新字符串.来看下面这个例子.
+字符运算符只有一个: \ttt{//},其作用是把左右两边的字符串连起来得到一个新字符串.来看下面这个例子.
 \begin{lstlisting}
 
 program main
@@ -279,7 +350,7 @@ end program main
 
 \subsection{逻辑运算}
 
-逻辑运算符一共有五个.常用的有三个: \texttt{.and.},\texttt{.or.},\texttt{.not.},分别代表与,或,非.不常用的有三个: \texttt{.eqv.}和\texttt{.neqv.},分别代表同或和异或.一般用真值表来展现逻辑运算的结果.下面的程序会输出完整的真值表.
+逻辑运算符一共有五个.常用的有三个: \ttt{.and.},\ttt{.or.},\ttt{.not.},分别代表与,或,非.不常用的有三个: \ttt{.eqv.}和\ttt{.neqv.},分别代表同或和异或.一般用真值表来展现逻辑运算的结果.下面的程序会输出完整的真值表.
 \begin{lstlisting}
 program main
     implicit none
@@ -308,7 +379,7 @@ end program main
 
 \subsection{关系运算}
 
-关系运算符有六个: \texttt{<},\texttt{<=},\texttt{>},\texttt{>=},\texttt{==},\texttt{/=}.如果运算符左右两边是数,则六个运算符分别代表$<$,$\leqslant$,$>$,$\geqslant$,$=$,$\ne$,这种情况下关系运算符经常和逻辑运算符混用.此时请务必遵循规范\ref{use_barket},加上括号来明确究竟哪部分先算.
+关系运算符有六个: \ttt{<},\ttt{<=},\ttt{>},\ttt{>=},\ttt{==},\ttt{/=}.如果运算符左右两边是数,则六个运算符分别代表$<$,$\leqslant$,$>$,$\geqslant$,$=$,$\ne$,这种情况下关系运算符经常和逻辑运算符混用.此时请务必遵循规范\ref{use_barket},加上括号来明确究竟哪部分先算.
 
 严格意义上说,关系运算符是不能连用的.比如下面这个程序,Gfortran是运行不了的.然而Ifx是可以的\dots
 \begin{lstlisting}
@@ -318,7 +389,7 @@ program main
 end program main
 \end{lstlisting}
 
-要做``连续的关系运算'',标准做法是把``连续的关系运算''拆分成``单独的关系运算'',然后用\texttt{.and.}连起来,像下面这样.
+要做``连续的关系运算'',标准做法是把``连续的关系运算''拆分成``单独的关系运算'',然后用\ttt{.and.}连起来,像下面这样.
 \begin{lstlisting}
 program main
     implicit none
@@ -333,19 +404,19 @@ program main
     print *,(0.1+0.2)==0.3
 end program main
 \end{lstlisting}
-因为实型其实是不能``准确存储''的,比如对电脑而言,\texttt{0.1}可能不是真的$0.1$,而是非常接近$0.1$的某个值,\texttt{0.2}和\texttt{0.3}也是这样,所以\texttt{0.1}加上\texttt{0.2}还真可能不等于\texttt{0.3}.这个``问题''广泛存在于各种编程语言中,连Python3默认情形下都是如此.然而上面的程序Ifx和Gfortran都能得出正确的结果,似乎非常高级\dots
+因为实型其实是不能``准确存储''的,比如对电脑而言,\ttt{0.1}可能不是真的$0.1$,而是非常接近$0.1$的某个值,\ttt{0.2}和\ttt{0.3}也是这样,所以\ttt{0.1}加上\ttt{0.2}还真可能不等于\ttt{0.3}.这个``问题''广泛存在于各种编程语言中,连Python3默认情形下都是如此.然而上面的程序Ifx和Gfortran都能得出正确的结果,似乎非常高级\dots
 
 尽管得出正确结果了,还是不好说其他情形下会不会出问题.所以还是要慎重判断实型(和复型)变量是否相等(或不等).不过整型总是可以随便判断的,因为整型量的存储是绝对精确的.
 
 如果运算符左右两边是字符串,则比较运算是比较字符串的先后顺序.首先,编译器自己定义了一个字符的先后顺序.然后比较字符串的先后顺序的时候,编译器先把两个字符串补成一样长(短的那个后面补空格).
 \begin{itemize}
-    \item 如果两边的字符串前$n$个字符都相同,且左边字符串第$(n+1)$个字符先于右边字符串第$(n+1)$个字符,则左边字符串``\texttt{<}''右边字符串.
-    \item 如果两边的字符串前$n$个字符都相同,且左边字符串第$(n+1)$个字符后于右边字符串第$(n+1)$个字符,则左边字符串``\texttt{>}''右边字符串.
-    \item 如果两边的字符串完全相同,则左边字符串``\texttt{==}''右边字符串.
+    \item 如果两边的字符串前$n$个字符都相同,且左边字符串第$(n+1)$个字符先于右边字符串第$(n+1)$个字符,则左边字符串``\ttt{<}''右边字符串.
+    \item 如果两边的字符串前$n$个字符都相同,且左边字符串第$(n+1)$个字符后于右边字符串第$(n+1)$个字符,则左边字符串``\ttt{>}''右边字符串.
+    \item 如果两边的字符串完全相同,则左边字符串``\ttt{==}''右边字符串.
 \end{itemize}
-自然,``\texttt{>=}''就是不``\texttt{<}'',``\texttt{<=}''就是不``\texttt{>}'',``\texttt{/=}''就是不``\texttt{==}''.
+自然,``\ttt{>=}''就是不``\ttt{<}'',``\ttt{<=}''就是不``\ttt{>}'',``\ttt{/=}''就是不``\ttt{==}''.
 
-注意,上面``补空格''的一步只是暂时的,比较前后变量本身没有改变.比如下面这个程序,比较前后\texttt{c}都是``\texttt{I}'',没有变成``\texttt{I  }''\footnote{
+注意,上面``补空格''的一步只是暂时的,比较前后变量本身没有改变.比如下面这个程序,比较前后\ttt{c}都是``\ttt{I}'',没有变成``\ttt{I  }''\footnote{
 否则长度就变成3了,这不符合``字符串变量长度不变''的规则.
 }.
 \begin{lstlisting}
@@ -354,7 +425,7 @@ program main
     character(1) :: c
     c = 'I'
     print *,c=='You'
-    print *, '"',c,'"'
+    print *, '"', c, '"'
 end program main
 \end{lstlisting}
 

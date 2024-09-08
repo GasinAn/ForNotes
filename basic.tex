@@ -4,37 +4,37 @@
 
 程序 (program) 是指挥电脑工作的一堆指令. 这堆指令要用一堆字符表示, 表示指令的所有字符合起来称为源代码 (source code). 源代码需要被保存在文件中, 保存源代码的所有文件合起来称为源代码文件 (source code file).
 
-比如,在一个名为 \texttt{main.f90} 的文件内写入下面这些内容并保存.
+比如,在一个名为 \ttt{main.f90} 的文件内写入下面这些内容并保存.
 \begin{lstlisting}
 program main
     implicit none
     call helloworld()
 end program main
 \end{lstlisting}
-在另一个名为 \texttt{helloworld.f90} 的文件内写入下面这些内容并保存.
+在另一个名为 \ttt{helloworld.f90} 的文件内写入下面这些内容并保存.
 \begin{lstlisting}
 subroutine helloworld()
     implicit none
     print *, "Hello, world!"
 end subroutine helloworld
 \end{lstlisting}
-那么 \texttt{main.f90} 和 \texttt{helloworld.f90} 就是源代码文件, 这俩文件里头一共有 8 行字符, 这些字符合起来就是源代码, 表示的指令如表 \ref{source_and_command_main} 和表 \ref{source_and_command_helloworld} 所示, 这一大堆指令合起来就是程序.
+那么 \ttt{main.f90} 和 \ttt{helloworld.f90} 就是源代码文件, 这俩文件里头一共有 8 行字符, 这些字符合起来就是源代码, 表示的指令如表 \ref{source_and_command_main} 和表 \ref{source_and_command_helloworld} 所示, 这一大堆指令合起来就是程序.
 \begin{table}[!htbp]
     \centering
     \begin{tabular}{|p{0.42\textwidth}|p{0.48\textwidth}|}
         \hline
         \multicolumn{1}{|c|}{源代码}&\multicolumn{1}{|c|}{指令}\\
         \hline
-        \texttt{program main}&开始运行主程序 \texttt{main}\\
+        \ttt{program main}&开始运行主程序 \ttt{main}\\
         \hline
-        \texttt{implicit none}&禁止隐式声明\\
+        \ttt{implicit none}&禁止隐式声明\\
         \hline
-        \texttt{call helloworld()}&调用子程序 \texttt{helloworld}\\
+        \ttt{call helloworld()}&调用子程序 \ttt{helloworld}\\
         \hline
-        \texttt{end program main}&结束运行主程序 \texttt{main}\\
+        \ttt{end program main}&结束运行主程序 \ttt{main}\\
         \hline
     \end{tabular}
-    \caption{\texttt{main.f90} 中源代码与指令的对照}\label{source_and_command_main}
+    \caption{\ttt{main.f90} 中源代码与指令的对照}\label{source_and_command_main}
 \end{table}
 \begin{table}[!htbp]
     \centering
@@ -42,28 +42,28 @@ end subroutine helloworld
         \hline
         \multicolumn{1}{|c|}{源代码}&\multicolumn{1}{|c|}{指令}\\
         \hline
-        \texttt{subroutine helloworld()}&开始运行子例行 \texttt{helloworld}\\
+        \ttt{subroutine helloworld()}&开始运行子例行 \ttt{helloworld}\\
         \hline
-        \texttt{implicit none}&禁止隐式声明\\
+        \ttt{implicit none}&禁止隐式声明\\
         \hline
-        \texttt{print *, "Hello, world!"}&让电脑屏幕上出现 ``Hello, world!''\\
+        \ttt{print *, "Hello, world!"}&让电脑屏幕上出现 ``Hello, world!''\\
         \hline
-        \texttt{end subroutine helloworld}&结束运行子例行 \texttt{helloworld}\\
+        \ttt{end subroutine helloworld}&结束运行子例行 \ttt{helloworld}\\
         \hline
     \end{tabular}
-    \caption{\texttt{helloworld.f90} 中源代码与指令的对照}\label{source_and_command_helloworld}
+    \caption{\ttt{helloworld.f90} 中源代码与指令的对照}\label{source_and_command_helloworld}
 \end{table}
 
 \section{标准与规范}
 
-任何编程\uline{语言}都有自己的句法/语法 (syntax), 比如 ``让电脑屏幕上出现 `A'{}'', Fortran 要写成 \texttt{print *, "A"}, C 要写成 \texttt{printf("A");}, Python 2 要写成 \texttt{print "A"}, Python 3 要写成 \texttt{print("A")}. 编程语言对语法的统一规定称为标准 (standard). Fortran 的现行标准是 Fortran 2023 (第\ref{introduction}章中已介绍), 旧标准有 FORTRAN 66, FORTRAN 77, Fortran 90, Fortran 95, Fortran 2003, Fortran 2008, Fortran 2018.
+任何编程\uline{语言}都有自己的句法/语法 (syntax), 比如 ``让电脑屏幕上出现 `A'{}'', Fortran 要写成 \ttt{print *, "A"}, C 要写成 \ttt{printf("A");}, Python 2 要写成 \ttt{print "A"}, Python 3 要写成 \ttt{print("A")}. 编程语言对语法的统一规定称为标准 (standard). Fortran 的现行标准是 Fortran 2023 (第\ref{introduction}章中已介绍), 旧标准有 FORTRAN 66, FORTRAN 77, Fortran 90, Fortran 95, Fortran 2003, Fortran 2008, Fortran 2018.
 
 不太好玩儿的是, 虽然 Fortran 语法已由现行标准规定好了, Fortran 编译器们却偶尔不按 Fortran 标准来干活儿, 自己制定了一些规则, 还有些时候, Fortran 标准直接就把权利赋予编译器, 让他们自定一些规则. 这样, Fortran 编译器们时不时就有和 ``官规'' 不同的 ``器规''.
 
 编程语言的标准是 ``硬规则'', 除此之外还有 ``软规则'', 称为规范 (convention). 所谓 ``规范'', 就是被代码毒打的前人总结的血泪教训. 不遵守规范, 也不一定会出什么问题, 但一旦出了问题, 就不知道问题出在哪儿啦. 请同学们尽量遵守本笔记列出的 Fortran 规范, 不然期末挂了不要怪 Fortran 哟! 不过有时不遵守规范也确实不会出什么问题, 安安会适时说明的.
 
 编译器各有各的器规, 这可能会出事. 想象一下, 同学们期末考写好程序, Ifx 和 Gfortran 说程序没问题, 同学们兴冲冲地交卷了, 然后老师掏出 Visual Fortran (某老款编译器), Visual Fortran 说程序有问题, 同学们就挂科啦. 为防止这种悲惨情形发生, 我们需要避免使用Fortran 标准没规定而编译器自定的规则.
-\begin{convention}
+\begin{convention}\label{use_standard_only}
     只使用 Fortran 现行标准自行规定的规则.
 \end{convention}
 这样, 我们的程序编译器要是不认, 安安唯一能想到的可能就是 Fortran 标准更新了, 而编译器没更新, 还用着旧标准. 不过同学们没必要担心这一情形, 本笔记里的东东绝大多数 Fortran 90 就有了 (我猜老师现在也只教到 Fortran 90), 即使是 Visual Fortran 也会认的, 要是某 Fortran 编译器竟连 Fortran 90 都不认, 我们就把它卸载了\dots{}
@@ -78,19 +78,19 @@ program [program-name]
     ...
 end program [program-name]
 \end{lstlisting}
-其中 \texttt{[program-name]} 处是一个名称 (name), 名称指的是由字母, 数字和下划线 ``\texttt{\_{}}''\footnote{
+其中 \ttt{[program-name]} 处是一个名称 (name), 名称指的是由字母, 数字和下划线 ``\ttt{\_{}}''\footnote{
     下划线是空格的替代字符,长得还是蛮像滴!
-} 组成的, 开头是字母的字符串\footnote{后文中的 ``某某名'' 若不另加说明则都是名称, 不再赘述.}, ``\texttt{...}'' 处则是各种指令, 一行一条. 比如, 之前 \ref{fortran_program} 节里 \texttt{main.f90} 里的程序就是一个名称为 \texttt{main} 的主程序\footnote{安安习惯把主程序的名称取做 \texttt{main} 并放在 \texttt{main.f90} 里.} \\(\texttt{helloworld.f90} 里的程序则是一个外部子程序).
+} 组成的, 开头是字母的字符串\footnote{后文中的 ``某某名'' 若不另加说明则都是名称, 不再赘述.}, ``\ttt{...}'' 处则是各种指令, 一行一条. 比如, 之前 \ref{fortran_program} 节里 \ttt{main.f90} 里的程序就是一个名称为 \ttt{main} 的主程序\footnote{安安习惯把主程序的名称取做 \ttt{main} 并放在 \ttt{main.f90} 里.} \\(\ttt{helloworld.f90} 里的程序则是一个外部子程序).
 
 外部子程序在第\ref{fortran_procedure}章里讲, 模块在第\ref{fortran_module}章里讲, 子模块在第\ref{fortran_submodule}章里讲.\footnote{??\mbox{}的内容安安会在猴年马月写好的!}
 
-每个 Fortran 源代码文件里都可以放若干完整的程序单元, 但习惯上一个源代码文件里只放一个程序单元, 并且文件名和文件里的程序单元名相同 (比如主程序 \texttt{main} 放在 \texttt{main.f90} 里).
+每个 Fortran 源代码文件里都可以放若干完整的程序单元, 但习惯上一个源代码文件里只放一个程序单元, 并且文件名和文件里的程序单元名相同 (比如主程序 \ttt{main} 放在 \ttt{main.f90} 里).
 \begin{convention}
     一个源代码文件里只放一个程序单元, 并且文件名和文件里的程序单元名相同.\label{one_program_unit}
 \end{convention}
-当然, 安安偶尔也会在一个源代码文件里放多个程序单元, 比如安安在玩 SOFA 的时候, 习惯把除 \texttt{t\_{}sofa\_{}f.for} 外的所有文件里的东东通通复制粘贴到一个名为 \texttt{sofa.for} 的新文件里, 这个文件里就有一大堆外部子程序了.
+当然, 安安偶尔也会在一个源代码文件里放多个程序单元, 比如安安在玩 SOFA 的时候, 习惯把除 \ttt{t\_{}sofa\_{}f.for} 外的所有文件里的东东通通复制粘贴到一个名为 \ttt{sofa.for} 的新文件里, 这个文件里就有一大堆外部子程序了.
 
-今后程序若有多个程序单元, 我将把这多个程序单元写在一起 (虽然按规范 \ref{one_program_unit} 它们应该被分别保存). 比如 \ref{fortran_program} 节 \texttt{main.f90} 和 \texttt{helloworld.f90} 中的程序会合写成如下模样.
+今后程序若有多个程序单元, 我将把这多个程序单元写在一起 (虽然按规范 \ref{one_program_unit} 它们应该被分别保存). 比如 \ref{fortran_program} 节 \ttt{main.f90} 和 \ttt{helloworld.f90} 中的程序会合写成如下模样.
 \begin{lstlisting}
 program main
     implicit none
@@ -107,25 +107,25 @@ end subroutine helloworld
 
 我们用 Fortran 语写好了程序, 命令电脑照此干活儿, 然而电脑会说干不了. 原因在于, 电脑不认得 Fortran 语, 电脑只懂得电脑语 (学名是机器语言), 甚至不同电脑的电脑语还不一样. 而电脑语身为正常人类的我们完全搞不懂\dots{}
 
-这时我们就得请编译器 (compiler) 们出场干活儿了, 它们会在操作系统的帮助下, 把 Fortran 语翻译成电脑语, 这个过程称为编译\footnote{这里说的是广义的编译. 狭义的编译是广义的编译中的一个环节.} (compile). \ref{use_ifx} 小节中输入 \texttt{ifx *.f* /o a.exe} 回车就是请 Ifx 编译, \ref{use_gfortran} 小节中输入 \texttt{gfortran *.f*} 回车就是请 Gfortran 编译, 最后电脑语程序保存在称为可执行文件 (executable file) 的 \texttt{a.exe} 里.
+这时我们就得请编译器 (compiler) 们出场干活儿了, 它们会在操作系统的帮助下, 把 Fortran 语翻译成电脑语, 这个过程称为编译\footnote{这里说的是广义的编译. 狭义的编译是广义的编译中的一个环节.} (compile). \ref{use_ifx} 小节中输入 \ttt{ifx *.f* /o a.exe} 回车就是请 Ifx 编译, \ref{use_gfortran} 小节中输入 \ttt{gfortran *.f*} 回车就是请 Gfortran 编译, 最后电脑语程序保存在称为可执行文件 (executable file) 的 \ttt{a.exe} 里.
 
-把程序翻译成电脑语后, 电脑没借口不干活儿了. 我们输入 \texttt{a.exe} 回车, 命令电脑照电脑语程序干活儿, 这个过程称为运行/执行 (execute) 程序, 也俗称跑 (run) 程序. Fortran 程序中指令运行的基本顺序是从主程序第一行 \texttt{program [program-name]} 开始, 向下逐行依次运行, 到主程序最后第一行 \texttt{end program [program-name]} 结束. 本笔记里会介绍许多例外情况, 遇到例外时会称之为跳转 (jump). 例如 \ref{fortran_program} 节 \texttt{main.f90} 和 \texttt{helloworld.f90} 中的程序, 指令的运行顺序如下, 其中指令 3 跳转到指令 4, 指令 7 跳转到指令 8.
+把程序翻译成电脑语后, 电脑没借口不干活儿了. 我们输入 \ttt{a.exe} 回车, 命令电脑照电脑语程序干活儿, 这个过程称为运行/执行 (execute) 程序, 也俗称跑 (run) 程序. Fortran 程序中指令运行的基本顺序是从主程序第一行 \ttt{program [program-name]} 开始, 向下逐行依次运行, 到主程序最后第一行 \ttt{end program [program-name]} 结束. 本笔记里会介绍许多例外情况, 遇到例外时会称之为跳转 (jump). 例如 \ref{fortran_program} 节 \ttt{main.f90} 和 \ttt{helloworld.f90} 中的程序, 指令的运行顺序如下, 其中指令 3 跳转到指令 4, 指令 7 跳转到指令 8.
 \begin{table}[!htbp]
     \centering
     \begin{tabular}{|p{0.42\textwidth}|p{0.48\textwidth}|}
         \hline
         \multicolumn{1}{|c|}{源代码}&\multicolumn{1}{|c|}{指令}\\
         \hline
-        \texttt{program main}&1.开始运行主程序 \texttt{main}\\
+        \ttt{program main}&1.开始运行主程序 \ttt{main}\\
         \hline
-        \texttt{implicit none}&2.禁止隐式声明\\
+        \ttt{implicit none}&2.禁止隐式声明\\
         \hline
-        \texttt{call helloworld()}&3.调用子程序 \texttt{helloworld}\\
+        \ttt{call helloworld()}&3.调用子程序 \ttt{helloworld}\\
         \hline
-        \texttt{end program main}&8.结束运行主程序 \texttt{main}\\
+        \ttt{end program main}&8.结束运行主程序 \ttt{main}\\
         \hline
     \end{tabular}
-    \caption{\texttt{main.f90} 中指令运行顺序}
+    \caption{\ttt{main.f90} 中指令运行顺序}
 \end{table}
 \begin{table}[!htbp]
     \centering
@@ -133,16 +133,16 @@ end subroutine helloworld
         \hline
         \multicolumn{1}{|c|}{源代码}&\multicolumn{1}{|c|}{指令}\\
         \hline
-        \texttt{subroutine helloworld()}&4.开始运行子例行 \texttt{helloworld}\\
+        \ttt{subroutine helloworld()}&4.开始运行子例行 \ttt{helloworld}\\
         \hline
-        \texttt{implicit none}&5.禁止隐式声明\\
+        \ttt{implicit none}&5.禁止隐式声明\\
         \hline
-        \texttt{print *, 'Hello, world!'}&6.让电脑屏幕上出现``Hello, world!''\\
+        \ttt{print *, 'Hello, world!'}&6.让电脑屏幕上出现``Hello, world!''\\
         \hline
-        \texttt{end subroutine helloworld}&7.结束运行子例行 \texttt{helloworld}\\
+        \ttt{end subroutine helloworld}&7.结束运行子例行 \ttt{helloworld}\\
         \hline
     \end{tabular}
-    \caption{\texttt{helloworld.f90} 中指令运行顺序}
+    \caption{\ttt{helloworld.f90} 中指令运行顺序}
 \end{table}
 
 当年编程语言刚刚出世的时候, 人们对程序设计的认识不足, 程序里的指令可以胡乱跳转, 总有人写出让人根本读不懂的鬼魅程序. 后来人们制定了结构化 (structured) 程序设计原则, 其基本特征是只保留尽可能少的, 有明确规则的指令跳转. Fortran 语法如今已基本符合结构化原则了, 但仍有少数不符合的. 本笔记里会介绍一些不符合结构化原则的语法, 但只是因为不用那些语法, 有些活儿干不了. 请同学们尽可能少用那些语法.
@@ -158,7 +158,7 @@ end subroutine helloworld
 
 \subsection{错误}\label{fortran_error}
 
-抛出错误有两种情况. 最常见的是我们写的程序不符合 Fortran 语法, 编译器读不懂, 无法翻译, 就抛出错误然后罢工了. 比如, 编译这样一个保存在 \texttt{main.f90} 中的程序.
+抛出错误有两种情况. 最常见的是我们写的程序不符合 Fortran 语法, 编译器读不懂, 无法翻译, 就抛出错误然后罢工了. 比如, 编译这样一个保存在 \ttt{main.f90} 中的程序.
 \begin{lstlisting}
 program main
     implicit none
@@ -185,7 +185,7 @@ main.f90:3:10:
 Error: Missing leading left parenthesis in format string at 
 (1)
 \end{verbatim}
-由于程序第三行不符合 Fortran 语法 (\texttt{print} 后少了 \texttt{*,} 之类的东东), 编译器不知怎么干活儿了, 只好报个错. 智能的 VS Code 会在编译前就请 Gfortran 来检查我们的程序是否有语法错误, 这将节约我们的时间.
+由于程序第三行不符合 Fortran 语法 (\ttt{print} 后少了 \ttt{*,} 之类的东东), 编译器不知怎么干活儿了, 只好报个错. 智能的 VS Code 会在编译前就请 Gfortran 来检查我们的程序是否有语法错误, 这将节约我们的时间.
 
 因为有器规, 所以报错还和编译器有关. 比如运行下面这个程序.
 \begin{lstlisting}
@@ -203,13 +203,13 @@ program main
     open(10, file='C:\*')
 end program main
 \end{lstlisting}
-这回编译时 Ifx 和 Gfortran 都不认为有什么问题, 但运行时程序让 Windows 打开文件 \texttt{C:\bs{}*} (若无此文件则新建一个后打开), 而 Windows 文件名里不可以有 \texttt{*}, 程序只好报个错. 这个程序在同学们以后会学的 Linux 系统里就可以正常工作, 因为 Linux 文件名里可以有 \texttt{*}.
+这回编译时 Ifx 和 Gfortran 都不认为有什么问题, 但运行时程序让 Windows 打开文件 \ttt{C:\bs{}*} (若无此文件则新建一个后打开), 而 Windows 文件名里不可以有 \ttt{*}, 程序只好报个错. 这个程序在同学们以后会学的 Linux 系统里就可以正常工作, 因为 Linux 文件名里可以有 \ttt{*}.
 
 \subsection{警告}\label{fortran_warning}
 
 有时候我们写的程序符合 Fortran 语法, 编译器读得懂能翻译, 但它觉得我们写的程序十分 ``危险'', 很有可能程序的实际执行过程并不是我们预想的那样, 这时编译器就会抛出警告. 什么时候应该给个错误, 不同编译器的观点还是比较一致的, 但什么时候给个警告, 那区别就相当大了.
 
-比如, 编译这样一个保存在 \texttt{main.f90} 中的程序.
+比如, 编译这样一个保存在 \ttt{main.f90} 中的程序.
 \begin{lstlisting}
 program main
     implicit none
@@ -230,9 +230,9 @@ n INTEGER(KIND=4) type.   [1000000000000]
     i = 1000000000000
 --------^
 \end{verbatim}
-Ifx 认为 \texttt{1000000000000} 过大, 无法正确存储, 于是就给个警告, 但程序仍然可以运行. 正常想来, 程序运行后电脑屏幕上应该出现 \texttt{1000000000000}, 结果出现的却是 \texttt{-727379968}, 果然很奇怪! 至于 Gfortran 嘛, 它也认为 \texttt{1000000000000}过大, 但它不是给个警告, 而是直接报错.
+Ifx 认为 \ttt{1000000000000} 过大, 无法正确存储, 于是就给个警告, 但程序仍然可以运行. 正常想来, 程序运行后电脑屏幕上应该出现 \ttt{1000000000000}, 结果出现的却是 \ttt{-727379968}, 果然很奇怪! 至于 Gfortran 嘛, 它也认为 \ttt{1000000000000}过大, 但它不是给个警告, 而是直接报错.
 
-再比如, 编译这样一个保存在 \texttt{main.f90} 中的程序.
+再比如, 编译这样一个保存在 \ttt{main.f90} 中的程序.
 \begin{lstlisting}
 program main
     implicit none
@@ -250,7 +250,7 @@ main.f90:4:8:
 Warning: Extension: Conversion from LOGICAL(4) to INTEGER(4)
  at (1)
 \end{verbatim}
-Gfortran 觉得令整数 \texttt{i} 等于逻辑 ``真'' 的操作其实是标准不允许的, 是自己放水才能这么干的, 于是就给个警告 (VS Code 会提前请 Gfortran 来看是否会弹警告), 但程序仍然可以运行. 运行后电脑屏幕上出现 \texttt{1} . 至于 Ifx 嘛, 它倒是不报错也不给警告, 干脆利落地编译完了, 但因为器规不同, 运行后电脑屏幕上出现的是 \texttt{-1}\dots{}
+Gfortran 觉得令整数 \ttt{i} 等于逻辑 ``真'' 的操作其实是标准不允许的, 是自己放水才能这么干的, 于是就给个警告 (VS Code 会提前请 Gfortran 来看是否会弹警告), 但程序仍然可以运行. 运行后电脑屏幕上出现 \ttt{1} . 至于 Ifx 嘛, 它倒是不报错也不给警告, 干脆利落地编译完了, 但因为器规不同, 运行后电脑屏幕上出现的是 \ttt{-1}\dots{}
 
 \section{字符集}
 
@@ -263,7 +263,7 @@ Fortran 可以在程序中使用所有能直接用英语输入法打出的字符
     在程序和源代码文件名中只使用能直接用英语输入法打出的字符.\label{english_character_convention}
 \end{convention}
 
-Fortran 是大小写不敏感的 (case-insensitive), 也就是说, 很多情况下程序里的字母大写小写效果是完全相同的 (效果不同的地方见 \ref{fortran_char} 节和 \ref{character_string_edit_descriptor} 小节). 比如, 下面这两个程序和 \ref{fortran_program} 节的 \texttt{main.f90} 内的程序是完全等价的.
+Fortran 是大小写不敏感的 (case-insensitive), 也就是说, 很多情况下程序里的字母大写小写效果是完全相同的 (效果不同的地方见 \ref{fortran_char} 节和 \ref{character_string_edit_descriptor} 小节). 比如, 下面这两个程序和 \ref{fortran_program} 节的 \ttt{main.f90} 内的程序是完全等价的.
 \begin{lstlisting}
 PROGRAM MAIN
     IMPLICIT NONE
@@ -271,13 +271,13 @@ PROGRAM MAIN
 END PROGRAM MAIN
 \end{lstlisting}
 
-Fortran 大小写不分是有历史原因的. 当年电脑太烂了, 为节省存储空间, 一开始 Fortran 只许用大写字母, 后来电脑不那么烂了, 能用小写字母了, Fortran 大概是因为想尽量保证老程序能用, 所以直接规定大小写不分, 结果挖了个如今没法儿填的史诗级奆坑, 学 Fortran 玩 Fortran 的历来都深受其害. 举个例子, 当年俺搞毕设, 需要解 Kepler 方程 $E=M+e\cos E$,在程序里对应地写成 \texttt{E = M + e*cos(E)}, 然而 Fortran 是大小写不分的, 所以 \texttt{E = M + e*cos(E)} 其实对应于 $e=M+e\cos e$ 或 $E=M+E\cos E$, 然后俺忘了这茬, 结果死活找不出自己哪里写错了\dots{}
+Fortran 大小写不分是有历史原因的. 当年电脑太烂了, 为节省存储空间, 一开始 Fortran 只许用大写字母, 后来电脑不那么烂了, 能用小写字母了, Fortran 大概是因为想尽量保证老程序能用, 所以直接规定大小写不分, 结果挖了个如今没法儿填的史诗级奆坑, 学 Fortran 玩 Fortran 的历来都深受其害. 举个例子, 当年俺搞毕设, 需要解 Kepler 方程 $E=M+e\cos E$,在程序里对应地写成 \ttt{E = M + e*cos(E)}, 然而 Fortran 是大小写不分的, 所以 \ttt{E = M + e*cos(E)} 其实对应于 $e=M+e\cos e$ 或 $E=M+E\cos E$, 然后俺忘了这茬, 结果死活找不出自己哪里写错了\dots{}
 
 被 Fortran 反复毒打后, 人们决定做些什么来避免被毒打. 既然 Fortran 大小写不分, 那避免混淆的最好办法就是在程序里统一只用小写或大写字母 (俺搞毕设时知道这事, 但俺偷懒了, 结果惨遭报应\dots{}). 因为单词写成小写字母比写成大写字母好认, 所以现在人们都统一只用小写字母.
 \begin{convention}
     只在程序中使用小写字母.\label{lower_case_convention}
 \end{convention}
-如上所述, 有时 Fortran 大小写是分的, 这时规范 \ref{lower_case_convention} 没法儿遵守, 当然就不遵守了. 除此之外, 规范 \ref{lower_case_convention} 还有其他一些可以不遵守的情形, 俺留着后面说. 这样, \texttt{E = M + e*cos(E)} 就得改写了. 因为 Kepler 方程里 $E$ 是偏近点角, 是个角, 所以 \texttt{E} 可以写成 \texttt{e\_{}angle} (也可以写成 \texttt{angle\_{}e}, 但绝不能写成 \texttt{E\_{}angle}!!!), $e$ 则是离心率, 虽然写成 \texttt{e} 也可以和 \texttt{e\_{}angle} 区别开, 但为了让区别更明显, 可以写成 \texttt{ecc} (eccentricity 的缩写).
+如上所述, 有时 Fortran 大小写是分的, 这时规范 \ref{lower_case_convention} 没法儿遵守, 当然就不遵守了. 除此之外, 规范 \ref{lower_case_convention} 还有其他一些可以不遵守的情形, 俺留着后面说. 这样, \ttt{E = M + e*cos(E)} 就得改写了. 因为 Kepler 方程里 $E$ 是偏近点角, 是个角, 所以 \ttt{E} 可以写成 \ttt{e\_{}angle} (也可以写成 \ttt{angle\_{}e}, 但绝不能写成 \ttt{E\_{}angle}!!!), $e$ 则是离心率, 虽然写成 \ttt{e} 也可以和 \ttt{e\_{}angle} 区别开, 但为了让区别更明显, 可以写成 \ttt{ecc} (eccentricity 的缩写).
 
 \section{源代码格式}
 
@@ -286,9 +286,9 @@ Fortran 有两种源代码格式 (source form): 自由格式 (free form) 和固�
     永远编写自由格式的程序.
 \end{convention}
 
-根据 \href{https://cdrdv2.intel.com/v1/dl/getContent/824360?fileName=fortran-compiler_developer-guide-reference_2024.2-767251-824360.pdf}{Ifx 文档} 和 \href{https://gcc.gnu.org/onlinedocs/gcc-13.2.0/gfortran.pdf}{Gfortran 文档}, 请同学们把自由格式的 Fortran 程序保存在拓展名为 \texttt{.f90} 的文件里, 以保证它们俩能认得. 自由格式源代码文件拓展名为 \texttt{.f90} 也是 Fortran 编译器的惯例, 要是某 Fortran 编译器竟不认, 我们就把它卸载了\dots{}
+根据 \href{https://cdrdv2.intel.com/v1/dl/getContent/824360?fileName=fortran-compiler_developer-guide-reference_2024.2-767251-824360.pdf}{Ifx 文档} 和 \href{https://gcc.gnu.org/onlinedocs/gcc-13.2.0/gfortran.pdf}{Gfortran 文档}, 请同学们把自由格式的 Fortran 程序保存在拓展名为 \ttt{.f90} 的文件里, 以保证它们俩能认得. 自由格式源代码文件拓展名为 \ttt{.f90} 也是 Fortran 编译器的惯例, 要是某 Fortran 编译器竟不认, 我们就把它卸载了\dots{}
 \begin{convention}
-    保证自由格式源代码文件拓展名为 \texttt{\emph{.f90}}.
+    保证自由格式源代码文件拓展名为 \ttt{\emph{.f90}}.
 \end{convention}
 
 这里需澄清, 有习惯说法是把自由格式程序说成 ``Fortran 90 程序'', 把固定格式程序说成``FORTRAN 77 程序''. 这种说法的根源是 Fortran 历史上有一场巨变: FORTRAN 77 只有固定格式, 而 Fortran 90 新引入了自由格式. 然而, 这并不意味着固定格式程序中不能使用 Fortran 90 及以后的标准新出的语法.
@@ -297,9 +297,9 @@ Fortran 有两种源代码格式 (source form): 自由格式 (free form) 和固�
 
 \subsection{空格}
 
-Fortran 代码里空格 (blank/space) 通常没有意义 (\ref{fortran_char} 节和 \ref{character_string_edit_descriptor} 小节中有例外), 可多可少可没有, 但有些时候空格是必要的, 否则会出现混淆, 比如 \texttt{program main} 就不能写成 \texttt{programmain} (没有编译器能智能到把它拆成两个词).
+Fortran 代码里空格 (blank/space) 通常没有意义 (\ref{fortran_char} 节和 \ref{character_string_edit_descriptor} 小节中有例外), 可多可少可没有, 但有些时候空格是必要的, 否则会出现混淆, 比如 \ttt{program main} 就不能写成 \ttt{programmain} (没有编译器能智能到把它拆成两个词).
 
-虽然空格没有意义, 但能让代码更清楚. 如果把 \texttt{print *, 'A'} 写成 \texttt{print*,'A'}, 挤成一团, 也不能说是错误, 但即便像 VS Code 里那样代码有颜色区分, 也让人看得晕乎, 更何况笔记里这样代码没颜色呢.
+虽然空格没有意义, 但能让代码更清楚. 如果把 \ttt{print *, 'A'} 写成 \ttt{print*,'A'}, 挤成一团, 也不能说是错误, 但即便像 VS Code 里那样代码有颜色区分, 也让人看得晕乎, 更何况笔记里这样代码没颜色呢.
 \begin{convention}
     在程序中加入适当的空格.\label{fortran_blank}
 \end{convention}
@@ -319,7 +319,7 @@ program main
     end do
 end program main
 \end{lstlisting}
-在上面的程序中: 第 1 行到第 9 行是个主程序, 之间的代码缩进一层, 有 4 个空格的缩进; 第 4 行到第 8 行是个 \ref{do_construct} 小节会介绍的 \texttt{do} 结构, 嵌套在主程序里, 之间的代码又缩进一层, 有 8 个空格的缩进; 第 3 行到第 7 行是个 \ref{if_construct} 小节会介绍的 \texttt{if} 结构, 嵌套在 \texttt{do} 结构里, 之间的代码又又缩进一层, 有 12 个空格的缩进.
+在上面的程序中: 第 1 行到第 9 行是个主程序, 之间的代码缩进一层, 有 4 个空格的缩进; 第 4 行到第 8 行是个 \ref{do_construct} 小节会介绍的 \ttt{do} 结构, 嵌套在主程序里, 之间的代码又缩进一层, 有 8 个空格的缩进; 第 3 行到第 7 行是个 \ref{if_construct} 小节会介绍的 \ttt{if} 结构, 嵌套在 \ttt{do} 结构里, 之间的代码又又缩进一层, 有 12 个空格的缩进.
 \begin{convention}
     在程序中加入适当的缩进, 以 $4$ 个空格为单位.\label{fortran_indent}
 \end{convention}
@@ -388,7 +388,7 @@ end program main
 
 \subsection{注释}
 
-程序每一行中, \texttt{!} 及后面的所有内容都会被无视 (例外见 \ref{fortran_char} 节和 \ref{character_string_edit_descriptor} 小节), 也就相当于 \texttt{!} 及后面的内容不存在. 会被无视的 \texttt{!} 及后面的内容称为注释 (comment). 例如下面两个程序是完全一样的.
+程序每一行中, \ttt{!} 及后面的所有内容都会被无视 (例外见 \ref{fortran_char} 节和 \ref{character_string_edit_descriptor} 小节), 也就相当于 \ttt{!} 及后面的内容不存在. 会被无视的 \ttt{!} 及后面的内容称为注释 (comment). 例如下面两个程序是完全一样的.
 \begin{lstlisting}
 program main
     !                   _oo0oo_
@@ -458,14 +458,14 @@ end program main
 \end{convention}
 有些人可能会放宽到不超过 $120$ 个字符, 配合以 8 个空格为单位的缩进和宽屏电脑.
 
-用 VS Code 的话, 可以在 \texttt{settings.json} 里加入下面这两个键值对.
+用 VS Code 的话, 可以在 \ttt{settings.json} 里加入下面这两个键值对.
 \begin{verbatim}
 "editor.wordWrap": "wordWrapColumn",
 "editor.wordWrapColumn": 80
 \end{verbatim}
 这样如果一行超过 80 个字符, 就会分行显示. 注意, 只是分行显示, 这一行还是超过 80 个字符的 (可以看到 ``分行'' 后下面一 ``行'' 是没有行号的). 加入这两个键值对只是起提醒作用, 太长还是要分行写的 (照顾那些没有像 VS Code 这样智能的编辑器的可怜人).
 
-但有时代码一行确实写不完, 这时我们可以使用续行 (continuation). 首先我们需要介绍注释行 (comment line). 注释行就是相当于空行的行, 包括空行, 只有空格的行和除空格外只有注释的行. 而续行就是在一行的末尾加上 \texttt{\&{}}, 表示把下面第一个不是注释行的行剪切下来粘贴到这行后 (并去掉用于表示续行的 \texttt{\&{}}). 比如下面两个程序是一样的.
+但有时代码一行确实写不完, 这时我们可以使用续行 (continuation). 首先我们需要介绍注释行 (comment line). 注释行就是相当于空行的行, 包括空行, 只有空格的行和除空格外只有注释的行. 而续行就是在一行的末尾加上 \ttt{\&{}}, 表示把下面第一个不是注释行的行剪切下来粘贴到这行后 (并去掉用于表示续行的 \ttt{\&{}}). 比如下面两个程序是一样的.
 \begin{lstlisting}
 program main
     implicit none
@@ -516,7 +516,7 @@ program main
 end program main
 \end{lstlisting}
 
-续行有许多需要补充说明的. 首先注释相比续行是优先的, 所以下面这个程序不行, 因为 \texttt{\&{}} 在 \texttt{!} 后, 被当成注释了 (笔记里显示成斜体 \emph{\texttt{\&{}}}).
+续行有许多需要补充说明的. 首先注释相比续行是优先的, 所以下面这个程序不行, 因为 \ttt{\&{}} 在 \ttt{!} 后, 被当成注释了 (笔记里显示成斜体 \emph{\ttt{\&{}}}).
 \begin{lstlisting}
 program main
     implicit none
@@ -548,7 +548,7 @@ end &
 program &
 main
 \end{lstlisting}
-为了不晕乎, 我们首先要尽量少用续行 (把 \texttt{program main} 拆成两行简直是犯罪), 其次我们不应该在不应加空格的地方用续行 (比如在 \texttt{*,} 之间用续行拆成两半).
+为了不晕乎, 我们首先要尽量少用续行 (把 \ttt{program main} 拆成两行简直是犯罪), 其次我们不应该在不应加空格的地方用续行 (比如在 \ttt{*,} 之间用续行拆成两半).
 \begin{convention}
     只在不用续行就无法遵守规范 \emph{\ref{fortran_no_more_than_80}} 的时候使用续行.
 \end{convention}
@@ -556,9 +556,9 @@ main
     不在不应加空格的地方使用续行.
 \end{convention}
 
-有同学可能会突然发现不对, 本章的许多程序不符合规范 \ref{fortran_indent}, 例如本章的第一个程序. 其实用续行的时候, 规范 \ref{fortran_indent} 可以不遵守. 本章的第一个程序采用的那种缩进方式, 是让下一行和上一行 ``内容对齐'', 这也是续行时常用的方式. 具体到程序, 就是让 \texttt{*,} 所在的行的下一行的第一个非空格字符, 和 \texttt{*,} 之后的第一个非空格字符对齐. 不过续行时的缩进还有其他方式. 同学们可以参考本笔记,  Fortran \href{https://fortran-lang.org/}{官网}上的代码示例和 Python 的 \href{https://peps.python.org/pep-0008/}{PEP 8 规范}来决定续行时如何缩进.
+有同学可能会突然发现不对, 本章的许多程序不符合规范 \ref{fortran_indent}, 例如本章的第一个程序. 其实用续行的时候, 规范 \ref{fortran_indent} 可以不遵守. 本章的第一个程序采用的那种缩进方式, 是让下一行和上一行 ``内容对齐'', 这也是续行时常用的方式. 具体到程序, 就是让 \ttt{*,} 所在的行的下一行的第一个非空格字符, 和 \ttt{*,} 之后的第一个非空格字符对齐. 不过续行时的缩进还有其他方式. 同学们可以参考本笔记,  Fortran \href{https://fortran-lang.org/}{官网}上的代码示例和 Python 的 \href{https://peps.python.org/pep-0008/}{PEP 8 规范}来决定续行时如何缩进.
 
-续行还有一个冷门规则, 在程序的每一行中, 都不能除空格和注释外, 单单只有一个用于续行的 \texttt{\&{}}. 比如下面这个程序是不行的. 然而, Ifx 和 Gfortran 却认为这个程序没问题, 同学们遇到器规啦!
+续行还有一个冷门规则, 在程序的每一行中, 都不能除空格和注释外, 单单只有一个用于续行的 \ttt{\&{}}. 比如下面这个程序是不行的. 然而, Ifx 和 Gfortran 却认为这个程序没问题, 同学们遇到器规啦!
 \begin{lstlisting}
 program main
     implicit none
@@ -587,7 +587,7 @@ program main
 end program main
 \end{lstlisting}
 
-注释行不被允许加标号, 原因可能和续行一样, 也是会有歧义 (但这回 Ifx 和 Gfortran 的器规也是不允许). 另外续行符 \texttt{\&{}} 所在的行的下面第一个不是注释行的行, 也就是 ``用于续行的行'', 也不被允许加标号, 因为 ``用于续行的行'' 其实只是续行符 \texttt{\&{}} 所在的行的后面部分, 它的开头其实不是一行的开头. 以上规则的反例如下.
+注释行不被允许加标号, 原因可能和续行一样, 也是会有歧义 (但这回 Ifx 和 Gfortran 的器规也是不允许). 另外续行符 \ttt{\&{}} 所在的行的下面第一个不是注释行的行, 也就是 ``用于续行的行'', 也不被允许加标号, 因为 ``用于续行的行'' 其实只是续行符 \ttt{\&{}} 所在的行的后面部分, 它的开头其实不是一行的开头. 以上规则的反例如下.
 \begin{lstlisting}
 program main
     implicit none
@@ -608,7 +608,7 @@ end program main
 
 \subsection{标签}
 
-在程序中某些特殊的地方 (见 \ref{fortran_exit} 小节和 \ref{fortran_cycle} 小节) 可以加标签\footnote{\href{https://j3-fortran.org/doc/year/24/24-007.pdf}{标准解释文档}里没这个词, 但\href{https://fortran-lang.org/learn/quickstart/}{官网教程}里有.} (tag). 标签用其标签名表示. 下面的程序第四行和第六行使用了标签名为 \texttt{tag} 的标签.
+在程序中某些特殊的地方 (见 \ref{fortran_exit} 小节和 \ref{fortran_cycle} 小节) 可以加标签\footnote{\href{https://j3-fortran.org/doc/year/24/24-007.pdf}{标准解释文档}里没这个词, 但\href{https://fortran-lang.org/learn/quickstart/}{官网教程}里有.} (tag). 标签用其标签名表示. 下面的程序第四行和第六行使用了标签名为 \ttt{tag} 的标签.
 \begin{lstlisting}
 program main
     implicit none

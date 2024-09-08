@@ -9,7 +9,7 @@
 假如我们要搞个轮子,这个轮子能接受一个数,然后判断这个数是不是零,我们可以这么搞.
 \begin{lstlisting}
 program main
-    use,intrinsic :: iso_fortran_env,only: real128
+    use,intrinsic :: iso_fortran_env, only: real128
     implicit none
     real(real128) :: number
     read(*,*) number
@@ -25,32 +25,32 @@ end program main
 
 如果是用VS Code + Gfortran来运行这个轮子,运行后Terminal里会蹦出一堆编译命令,然后这串命令下面会多出一行.在这行里输入个数儿,回车,就会出新变化了.
 
-无论是VS 2019 + Ifx还是VS Code + Gfortran,程序运行后都会先执行前四行,然后执行第五行时停下了,等输入数字按回车后,电脑就会把变量\texttt{number}赋成输入的数儿,然后继续执行下面的代码.
+无论是VS 2019 + Ifx还是VS Code + Gfortran,程序运行后都会先执行前四行,然后执行第五行时停下了,等输入数字按回车后,电脑就会把变量\ttt{number}赋成输入的数儿,然后继续执行下面的代码.
 
-运行到第六行时,电脑干了啥事?看代码也许就能猜出来.电脑是这么干活的: 首先计算\texttt{number/=0},看其是\texttt{.True.}还是\texttt{.False.}\footnote{
+运行到第六行时,电脑干了啥事?看代码也许就能猜出来.电脑是这么干活的: 首先计算\ttt{number/=0},看其是\ttt{.True.}还是\ttt{.False.}\footnote{
     这个玩楞似乎违背了之前所说的一些原则,但相信我这个轮子是不会判断出错的,不过之前的原则还是要在其他场合遵守的!
 }.
 \begin{itemize}
-    \item 如果\texttt{number/=0}是\texttt{.True.},则运行\texttt{then}后面的所有代码.对上面这个例子,就是第七行,然后运行\texttt{end if}及之后的代码.
-    \item 如果\texttt{number/=0}是\texttt{.False.},则直接运行\texttt{end if}及之后的代码.对上面这个例子,第七行就被跳过去,不执行了.
+    \item 如果\ttt{number/=0}是\ttt{.True.},则运行\ttt{then}后面的所有代码.对上面这个例子,就是第七行,然后运行\ttt{end if}及之后的代码.
+    \item 如果\ttt{number/=0}是\ttt{.False.},则直接运行\ttt{end if}及之后的代码.对上面这个例子,第七行就被跳过去,不执行了.
 \end{itemize}
 
-上面这个轮子里的\texttt{if (...) then}到\texttt{end if}的部分就是个最简单的if结构,其功能就是让电脑先判断刮弧里的是\texttt{.True.}还是\texttt{.False.}.
+上面这个轮子里的\ttt{if (...) then}到\ttt{end if}的部分就是个最简单的if结构,其功能就是让电脑先判断刮弧里的是\ttt{.True.}还是\ttt{.False.}.
 \begin{itemize}
-    \item 如果是\texttt{.True.},则正常执行之后的每行命令
-    \item 如果是\texttt{.False.},则直接从\texttt{end if}开始执行之后的命令.
+    \item 如果是\ttt{.True.},则正常执行之后的每行命令
+    \item 如果是\ttt{.False.},则直接从\ttt{end if}开始执行之后的命令.
 \end{itemize}
 
-\texttt{then}之后直到\texttt{end if}前的部分我们可以称之为then块(block).这部分是从属于if结构的一串代码儿,我们应当按照规范\ref{fortran_indent},给这段缩个进,来提醒我们这段是很特殊的,是在if结构里头的.
+\ttt{then}之后直到\ttt{end if}前的部分我们可以称之为then块(block).这部分是从属于if结构的一串代码儿,我们应当按照规范\ref{fortran_indent},给这段缩个进,来提醒我们这段是很特殊的,是在if结构里头的.
 
 上面的这个轮子有个小问题,就是运行后首先什么也没说.如果人们用这个轮子,他们就不知道要干啥了.所以我们本应在第五行之前加句话,输出串提示(其他轮子里也要这么做).但我突然懒了,就不干了.
 
-另外这个轮子在\texttt{number==0}时啥子也没输出,这可能让同志们头晕.俺在设计这个例子的时候,是把\texttt{number==0}视作``正常情形'',把\texttt{number/=0}视作``异常情形'',这其实是很通行的一个约定.而``正常情形''下,按UNIX哲学,就应该啥子也不输出,表示``一切正常'',``异常情形''下才说话.
+另外这个轮子在\ttt{number==0}时啥子也没输出,这可能让同志们头晕.俺在设计这个例子的时候,是把\ttt{number==0}视作``正常情形'',把\ttt{number/=0}视作``异常情形'',这其实是很通行的一个约定.而``正常情形''下,按UNIX哲学,就应该啥子也不输出,表示``一切正常'',``异常情形''下才说话.
 
-当然让轮子在\texttt{number==0}时也说话,也是好的.我们可以这么干.\newpage
+当然让轮子在\ttt{number==0}时也说话,也是好的.我们可以这么干.\newpage
 \begin{lstlisting}
 program main
-    use,intrinsic :: iso_fortran_env,only: real128
+    use,intrinsic :: iso_fortran_env, only: real128
     implicit none
     real(real128) :: number
     read(*,*) number
@@ -61,10 +61,10 @@ program main
     end if
 end program main
 \end{lstlisting}
-现在轮子里多了\texttt{else}和后面到\texttt{end if}中间称之为else块的东东,\texttt{else}前到\texttt{then}后的内容则是then块.现在整个if结构的执行方式就是,先判断刮弧里的是\texttt{.True.}还是\texttt{.False.}.
+现在轮子里多了\ttt{else}和后面到\ttt{end if}中间称之为else块的东东,\ttt{else}前到\ttt{then}后的内容则是then块.现在整个if结构的执行方式就是,先判断刮弧里的是\ttt{.True.}还是\ttt{.False.}.
 \begin{itemize}
-    \item 如果是\texttt{.True.},则一行一行执行then块,然后跳到\texttt{end if}.
-    \item 如果是\texttt{.False.}, 则一行一行执行else块,然后跳到\texttt{end if}.
+    \item 如果是\ttt{.True.},则一行一行执行then块,然后跳到\ttt{end if}.
+    \item 如果是\ttt{.False.}, 则一行一行执行else块,然后跳到\ttt{end if}.
 \end{itemize}
 
 知道上面的内容,干活就已经不成问题了.但人嘛总是想着偷懒的.下面介绍一些个偷懒的办法.
@@ -72,19 +72,19 @@ end program main
 首先第一个轮子,我们可以少打一些字儿,像这样.
 \begin{lstlisting}
 program main
-    use,intrinsic :: iso_fortran_env,only: real128
+    use,intrinsic :: iso_fortran_env, only: real128
     implicit none
     real(real128) :: number
     read(*,*) number
     if (number/=0) print *, 'The number is not 0!'
 end program main
 \end{lstlisting}
-其中第六行的这种东东称为if语句,就是删掉\texttt{then},然后把then块里的话搬到刮弧后面.如果我们需要在then块里加很多很多行,那if语句就不好使了.这时我们就老老实实用if结构.
+其中第六行的这种东东称为if语句,就是删掉\ttt{then},然后把then块里的话搬到刮弧后面.如果我们需要在then块里加很多很多行,那if语句就不好使了.这时我们就老老实实用if结构.
 
 还有,如果我们要让上面的轮子还能判断是正是负,我们可以把轮子改成下面这样.
 \begin{lstlisting}
 program main
-    use,intrinsic :: iso_fortran_env,only: real128
+    use,intrinsic :: iso_fortran_env, only: real128
     implicit none
     real(real128) :: number
     read(*,*) number
@@ -104,7 +104,7 @@ end program main
 像下面这样,就可以偷懒了.
 \begin{lstlisting}
 program main
-    use,intrinsic :: iso_fortran_env,only: real128
+    use,intrinsic :: iso_fortran_env, only: real128
     implicit none
     real(real128) :: number
     read(*,*) number
@@ -117,26 +117,26 @@ program main
     end if
 end program main
 \end{lstlisting}
-这样不仅可以少打个\texttt{end if},还能少缩进一回,让我不由得想起王司徒的经典语录呀.
+这样不仅可以少打个\ttt{end if},还能少缩进一回,让我不由得想起王司徒的经典语录呀.
 
-同志们可以尝试自己造一个判断分数优良中差的轮子,练练手.这个轮子可能有些同志造好之后,觉得看着代码就不舒服,因为if结构只能实现双分支,堆叠\texttt{else if}是在强行用双分支来堆出多分支来,有些同志可能就不爽,想直接在轮子里弄出多分支来.这些个同志可以自己去搜\texttt{select case}的用法.还有上面的轮子都有个问题,就是如果用户突然发神经,输个什么字母之类的,这个轮子就崩了.也许用\texttt{select type}能解决这个问题.
+同志们可以尝试自己造一个判断分数优良中差的轮子,练练手.这个轮子可能有些同志造好之后,觉得看着代码就不舒服,因为if结构只能实现双分支,堆叠\ttt{else if}是在强行用双分支来堆出多分支来,有些同志可能就不爽,想直接在轮子里弄出多分支来.这些个同志可以自己去搜\ttt{select case}的用法.还有上面的轮子都有个问题,就是如果用户突然发神经,输个什么字母之类的,这个轮子就崩了.也许用\ttt{select type}能解决这个问题.
 
-最后再讲个小技巧.假如现在要搞个轮子,在\texttt{number==0}时输出条警告,在\texttt{number/=0}时啥也不干,下面这样当然是可的.
+最后再讲个小技巧.假如现在要搞个轮子,在\ttt{number==0}时输出条警告,在\ttt{number/=0}时啥也不干,下面这样当然是可的.
 \begin{lstlisting}
 program main
-    use,intrinsic :: iso_fortran_env,only: real128
+    use,intrinsic :: iso_fortran_env, only: real128
     implicit none
     real(real128) :: number
     read(*,*) number
     if (number==0) print *, 'Warning: the number is zero.'
 end program main
 \end{lstlisting}
-但我大胆猜测,机器判断\texttt{number/=0}显然比判断\texttt{number==0}要容易\footnote{
+但我大胆猜测,机器判断\ttt{number/=0}显然比判断\ttt{number==0}要容易\footnote{
     别信,这我真是猜的.
-},所以为提高效率,最好把判断条件变成\texttt{number/=0}.我们可以这么做.\label{use_continue}
+},所以为提高效率,最好把判断条件变成\ttt{number/=0}.我们可以这么做.\label{use_continue}
 \begin{lstlisting}
 program main
-    use,intrinsic :: iso_fortran_env,only: real128
+    use,intrinsic :: iso_fortran_env, only: real128
     implicit none
     real(real128) :: number
     read(*,*) number
@@ -148,7 +148,7 @@ program main
 end program main
 \end{lstlisting}
 \mbox{}\\\mbox{}\\
-其中\texttt{continue}就是让电脑运行这行时啥都不干.事实上把\texttt{continue}这行删了,电脑还是可以正确工作,在\texttt{number/=0}时直接跳到\texttt{end if}的,但我觉得不写\texttt{continue}这行,同志们和很多被Fortran折磨的人(相信不包括同志们)见了都要吓一跳,不知道这玩楞是否能跑起来.为了可读性,还是写上好.也不用担心加上这行后电脑会因为执行这个啥都不干的命令而变慢.事实上电脑接到一个空转命令后,可能反而跑得更快\footnote{
+其中\ttt{continue}就是让电脑运行这行时啥都不干.事实上把\ttt{continue}这行删了,电脑还是可以正确工作,在\ttt{number/=0}时直接跳到\ttt{end if}的,但我觉得不写\ttt{continue}这行,同志们和很多被Fortran折磨的人(相信不包括同志们)见了都要吓一跳,不知道这玩楞是否能跑起来.为了可读性,还是写上好.也不用担心加上这行后电脑会因为执行这个啥都不干的命令而变慢.事实上电脑接到一个空转命令后,可能反而跑得更快\footnote{
     这是真的.
 }.我们要坚信Ifx和Gfortran这样优秀的编译器会竭尽所能地帮我们提高效率.
 
@@ -164,7 +164,7 @@ end program main
 我们可以将左边的级数截断至一个$n_{\text{max}}$来计算出$\pi$的近似值.假如我们取$n_{\text{max}}=10$,我们还可以这么做.
 \begin{lstlisting}
 program main
-    use iso_fortran_env,only: qp=>real128
+    use iso_fortran_env, only: qp => real128
     implicit none
     print *,(6*(1/1_qp**2+1/2_qp**2 &
                 +1/3_qp**2+1/4_qp**2 &
@@ -176,7 +176,7 @@ end program main
 但如果我们取$n_{\text{max}}=100$,这样做就要死人了.这时我们就有必要使出do结构,像下面这样.\newpage
 \begin{lstlisting}
 program main
-    use iso_fortran_env,only: qp=>real128
+    use iso_fortran_env, only: qp => real128
     implicit none
     integer :: n
     real(qp) :: s
@@ -188,12 +188,12 @@ program main
 end program main
 \end{lstlisting}
 
-这个轮子运行到第七行后发生什么事了?首先电脑把\texttt{n}赋成\texttt{1},然后执行\texttt{do}到\texttt{end do}之间的命令,也就是第八行.执行完第八行后,电脑把\texttt{n}加上\texttt{1},然后再一次执行第八行,然后再把\texttt{n}加上\texttt{1}\dots~直到\texttt{n}等于\texttt{100}后,电脑最后一次执行第八行,然后就执行\texttt{end do}之后的命令了.对上面这个例子,总的过程就是: 令\texttt{n}等于\texttt{1},执行第八行,令\texttt{n}等于\texttt{2},执行第八行\dots~令\texttt{n}等于\texttt{99},执行第八行,令\texttt{n}等于\texttt{100},执行第八行,然后执行第十行.总而言之是完成目的了!
+这个轮子运行到第七行后发生什么事了?首先电脑把\ttt{n}赋成\ttt{1},然后执行\ttt{do}到\ttt{end do}之间的命令,也就是第八行.执行完第八行后,电脑把\ttt{n}加上\ttt{1},然后再一次执行第八行,然后再把\ttt{n}加上\ttt{1}\dots~直到\ttt{n}等于\ttt{100}后,电脑最后一次执行第八行,然后就执行\ttt{end do}之后的命令了.对上面这个例子,总的过程就是: 令\ttt{n}等于\ttt{1},执行第八行,令\ttt{n}等于\ttt{2},执行第八行\dots~令\ttt{n}等于\ttt{99},执行第八行,令\ttt{n}等于\ttt{100},执行第八行,然后执行第十行.总而言之是完成目的了!
 
 第七行逗号前后的东东也可以是变量或表达式,只要是个数据实体就成.假如我们要让用户自己选择$n_{\text{max}}$多大,我们就可以这么做.
 \begin{lstlisting}
 program main
-    use iso_fortran_env,only: qp=>real128
+    use iso_fortran_env, only: qp => real128
     implicit none
     integer :: n_max
     integer :: n
@@ -207,7 +207,7 @@ program main
 end program main
 \end{lstlisting}
 
-上面的程序每次\texttt{n}都增加\texttt{1}.我们可以改变这一点.
+上面的程序每次\ttt{n}都增加\ttt{1}.我们可以改变这一点.
 看这个极限.
 \begin{equation*}
     \lim_{n_{\text{min}}\rightarrow-\infty}\sum_{n=n_{\text{min}}}^{-1} \frac{1}{n^2} 
@@ -216,7 +216,7 @@ end program main
 我们可以这么计算这个极限的近似值.
 \begin{lstlisting}
 program main
-    use iso_fortran_env,only: qp=>real128
+    use iso_fortran_env, only: qp => real128
     implicit none
     integer :: n_min
     integer :: n
@@ -229,7 +229,7 @@ program main
     print *,s
 end program main
 \end{lstlisting}
-注意第九行现在后面多出了个\texttt{-1},这就表示现在每次\texttt{n}都增加\texttt{-1},也就是减\texttt{1}.对上面这个例子,这意味着\texttt{n}会取\texttt{-1},\texttt{-2},一直到\texttt{n\_{}min}.同样,这个\texttt{-1}也可以被替换成变量或表达式之类的.
+注意第九行现在后面多出了个\ttt{-1},这就表示现在每次\ttt{n}都增加\ttt{-1},也就是减\ttt{1}.对上面这个例子,这意味着\ttt{n}会取\ttt{-1},\ttt{-2},一直到\ttt{n\_{}min}.同样,这个\ttt{-1}也可以被替换成变量或表达式之类的.
 
 让我们进一步探讨到底do结构工作时会干什么事.我们可以使用print大法来看程序的工作过程.下面是一个示例程序,可以执行它看看.
 \begin{lstlisting}
@@ -245,7 +245,7 @@ program main
 end program main
 \end{lstlisting}
 
-一个do结构前头肯定有一个类似于\texttt{do m = m1,m2,m3}的东东,这里的\texttt{m}称作计数变量(counter variable),\texttt{m1}称作初始参数(initial parameter),\texttt{m2}称作终端参数(terminal parameter),\texttt{m3}称作增量参数(incrementation parameter),当然\texttt{m3}可以没有,没有时\texttt{m3}就是\texttt{1}.我们暂且把\texttt{do}所在那行和\texttt{end do}所在那行之间的部分称作do块.
+一个do结构前头肯定有一个类似于\ttt{do m = m1,m2,m3}的东东,这里的\ttt{m}称作计数变量(counter variable),\ttt{m1}称作初始参数(initial parameter),\ttt{m2}称作终端参数(terminal parameter),\ttt{m3}称作增量参数(incrementation parameter),当然\ttt{m3}可以没有,没有时\ttt{m3}就是\ttt{1}.我们暂且把\ttt{do}所在那行和\ttt{end do}所在那行之间的部分称作do块.
 
 总的来说,do结构的工作流程就是:
 \begin{enumerate}
@@ -271,9 +271,9 @@ program main
 end program main
 \end{lstlisting}
 
-用Gfortran跑这个程序的同志们会发现出现一堆警告,而且\texttt{n}的输出结果怎么是\texttt{1000}.仔细看看,\texttt{r}的输出结果可不是\texttt{2.001}.要知道,实型量运算是有误差的,这里\texttt{r}被加了个一千次,疯狂积累误差,刚好使\texttt{r}大于\texttt{2.0}一丢丢,电脑就退出循环了,算出了个我们不想要的结果!
+用Gfortran跑这个程序的同志们会发现出现一堆警告,而且\ttt{n}的输出结果怎么是\ttt{1000}.仔细看看,\ttt{r}的输出结果可不是\ttt{2.001}.要知道,实型量运算是有误差的,这里\ttt{r}被加了个一千次,疯狂积累误差,刚好使\ttt{r}大于\ttt{2.0}一丢丢,电脑就退出循环了,算出了个我们不想要的结果!
 
-用Ifx的同志们会发现没出警告,而且结果还不错.可别高兴得太早,把\texttt{0.001}改成\texttt{0.000001},再跑一回,就会发现事情不对了,还连警告也没有\dots
+用Ifx的同志们会发现没出警告,而且结果还不错.可别高兴得太早,把\ttt{0.001}改成\ttt{0.000001},再跑一回,就会发现事情不对了,还连警告也没有\dots
 
 我们可以用一些偷鸡摸狗的正确办法来避免用实型的计数变量,放在下面,大家自己品品.
 \begin{lstlisting}
@@ -316,7 +316,7 @@ end program main
 之前我们用了一个级数计算$\pi$.现在要考虑这个级数收敛速度如何.假如要计算$n$取多少时级数和能大于$3.14$,我们可以这么做.
 \begin{lstlisting}
 program main
-    use iso_fortran_env,only: qp=>real128
+    use iso_fortran_env, only: qp => real128
     implicit none
     integer :: n
     real(qp) :: s
@@ -329,9 +329,9 @@ program main
     print *,n
 end program main
 \end{lstlisting}
-这个程序的运作过程不难理解.运行到第八行时,电脑会判断刮弧里的量是否为真.若为真,则执行后边直到\texttt{end do}的内容,然后回到第八行,再判断刮弧里的量是否为真\dots~若刮弧里的量不为真,则执行\texttt{end do}之后的内容.\texttt{do while ...}到\texttt{end do}这样的部分就是do while结构
+这个程序的运作过程不难理解.运行到第八行时,电脑会判断刮弧里的量是否为真.若为真,则执行后边直到\ttt{end do}的内容,然后回到第八行,再判断刮弧里的量是否为真\dots~若刮弧里的量不为真,则执行\ttt{end do}之后的内容.\ttt{do while ...}到\ttt{end do}这样的部分就是do while结构
 
-这里要注意最后一句话是\texttt{end do}而不是\texttt{end do while},因为do while结构其实是do结构中的一种.
+这里要注意最后一句话是\ttt{end do}而不是\ttt{end do while},因为do while结构其实是do结构中的一种.
 
 \subsection{exit语句}\label{fortran_exit}
 
@@ -354,7 +354,7 @@ program main
 end program main
 \end{lstlisting}
 
-这个轮子在效率上让人不大满意,因为在第九行判断\texttt{j}是否整除\texttt{i}时,其实只需有一回\texttt{i==i/j*j}就可以得出\texttt{i}不是质数了,所以希望在\texttt{i==i/j*j}时,将\texttt{is\_{}prime}赋成\texttt{.false.},然后直接执行里层的\texttt{end do}之后的语句(也就是第十三行).这时只需加个exit语句就好,像下面这样.
+这个轮子在效率上让人不大满意,因为在第九行判断\ttt{j}是否整除\ttt{i}时,其实只需有一回\ttt{i==i/j*j}就可以得出\ttt{i}不是质数了,所以希望在\ttt{i==i/j*j}时,将\ttt{is\_{}prime}赋成\ttt{.false.},然后直接执行里层的\ttt{end do}之后的语句(也就是第十三行).这时只需加个exit语句就好,像下面这样.
 \begin{lstlisting}
 program main
     implicit none
@@ -374,9 +374,9 @@ program main
 end program main
 \end{lstlisting}
 
-在上面这个轮子中,电脑只要一见到\texttt{exit inner\_{}loop}就浑身一激灵,然后就直接执行\texttt{end do inner\_{}loop}之后的语句了.注意上面这个轮子,使用了鲜少出现的标签,来明确指明执行\texttt{exit}后究竟执行哪个\texttt{end do}之后的语句.其实直接写个\texttt{exit},电脑还是干一样的活儿,但不加标签的话,总会令人脑子有点晕: 到底\texttt{exit}后执行的是倒数第三行还是倒数第一行?所以还是得用用标签.当然如果do结构只有一层就不用了.
+在上面这个轮子中,电脑只要一见到\ttt{exit inner\_{}loop}就浑身一激灵,然后就直接执行\ttt{end do inner\_{}loop}之后的语句了.注意上面这个轮子,使用了鲜少出现的标签,来明确指明执行\ttt{exit}后究竟执行哪个\ttt{end do}之后的语句.其实直接写个\ttt{exit},电脑还是干一样的活儿,但不加标签的话,总会令人脑子有点晕: 到底\ttt{exit}后执行的是倒数第三行还是倒数第一行?所以还是得用用标签.当然如果do结构只有一层就不用了.
 
-如果要让电脑在\texttt{i==i/j*j}时,将\texttt{is\_{}prime}赋成\texttt{.false.},然后直接执行外层的\texttt{end do}之后的语句(也就是最后一行),可以这么做.
+如果要让电脑在\ttt{i==i/j*j}时,将\ttt{is\_{}prime}赋成\ttt{.false.},然后直接执行外层的\ttt{end do}之后的语句(也就是最后一行),可以这么做.
 \begin{lstlisting}
 program main
     implicit none
@@ -422,7 +422,7 @@ program main
 end program main
 \end{lstlisting}
 
-跑这轮子,电脑只要一见到\texttt{cycle inner\_{}loop}就浑身一哆嗦,然后就直接执行\texttt{end do inner\_{}loop},也就是把\texttt{j}加上\texttt{1},然后再执行\texttt{inner\_{}loop: do}\\之后的语句,之后可能又遇上\texttt{cycle inner\_{}loop},那就再来一回\dots
+跑这轮子,电脑只要一见到\ttt{cycle inner\_{}loop}就浑身一哆嗦,然后就直接执行\ttt{end do inner\_{}loop},也就是把\ttt{j}加上\ttt{1},然后再执行\ttt{inner\_{}loop: do}\\之后的语句,之后可能又遇上\ttt{cycle inner\_{}loop},那就再来一回\dots
 
 对外层使用cycle语句就像下面这样.
 \begin{lstlisting}
@@ -450,7 +450,7 @@ end program main
 
 \subsection{continue 语句}
 
-continue 语句写作 \texttt{continue}, 表示 ``啥也不干'', 和注释行没有太大区别. 下面的程序和 \ref{empty_line} 小节第一个程序等价, 第四行用了 continue 语句.
+continue 语句写作 \ttt{continue}, 表示 ``啥也不干'', 和注释行没有太大区别. 下面的程序和 \ref{empty_line} 小节第一个程序等价, 第四行用了 continue 语句.
 \begin{lstlisting}
 program main
     implicit none

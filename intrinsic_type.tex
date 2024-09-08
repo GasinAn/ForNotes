@@ -1,6 +1,6 @@
 \chapter{固有类型}\label{fortran_intrinsic_type}
 
-程序需要获取计算所需的原始数据, 并保存计算的结果. 程序可以从文件中获取数据, 并保存结果到文件中, 但只有文件能干这个事的话, 程序设计就会非常繁复, 并且因为程序读写文件比较费时, 程序运行效率会很差. 程序需要另外在电脑内存\footnote{连内存是什么都不懂的同学赶紧自己恶补电脑知识.}中创立 ``临时文件'' 一样的东东来从中获取数据并保存结果到其中. 这样的东东就是变量 (variable) 和常量 (constant), 而其中常量又分为字面常量 (literal constant) 和具名常量 (named constant). 变量和常量的区别是变量中的数据可以被修改而常量中的数据不可以被修改. 字面常量没有名称, 变量和具名常量则有变量名和具名常量名.
+程序需要获取计算所需的原始数据, 并保存计算的结果. 程序可以从文件中获取数据, 并保存结果到文件中, 但只有文件能干这个事的话, 程序设计就会非常繁复, 并且因为程序读写文件比较费时, 程序运行效率会很差. 程序需要另外在电脑内存\footnote{连内存是什么都不懂的同学赶紧自己恶补电脑知识.}中创立 ``临时文件'' 一样的东东来从中获取数据并保存结果到其中. 这样的东东就是变量 (variable) 和常量 (constant), 而其中常量又分为字面常量 (literal constant) 和具名常量 (named constant). 变量和常量的区别是变量中的数据可以被修改而常量中的数据不可以被修改. 字面常量没有名称, 变量和具名常量则有变量名和具名常量名.\footnote{这话儿其实不太对. 安安仔细查阅\href{https://j3-fortran.org/doc/year/24/24-007.pdf}{标准解释文档}, 发现里头 ``变量'' 的定义和一般人对变量的理解不完全一致, 结果是有些变量不可能有变量名. 但如果那样定义 ``变量'', 安安就要费老鼻子劲儿才能把后面的内容讲清楚了, 所以同学们暂且就认为变量都有变量名吧!}
 
 Fortran 规定变量和常量都属于数据实体 (data entity). 每个数据实体都有若干 ``决定其用途的特性'', 称为属性\footnote{特别提醒, Fortran 中的属性和 Python 中的属性不是一个东东.} (attribute), 而其中又有一个无比特殊的属性, 称为类型\footnote{类型过于特殊, 以至于习惯上不认为其是属性之一, 但 Fortran 标准明确规定其为属性.} (type). 类型分为固有类型 (intrinsic type) 和派生类型 (derived type), 固有类型在本章中讲, 派生类型在第\ref{fortran_derived_type}章中讲.
 
@@ -13,9 +13,9 @@ Fortran 是静态类型语言 (statically typed language), 因为 Fortran 程序
 \end{lstlisting}
 基本形式的解释如下.
 \begin{itemize}
-    \item \texttt{[name\_{}1], ..., [name\_{}n]} 都是名称, 表示创建 \texttt{n} 个数据实体, 名称分别为 \texttt{[name\_{}1], ..., [name\_{}n]}.
-    \item \texttt{[type-with-param]} 规定创建的 \texttt{n} 个数据实体共同的类型, 另可规定创建的 \texttt{n} 个数据实体共同的类型参量. 若 \texttt{[type-with-param]} 没规定创建的 \texttt{n} 个数据实体共同的类型参量, 则创建的 \texttt{n} 个数据实体共同的类型参量为默认类型参量. 默认种别由器规决定. 默认长度为 $1$.
-    \item \texttt{[attr\_{}1], ..., [attr\_{}m]} 规定创建的 \texttt{n} 个数据实体共同的 \texttt{m} 个属性. \texttt{m} 可以是 \texttt{0}. \texttt{[attr\_{}1], ..., [attr\_{}m]} 中如果有 \texttt{parameter}, 则创建的 \texttt{n} 个数据实体都是具名常量并且都有 parameter 属性, 否则创建的 \texttt{n} 个数据实体都是变量并且都没有 parameter 属性.
+    \item \ttt{[name\_{}1], ..., [name\_{}n]} 都是名称, 表示创建 \ttt{n} 个数据实体, 名称分别为 \ttt{[name\_{}1], ..., [name\_{}n]}.
+    \item \ttt{[type-with-param]} 规定创建的 \ttt{n} 个数据实体共同的类型, 另可规定创建的 \ttt{n} 个数据实体共同的类型参量. 若 \ttt{[type-with-param]} 没规定创建的 \ttt{n} 个数据实体共同的类型参量, 则创建的 \ttt{n} 个数据实体共同的类型参量为默认类型参量. 默认种别由器规决定. 默认长度为 $1$.
+    \item \ttt{[attr\_{}1], ..., [attr\_{}m]} 规定创建的 \ttt{n} 个数据实体共同的 \ttt{m} 个属性. \ttt{m} 可以是 \ttt{0}. \ttt{[attr\_{}1], ..., [attr\_{}m]} 中如果有 \ttt{parameter}, 则创建的 \ttt{n} 个数据实体都是具名常量并且都有 parameter 属性, 否则创建的 \ttt{n} 个数据实体都是变量并且都没有 parameter 属性.
 \end{itemize}
 同学们读了上面一大堆抽象的描述后估计已经想卸载 Fortran 编译器了, 我赶紧来个示例让同学们缓一缓. 
 \begin{lstlisting}
@@ -27,15 +27,15 @@ end program main
 \end{lstlisting}
 示例第三行的解释如下.
 \begin{itemize}
-    \item \texttt{[name\_{}1], ..., [name\_{}n]} 是 \texttt{m, q}, 表示创建 2 个数据实体, 名称分别为 \texttt{m} 和 \texttt{q}.
-    \item \texttt{[type-with-param]} 是 \texttt{real}, 表示数据实体 \texttt{m} 和 \texttt{q} 的类型为实型, 类型参量为默认类型参量.
-    \item \texttt{[attr\_{}1], ..., [attr\_{}m]} 没有 (\texttt{m} 是 0), 表示数据实体 \texttt{m} 和 \texttt{q} 没有其他属性, 也就没有 parameter 属性, 因此数据实体 \texttt{m} 和 \texttt{q}是变量.
+    \item \ttt{[name\_{}1], ..., [name\_{}n]} 是 \ttt{m, q}, 表示创建 2 个数据实体, 名称分别为 \ttt{m} 和 \ttt{q}.
+    \item \ttt{[type-with-param]} 是 \ttt{real}, 表示数据实体 \ttt{m} 和 \ttt{q} 的类型为实型, 类型参量为默认类型参量.
+    \item \ttt{[attr\_{}1], ..., [attr\_{}m]} 没有 (\ttt{m} 是 0), 表示数据实体 \ttt{m} 和 \ttt{q} 没有其他属性, 也就没有 parameter 属性, 因此数据实体 \ttt{m} 和 \ttt{q}是变量.
 \end{itemize}
 示例第四行的解释如下.
 \begin{itemize}
-    \item \texttt{[name\_{}1], ..., [name\_{}n]} 是 \texttt{v}, 表示创建 1 个数据实体, 名称为 \texttt{v}.
-    \item \texttt{[type-with-param]} 是 \texttt{real}, 表示数据实体 \texttt{v} 的类型为实型, 类型参量为默认类型参量.
-    \item \texttt{[attr\_{}1], ..., [attr\_{}m]} 是 \texttt{dimension(:), allocatable}, 其中第 1 个 \texttt{dimension(:)} 表示数据实体 \texttt{v} 有 dimension 属性 (\ref{fortran_array_specification} 节介绍), 第 2 个 \texttt{allocatable} 表示数据实体 \texttt{v} 有 allocatable 属性 (\ref{fortran_char} 节和 \ref{fortran_array_specification} 节介绍), 所以没有 parameter 属性, 因此数据实体 \texttt{v} 是变量.
+    \item \ttt{[name\_{}1], ..., [name\_{}n]} 是 \ttt{v}, 表示创建 1 个数据实体, 名称为 \ttt{v}.
+    \item \ttt{[type-with-param]} 是 \ttt{real}, 表示数据实体 \ttt{v} 的类型为实型, 类型参量为默认类型参量.
+    \item \ttt{[attr\_{}1], ..., [attr\_{}m]} 是 \ttt{dimension(:), allocatable}, 其中第 1 个 \ttt{dimension(:)} 表示数据实体 \ttt{v} 有 dimension 属性 (\ref{fortran_array_specification} 节介绍), 第 2 个 \ttt{allocatable} 表示数据实体 \ttt{v} 有 allocatable 属性 (\ref{fortran_char} 节和 \ref{fortran_array_specification} 节介绍), 所以没有 parameter 属性, 因此数据实体 \ttt{v} 是变量.
 \end{itemize}
 这个示例中我没写具名常量的声明, 是因为具名常量的声明得用变种形式, 需放在 \ref{fortran_assignment} 节中讲.
 
@@ -54,18 +54,18 @@ program main
     real(dp) :: v
 end program main
 \end{lstlisting}
-示例第二行到第三行使用了种别 \texttt{real32} 和 \texttt{real64}, 并给 \texttt{real64} 取别名 \texttt{dp}. 示例第五行声明了种别为 \texttt{real32} 的 \texttt{m} 和 \texttt{q}. 示例第六行声明了种别为 \texttt{real64} 的 \texttt{v}.
+示例第二行到第三行使用了种别 \ttt{real32} 和 \ttt{real64}, 并给 \ttt{real64} 取别名 \ttt{dp}. 示例第五行声明了种别为 \ttt{real32} 的 \ttt{m} 和 \ttt{q}. 示例第六行声明了种别为 \ttt{real64} 的 \ttt{v}.
 
-Fortran 程序的每一行, 除了注释和某个本笔记里不想讲的东东外, 都是语句 (statement). Fortran 语句的位置不能乱放, 同学们现在需要记的规则是, 在每一个程序单元内, 以 \texttt{use} 做开头的使用语句放最前面, \texttt{implicit none} 放第二个, 声明语句放第三个, 其他称为执行语句的语句放最后面.
+Fortran 程序的每一行, 除了注释和某个本笔记里不想讲的东东外, 都是语句 (statement). Fortran 语句的位置不能乱放, 同学们现在需要记的规则是, 在每一个程序单元内, 以 \ttt{use} 做开头的使用语句放最前面, \ttt{implicit none} 放第二个, 声明语句放第三个, 其他称为执行语句的语句放最后面.
 
-本笔记中的所有示例里都有个 \texttt{implicit none}, 这是个 Fortran 避坑大法咒, 有了它, 老师用来折磨同学们的 I--N 隐式规则就被禁掉了. 请同学们务必在每个程序单元里都加上它.
+本笔记中的所有示例里都有个 \ttt{implicit none}, 这是个 Fortran 避坑大法咒, 有了它, 老师用来折磨同学们的 I--N 隐式规则就被禁掉了. 请同学们务必在每个程序单元里都加上它.
 \begin{convention}
-    在程序的每个程序单元里都加上 \texttt{\emph{implicit none}}.
+    在程序的每个程序单元里都加上 \ttt{\emph{implicit none}}.
 \end{convention}
 
 \section{整型}
 
-整型数据实体代表整数. 默认种别的整型字面常量长得和整数一样, 但不能加小数点及之后的 \texttt{0}. 下面这个程序使用了默认种别的整型字面常量 \texttt{-1234567890}, 它表示 $-1234567890$.
+整型数据实体代表整数. 默认种别的整型字面常量长得和整数一样, 但不能加小数点及之后的 \ttt{0}. 下面这个程序使用了默认种别的整型字面常量 \ttt{-1234567890}, 它表示 $-1234567890$.
 \begin{lstlisting}
 program main
     implicit none
@@ -73,7 +73,7 @@ program main
 end program main
 \end{lstlisting}
 
-整型用 \texttt{integer} 声明. 下面这个程序声明了默认种别的整型变量\texttt{i}.
+整型用 \ttt{integer} 声明. 下面这个程序声明了默认种别的整型变量\ttt{i}.
 \begin{lstlisting}
 program main
     implicit none
@@ -81,11 +81,11 @@ program main
 end program main
 \end{lstlisting}
 
-整型种别有 \texttt{int8}, \texttt{int16}, \texttt{int32} 和 \texttt{int64}. Ifx 和 Gfortran 规定的默认种别都是 \texttt{int32}. 原则上种别 \texttt{intn} 的 \texttt{n} 越大, 可存入数据实体中的整数的范围越广. 说明整型种别的方式和 \ref{fortran_real} 节介绍的说明实型种别的方式一样, 但通常情况下没必要说明整型种别, 直接使用默认种别即可.
+整型种别有 \ttt{int8}, \ttt{int16}, \ttt{int32} 和 \ttt{int64}. Ifx 和 Gfortran 规定的默认种别都是 \ttt{int32}. 原则上种别 \ttt{intn} 的 \ttt{n} 越大, 可存入数据实体中的整数的范围越广. 说明整型种别的方式和 \ref{fortran_real} 节介绍的说明实型种别的方式一样, 但通常情况下没必要说明整型种别, 直接使用默认种别即可.
 
 \section{实型}\label{fortran_real}
 
-实型数据实体代表实数, $+\infty$, $-\infty$ 和 $\text{NaN}$. $\text{NaN}$ 称为非数 (Not a Number), 表示数据或计算结果不正常而且还不是 $\pm\infty$, $0/0$ 的结果就是$\text{NaN}$ ($\pm 1/0$ 的结果则是 $\pm\infty$). 默认种别的实型字面常量长得和实数一样, 最后可带 \texttt{e[n]}, 其中 \texttt{[n]} 是默认种别的整型字面常量, 来表示 $\times 10 ^ n$. 下面这个程序使用了默认种别的实型字面常量 \texttt{6.62607015e-34}, 它照道理应该表示 $6.62607015\times10^{-34}$, 然而实际上表示的是个非常近似于 $6.62607015\times10^{-34}$ 的数, 这是因为计算机用的是二进制, 不一定能精确存储十进制的实数.
+实型数据实体代表实数, $+\infty$, $-\infty$ 和 $\text{NaN}$. $\text{NaN}$ 称为非数 (Not a Number), 表示数据或计算结果不正常而且还不是 $\pm\infty$, $0/0$ 的结果就是$\text{NaN}$ ($\pm 1/0$ 的结果则是 $\pm\infty$). 默认种别的实型字面常量长得和实数一样, 最后可带 \ttt{e[n]}, 其中 \ttt{[n]} 是默认种别的整型字面常量, 来表示 $\times 10 ^ n$. 下面这个程序使用了默认种别的实型字面常量 \ttt{6.62607015e-34}, 它照道理应该表示 $6.62607015\times10^{-34}$, 然而实际上表示的是个非常近似于 $6.62607015\times10^{-34}$ 的数, 这是因为计算机用的是二进制, 不一定能精确存储十进制的实数.
 \begin{lstlisting}
 program main
     implicit none
@@ -93,9 +93,9 @@ program main
 end program main
 \end{lstlisting}
 
-如果实型字面常量中没有小数点, 则必须附加 \texttt{e[n]}, 否则会变成整型字面常量. 如果实型字面常量中有小数点, 则小数点前和小数点后的数字可以省略一边, 若省略则为 \texttt{0}, 但不能都省略. 安安用实型字面常量时不会省略小数点前和小数点后的数字, 例如 \texttt{1.0} 不会写成 \texttt{1.}, \texttt{0.1} 不会写成 \texttt{.1}, 因为日常写小数时不太有这样省略的写法, 程序里写成这样, 可读性会下降一丢丢. 但是有很多人在程序里用这省略的写法, 并不觉得有什么问题, 所以安安不好把不省略小数点前后的数字定成规范. 
+如果实型字面常量中没有小数点, 则必须附加 \ttt{e[n]}, 否则会变成整型字面常量. 如果实型字面常量中有小数点, 则小数点前和小数点后的数字可以省略一边, 若省略则为 \ttt{0}, 但不能都省略. 安安用实型字面常量时不会省略小数点前和小数点后的数字, 例如 \ttt{1.0} 不会写成 \ttt{1.}, \ttt{0.1} 不会写成 \ttt{.1}, 因为日常写小数时不太有这样省略的写法, 程序里写成这样, 可读性会下降一丢丢. 但是有很多人在程序里用这省略的写法, 并不觉得有什么问题, 所以安安不好把不省略小数点前后的数字定成规范. 
 
-实型用 \texttt{real} 声明. 下面这个程序声明了默认种别的实型变量 \texttt{h}.
+实型用 \ttt{real} 声明. 下面这个程序声明了默认种别的实型变量 \ttt{h}.
 \begin{lstlisting}
 program main
     implicit none
@@ -103,9 +103,9 @@ program main
 end program main
 \end{lstlisting}
 
-实型种别有 \texttt{real16}, \texttt{real32}, \texttt{real64} 和 \texttt{real128}, 分别称为半精度, 单精度, 双精度和四精度, 不过俺手里的 Ifx 和 Gfortran 都 out 了, 不认得 \texttt{real16}. Ifx 和 Gfortran 规定的默认种别都是 \texttt{real32}. 原则上种别 \texttt{realn} 的 \texttt{n} 越大, 可存入数据实体中的实数的范围越广, 精度越高, 所以照道理用 \texttt{real128} 最好, 不过 \texttt{real128} 出现得比较晚, 天文人历来用的都是 \texttt{real64}, 我们沿用即可.
+实型种别有 \ttt{real16}, \ttt{real32}, \ttt{real64} 和 \ttt{real128}, 分别称为半精度, 单精度, 双精度和四精度, 不过俺手里的 Ifx 和 Gfortran 都 out 了, 不认得 \ttt{real16}. Ifx 和 Gfortran 规定的默认种别都是 \ttt{real32}. 原则上种别 \ttt{realn} 的 \ttt{n} 越大, 可存入数据实体中的实数的范围越广, 精度越高, 所以照道理用 \ttt{real128} 最好, 不过 \ttt{real128} 出现得比较晚, 天文人历来用的都是 \ttt{real64}, 我们沿用即可.
 
-声明实型数据实体的种别时在 \texttt{real} 后加 \texttt{([kind])} 或 \texttt{(kind=[kind])}, 和 \texttt{real} 间可以有空格但一般不加, 一般都用第一种方式, 虽然这种方式和 \ref{fortran_char} 节介绍的声明字符型数据实体的长度的方式长得一样, 总让人觉得会混淆. 说明实型字面常量的种别时在它屁股后面加尾巴 \texttt{\_{}[kind]}. 以上的 \texttt{[kind]} 都是种别名 (如果取了别名则必须用别名). 下面这个程序声明了 \texttt{real32} 种别的实型变量 \texttt{g} 和 \texttt{real64} 种别的实型变量 \texttt{c}, 使用了 \texttt{real32} 种别的实型字面常量 \texttt{6.6743e-11\_{}real32} (程序里必须写成 \texttt{6.6743e-11\_{}sp}) 和 \texttt{real64} 种别的实型字面常量 \texttt{299792458.0\_{}real64}.
+声明实型数据实体的种别时在 \ttt{real} 后加 \ttt{([kind])} 或 \ttt{(kind=[kind])}, 和 \ttt{real} 间可以有空格但一般不加, 一般都用第一种方式, 虽然这种方式和 \ref{fortran_char} 节介绍的声明字符型数据实体的长度的方式长得一样, 总让人觉得会混淆. 说明实型字面常量的种别时在它屁股后面加尾巴 \ttt{\_{}[kind]}. 以上的 \ttt{[kind]} 都是种别名 (如果取了别名则必须用别名). 下面这个程序声明了 \ttt{real32} 种别的实型变量 \ttt{g} 和 \ttt{real64} 种别的实型变量 \ttt{c}, 使用了 \ttt{real32} 种别的实型字面常量 \ttt{6.6743e-11\_{}real32} (程序里必须写成 \ttt{6.6743e-11\_{}sp}) 和 \ttt{real64} 种别的实型字面常量 \ttt{299792458.0\_{}real64}.
 \begin{lstlisting}
 program main
     use, intrinsic :: iso_fortran_env, &
@@ -118,11 +118,11 @@ program main
 end program main
 \end{lstlisting}
 
-说明实型种别有两种不规范的写法. 第一种是用 \texttt{4} 和 \texttt{8} 代替 \texttt{real32} 和 \texttt{real64}, 第二种是声明双精度实型数据实体时用 \texttt{double precision} 代替 \texttt{real(real64)}, 使用双精度实型字面常量时用 \texttt{d} 代替 \texttt{e}. 这两种不规范的写法同学们不许用.
+说明实型种别有两种不规范的写法. 第一种是用 \ttt{4} 和 \ttt{8} 代替 \ttt{real32} 和 \ttt{real64}, 第二种是声明双精度实型数据实体时用 \ttt{double precision} 代替 \ttt{real(real64)}, 使用双精度实型字面常量时用 \ttt{d} 代替 \ttt{e}. 这两种不规范的写法同学们不许用.
 
-\section{复型}
+\section{复型}\label{fortran_complex}
 
-复型数据实体有实部和虚部, 两者都是实型数据实体, 如果实部和虚部都代表实数, 那么复型数据实体自然代表复数. 复型用 \texttt{complex} 声明. 复型种别和实型种别一样, 声明的方式也相同. 下面这个程序声明了 \texttt{real128} 种别的复型变量 \texttt{tilde\_{}s}.
+复型数据实体有实部和虚部, 两者都是实型数据实体, 如果实部和虚部都代表实数, 那么复型数据实体自然代表复数. 复型用 \ttt{complex} 声明. 复型种别和实型种别一样, 声明的方式也相同. 下面这个程序声明了 \ttt{real128} 种别的复型变量 \ttt{tilde\_{}s}.
 \begin{lstlisting}
 program main
     use, intrinsic :: iso_fortran_env, only: real128
@@ -131,7 +131,7 @@ program main
 end program main
 \end{lstlisting}
 
-复型字面常量长成 \texttt{([real], [imag])}的样子, 其中 \texttt{[real]} 和 \texttt{[imag]}是整型或实型常量, 分别代表实部和虚部. 下面这个程序使用了复型字面常量\texttt{(0.0, 1.0)}, 它表示 $0+1i$.
+复型字面常量长成 \ttt{([real], [imag])}的样子, 其中 \ttt{[real]} 和 \ttt{[imag]}是整型或实型常量, 分别代表实部和虚部. 下面这个程序使用了复型字面常量\ttt{(0.0, 1.0)}, 它表示 $0+1i$.
 \begin{lstlisting}
 program main
     implicit none
@@ -145,7 +145,7 @@ end program main
     \item 如果构造时实部和虚部一个用整型常量, 另一个用实型常量, 则复型字面常量的种别是那个实型常量的种别.
     \item 如果构造时实部和虚部都用整型常量, 则复型字面常量的种别是默认实型种别.
 \end{itemize}
-下面这个程序中, 第一个复型字面常量的种别是默认实型种别 (对 Ifx 和 Gfortran 而言是 \texttt{real32}), 第二个复型字面常量的种别是 \texttt{real16}, 第三个复型字面常量的种别原则上是 \texttt{real128}, 最后一个复型字面常量的种别的表示方法不对, 程序将报错.
+下面这个程序中, 第一个复型字面常量的种别是默认实型种别 (对 Ifx 和 Gfortran 而言是 \ttt{real32}), 第二个复型字面常量的种别是 \ttt{real16}, 第三个复型字面常量的种别原则上是 \ttt{real128}, 最后一个复型字面常量的种别的表示方法不对, 程序将报错.
 \begin{lstlisting}
 program main
     use, intrinsic :: iso_fortran_env, &
@@ -158,11 +158,11 @@ program main
 end program main
 \end{lstlisting}
 
-复型数据实体的实部和虚部的种别总是和复型数据实体本身的种别相同, 例如 \texttt{(0.0\_{}real64, 1.0\_{}real32)} 的实部的种别是 \texttt{real64}, 虚部的种别也是 \texttt{real64} (而不是 \texttt{real32}). 任意复型数据实体 \texttt{[z]}, 其实部和虚部可分别用 \texttt{real([z])} 和 \texttt{aimag([z])} 获取, 例如 \texttt{real((0, 1))} 是 \texttt{0.0}, \texttt{aimag((0, 1))} 是 \texttt{1.0}.
+复型数据实体的实部和虚部的种别总是和复型数据实体本身的种别相同, 例如 \ttt{(0.0\_{}real64, 1.0\_{}real32)} 的实部的种别是 \ttt{real64}, 虚部的种别也是 \ttt{real64} (而不是 \ttt{real32}). 任意复型数据实体 \ttt{[z]}, 其实部和虚部可分别用 \ttt{real([z])} 和 \ttt{aimag([z])} 获取, 例如 \ttt{real((0, 1))} 是 \ttt{0.0}, \ttt{aimag((0, 1))} 是 \ttt{1.0}.
 
 \section{字符型}\label{fortran_char}
 
-字符型数据实体代表字符串 (character string). 字符串就是排成一串的字符. 字符串的长度可以是 $0$. 字符型字面常量用夹在两个 \texttt{'} 或 \texttt{"} 之间的字符串表示. 下面这个程序使用了两个字符型字面常量, 第一个代表长度为 $0$ 的字符串 ``'', 第二个代表字符串 ``character'' (两端的引号不属于字符串).
+字符型数据实体代表字符串 (character string). 字符串就是排成一串的字符. 字符串的长度可以是 $0$. 字符型字面常量用夹在两个 \ttt{'} 或 \ttt{"} 之间的字符串表示. 下面这个程序使用了两个字符型字面常量, 第一个代表长度为 $0$ 的字符串 ``'', 第二个代表字符串 ``character'' (两端的引号不属于字符串).
 \begin{lstlisting}
 program main
     implicit none
@@ -171,7 +171,7 @@ program main
 end program main
 \end{lstlisting}
 
-字符型字面常量中夹在引号之间的字符都属于字符串的规则优先于其他许多语法规则, 所以字符型字面常量中大小写效果不同, 空格不可有可无, \texttt{!} 和 \texttt{\&{}} 也不表示注释和续行. 示例如下.
+字符型字面常量中夹在引号之间的字符都属于字符串的规则优先于其他许多语法规则, 所以字符型字面常量中大小写效果不同, 空格不可有可无, \ttt{!} 和 \ttt{\&{}} 也不表示注释和续行. 示例如下.
 \begin{lstlisting}
 program main
     implicit none
@@ -197,7 +197,7 @@ program main
 end program main
 \end{lstlisting}
 
-如果在夹于 \texttt{'} 间的字符串中又出现 \texttt{'}, 在夹于 \texttt{"} 间的字符串中又出现 \texttt{"}, 编译器就看不懂代码了. Fortran 特别规定在夹于 \texttt{'} 间的字符串中需要用 \texttt{''} 表示 \texttt{'}, 在夹于 \texttt{"} 间的字符串中需要用 \texttt{""} 表示 \texttt{"}. 示例如下. 另外请注意老古董 Fortran 的这一规定和 C 的规定不同, 并且其他绝大多数语言的规定都是照着 C 来的.
+如果在夹于 \ttt{'} 间的字符串中又出现 \ttt{'}, 在夹于 \ttt{"} 间的字符串中又出现 \ttt{"}, 编译器就看不懂代码了. Fortran 特别规定在夹于 \ttt{'} 间的字符串中需要用 \ttt{''} 表示 \ttt{'}, 在夹于 \ttt{"} 间的字符串中需要用 \ttt{""} 表示 \ttt{"}. 示例如下. 另外请注意老古董 Fortran 的这一规定和 C 的规定不同, 并且其他绝大多数语言的规定都是照着 C 来的.
 \begin{lstlisting}
 program main
     implicit none
@@ -208,9 +208,9 @@ end program main
 
 Fortran 字符串中可以有换行字符. 电脑里的字符本质上是小段数据, 而换行字符则是电脑操作系统规定的专门用来表示前面的字符和后面的字符分别在上下两行的数据. Windows 和 Linux 的换行字符还不一样, Windows 连用回车符和换行符表示换行, 而 Linux 单用换行符表示换行. 不好玩的是, Fortran 字符型字面常量中没法儿加换行字符 (C 没这问题). 在 Fortran 字符串中加入换行字符的方法放在 \ref{fortran_char_operator} 小节介绍.
 
-字符型用 \texttt{character} 声明. 通常情况下没必要说明字符型种别, 直接使用默认种别即可. 字符型字面常量可以直接表示自己的长度. 声明字符型数据实体的长度时在 \texttt{character} 后加 \texttt{([len])} 或 \texttt{(len=[len])}, 和 \texttt{character} 间可以有空格但一般不加, 一般都用第一种方式, 虽然这种方式和 \ref{fortran_real} 节介绍的声明实型数据实体的种别的方式长得一样, 总让人觉得会混淆. \texttt{[len]} 可以是整型数据实体, \texttt{*} 或 \texttt{:}.
+字符型用 \ttt{character} 声明. 通常情况下没必要说明字符型种别, 直接使用默认种别即可. 字符型字面常量可以直接表示自己的长度. 声明字符型数据实体的长度时在 \ttt{character} 后加 \ttt{([len])} 或 \ttt{(len=[len])}, 和 \ttt{character} 间可以有空格但一般不加, 一般都用第一种方式, 虽然这种方式和 \ref{fortran_real} 节介绍的声明实型数据实体的种别的方式长得一样, 总让人觉得会混淆. \ttt{[len]} 可以是整型数据实体, \ttt{*} 或 \ttt{:}.
 
-如果 \texttt{[len]} 是整型数据实体, 则直接表示字符型数据实体的长度, 也就是字符型数据实体表示的字符串的长度. 下面这个程序声明了一个长度为 $1\times 10^{12}$ 的字符型变量 \texttt{very\_{}long\_{}char}.
+如果 \ttt{[len]} 是整型数据实体, 则直接表示字符型数据实体的长度, 也就是字符型数据实体表示的字符串的长度. 下面这个程序声明了一个长度为 $1\times 10^{12}$ 的字符型变量 \ttt{very\_{}long\_{}char}.
 \begin{lstlisting}
 program main
     use iso_fortran_env, only: l => int64
@@ -218,18 +218,18 @@ program main
     character(1000000000000_l) :: very_long_char
 end program main
 \end{lstlisting}
-但下面这个程序不成, 因为 \texttt{1e12} 是实型的.
+但下面这个程序不成, 因为 \ttt{1e12} 是实型的.
 \begin{lstlisting}
 program main
     implicit none
     character(1e12) :: very_long_char
 end program main
 \end{lstlisting}
-任意复型数据实体 \texttt{[c]}, 其长度可用 \texttt{len([c])} 获取, 例如 \texttt{len('')} 是 \texttt{0}.
+任意字符型数据实体 \ttt{[c]}, 其长度可用 \ttt{len([c])} 获取, 例如 \ttt{len('')} 是 \ttt{0}.
 
-如果 \texttt{[len]} 是 \texttt{*}, 则表示声明的是假定长度 (assumed-length) 字符型数据实体. 假定长度字符型数据实体涉及些比较高深的知识, 需放在 \ref{fortran_assignment} 节和 \ref{assumed-shape} 小节中讲.
+如果 \ttt{[len]} 是 \ttt{*}, 则表示声明的是假定长度 (assumed-length) 字符型数据实体. 假定长度字符型数据实体涉及些比较高深的知识, 需放在 \ref{fortran_assignment} 节和 \ref{assumed-shape} 小节中讲.
 
-如果 \texttt{[len]} 是 \texttt{:}, 则表示声明的是延迟长度 (deferred-length) 字符型数据实体, 此时必须附带地用 \texttt{allocatable} 加上 allocatable 属性. 延迟长度字符型数据实体的长度在声明后未定. 任意延迟长度字符型数据实体 \texttt{[c\_{}ds]}, 我们可以用形如 \texttt{allocate(character([len]) :: [c\_{}ds])} 的 allocate 语句让 \texttt{[c\_{}ds]} 的长度由未定变成 \texttt{[len]}, 用形如 \texttt{deallocate([c\_{}ds])} 的 deallocate 语句让 \texttt{[c\_{}ds]} 的长度由确定长度变成未定. 这也意味着延迟长度字符型数据实体只能是变量. 示例如下.
+如果 \ttt{[len]} 是 \ttt{:}, 则表示声明的是延迟长度 (deferred-length) 字符型数据实体, 此时必须附带地用 \ttt{allocatable} 加上 allocatable 属性. 延迟长度字符型数据实体的长度在声明后未定. 任意延迟长度字符型数据实体 \ttt{[c\_{}ds]}, 我们可以用形如 \ttt{allocate(character([len]) :: [c\_{}ds])} 的 allocate 语句让 \ttt{[c\_{}ds]} 的长度由未定变成 \ttt{[len]}, 用形如 \ttt{deallocate([c\_{}ds])} 的 deallocate 语句让 \ttt{[c\_{}ds]} 的长度由确定长度变成未定. 这也意味着延迟长度字符型数据实体只能是变量. 示例如下.
 \begin{lstlisting}
 program main
     implicit none
@@ -245,7 +245,7 @@ end program main
 \end{lstlisting}
 使用 allocate 语句和 deallocate 语句需遵守的规范放在 \ref{fortran_array_specification} 节讲.
 
-可以对字符串进行切片 (slicing) 操作. 切片就是在字符串后加上个形如 \texttt{(nl:nu)} 的东东, 表示用字符串的第 \texttt{nl} 到第 \texttt{nu} 个字符组成一个新字符串. \texttt{nl} 和 \texttt{nu} 必须是整型数据实体. \texttt{nl} 和 \texttt{nu} 都可以不写. 如果 \texttt{nl} 不写, \texttt{nl} 就等于 \texttt{1}. 如果 \texttt{nu} 不写, \texttt{nu} 就等于旧字符串的长度. 示例如下.
+可以对字符串进行切片 (slicing) 操作. 切片就是在字符串后加上个形如 \ttt{(nl:nu)} 的东东, 表示用字符串的第 \ttt{nl} 到第 \ttt{nu} 个字符组成一个新字符串. \ttt{nl} 和 \ttt{nu} 必须是整型数据实体. \ttt{nl} 和 \ttt{nu} 都可以不写. 如果 \ttt{nl} 不写, \ttt{nl} 就等于 \ttt{1}. 如果 \ttt{nu} 不写, \ttt{nu} 就等于旧字符串的长度. 示例如下.
 \begin{lstlisting}
 program main
     implicit none
@@ -258,4 +258,4 @@ end program main
 
 \section{逻辑型}
 
-逻辑型数据实体代表逻辑值, 逻辑型字面常量只有 \texttt{.true.} 和 \texttt{.false.}, 分别代表 ``真'' 和 ``假''. 逻辑型用 \texttt{logical} 声明. 通常情况下没必要说明逻辑型种别, 直接使用默认种别即可. 示例俺懒得写了, 留给同学们作练习.
+逻辑型数据实体代表逻辑值, 逻辑型字面常量只有 \ttt{.true.} 和 \ttt{.false.}, 分别代表 ``真'' 和 ``假''. 逻辑型用 \ttt{logical} 声明. 通常情况下没必要说明逻辑型种别, 直接使用默认种别即可. 示例俺懒得写了, 留给同学们作练习.
