@@ -31,7 +31,7 @@ program main
     real, parameter :: ten = 10.0
 end program main
 \end{lstlisting}
-如果是声明字符型具名常量, 那么初始化时还有个长度匹配的问题. 我们可以在声明时把长度写成 \ttt{*}, 这样字符型具名常量的长度直接由字面常量 \ttt{[value]} 确定为 \ttt{[value]} 的长度. 下面这个程序声明了具名常量 \ttt{author}, 它的长度直接由字面常量 \ttt{'GasinAn'} 确定为 $7$.
+如果是声明字符型具名常量, 那么初始化时还有个长度匹配的问题. 我们可以在声明时把长度写成 \ttt{*}, 这样字符型具名常量的长度直接由字面常量 \ttt{[value]} 确定为 \ttt{[value]} 的长度, 非常方便. 下面这个程序声明了具名常量 \ttt{author}, 它的长度直接由字面常量 \ttt{'GasinAn'} 确定为 $7$.
 \begin{lstlisting}
 program main
     implicit none
@@ -39,8 +39,7 @@ program main
     print *, author, len(author)
 end program main
 \end{lstlisting}
-
-如果一个变量在程序运行的时候第一次被赋值, 我们也称这个变量被初始化, 而如果一个变量在程序运行的时候没被赋值, 我们则称这个变量是未定义的. 在下面这个程序中, \ttt{a} 有被初始化, 而 \ttt{b} 没被初始化, 从始至终一直是未定义的.
+另外, 如果一个变量在程序运行的时候第一次被赋值, 我们也称这个变量被初始化, 而如果一个变量在程序运行的时候没被赋值, 我们则称这个变量是未定义的. 在下面这个程序中, \ttt{a} 有被初始化, 而 \ttt{b} 没被初始化, 从始至终一直是未定义的.
 \begin{lstlisting}
 program main
     implicit none
@@ -50,6 +49,32 @@ program main
 end program main
 \end{lstlisting}
 但同学们会发现上面这个程序运行到最后, \ttt{a} 和 \ttt{b} 里头都有数据. 其中, \ttt{a} 里头的数据是我们用程序清清楚楚地指挥电脑赋给 \ttt{a} 的有意义的数据, 而 \ttt{b} 里头的数据是我们用程序指挥电脑创建 \ttt{b} 的时候 \ttt{b} 会随机拥有的无意义的数据. 如果一个变量是未定义的, 存在那个变量中的数据是无意义的, 那么取用那个变量中的数据也是无意义的, 程序必然有毛病. 然而 Fortran 和 C 这样古早的语言, 它们的编译器不一定会检查变量在取用时是否未定义, 程序因此容易出现检查不出的毛病, 同学们只好自己小心. Python 吸取教训, 不存在这个问题, 例如在 Python 3 中, 如果 \ttt{b} 未定义, 那么 \ttt{print(b)} 会直接报错.
+
+当我们要用延迟长度字符型变量时, 我们本可能需要经常使用 allocate 语句和 deallocate 语句, 像下面的程序那样, 非常麻烦.
+\begin{lstlisting}
+program main
+    implicit none
+    character(:), allocatable :: char
+    allocate(character(len('allocated')) :: char)
+    char = 'allocated'
+    print *, char, len(char), len('allocated')
+    deallocate(char)
+    allocate(character(len('reallocated')) :: char)
+    char = 'reallocated'
+    print *, char, len(char), len('reallocated')
+end program main
+\end{lstlisting}
+Fortran 为我们简化了语法. 我们可以直接对延迟长度字符型变量进行赋值. 如果延迟长度字符型变量 \ttt{[var]} 的长度未定, 那么 \ttt{[var] = [expr]} 时电脑会自动用 allocate 语句把 \ttt{[var]} 的长度定成 \ttt{[expr]} 的长度. 如果延迟长度字符型变量 \ttt{[var]} 的长度已定但不等于 \ttt{[expr]} 的长度, 那么 \ttt{[var] = [expr]} 时电脑会自动用 deallocate 语句让 \ttt{[var]} 的长度未定, 然后再用 allocate 语句把 \ttt{[var]} 的长度定成 \ttt{[expr]} 的长度. 所以上面的程序可简化成下面的程序, 非常方便.
+\begin{lstlisting}
+program main
+    implicit none
+    character(:), allocatable :: char
+    char = 'allocated'
+    print *, char, len(char), len('allocated')
+    char = 'reallocated'
+    print *, char, len(char), len('reallocated')
+end program main
+\end{lstlisting}
 
 Fortran 是强类型语言 (strongly typed language), 因为 Fortran 程序赋值时用于赋值的和被赋值的数据实体的类型要一致, 数字型数据实体只能赋值给数字型数据实体, 字符型数据实体只能赋值给字符型数据实体, 逻辑型数据实体只能赋值给逻辑型数据实体. 不过官规虽是这么说, Ifx 和 Gfortran 却会在某些情况下允许数字型数据实体和逻辑型数据实体相互赋值, 根据规范 \ref{use_standard_only}, 同学们不许这么做.
 
@@ -170,6 +195,44 @@ program main
 end program main
 \end{lstlisting}
 Python 的语法简洁优美, 但 Python 不允许直接修改字符串的一部分, 同学们需另寻他法. C 就可怕了, 详细说来, C 的字符串有两种定义法, 方法一定义的字符串能直接修改整个字符串但不能直接修改字符串中的单个字符, 方法二定义的字符串能直接修改字符串中的单个字符但不能直接修改整个字符串\dots{}
+
+但是, 这里有个小坑. 来看下面这个程序. 在这个程序中, 我们对延迟长度字符型变量 \ttt{char} 的一部分 \ttt{char(:)} 赋值. 我们会期待电脑将自动用 allocate 语句和 deallocate 语句来帮我们定好 \ttt{char} 的长度, 然而, 因为语法上 ``\ttt{=}'' 左边不是 \ttt{char}, 而是 \ttt{char} 的一部分 \ttt{char(:)}, 所以电脑\uline{不会}自动用 allocate 语句和 deallocate 语句来帮我们定好 \ttt{char} 的长度 (即使 \ttt{char(:)} 代表 \ttt{char} ``从头到尾的一部分'', 和 \ttt{char} 本身是相当的). 这个程序 Gfortran 运行时会报错, Ifx 不会报错, 但运行后屏幕上出现的结果怪怪的, 原因应该是 Ifx 在 \ttt{char} 长度未被确定过的情况下, 会自己认定 \ttt{char} 的长度是 $0$, 然后在赋值时又根据赋值规则, 把 \ttt{'allocated'} 和 \ttt{'deallocated'} 的尾巴砍掉, 但 \ttt{char} 的长度是 $0$, 所以砍完就变成 \ttt{''} 了\dots{}
+\begin{lstlisting}
+program main
+    implicit none
+    character(:), allocatable :: char
+    char(:) = 'allocated'
+    print *, char, len(char), len('allocated')
+    char(:) = 'reallocated'
+    print *, char, len(char), len('reallocated')
+end program main
+\end{lstlisting}
+再来两个例子让同学们把这个问题弄清楚. 在下面这个例子中, 第四行 \ttt{char} 的长度被定了, 然后第六行和第八行 ``\ttt{=}'' 左边是 \ttt{char}, 这时遵循简化赋值语法, ``\ttt{=}'' 左边字符串的长度被重定, 来和 ``\ttt{=}'' 右边字符串的长度一致.
+\begin{lstlisting}
+program main
+    implicit none
+    character(:), allocatable :: char
+    char = '******'
+    print *, char, len(char), len('******')
+    char = 'allocated'
+    print *, char, len(char), len('allocated')
+    char = 'reallocated'
+    print *, char, len(char), len('reallocated')
+end program main
+\end{lstlisting}
+而在下面这个例子中, 第四行 \ttt{char} 的长度被定了, 然后第六行和第八行 ``\ttt{=}'' 左边是 \ttt{char(:)}, 这时不遵循简化赋值语法, ``\ttt{=}'' 左边字符串的长度不被重定, 而``\ttt{=}'' 右边字符串被砍尾巴/补空格来和 ``\ttt{=}'' 左边字符串的长度一致.
+\begin{lstlisting}
+program main
+    implicit none
+    character(:), allocatable :: char
+    char = '******'
+    print *, char, len(char), len('******')
+    char(:) = 'allocated'
+    print *, char, len(char), len('allocated')
+    char(:) = 'reallocated'
+    print *, char, len(char), len('reallocated')
+end program main
+\end{lstlisting}
 
 \section{运算}\label{fortran_opration}
 
