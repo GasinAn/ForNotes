@@ -24,7 +24,7 @@ program main
     10.0 = 10.0
 end program main
 \end{lstlisting}
-而具名常量也是不能被赋值的, 这就出现了具名常量的值如何确定的问题. 具名常量的值需要且必须由初始化 (initialization) 确定, 所谓初始化实际上就是在声明的同时赋值\footnote{这话儿其实不太对, 因为按\href{https://j3-fortran.org/doc/year/24/24-007.pdf}{标准解释文档}的定义, 初始化和赋值是不同的东东, 但通常人们都会觉得初始化就是在声明的同时赋值, 同学们就这么认为拉倒吧!}, 方法是在声明时在具名常量名 \ttt{[name]} 后加 \ttt{ = [value]}, 其中 \ttt{[value]} 是字面常量. 下面这个程序声明了具名常量 \ttt{ten}, 并令其值为 \ttt{10.0}
+而具名常量也是不能被赋值的, 这就出现了具名常量的值如何确定的问题. 具名常量的值需要且必须由初始化 (initialization) 确定, 所谓初始化实际上就是在声明的同时赋值\footnote{这话儿其实不太对, 因为按\href{https://j3-fortran.org/doc/year/24/24-007.pdf}{标准解释文档}的定义, 初始化和赋值是不同的东东, 但通常人们都会觉得初始化就是在声明的同时赋值, 同学们就这么认为拉倒吧!}, 方法是在声明时在具名常量名 \ttt{[name]} 后加 \ttt{ = [value]}, 其中 \ttt{[value]} 是常量. 下面这个程序声明了具名常量 \ttt{ten}, 并令其值为 \ttt{10.0}
 \begin{lstlisting}
 program main
     implicit none
@@ -78,7 +78,7 @@ end program main
 
 Fortran 是强类型语言 (strongly typed language), 因为 Fortran 程序赋值时用于赋值的和被赋值的数据实体的类型要一致, 数字型数据实体只能赋值给数字型数据实体, 字符型数据实体只能赋值给字符型数据实体, 逻辑型数据实体只能赋值给逻辑型数据实体. 不过官规虽是这么说, Ifx 和 Gfortran 却会在某些情况下允许数字型数据实体和逻辑型数据实体相互赋值, 根据规范 \ref{use_standard_only}, 同学们不许这么做.
 
-数字型数据实体赋值给数字型数据实体的时候, ``\ttt{=}'' 两边的类型或种别可能不一样, 这时自然有个类型和种别转化的问题. 因为 Fortran 是静态类型语言, 所以赋值时 ``\ttt{=}'' 左边数据实体的类型和种别不会变, 而右边数据实体的类型和种别会\uline{临时}转化成左边数据实体的类型和种别. 安安努力查阅\href{https://j3-fortran.org/doc/year/24/24-007.pdf}{标准解释文档}后, 把 Fortran 数字型数据实体类型和种别转化时的规则总结成表 \ref{numeric_type_convert}, 其中的术语解释如下:
+数字型数据实体赋值给数字型数据实体的时候, ``\ttt{=}'' 两边的类型或种别可能不一样, 这时自然有个类型和种别转化的问题. 因为 Fortran 是静态类型语言, 所以赋值时 ``\ttt{=}'' 左边数据实体的类型和种别不会变, 而右边数据实体的类型和种别会\uline{临时}转化成左边数据实体的类型和种别. 安安努力查阅\href{https://j3-fortran.org/doc/year/24/24-007.pdf}{标准解释文档}后, 把 Fortran 数字型数据实体类型和种别转化的规则总结成表 \ref{numeric_type_convert}, 其中的术语解释如下:
 \begin{itemize}
     \item 值相等: 转化后的值和转化前的值相等.
     \item 值近似: 转化后的值和转化前的值近似相等, 如何近似则由编译器自己决定.
@@ -236,157 +236,103 @@ end program main
 
 \section{运算}\label{fortran_opration}
 
-运算\footnote{
-    实际上按标准来说,运算有两种: 固有运算(intrinsic operation)和超载运算(defined operation).本章``运算''仅指固有运算.
-}(operation)是由一个或两个数据实体得到另一个数据实体的操作,其中很多是与数学中的运算是对应的.运算是要使用运算符(operator)的,运算符分四类: 算数运算符(numeric operator),字符运算符(character operator),逻辑运算符(logical operator),关系运算符(relational operator).
+表达式由操作数 (operand), 运算符 (operator), 和左小括号 ``\ttt{(}'' 与右小括号 ``\ttt{)}'' 组成. 同学们其实平常就经常见到表达式, 最常见的就是代数式了, 例如代数式 $(a+b)\times(a-b)$, 其中 $a$ 和 $b$ 就是操作数, 而 $+$ 和 $\times$ 则是运算符.  Fortran 中所有操作数都是数据实体\footnote{这话儿其实不太对, 因为按\href{https://j3-fortran.org/doc/year/24/24-007.pdf}{标准解释文档}的定义, 有些操作数不被定义成数据实体, 但这些操作数和数据实体也没什么区别, 同学们就直接认为是数据实体拉倒吧!}, 所有数据实体都可以是操作数, 而表达式本身也是数据实体, 可以作为操作数出现在更大的表达式中. 同学们其实平常也经常见到这种情况, 例如在 $(a+b)\times(a-b)$, $a+b$ 和 $a-b$ 就是作为表达式的操作数.
 
-如果一个运算符将一个数据实体变为另一个数据实体,则其一定要按\ttt{[op][q]}的方式使用,其中\ttt{[op]}是运算符,\ttt{[q]}是一个数据实体.如果一个运算符将两个数据实体变为另一个数据实体,则其一定要按\ttt{[q1][op][q2]}的方式使用,其中\ttt{[op]}是运算符,\ttt{[q1]}和\ttt{[q2]}是两个数据实体.
+运算符总是代表运算 (operation), 例如代数中运算符 $+$ 代表加法运算, 而运算符 $\times$ 代表乘法运算. Fortran 中的运算分为固有运算 (intrinsic operation) 和超载运算 (defined operation), 本节只讲固有运算, 超载运算放在 \ref{fortran_defined_operation} 节讲. 固有运算又分为四种: 算数运算(numeric operation), 字符运算(character operation), 逻辑运算(logical operation), 关系运算(relational operation).
 
-形如\ttt{[op][q]}或\ttt{[q1][op][q2]}的东东称为表达式(expression),表达式本身也是数据实体,这就形成一个套娃定义.
+如果运算符 \ttt{[op]} 把一个数据实体 \ttt{[q]} 变成另一个数据实体 \ttt{[op][q]}, 我们就称运算符 \ttt{[op]} 为一个一元运算符 (unary operator). 如果运算符 \ttt{[op]} 把两个数据实体 \ttt{[q1]} 和 \ttt{[q2]} 变成另一个数据实体\ttt{[q1][op][q2]}, 我们就称运算符 \ttt{[op]} 为一个二元运算符 (binary operator). 同学们平常也经常见到一元运算符和二元运算符, 例如在 $a-(-b)$ 中, 括号里的 $-$ 把 $b$ 变成 $-b$, 所以是一元运算符, 而括号外的 $-$ 把 $a$ 和 $(-b)$变成 $a-(-b)$, 所以是二元运算符.
 
-形如\ttt{[q1][op12][q2][op23][q3]}的东东,按套娃定义,这也是一个表达式.问题是这个表达式有两种解释.
-\begin{enumerate}
-    \item 先把\ttt{[q1][op12][q2]}算出来,得到一个数据实体\ttt{[q12]},\\则\ttt{[q1][op12][q2][op23][q3]}等同于\ttt{[q12][op23][q3]}.
-    \item 先把\ttt{[q2][op23][q3]}算出来,得到一个数据实体\ttt{[q23]},\\则\ttt{[q1][op12][q2][op23][q3]}等同于\ttt{[q1][op12][q23]}.
-\end{enumerate}
-按两种解释方式分别计算,最后得到的结果可能不同,怎么办?数学中的运算符可能有优先级,比如乘除优先于加减.Fortran中的任何一个运算符都有优先级,对应地,Fortran中的运算有两个规则:
-\begin{enumerate}
-    \item 若\ttt{[op12]}的优先级不低于\ttt{[op23]},\\则对于表达式\ttt{[q1][op12][q2][op23][q3]},先计算\ttt{[q1][op12][q2]}.\footnote{
-        有特例,见\ref{fortran_numeric_operator}.
-    }
-    \item 若\ttt{[op12]}的优先级低于\ttt{[op23]},\\则对于表达式\ttt{[q1][op12][q2][op23][q3]},先计算\ttt{[q2][op23][q3]}.
-\end{enumerate}
-这和数学中的运算是完全对应的.
+在代数式中运算符有优先级, 例如在 $a+b\times c$ 中, $\times$ 比 $+$ 优先, 所以结果是 $a+(b\times c)$ 而不是 $(a+b)\times c$. Fortran 中的运算符也是如此, 在形如 \ttt{[q1][op12][q2][op23][q3]} 的表达式中, 如果 \ttt{[op12]} 和 \ttt{[op23]} 有优先级高低之分, 则优先级高的先算优先级低的后算, 如果 \ttt{[op12]} 和 \ttt{[op23]} 没有优先级高低之分, 则一般是和平常一样, 左边的 \ttt{[op12]} 先算右边的 \ttt{[op23]} 后算, 但有一个反例后面会讲.
 
-可以加\ttt{()},来强制让\ttt{()}里的部分先算,这和数学也是对应的.需要注意的是,不能用\ttt{[]}和\ttt{{}},统统用\ttt{()}代替.
+在代数式中可以加括号, 来强行让括号里的表达式先算, 例如在 $(a+b)\times c$ 中是 $a+b$ 先算. Fortran 中也是如此, 但要注意, Fortran 中 (和几乎所有编程语言中) 都只能加小括号来强行让括号里的表达式先算, 代数式里的中括号和大括号在 Fortran 中都得用小括号替代.
+
+大致说来, 如果一个表达式里只有常量, 这个表达式就是一个常量表达式 (constant expression). 之所以说 ``大致说来'', 是因为\href{https://j3-fortran.org/doc/year/24/24-007.pdf}{标准解释文档}里常量表达式的定义复杂至极, 但同学们不用管它. 在需要使用常量的地方改用常量表达式看来都是可以的 (安安想不出反例), 例如下面两个程序都是没有问题的.
+\begin{lstlisting}
+program main
+    use iso_fortran_env, only: l => int64
+    implicit none
+    character(1000000000000_l) :: very_long_char
+end program main
+\end{lstlisting}
+\begin{lstlisting}
+program main
+    use iso_fortran_env, only: l => int64
+    implicit none
+    character(10_l**12_l) :: very_long_char
+end program main
+\end{lstlisting}
 
 \subsection{算数运算}\label{fortran_numeric_operator}
 
-算数运算符一共五个: \ttt{+},\ttt{-},\ttt{*},\ttt{/},\ttt{**},分别对应于加,减,乘,除,乘方.
+一元算数运算符有两个: \ttt{+}, \ttt{-}, 二元算数运算符有五个: \ttt{+}, \ttt{-}, \ttt{*}, \ttt{/}, \ttt{**}, 它们的左边右边必须是数字型数据实体. 如果数据实体 \ttt{[a]} 的值为 $a$, 数据实体 \ttt{[b]} 的值为 $b$, 那么 \ttt{+[a]}, \ttt{-[a]}, \ttt{[a]+[b]}, \ttt{[a]-[b]}, \ttt{[a]*[b]}, \ttt{[a]/[b]}, \ttt{[a]**[b]} 的值 (在不考虑计算误差的情况下) 一般是 $+a$, $-a$, $a+b$, $a-b$, $a\times b$, $a\div b$, $a^b$, 但有重要的例外后面会讲. 因为 $\sqrt[b]{a}=a^{1/b}$, 所以就没必要给开方准备一个运算符了.
+
+使用 \ttt{**} 的时候请注意, 如果 \ttt{[a]**[b]} 中的 \ttt{[a]} 和 \ttt{[b]} 都是实型的, 且 $a$ 是负的, 那么高中数学课告诉我们 $a^b$ ill defined, 所以程序会报错. 如果 \ttt{[a]**[b]} 中的 \ttt{[a]} 和 \ttt{[b]} 都是复型的, 那么复变函数课\footnote{哎呀, 好像同学们还没上到复变函数课!?\dots{}}告诉我们 $a^b$ 是多值的, 所以程序会算 $a^b$ 的主值.
+
+另外 \ttt{**} 的运算顺序和其他运算符相反, 在形如 \ttt{[a]**[b]**[c]} 的表达式中, 是先算 \ttt{[b]**[c]} 而不是 \ttt{[a]**[b]}. 可以这么记: \ttt{([a]**[b])**[c]} 其实等于 \ttt{[a]**([b]*[c])}, 如果 \ttt{[a]**[b]**[c]} 是 \ttt{([a]**[b])**[c]}, 因为乘法比较简单, 电脑算乘法应该比算乘方快, 所以写 \ttt{[a]**[b]**[c]} 显得太傻了, 还不如直接写 \ttt{[a]**([b]*[c])}, 所以 \ttt{[a]**[b]**[c]} 应该是 \ttt{[a]**([b]**[c])}. 但 \ttt{**} 的运算顺序和其他运算符相反这件事很容易忘了, 所以请同学们不写 \ttt{[a]**[b]**[c]} 而写 \ttt{[a]**([b]**[c])}.
+\begin{convention}
+    在表达式中运算符的运算顺序容易被误解的情况下, 用括号指明运算顺序.
+\end{convention}
+
+代数式中应该只出现类似 $a-(-b)$ 之类的东东, 不出现类似 $a--b$ 之类的东东. 类似地, Fortran 表达式里不允许连着出现两个算数运算符, 因此只允许写 \ttt{[a] - (-[b])} 之类的东东, 不允许写 \ttt{[a] - -[b]} 之类的东东 (虽然 Ifx 和 Gfortran 其实不完全禁止这么写).
+
+算数运算符的运算顺序和代数一致, 首先是 \ttt{**}, 然后是 \ttt{*} 和 \ttt{/}, 然后是一元 \ttt{+} 和 一元 \ttt{-}, 最后是二元 \ttt{+} 和 二元 \ttt{-}, 好记得很. 但同学们先别高兴得太早, 请回答 \ttt{-2.0 ** 2.0} 是多少? 如果同学们觉得是 \ttt{4.0} 就上当啦, 答案是 \ttt{-4.0}, 因为根据算数运算符的运算顺序, 是 \ttt{**} 先算 \ttt{-} 后算, 所以即使 \ttt{-2.0 ** 2.0} 里 \ttt{-} 和 \ttt{2.0} 粘在一起, 好像 \ttt{-2.0 ** 2.0} 是 \ttt{(-2.0) ** 2.0} 一样, \ttt{-2.0 ** 2.0} 也还是 \ttt{-(2.0 ** 2.0)}. 特别说明, Fortran 规定 \ttt{**} 先算 \ttt{-} 后算, 这不是在坑大家, 因为形如 $-a^b$ 的代数式本来就是 $-(a^b)$ 而不是 $(-a)^b$. 根据规范 \ref{fortran_blank}, 我们需要 ``在程序中适当地加入空格'', 在表达式中有些地方加空格好, 有些地方不加空格好, 上面的 \ttt{-2.0 ** 2.0} 就是一个典型反例 (应该写成 \ttt{- 2.0**2.0} 或 \ttt{-(2.0**2.0)}, 最不济也应该写成 \ttt{-2.0**2.0}). 但是到底应不应该加空格, 判断的原则很复杂, 而且不同的人意见不一. 同学们可以参考本笔记, Fortran \href{https://fortran-lang.org/}{官网}上的代码示例和 Python 的 \href{https://peps.python.org/pep-0008/}{PEP 8 规范}来决定是否加空格.
+
+现在我们又要讨论烦人的类型和种别转化的问题了. 我们需要先定义类型和种别的高低. 我们定义类型从低到高依次为整型, 实型, 复型, 并定义整型种别是低种别, 实型种别是高种别. 对整型种别, 我们定义能表示的数的十进制表示的位数更少/多的种别为低/高种别, 这意味着 \ttt{intn} 的 \ttt{n} 更小/大的种别为低/高种别. 对实型种别, 我们定义能表示的数的十进制表示的精度更低/高的种别为低/高种别, 这意味着 \ttt{realn} 的 \ttt{n} 更小/大的种别为低/高种别. 以下 \ttt{[op]} 代表算符, \ttt{[q]}, \ttt{[q1]}, \ttt{[q2]} 代表数据实体.
+\begin{itemize}
+    \item \ttt{[op][q]} 的类型/种别是 \ttt{[q]} 的类型/种别.
+    \item \ttt{[q1][op][q2]} 的类型/种别是 \ttt{[q1]} 和 \ttt{[q2]} 的类型/种别中更高的类型/种别; 如果 \ttt{[q1]} 和 \ttt{[q2]} 的类型/种别一样高, 那么编译器自己决定\ttt{[q1][op][q2]} 的类型/种别是 \ttt{[q1]} 和 \ttt{[q2]} 的类型/种别中的哪一个.
+    \item 在计算 \ttt{[q1][op][q2]} 前, \ttt{[q1]} 和 \ttt{[q2]} 的类型/种别总是被临时转化成 \ttt{[q1][op][q2]} 的类型/种别.
+\end{itemize}
+一言以蔽之, 运算时类型和种别转化遵循着 ``就高不就低'' 的规则.
+
+我们已经把运算时类型和种别转化的规则简洁凝练地总结出来了, 但同学们莫要高兴, 马上同学们就会遇到一个非常传统, 非常典型, 非常折磨人的大坑, 巨坑, 奆坑, 这个坑就是两个整型数据实体相除. 来看下面这个例子.
 \begin{lstlisting}
 program main
     implicit none
-    real :: a,b
-    a = 3.0
-    b = 4.0
-    print *,a+b ! Add 3.0 and 4.0.
-    print *,a-b ! Subtract 3.0 from 4.0.
-    print *,a*b ! Multiply 3.0 by 4.0.
-    print *,a/b ! Divide 3.0 by 4.0.
-    print *,a**b ! Raise 3.0 to the power 4.0.
+    print *, 2 ** (1/4)
 end program main
 \end{lstlisting}
 
-开方怎么算?自己想!
+我猜同学们看到这个程序的第一眼肯定会觉得结果是 $2^{1/4}$, 然而同学们跑一跑就知道结果不是, 这是咋肥事哩? 同学们请看 \ttt{1/4}, 它的值看起来应该是 $1/4$, 然而根据类型与种别转化的规则, \ttt{1} 和 \ttt{4} 都是整型的, \ttt{1/4} 只能是整型的, 所以 \ttt{1/4} 的值不可能是 $1/4$, 好奇怪呢.
 
-五个算数运算符的优先级和数学中是一样的.
+这是因为 Fortran 特别规定, 如果 \ttt{[a]} 和 \ttt{[b]} 都是整型数据实体, 那么 \ttt{[a]/[b]} 不是代表 \ttt{[a]} 除以 \ttt{[b]}, 而是代表 \ttt{[a]} \uline{整除}以 \ttt{[b]}!!! 具体说来, 如果 \ttt{[a]} 和 \ttt{[b]} 都是整型数据实体, 值分别是 $a$ 和 $b$, 那么 \ttt{[a]/[b]} 的值不是 $a\div b$ 而是 $a\div b$ 的向0取整. 所以 \ttt{1/4} 的值不是 $1/4$ , 而是 $1/4$ 的向0取整, 是 $0$, 那 \ttt{2 ** (1/4)} 当然是 \ttt{1} 了!
+
+再来看下面这个例子.
 \begin{lstlisting}
 program main
     implicit none
-    print *,1.0+2.0*3.0 ! Result is 7.0.
-    print *,(1.0+2.0)*3.0 ! Result is 9.0.
-    print *,4.0*5.0**6.0 ! Result is 6.25e4.
-    print *,(4.0*5.0)**6.0 ! Result is 6.4e7.
-end program main
-\end{lstlisting}
-
-严格上来说,Fortran有七个算数运算符,另两个也是``\ttt{+}''和``\ttt{-}''.众所周知,数学中``$+$''和``$-$''前面可以没有数.Fortran中也一样.对于任意一个数据实体\ttt{[q]},\ttt{+[q1]}/\ttt{-[q1]}就相当于\ttt{[zero]+[q1]}/\ttt{[zero]-[q1]},其中\ttt{[zero]}是精度最低的种别的\ttt{0}.
-
-看下面这个例子就懂了.
-\begin{lstlisting}
-program main
-    implicit none
-    real :: a
-    a = 1.0
-    print *,-a**2.0 ! Result is -1.0.
-    print *,(-a)**2.0 ! Result is 1.0.
-end program main
-\end{lstlisting}
-
-数学中,$-a^2$也是表示$-(a^2)$哟!
-
-运算符两边的类型相同时,结果就是那个类型.运算符两边的类型和种别都相同时,结果就是那个类型那个种别.运算符两边的类型或种别不同时,又遇到类型转化或种别转化的问题了.转化的基本规则就是两个数据实体中哪个更精确,结果就转化成那个数据实体的类型和种别.比如上面的程序,把\ttt{2.0}改成\ttt{2},结果不变.因为无论是\ttt{a}还是\ttt{-a},都是实型,肯定比整型的\ttt{2}精确,所以结果就是实型的\ttt{-1.0}和\ttt{1.0}.
-
-表达式既然是数据实体,自然可以赋值给变量.注意赋值时还要遵循赋值的类型和种别转化规则.
-
-一般情况下都不需理会运算时的类型转化,毕竟转化前后数学上差别不大.但这里有一个非常传统,非常典型,非常折磨人的大坑,巨坑,奆坑.这个坑就是整型数据实体相除.
-
-来看下面这个例子.
-\begin{lstlisting}
-program main
-    implicit none
-    print *,2**(1/4)
-end program main
-\end{lstlisting}
-
-乍一看,这个程序非常聪明地将$\sqrt[4]{2}$算了出来,然而一运行,就会发现不对.为什么?让我们来一点一点分析电脑是怎么干活的.
-
-首先,电脑先算\ttt{1/4}.$1/4=0.25$,这没什么问题.然而,根据刚才说的类型转化规则,\ttt{1/4}的结果必须转化成整型.转化后什么结果?和赋值时一样的规则,向0取整,结果是\ttt{0}.所以\ttt{1/4}就是\ttt{0}!
-
-然后电脑再算\ttt{2**0},结果自然是\ttt{1}.
-
-也就是说,将两个整型数据实体相``除'',实际上是将它们整除!
-
-再来看下面这个程序.
-
-\begin{lstlisting}
-program main
-    implicit none
-    integer :: p,q
+    integer :: p, q
     real :: r
     p = 1.0
     q = 4.0
-    r = p/q
-    print *,2.0**r
+    r = p / q
+    print *, 2.0 ** r
 end program main
 \end{lstlisting}
-这个程序的结果也不大对.让我们再来分析分析这个程序.
 
-首先给\ttt{p}和\ttt{q}分别赋上\ttt{1.0}和\ttt{4.0}.然而,\ttt{p}和\ttt{q}都是整型的.根据赋值时的类型转化规则,\ttt{p}和\ttt{q}分别是\ttt{1}和\ttt{4}.
+首先给 \ttt{p} 和 \ttt{q} 分别赋上 \ttt{1.0} 和 \ttt{4.0}. 然而, \ttt{p} 和 \ttt{q} 都是整型的. 根据赋值时的类型转化规则, \ttt{p} 和 \ttt{q} 分别是 \ttt{1} 和 \ttt{4}.
 
-然后计算\ttt{p/q}并赋给\ttt{r}.\ttt{p}是\ttt{1},\ttt{q}是\ttt{4},$1/4=0.25$.然而\ttt{p}和\ttt{q}都是整型,所以结果是\ttt{0}.虽然\ttt{r}是实型,然而并没有什么卵用.因为是先计算,再赋值,所以计算时会先进行一次类型转化,转化完了赋值时再进行一次类型转化.先计算\ttt{p/q},类型转化后得到\ttt{0},然后赋给\ttt{r},再类型转化,所以\ttt{r}是\ttt{0.0}.
+然后计算 \ttt{p / q} 并赋给 \ttt{r}. \ttt{p} 是 \ttt{1}, \ttt{q} 是 \ttt{4}, $1\div 4=1/4$. 然而, \ttt{p} 和 \ttt{q} 都是整型的, 因此不是要除而是要\uline{整除}, $1/4$ 要向0取整, 所以 \ttt{p / q} 是 \ttt{0}. 虽然 \ttt{r} 是实型的, 但是\uline{并没有什么卵用}. 因为是先计算, 再赋值. 先计算 \ttt{p / q} 得到 \ttt{0}, 然后赋给 \ttt{r}, 再类型转化, 所以 \ttt{r} 是 \ttt{0.0}!!!
 
-最后计算\ttt{2.0**r},结果自然是\ttt{1.0}.
+最后计算 \ttt{2.0 ** r}, 结果自然是 \ttt{1.0}!
 
-这个坑非常经典,好多程序语言都有,就连Python2默认都会如此\dots
-
-有一个非常简单的方法能避开上面所说的坑,就是遵守规范\ref{fortran_use_real},也就是: 统统用实型.这可真是血泪教训啊!
-
-最后还有一个小坑,就是乘方从右边先算(非常特殊).比如\ttt{a**b**c},到底是${a^b}^c$,还是$a^{b^c}$?答案是$a^{b^c}$,也就是先算$b^c$.可以这么记: \ttt{(a**b)**c}其实等于\ttt{a**(b*c)},如果\ttt{a**b**c}是\ttt{(a**b)**c},就显得太傻了,还不如直接写\ttt{a**(b*c)}\footnote{
-    乘法应该比乘方快\dots
-},所以\ttt{a**b**c}应该是\ttt{a**(b**c)}.
+最后来看下面这个例子.
 \begin{lstlisting}
-
 program main
     implicit none
-    real :: a,b,c
-    a = 4.0
-    b = 3.0
-    c = 2.0
-    print *,a**b**c ! This is a**(b**c).
+    print *, 2 ** (-4)
 end program main
 \end{lstlisting}
 
-只要记得这里有个坑就好了.真遇到连着两个\ttt{**},不清楚哪个先算,加个括号呀.即使自己清楚,也最好加个括号,一是让自己更清楚,二是照顾照顾别人(造轮子的时候),因为别人很可能忘了到底哪个\ttt{**}先算.
+我猜同学们看到这个程序肯定不敢觉得结果是 $2^{-4}$ 了吧. \ttt{2} 和 \ttt{4} 都是整型的, 那么结果肯定不是 $2^{-4}$ 喽. Fortran 还特别规定, 如果 \ttt{[a]} 和 \ttt{[b]} 都是整型数据实体, 值分别是 $a$ 和 $b$, 且 $b$ 是负的, 那么 \ttt{[a]**[b]} 的值不是 $a^b$ 而是 $a^b$ 的向0取整!!! 所以 \ttt{2 ** (-4)} 当然是 \ttt{0} 了!
 
-\begin{convention}\label{use_barket}
-    在表达式中适当地多用括号以保证表达式能被轻松理解.
+我们把这么个坑死人不偿命的规则总结如下: 如果数据实体 \ttt{[a]} 是整型的且值为 $a$, 数据实体 \ttt{[b]} 是整型的且值为 $b$, \ttt{[op]} 是二元算数运算符且代表运算 $\text{OP}$, 那么 $a\,\text{OP}\,b$ 不一定是整数, 但运算时类型和种别转化的规则又需遵守, 因此 \ttt{[a][op][b]} 的值不规定为 $a\,\text{OP}\,b$ 而规定为 $a\,\text{OP}\,b$ 的向0取整. 这么规定也不是为了折磨大家, 凭安安拥有的知识大致可以推断, 这么规定后电脑处理数据和人们造编译器都会比较方便, 因此不仅 Fortran 是这么规定的, C 和 Python 2 也是这么规定的. 但实践表明, 这么规定对写程序的人来说实在是太不友好了, 很容易会有诸如运算符 \ttt{/} 的两边一不小心都是整型数据实体, 然后又忘了不是除而是整除, 结果计算出错的情况发生, 所以到 Python 3 那儿规则终于改了, 规定如果一种二元运算能用整型数据实体算出不是整数的值, 那么结果会自动变成实型数据实体而不会向0取整, 大家终于不会被折磨了!
+
+Fortran 语法我们没法儿改, 我们只好自己想办法避坑. 我们发现, 坑会出现在用整型数据实体的时候, 那我们尽量不用整型数据实体就完事儿喽, 但有些地方 (比如字符串的长度) 只能用整型数据实体, 那就没办法了, 不过这些地方非常少, 以安安的经验, 我们是不会因这些整型数据实体而掉坑里去的.
+\begin{convention}
+    尽可能避免使用整型数据实体; 如果一定要使用, 在表达式中先将其转化成实型数据实体.
 \end{convention}
-
-还有一个小细节.严格意义上说,\ttt{+}和\ttt{-}前面直接跟运算符是非法的.然而器有器规呀,Gfortran只是送个警告,Ifx直接放行.不过还是多加一个括号吧.可以运行运行下面这个程序来看看结果.
-\begin{lstlisting}
-program main
-    implicit none
-    real :: a,b
-    a = 3.0
-    b = 4.0
-    print *,a+-b ! It is proper to write a+-b as a+(-b).
-    print *,a--b ! It is proper to write a--b as a-(-b).
-    print *,a*-b ! It is proper to write a*-b as a*(-b).
-    print *,a/-b ! It is proper to write a/-b as a/(-b).
-    print *,a**-b ! It is proper to write a**-b as a**(-b).
-end program main
-\end{lstlisting}
+如果有一个实型变量 \ttt{a}, 要算 \ttt{a} 的 \ttt{2} 次方, 安安会写 \ttt{a**2.0} 而不会写 \ttt{a**2}. 如果有一个实型变量 \ttt{b}, 一个整型变量 \ttt{n}, 要算 \ttt{b} 的 \ttt{n} 次方, 安安会写 \ttt{b**real(n)} 而不会写 \ttt{b**n}. 同学们可能会觉得这么写实在是繁琐, 因为即使 \ttt{a**2.0} 写成 \ttt{a**2}, \ttt{b**real(n)} 写成 \ttt{b**n}, 由于 \ttt{a} 和 \ttt{b} 不是整型的, 这式子没可能算错的. 而且用整型数据实体还有些好处, 例如因为电脑算乘法应该比算乘方快, 所以聪明的编译器在看到 \ttt{a**2} 的时候, 很可能会先把它变成等价的式子 \ttt{a*a}, 然后再编译运行 (这也是 Fortran 官规明确允许的), 但如果写成 \ttt{a**2.0}, 编译器就要先判断出实型的 \ttt{2.0} 的值是整数, 然后再把它变成 \ttt{a*a}, 这对编译器和造编译器的人来说太难了, 老师也会因这个原因而倡导大家尽量用整型数据实体. 但不管同学们有没有被 Fortran 整怕 (希望不会), 反正俺是被整怕了, 所以宁愿写表达式的时候麻烦得要死也要全力避免踩坑\dots{}
 
 \subsection{字符运算}\label{fortran_char_operator}
 

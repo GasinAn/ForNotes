@@ -208,9 +208,9 @@ end program main
 
 Fortran 字符串中可以有换行字符. 电脑里的字符本质上是小段数据, 而换行字符则是电脑操作系统规定的专门用来表示前面的字符和后面的字符分别在上下两行的数据. Windows 和 Linux 的换行字符还不一样, Windows 连用回车符和换行符表示换行, 而 Linux 单用换行符表示换行. 不好玩的是, Fortran 字符型字面常量中没法儿加换行字符 (C 没这问题). 在 Fortran 字符串中加入换行字符的方法放在 \ref{fortran_char_operator} 小节介绍.
 
-字符型用 \ttt{character} 声明. 通常情况下没必要说明字符型种别, 直接使用默认种别即可. 字符型字面常量可以直接表示自己的长度. 声明字符型数据实体的长度时在 \ttt{character} 后加 \ttt{([len])} 或 \ttt{(len=[len])}, 和 \ttt{character} 间可以有空格但一般不加, 一般都用第一种方式, 虽然这种方式和 \ref{fortran_real} 节介绍的声明实型数据实体的种别的方式长得一样, 总让人觉得会混淆. \ttt{[len]} 可以是整型数据实体, \ttt{*} 或 \ttt{:}.
+字符型用 \ttt{character} 声明. 通常情况下没必要说明字符型种别, 直接使用默认种别即可. 字符型字面常量可以直接表示自己的长度. 声明字符型数据实体的长度时在 \ttt{character} 后加 \ttt{([len])} 或 \ttt{(len=[len])}, 和 \ttt{character} 间可以有空格但一般不加, 一般都用第一种方式, 虽然这种方式和 \ref{fortran_real} 节介绍的声明实型数据实体的种别的方式长得一样, 总让人觉得会混淆. \ttt{[len]} 可以是整型常量, \ttt{*} 或 \ttt{:}.
 
-如果 \ttt{[len]} 是整型数据实体, 则直接表示字符型数据实体的长度, 也就是字符型数据实体表示的字符串的长度. 下面这个程序声明了一个长度为 $1\times 10^{12}$ 的字符型变量 \ttt{very\_{}long\_{}char}.
+如果 \ttt{[len]} 是整型常量, 则直接表示字符型数据实体的长度, 也就是字符型数据实体表示的字符串的长度. 下面这个程序声明了一个长度为 $1\times 10^{12}$ 的字符型变量 \ttt{very\_{}long\_{}char}.
 \begin{lstlisting}
 program main
     use iso_fortran_env, only: l => int64
