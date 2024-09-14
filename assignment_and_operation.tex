@@ -420,6 +420,17 @@ end program main
     如果两个表达式中所包含的所有表达式的结果不都是整型的, 那么不比较这两个表达式是否相等.
 \end{convention}
 
+还有一个小坑, 像下面这样的程序 \ttt{==} 左右两边一样, 结果算出来竟是 \ttt{.false.}
+\begin{lstlisting}
+program main
+    implicit none
+    real :: zero
+    zero = 0.0
+    print *, (zero / zero) == (zero / zero)
+end program main
+\end{lstlisting}
+这是因为 \ttt{zero / zero} 算出来是 $\text{NaN}$, 而 $\text{NaN}$ 被规定成和任何数, 甚至它自己, 都不相等. 所以任意一个数据实体 \ttt{[r]}, 我们不能直接把它和 $\text{NaN}$ 放在 \ttt{==} 两边来判断 \ttt{[r]} 是不是 $\text{NaN}$ (不论是不是, 结果都是 \ttt{.false.}). 但因为只有 $\text{NaN}$ 被规定成和自己不相等, 所以当且仅当 \ttt{[r]} 是 $\text{NaN}$ 时, \ttt{[r] != [r]} 为真, 我们可以利用这点巧妙地判断 \ttt{[r]} 是不是 $\text{NaN}$.
+
 如果运算符左右两边是字符串, 则比较运算是比较字符串的先后顺序. 首先, 编译器自己定义了一套字符的先后顺序. 然后比较字符串的先后顺序的时候, 编译器先把两个字符串暂时补成一样长 (短的那个后面补空格).
 \begin{itemize}
     \item 如果两边的字符串前 $n$ 个字符都相同, 且左边字符串第 $(n+1)$ 个字符先于右边字符串第 $(n+1)$ 个字符, 则左边字符串 ``\ttt{<}'' 右边字符串.
