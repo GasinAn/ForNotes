@@ -1,198 +1,503 @@
 \chapter{数组}\label{fortran_array}
 
-迄今为止我们折腾的东东都是标量(scalar),那都是小case,大case是数组(array).用非常严谨的方式来讨论数组,以我这语文水平肯定是不行滴,讲着讲着同志们就头疼,所以我接下来讲的内容会不太严谨,但对于实际应用来说肯定是不成问题的.
+迄今为止我们折腾的东东都是标量 (scalar), 那都是小 case, 大 case 是数组 (array). 数组的名字虽然是 ``数'' 组, 但其实数组可以是任意类型的, 只不过平常俺们用的数组基本上都是数字型的, 俺就只讲数字型的了. 数组这个东东, 俺觉得俺讲起来和初学编程的同学们理解起来都会是十分困难滴, 对俺来说, 彻底讲清楚数组最好的办法就是来一大堆数学定义, 但偏偏绝大部分同学都一看数学定义就头大, 俺只能不管了. 另外, 之前俺们讲代码的时候, 实际上经常使用左右中括号 \ttt{[]}, 表示左右中括号和里头的内容需要按需求被替换, 但笔记写到这里俺突然发现左右中括号从本章开始有大用, 所以从本章开始俺们会改使用左右大括号 \ttt{\{\}}, 表示左右大括号和里头的内容需要按需求被替换.
 
-数组是形如$a\!:\!\{j_1,\dots,k_1\}\!\times\!\dots\!\times\!\{j_n,\dots,k_n\}\rightarrow\mathbb{C},(s_1,\dots,s_n)\mapsto a_{s_1\dots s_n}$的东东.正整数$n$称为数组$a$的维数/秩(rank).任意$i\in\{1,\dots,n\}$,$j_i$和$k_i$称为数组$a$的第$i$个维度(dimension)的下界(lower-bound)和上界(upper-bound),$k_i-j_i+1$称为数组$a$的第$i$个维度的长度(extent).矢量$(k_1-j_1+1,\dots,k_n-j_n+1)$称为数组$a$的形状(shape),其本身是一维数组.$\prod_{i=1}^n(k_i-j_i+1)$称为数组$a$的大小(size).标量可以当成维数为$0$的数组.
+\section{数组基础}\label{fortran_array_basic}
 
-形如$a_{s_1\dots s_n}$的东东称为数组$a$中的元素(element).任意$i\in\{1,\dots,n\}$,称$s_i$为$a_{s_1\dots s_n}$的第$i$个下标(subscript)或第$i$个索引(index).同一个数组中的所有元素都有相同的类型和种别.
+Fortran 中的数组分为全数组 (whole array) 和非全数组, 先讲全数组.
+全数组是一个映射 $
+    a\!: S_1 \times \dots \times S_n \to \mathbb{C},\,
+        (s_1,\dots,s_n) \mapsto a_{s_1\dots s_n}
+$, 其中任意 $i \in \{1,\dots,n\}$, $S_i = \{j_i,\dots,k_i\} \subset \mathbb{Z}$. 换言之, 全数组是一堆带着 $n$ 个整数下标的复数 $a_{s_1\dots s_n}$, $s_1,\dots,s_n$ 的取值范围分别是 $\{j_1,\dots,k_1\}, \dots, \{j_n,\dots,k_n\}$. 数组的应用非常多, 数学中的向量, 矩阵\footnote{同学们会学到的.}, 物理中的矢量, 张量\footnote{同学们会学到的.}都可以表示成数组, 所以这一章特别是这一节同学们铁定得啃下来呢.
 
-数组中的元素有一个被规定死的排列顺序: 任意$a_{s_1\dots s_n}$和$a_{t_1\dots t_n}$,当$s_{i+1}=t_{i+1},\dots,s_n=t_n$时,若$s_i<t_i$,则$a_{s_1\dots s_n}$在$a_{t_1\dots t_n}$前面,若$s_i>t_i$,则$a_{s_1\dots s_n}$在$a_{t_1\dots t_n}$后面\footnote{这和Matlab的默认情形一样,但和C/Python的默认情形不一样!}.
+按上一段中数组的映射定义, 定义一个数组 $a$, 则定义中的正整数 $n$ 称为数组 $a$ 的维数/秩 (rank), 标量相当于 $0$ 维数组. 任意 $i \in \{1,\dots,n\}$, 称数组 $a$ 有第 $i$ 个维度 (dimension), 整数 $j_i$ 和整数 $k_i$ 分别称为数组 $a$ 的第 $i$ 个维度的下界 (lower-bound) 和上界 (upper-bound), $\{j_i,\dots,k_i\}$ 的元素个数 $l_i=(k_i-j_i)+1$ 称为数组 $a$ 的第 $i$ 个维度的长度 (extent). 向量 $(l_1,\dots,l_n)$ 称为数组 $a$ 的形状(shape), 其本身被认定成 $1$ 维数组, 正整数 $l_1\times\dots\times l_n$ 称为数组 $a$ 的大小 (size). 数组 $a$ 的值域中的任意元素 $a_{s_1\dots s_n}$ 称为数组 $a$ 的一个元素 (element), $s_1,\dots,s_n$ 中的第 $i$ 个整数 $s_i$ 称为 $a_{s_1\dots s_n}$ 的第 $i$ 个下标/索引 (subscript/index). 以上这一大堆定义是同学们需要牢记的.
+
+若程序中变量 \ttt{a} 代表全数组 $a$, 则 \ttt{rank(a)}, \ttt{lbound(a)}, \ttt{ubound(a)}, \ttt{shape(a)}, \ttt{size(a)} 分别是全数组 $a$ 的维数 $n$, 由所有维度的下界组成的向量 $(j_1,\dots,j_n)$, 由所有维度的上界组成的向量 $(k_1,\dots,k_n)$, 形状$(l_1,\dots,l_n)$, 大小 $l_1\times\dots\times l_n$.
+
+同学们玩数组的时候的难点通常是不能领会数据结构 (data structure), 而数据结构正是程序设计的灵魂. 最简单帮助同学们领会数据结构的方式就是让数据结构直观化. 例如一个 $1$ 维数组 $a\!:\{1,2,3\}\to\mathbb{C}$, 我们可以把它想象成一横条 $[a_1\,a_2\,a_3]$, 但数学中通常喜欢把这横条竖起来摆. 又例如一个 $2$ 维数组 $a\!:\{1,2,3\}\times\{1,2,3\}\to\mathbb{C}$, 我们可以把它想象成一大方表
+\begin{equation*}
+    \begin{bmatrix}
+        a_{11}&a_{12}&a_{13}\\
+        a_{21}&a_{22}&a_{23}\\
+        a_{31}&a_{32}&a_{33}
+    \end{bmatrix}.
+\end{equation*}
+$3$ 维数组就麻烦了, 我们需要想象有一大堆正方体小箱子堆成一个大长方体, 每个小箱子中都装着一个复数. 更高维的数组就更麻烦了, 例如 $4$ 维数组, 只能要么想象成有一大堆正方体小箱子堆成一个 `` $4$ 维大长方体'', 每个小箱子中都装着一个复数, 要么想象成一横条, 横条由大长方体排列成, 每个大长方体都由一大堆正方体小箱子堆成, 每个小箱子中都装着一个复数.
+
+\def\la{\leftarrow}
+\def\ra{\rightarrow}
+\def\ua{\uparrow}
+\def\da{\downarrow}
+Fortran 数组中的元素有一个被规定死的排列顺序: 任意 $a_{s_1\dots s_n}$ 和 $a_{t_1\dots t_n}$, 当 $s_{i+1}=t_{i+1},\dots,s_n=t_n$ 时, 若 $s_i<t_i$, 则 $a_{s_1\dots s_n}$ 在 $a_{t_1\dots t_n}$前面, 若 $s_i>t_i$, 则 $a_{s_1\dots s_n}$ 在 $a_{t_1\dots t_n}$ 后. 如果用 \ttt{print *,} 输出数组, 那么 Fortran 会按元素顺序挨个输出数组中的每个元素. Fortran 规定的排列顺序称为列优先顺序 (column-major order). Matlab 学 Fortran, 也是列优先顺序. C 规定的排列顺序不一样, 是行优先顺序 (row-major order), Python 学 C, 也是行优先顺序. 例如一个 $2$ 维数组 $a\!:\{1,2\}\times\{1,2\}\to\mathbb{C}$, 在 Fortran 规定的列优先顺序中, 位置最前的下标变动最快, 排序是 $a_{11},a_{21},a_{12},a_{22}$, 如图 \ref{column_major} 所示, 在 C 规定的行优先顺序中, 位置最后的下标变动最快, 排序是 $a_{11},a_{12},a_{21},a_{22}$, 如图 \ref{row_major} 所示.
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{ccccc}
+        $a_{11}$&&$\ra$&$\ra$&$a_{12}$\\
+        $\da$&&$\ua$&&$\da$\\
+        $\da$&&$\ua$&&$\da$\\
+        $\da$&&$\ua$&&$\da$\\
+        $a_{21}$&$\ra$&$\ua$&&$a_{22}$
+    \end{tabular}
+    \caption{Fortran 规定的列优先顺序示意图}
+    \label{column_major}
+\end{table}
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{ccccc}
+        $a_{11}$&$\ra$&$\ra$&$\ra$&$a_{12}$\\
+        &&&&$\da$\\
+        $\da$&$\la$&$\la$&$\la$&$\la$\\
+        $\da$&&&&\\
+        $a_{21}$&$\ra$&$\ra$&$\ra$&$a_{22}$
+    \end{tabular}
+    \caption{C 规定的行优先顺序示意图}
+    \label{row_major}
+\end{table}
+
+如果两个数组 $a$ 和 $b$, 它们的形状一样, 那么这两个数组的元素有自然的一一对应关系, 即按 Fortran 规定的元素排列顺序, $a$ 的元素中排在第 $i$ 个的元素和 $b$ 的元素中排在第 $i$ 个的元素是对应的. 换言之, 如果用相同的直观化方法来展示 $a$ 和 $b$ 的元素, 那么 $a$ 和 $b$ 的元素中摆在相同位置的元素是对应的. 例如一个 $2$ 维数组 $a\!:\{0,1,2\}\times\{0,1\}\to\mathbb{C}$ 和另一个 $2$ 维数组 $b\!:\{1,2,3\}\times\{1,2\}\to\mathbb{C}$, 它们的元素对应关系如图 \ref{element_corresponding} 所示 (数组元素的左边圆圈中的数字一样的元素是对应的).
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{ccccc}
+        \ding{192}$\,a_{00}$&\ding{195}$\,a_{01}$&
+        &\ding{192}$\,b_{11}$&\ding{195}$\,b_{12}$\\
+        \ding{193}$\,a_{10}$&\ding{196}$\,a_{11}$&
+        &\ding{193}$\,b_{21}$&\ding{196}$\,b_{22}$\\
+        \ding{194}$\,a_{20}$&\ding{197}$\,a_{21}$&
+        &\ding{194}$\,b_{31}$&\ding{197}$\,b_{32}$
+    \end{tabular}
+    \caption{元素对应关系示意图}
+    \label{element_corresponding}
+\end{table}
+
+如果两个数组可以有元素对应关系, 那么它们需要有相同的形状, 但它们的每个维度都不需要有相同的上下界. 非全数组是和全数组一样具有确定的形状, 但每个维度都没有确定的上下界的数组, 也就是说, 非全数组和全数组一样可以用横条, 方表等进行直观化表示, 可以和全数组有元素对应关系, 但非全数组中的元素都无法写出其下标. 若程序中变量 \ttt{a} 代表非全数组 $a$, 则 \ttt{rank(a)}, \ttt{shape(a)}, \ttt{size(a)} 仍然分别是非全数组 $a$ 的维数 $n$, 形状$(l_1,\dots,l_n)$, 大小 $l_1\times\dots\times l_n$, 而 \ttt{lbound(a)}, \ttt{ubound(a)} 则分别是由 $n$ 个 $1$ 组成的向量 $(1,\dots,1)$, 由所有维度的长度组成的向量 $(l_1,\dots,l_n)$, 仿佛每个维度的下界都确定是 $1$ 一样 (但其实不是). 为表述方便, 以下会用形状和非全数组相同的, 每个维度的下界都确定是 $1$ 的全数组来表示非全数组.
+
+\section{数组构造}\label{fortran_array_construction}
+
+我们可以用数组构造器 (array constructor) 来构造\uline{一维}数组常量. 用数组构造器构造出来的一维数组常量都是非全数组. 数组构造器的用法复杂至极, 我们只学两种用法. 所有数组构造器都形如 \ttt{[...]}, 且两边的 \ttt{[} 和 \ttt{]} 都可以用 \ttt{(/} 和 \ttt{/)} 替代而写成 \ttt{(/.../)}.
+
+第一种用法是直接写 \ttt{[a1, ..., an]}, \ttt{a1, ..., an} 中的任意 \ttt{ai} 是值为 $a_i$ 的标量, 来代表 $[a_1, ..., a_n]$. 例如 \ttt{[1, 2, 3]} 代表 $[1, 2, 3]$, 非常简单.
+
+第二种用法是用隐式 do 循环 (implied DO loop), 这玩意儿比较难. 同学们需要掌握常用的一重隐式 do 循环, 如果老师敢考难死人的多重隐式 do 循环, 俺们就赶紧揭竿而起\dots{} 假如我们要造个数组 $[1, \dots, 1000]$, 写 \ttt{[1, ..., 1000]} 肯定不成, 这时我们可以写 \ttt{[(i, i = 1, 1000)]}, 其中 \ttt{i} 必须是\uline{声明过的}整型变量. 一般地, 隐式 do 循环 \ttt{[(\{expr\}, \{m\} = \{m1\}, \{m2\}, \{m3\})]} 的第 $i$ 个元素是下面这样的显式 do 循环输出的第 $i$ 个数, 其中 \ttt{, \{m3\}} 若省略, \ttt{\{m3\}} 则为 \ttt{1}.
+\begin{lstlisting}
+do {m} = {m1}, {m2}, {m3}
+    print *, {expr}
+end do
+\end{lstlisting}
+例如 \ttt{[(n**2, n = 1, 10, 2)]} 代表 $[1^2, 3^2, 5^2, 7^2, 9^2]$. 再次提醒, \ttt{\{m\}} 必须是\uline{声明过的}整型变量.
+
+Ifx 有器规, 可以用简写 \ttt{[\{m1\}:\{m2\}:\{m3\}]} 代替 \ttt{[(\{m\}, \{m\} = \{m1\}, \{m2\}, \{m3\})]}. 这种不规范的写法同学们不许用.
+
+一般地, 多重隐式 do 循环 \ttt{[(...(\{expr\}, {m\_{}1} = \{m1\_{}1\}, \{m2\_{}1\}, \{m3\_{}1\}), ..., {m\_{}n} = \{m1\_{}n\}, \{m2\_{}n\}, \{m3\_{}n\})]} 的第 $i$ 个元素是下面这样的多重显式 do 循环输出的第 $i$ 个数, 其中 \ttt{, \{m3\_{}i\}} 若省略, \ttt{\{m3\_{}i\}} 则为 \ttt{1}.
+\begin{lstlisting}
+do {m_n} = {m1_n}, {m2_n}, {m3_n}
+    ......
+        do {m_1} = {m1_1}, {m2_1}, {m3_1}
+            print *, expr
+        end do
+    ......
+end do
+\end{lstlisting}
+例如 \ttt{[((m+n**2, m = 0, 1), n = 1, 2)]} 代表 $[0+1^2, 1+1^2, 0+2^2, 1+2^2]$. Python 有一个和多重隐式 do 循环很相似的, 叫列表推导式的东东, 能给出多维数组. 但请注意, Fortran 的多重隐式 do 循环只能给出\uline{一维}数组常量, 如果需要多维数组常量, 那么需要用 \ref{fortran_array_manipulation} 节讲的数组操作把一维数组常量变成多维数组常量.
 
 \section{数组声明}\label{fortran_array_specification}
 
-用数组之前当然要声明它.数组的声明和标量的声明还是很像的,也是需要给一个数据类型(整型/实型/复型),还可以给一个种别.数组的类型和种别就是数组中每一个元素的类型和种别.
+用数组变量和数组具名常量之前当然要声明. 在数组声明中需要声明数组的类型, 还可以另外声明数组的种别, 数组的类型/种别是数组中的每个元素的类型/种别.
 
-为表明声明的变量是个数组,还需给出$j_1,\dots,j_n,k_1,\dots,k_n$.有两种方法可行,一种是在变量名后加\ttt{(j1:k1,...,jn:kn)},另一种是在类型和种别后加\ttt{,dimension(j1:k1,...,jn:kn)}.所有\ttt{ji},\ttt{ki}都必须是整型常量或整型常量表达式\footnote{
-    就是只含整型常量的表达式.
-}.可以省略任意\ttt{ji:},如果省略\ttt{ji:},则\ttt{ji}为\ttt{1}\footnote{这和Matlab的默认情形一样,但和C/Python的默认情形不一样!}.
-
-请大家猛戳\href{https://fortran-lang.org/learn/quickstart/arrays_strings#array-declaration}{这个链接}获取数组声明示例.
-
-选择哪种声明方式呢?一般大家喜欢用第一种方式,毕竟少打几个字,而且看着比较简洁.但如果是要一口气声明一堆一样的数组\footnote{
-    方法同标量声明.
-},这时第一种方式反而不好使了,大家就喜欢用第二种方式.
-
-和字符串一样,有些时候我们并不清楚到底要用一个什么样的数组,这时我们就可以和字符串一样,先在类型和种别后加\ttt{,allocatable},然后再在变量名后加\ttt{(:,...,:)}或在类型和种别后加\ttt{,dimension(:,...,:)},其中\ttt{:}的个数等于数组的维数,这样我们就搞出一个延迟形状数组(deferred-shape array).假如我们声明的数组叫\ttt{a},接下来我们就可以像延迟长度字符串那样,用\ttt{allocate(a(j1:k1,...,jn:kn))}把$j_1,\dots,j_n,k_1,\dots,k_n$确定下来(仍可省略\ttt{ji:}),用\ttt{deallocate(a)}将$j_1,\dots,j_n,k_1,\dots,k_n$重新变成未定义的,然后再来个\ttt{allocate(a(j1:k1,...,jn:kn))}\dots
-
-请大家猛戳\href{https://fortran-lang.org/learn/quickstart/arrays_strings#allocatable-dynamic-arrays}{这个链接}获取延迟形状数组声明示例.
-
-\section{数组构造}
-
-数组构造器(array constructor)是一维数组常量,形如\ttt{[e1,...,em]},其中\ttt{ei}可以是标量也可以是数组.若将\ttt{[e1,...,em]}记为$(a_1,\dots,a_n)$,\ttt{ei}的大小记为$S_i$\footnote{
-    标量的大小当然是$1$.
-},则$a_{(S_1+\dots+S_{i-1}+l)}$为\ttt{ei}的第$l$个元素.如果\ttt{ei}维数大于$1$,则按本章开头``数组元素顺序''找到第$l$个元素.
-
-直接了当的说法是: 把所有\ttt{ei}重新排成一维数组并保证元素顺序不变,然后首尾相接拼起来.
-
-在数组构造器\uline{中}还可以使用一种神奇的隐式do循环(implied \ttt{do} loop),这玩意儿形如\ttt{((...(e(i1,...,in),i1=p1,q1,r1)...),in=pn,qn,rn)},里头\ttt{e(i1,...,in)}是个数据实体,通常是个含有\ttt{i1},\dots,\ttt{in}的表达式,\ttt{i1},\dots,\ttt{in}是一堆事先声明过的整型变量,整个隐式do循环相当于\uline{一维}数组.下面这样的两个程序总是等价的\footnote{
-看懂这两个程序,同志们可能需要先读\ref{fortran_array_assignment}节.
-}.自然任意\ttt{,ri}都可以省略(默认为\ttt{1}).
-\begin{lstlisting}
-program normal_do_loop
-    ...
-    integer :: i1
-    ...
-    integer :: in
-    integer :: i
-    i = 0
-    do in = pn,qn,rn
-        ...
-            do i1 = p1,q1,r1
-                i = i+1
-                a(i) = e(i1,...,in) ! a is [a(1),...,a(S)].
-            end do
-        ...
-    end do
-    ! Now i == S.
-end program normal_do_loop
-\end{lstlisting}
-\begin{lstlisting}
-program implied_do_loop
-    ...
-    integer :: i1
-    ...
-    integer :: in
-    a = [((...(e(i1,...,in),i1=p1,q1,r1)...),in=pn,qn,rn)]
-end program implied_do_loop
-\end{lstlisting}
-
-隐式do循环属于比较高级的语法,还是稍稍让人不好理解滴.幸好不用隐式do循环也总是可以完成任务,所以可以干脆不用.Python中也有一个类似的叫列表推导式的东东,不过当年老师好像根本没讲过,我也只是在耍帅时会用这玩楞.
-
-用Ifx的话,可以用\ttt{p:q:r}代替\ttt{(i1,i1=p,q,r)},当然\ttt{:r}可以省略.这是Ifx的器规,Gfortran是不认的\footnote{
-所以造轮子时最好不用这东东.
-}.\ttt{(i1,i1=p,q,r)}这样的一重简单隐式do循环比较常用,是要掌握的.我再把上一对示例程序的简单情形重新列一下,其中\ttt{a(i) = i1}的意思就是令$a_i$为那时的$i_1$.
-\begin{lstlisting}
-program normal_do_loop
-    ...
-    integer :: i1
-    integer :: i
-    i = 0
-    do i1 = p,q,r
-        i = i+1
-        a(i) = i1
-    end do
-end program normal_do_loop
-\end{lstlisting}
-\begin{lstlisting}
-program implied_do_loop
-    ...
-    integer :: i1
-    a = [(i1,i1=p,q,r)]
-end program implied_do_loop
-\end{lstlisting}
-举个更具体的例子: 输出$1$到$9$中奇数的平方.
-\begin{lstlisting}
-program main
-    integer :: i,odd_squares(5)
-!   integer :: s
-!   s = 1
-!   do i = 1,9,2
-!       odd_squares(s) = i**2
-!       s = s+1
-!   end do
-    odd_squares = [(i**2,i=1,9,2)]
-    print *,odd_squares
-end program main
-\end{lstlisting}
-
-我们可以对先前构造出来的一维数组进行变形(reshape)操作来获取多维数组,只需来个\ttt{a\_{}new = reshape(a\_{}old,s)}就成.\ttt{a\_{}new}和\ttt{a\_{}old}是两个数组,\ttt{s}是\ttt{a\_{}new}的形状(当然得是整型一维数组),\ttt{a\_{}new}的第$l$个元素和\ttt{a\_{}old}的第$l$个元素总是相同的\footnote{
-不考虑赋值时的类型和种别转化的情况下.
-}.整个变形操作说白了就是: 将数组\ttt{a\_{}old}中的元素复制到形状为\ttt{s}的数组\ttt{a\_{}new}中,并保证元素顺序不变,比如下面这样.
+在数组声明中还需要给数组加上 dimension 属性, 来确定数组的维数和每个维度的上下界\footnote{这表明数组变量和数组具名常量是全数组.}. 有两种方法可行, 一种是直接在声明的 \ttt{::} 后面的数组变量/数组具名常量的名称的后面加 \ttt{(j1:k1, ..., jn:kn)}, 一种是在声明的 \ttt{::} 前面加 \ttt{, dimension(j1:k1, ..., jn:kn)}. \ttt{j1}, \dots, \ttt{jn} 中的所有 \ttt{ji} 和 \ttt{k1}, \dots, \ttt{kn} 中的所有 \ttt{ki} 都必须是整型常量 (或整型常量表达式). \ttt{j1:k1}, \dots, \ttt{jn:kn} 中的所有 \ttt{ji:} 都可省略, 若省略, 则 \ttt{ji} 为 \ttt{1}, 换言之, Fortran 数组的任意维度的下界默认是 \ttt{1}. Matlab 学 Fortran, 也默认是 \ttt{1}. C 不一样, 默认是 \ttt{0}, Python 学 C, 也默认是 \ttt{0}. 下面是数组声明示例.
 \begin{lstlisting}
 program main
     implicit none
-    integer :: one2four(2,2)            ! a11=1 a12=3
-    one2four = reshape([1,2,3,4],[2,2]) ! a21=2 a22=4
+    real :: array1(10, 10)
+    real, dimension(10, 10) :: array2
+    real :: array3(1:10, 1:10)
+    real, dimension(1:10, 1:10) :: array4
 end program main
 \end{lstlisting}
-
-\section{数组切片}
-
-数组切片(slicing)是用一个数组得到另一个数组的操作.现假设有一个维数为\ttt{n}的数组\ttt{a},则\ttt{a(e1,...,en)}是另一个数组,其中\ttt{e1},\dots,\ttt{en}乃整型一维数组或整型标量.如何确定\ttt{a(e1,...,en)}?
-
-引入\ttt{v1},\dots,\ttt{vn},保证若\ttt{ei}为数组则\ttt{vi}为\ttt{ei},若\ttt{ei}为标量则\ttt{vi}为\ttt{[ei]}.这样\ttt{a(v1,...,vn)}等于\ttt{b}.记\ttt{vi}为$(v_{i;1},\dots,v_{i;{l_i}})$,则$b_{{\iota_1},\dots,{\iota_n}}=a_{{v_{1;\iota_1}},\dots,{v_{n;\iota_n}}}$.
-
-假设\ttt{e1},\dots,\ttt{en}中\ttt{ei1},\dots,\ttt{eim}\ ($i_1\!<\!\dots\!<\!i_m$)是长度为$l_{i_1},\dots,l_{i_m}$的数组,其他是标量,则可将\ttt{b}变形成形状为$(l_{i_1},\dots,l_{i_m})$的\ttt{c},\ttt{c}就是\ttt{a(e1,...,en)}.
-
-我本来处心积虑地想再来几段话来把这切片讲得更明白些,然后我就放弃了,只好先来个示例给同志们做练习.我敢保证自己写的东东肯定是真实不虚的,但看来是很难理解记忆了.幸好非常复杂的数组切片一般是用不上的.如果老师敢考那些难死人的切片,我们就当即暴动$\!\text{\~{}}$
-\begin{lstlisting}
-program main      ! a000=1 a001=5   a100=2 a101=6
-    implicit none ! a010=3 a011=7   a110=4 a111=8
-    integer :: i,one2eight(0:1,0:1,0:1)
-    integer :: result(1,4)
-    one2eight = reshape([(i,i=1,8)],[2,2,2])
-    result = one2eight(0,[0],[0,1,1,0]) ! The shape is [1,4].
-    ! result X one2eight(0,0,[0,1,1,0]) ! The shape is [4]!
-    print *,result
-end program main
-\end{lstlisting}
-
-先前用向量下标(vector subscript)来切片,我们还可以用三元下标(triplet subscript)\footnote{
-官方文档里用的是``subscript triplet''.
-},以\ttt{p:q:r}代替\ttt{(i,i=p,q,r)},当然\ttt{:r}可以省略.这不是器规,是通用的.而且三元下标中\ttt{p}和\ttt{q}也可以省略(但是注意\ttt{p}和\ttt{q}之间的\ttt{:}不能省),\ttt{p}省略就等于那一维的下界,\ttt{q}省略就等于那一维的上界.这样的切片简单且比较常用(尤其是省略\ttt{:r}的时候),是要掌握的.比如我们可以方便地摘出$1$到$9$中的奇数.
+选择哪种声明方式呢? 一般大家喜欢用不写 \ttt{dimension} 的第一种方式, 毕竟少打几个字, 而且看着比较简洁. 但如果是要一口气声明一堆上下界都一样的数组, 这时第一种方式反而不好使了, 大家就喜欢用写 \ttt{dimension} 的第二种方式. 下面也是数组声明示例.
 \begin{lstlisting}
 program main
     implicit none
-    integer :: i
-    integer :: singles(9),odds(5)
-    singles = [(i,i=1,9)]
-    odds = singles(::2) ! singles(1:9:2)
+    real :: a(1, 1), b(2, 2), c(3, 3)
+    real, dimension(4, 4) :: d, e, f
 end program main
 \end{lstlisting}
-还有,如果\ttt{i1,...,in}都是整型标量,则\ttt{a(i1,...,in)}就是$a_{i_1\dots i_n}$,这更要掌握.问: \ttt{a(i1,...,in)}和\ttt{a(i1:i1,...,in:in)}有什么区别?
 
-对数组切片,可以得到一个新数组,看起来可以对这个新数组再切片.然而这是不成的,原因在于对数组切片得到的新数组,其每一维的上下界其实都是不确定的\footnote{
-虽然在介绍切片规则时看起来有确定的上下界,那只是为了说话方便.
-},所以新数组中每个元素的下标都是不确定的,因此没法切片.同样地,由数组构造器得到的数组也是不能切片的.
-
-\section{数组运算}
-
-有了数组,总是要用数组来算些什么东西.现在我们可以在表达式中混用数组,标量和\ref{fortran_opration}节中的所有运算符.运算符的优先级,和之前是一样的,\ttt{+}和\ttt{-}之前如果什么也没有,也还是默认有个\ttt{0}.只需要知道,当运算符两边出现数组时会有什么结果,我们就能推理出任意表达式的结果了.这又分两种情况.
-\begin{itemize}
-\item 运算符两边都是数组.
-\item 运算符一边是标量,另一边是数组.
-\end{itemize}
-
-如果运算符两边都是数组,我们首先必须保证这两个数组形状完全一致,绝对一致,这样这两个数组中的元素按所处的位置,自然就能一一对应.我们假设两个数组分别是$a$和$b$,并用符号$\star$表示一个运算符,现在我们要算$a\star b$.假设$a$和$b$的下界分别为$j_{a;1},\dots,j_{a;n}$和$j_{b;1},\dots,j_{b;n}$,则首先可以搞到另外两个数组$\alpha$和$\beta$,使得$\alpha_{i_1\dots i_n}=a_{(i_1+j_{a;1})\dots(i_n+j_{a;n})}$,$\beta_{i_1\dots i_n}=b_{(i_1+j_{b;1})\dots(i_n+j_{b;n})}$,然后可以弄出一个数组$c$,使得$c_{i_1\dots i_n}=\alpha_{i_1\dots i_n}\star\beta_{i_1\dots i_n}$,则$c$就是$a\star b$.简单来说就是对$a$和$b$中两两对应的元素进行$\star$运算,得到新数组.示例如下.
+如果是声明数组具名常量, 那么我们可以在声明时把任意维度的上界写成 \ttt{*}, 这样数组具名常量的这个维度的上界直接由初始化时使用的数组字面常量确定, 非常方便. 不过这种数组的名字和字符串不一样, 不叫假定形状数组 (假定形状数组在 \ref{assumed-shape} 小节讲), 而叫隐式形状数组 (implied-shape array). 下面是隐式形状数组示例, 其中数组具名常量 \ttt{v} 唯一的维度的下界为 \ttt{1} (声明中 \ttt{*} 前的 \ttt{1:} 可省略), 上界为 \ttt{3}.
 \begin{lstlisting}
-program main      ! 1+5=6 3+7=10
-    implicit none ! 2+6=8 4+8=12
-    integer :: one2four(2,2),five2eight(2,2,1)
-    one2four = reshape([1,2,3,4],[2,2])
-    five2eight = reshape([5,6,7,8],[2,2,1])
-    print *,one2four+reshape(five2eight,[2,2])
-    ! print *,one2four+five2eight (X)
+program main
+    implicit none
+    real, parameter :: v(1:*) = [0.1, 1.1, 2.1]
 end program main
 \end{lstlisting}
 
-如果运算符一边是标量,另一边是数组,不妨设数组为$a$,标量为$b$,仍设运算符为$\star$.此时若$a$的形状为$\vec{s}$,则可以另搞一个形状为$\vec{s}$的数组$\tilde{b}$,使得$\tilde{b}$中任意元素都是$b$,然后就有$a\star b=a\star\tilde{b}$,$b\star a=\tilde{b}\star a$.示例如下.
+和延迟长度字符串类似, 我们可以在声明中除去所有 \ttt{ji:ki} 中的 \ttt{ji} 和 \ttt{ki}, 剩下 \ttt{:}, 并附带地用 \ttt{allocatable} 加上 allocatable 属性, 来表示声明的是延迟形状数组 (deferred-shape array). 延迟形状数组各维度的上下界在声明后未定, 但维数确定. 任意延迟形状数组 \ttt{a}, 我们可以用形如 \ttt{allocate(a(j1:k1, ..., jn:kn))} 的 allocate 语句让 \ttt{a} 各维度的下界确定成 \ttt{j1}, \dots, \ttt{jn} (任意 \ttt{j1:} 仍可省略), 上界确定成 \ttt{k1}, \dots, \ttt{kn}, 用形如 \ttt{deallocate(a)} 的 deallocate 语句让 \ttt{a} 各维度的上下界未定. 这也意味着延迟形状数组只能是变量. 示例如下.
 \begin{lstlisting}
-program main      ! 1+9=10 3+9=12
-    implicit none ! 2+9=11 4+9=13
-    integer :: one2four(2,2)
-    one2four = reshape([1,2,3,4],[2,2])
-    print *,one2four+9
+program main
+    implicit none
+    real, allocatable :: array1(:)
+    real, dimension(:, :), allocatable :: array2
+
+    allocate(array1(10))
+    allocate(array2(10, 10))
+    deallocate(array1)
+    deallocate(array2)
+end program main
+\end{lstlisting}
+请注意使用 allocate 语句的时候数组的维数要匹配. 例如下面这个例子, \ttt{a} 是二维的, 但 allocate 语句却想让 \ttt{a} 是一维的, 这将失败.
+\begin{lstlisting}
+program main
+    implicit none    
+    real, allocatable :: a(:, :)
+    allocate(a(10)) ! Error: ranks are different!
 end program main
 \end{lstlisting}
 
-即使表达式的结果是一个数组,也不能对其切片,因为此时数组的上下界依然是不确定的.比如,有两个一维数组,一个下界是$1$,一个下界是$0$,把这俩加起来,得到的数组上下界应该是多少?不好规定.有些情况下,比如让两个下界都是$1$的一维数组相加,看起来数组上下界是好规定的,然而若真来个规定,造编译器的人就得处心积虑地要让编译器能够区分这两种情形,他们会很不开心,很不快乐,所以统统规定上下界不确定是好的.
+和延迟长度字符串类似, \ref{fortran_array_assignment} 节将介绍, 我们给延迟形状数组赋值的时候, 电脑会自动使用 allocate 语句和 deallocate 语句, 我们不用操心了. 但是, 如果程序运行到某时已经不需要使用某个延迟形状数组, 请对那个延迟形状数组使用 deallocate 语句. 需要这么做的原因是, 通常情况下如果程序运行到某时已经不需要使用某个变量, 那个变量很可能会被电脑自动删掉, 这个操作的学名是垃圾回收 (garbage collection), 但因为延迟形状数组需要我们或电脑手动用 allocate 语句和 deallocate 语句操作一番, 所以延迟形状数组很可能不会被电脑自动删掉, 偏偏实践中的延迟形状数组又通常巨大无比, 1 个 G 都完全不算什么, 最后的结果是大大的延迟形状数组一直把内存占着, 电脑不堪重负, 程序跑得慢甚至崩溃出错. 所以我们得老老实实不厌其烦地用 deallocate 语句, 它能让延迟形状数组把内存让出来. 延迟长度字符串本也有这个问题, 但实践中的延迟长度字符串通常很小 (天文人经常做大规模数据处理, 但不经常做大规模文本处理), 这个问题姑且可以无视.
+\begin{convention}
+    如果程序运行到某时已经不需要使用某个有 allocatable 属性的变量, 那么对这个变量使用 deallocate 语句.
+\end{convention}
+
+\section{数组操作}\label{fortran_array_manipulation}
+
+我们可以对数组进行变形 (reshape), 这很简单. 变形就是用一个旧数组来造一个形状未必一样的新数组, 使得新数组中排在第 $i$ 个的元素和旧数组中排在第 $i$ 个的元素相同, 换言之, 把旧数组中的元素按元素顺序复制出来, 再按元素顺序重新排列成某种形状来生成新数组. 如果 \ttt{\{a\}} 是旧数组, 那么 \ttt{reshape(\{a\}, \{shape\})} (其中 \ttt{\{shape\}} 是一维数组) 是对旧数组 \ttt{\{a\}} 进行变形得到的形状为 \ttt{\{shape\}} 的新数组. 例如, 假设我们想造式 \eqref{a1} 中的数组,
+\begin{equation}
+    \begin{bmatrix}
+        1&4&7\\
+        2&5&8\\
+        3&6&9
+    \end{bmatrix}\label{a1}
+\end{equation}
+我们可以把 \ttt{[(i, i = 1, 9)]} 变形成形状为 \ttt{[3, 3]} 的数组, 因此我们写 \ttt{reshape([(i, i = 1, 9)], [3, 3])} 即可.
+
+我们可以对数组进行转置 (transpose), 这有点儿难. 用数学来说, 设旧数组可表示为 $a_{s_1\dots s_n}$, 新数组可表示为 $b_{s_1\dots s_n}$, 另给表示 $a_{s_1\dots s_n}$ 和 $b_{s_1\dots s_n}$ 的维度的关系的\uline{一维整型}向量, 用 \ttt{\{order\}} 表示, 此向量中的元素按顺序依次为 $i_1$, \dots{}, $i_n$, 则 $b_{s_1\dots s_n}=a_{s_{i_1}\dots s_{i_n}}$. 直观化地理解, 请同学们想象有一个 $n$ 维空间, 坐标轴为 $s_1$ 轴, \dots{} $s_n$ 轴, 数组 $a$ 的元素 $a_{s_1\dots s_n}$ 挂在坐标点 $(s_1,\dots,s_n)$ 上, 然后我们变换空间的坐标轴, 让旧 $s_1$ 轴变成新 $s_{i_1}$ , \dots{} 旧 $s_n$ 轴变成新 $s_{i_n}$, 变换后挂在坐标点 $(s_1,\dots,s_n)$ 上的元素就是 $b$ 的元素 $b_{s_1\dots s_n}=a_{s_{i_1}\dots s_{i_n}}$. 我们需要更具体的例子. 假设我们想把式 \eqref{a1} 中的数组转置成式 \eqref{a2} 中的数组.
+\begin{equation}
+    \begin{bmatrix}
+        1&2&3\\
+        4&5&6\\
+        7&8&9
+    \end{bmatrix}\label{a2}
+\end{equation}
+我们先给式 \eqref{a1} 中的数组补上坐标轴如 \eqref{a1_} 所示,
+\begin{equation}
+    \begin{matrix}
+        \cdot&-&-&-&\ra&s_2\\
+        |&1&4&7&&\\
+        |&2&5&8&&\\
+        |&3&6&9&&\\
+        \da&&&&&\\
+        s_1&&&&&\\
+    \end{matrix}\label{a1_}
+\end{equation}
+再给式 \eqref{a2} 中的数组补上坐标轴如 \eqref{a2_} 所示,
+\begin{equation}
+    \begin{matrix}
+        \cdot&-&-&-&\ra&s_2\\
+        |&1&2&3&&\\
+        |&4&5&6&&\\
+        |&7&8&9&&\\
+        \da&&&&&\\
+        s_1&&&&&\\
+    \end{matrix}\label{a2_}
+\end{equation}
+对比 \eqref{a1_} 和 \eqref{a2_}, 我们可发现旧 $s_1$ 轴是新 $s_2$ 轴, 旧 $s_2$ 轴是新 $s_1$ 轴, 所以表示维度的关系的向量 \ttt{\{order\}} 应是 \ttt{[2, 1]}. 如果 \ttt{\{a\}} 是旧数组, 那么 \ttt{reshape(\{a\}, shape(\{a\}), order=\{order\})} 是转置后的新数组. 因此我们写 \ttt{reshape(reshape([(i, i = 1, 9)], [3, 3]), shape(reshape( [(i, i = 1, 9)], [3, 3])), order=[2, 1])} 即可.
+
+请同学们练熟数组的变形和转置, 然后我们学简化的语法. 在上一段的示例中, 我们干了两步, 先变形后转置, 代码写得老长. 我们可以直接把 \ttt{reshape(reshape(\{a\}, \{shape\}), shape(\{a\}), order=\{order\})} 简写成 \ttt{reshape(\{a\}, \{shape\}, order=\{order\})}, 所以我们可以写 \ttt{reshape ([(i, i = 1, 9)], [3, 3], order=[2, 1])}.
+
+我们可以对数组进行取元, 得到数组中的元素, 这超简单. 设 \ttt{a} 为数组 $a$, 而 \ttt{s1, ..., sn} 为整数 $s_1,\dots,s_n$, 则 \ttt{a(s1, ..., sn)} 为 $a_{s_1\dots s_n}$, 例如 \ttt{a(1, 3)} 是 $a_{13}$.
+
+我们可以获取数组片段 (section), 这难上天了. 我先来讲用向量下标 (vector subscript) 来获取数组片段, 但即使是 Python 那里, 向量下标也是超级难点, 如果老师敢考难死人的向量下标, 俺们就赶紧揭竿而起\dots{}. 首先我们需要数组 \ttt{a}, 表示 $a_{s_1\dots s_n}$. 然后我们需要 $n$ 个\uline{一维整型}向量 \ttt{i1, ..., in}, 分别表示 $[{i_1}_1,\dots,{i_1}_{l_1}],\dots,[{i_n}_1,\dots,{i_n}_{l_n}]$, 那么 \ttt{a(i1, ..., in)} 的元素可一一对应于形状为 $[l_1,\dots,l_n]$ 的数组 $b_{s_1\dots s_n}$ 的元素, 并且 $b_{s_1\dots s_n}=a_{{i_1}_{s_1}\dots {{i_n}_{s_n}}}$. 请看下面这个例子.
+\begin{lstlisting}
+program main
+    implicit none
+    integer :: i, a(3, 3)
+    a = reshape([(i, i = 1, 9)], [3, 3])
+    print *, a([1, 3, 2], [2, 1, 1, 3])
+end program main
+\end{lstlisting}
+这个例子中 \ttt{a} 的元素可以排成表, 如 \eqref{a_whole} 所示.
+\begin{equation}
+    \begin{matrix}
+        a_{11}&a_{12}&a_{13}\\
+        a_{21}&a_{22}&a_{23}\\
+        a_{31}&a_{32}&a_{33}
+    \end{matrix}\label{a_whole}
+\end{equation}
+先可确定例子中的数组片段形状为 $[3, 4]$, 我们先在一个 $3\times4$ 的表中填满 $a_{??}$, 并在周围补上坐标轴, 如 \eqref{a_section_step_1} 所示.
+\begin{equation}
+    \begin{matrix}
+        \cdot&-&-&-&-&\ra&s_2\\
+        |&a_{??}&a_{??}&a_{??}&a_{??}&\\
+        |&a_{??}&a_{??}&a_{??}&a_{??}&\\
+        |&a_{??}&a_{??}&a_{??}&a_{??}&\\
+        \da&&&&&&\\
+        s_1&&&&&&
+    \end{matrix}\label{a_section_step_1}
+\end{equation}
+向量 \ttt{i1} 是 $[1, 3, 2]$, 向量 \ttt{i2} 是 $[2, 1, 1, 3]$, 所以我们我们需要这么做: 沿着坐标轴 $s_1$ 方向, 每一列从上到下, 让表中 $a_{??}$ 的第 $1$ 个坐标依次为 $1, 3, 2$; 沿着坐标轴 $s_2$ 方向, 每一行从左到右, 让表中 $a_{??}$ 的第 $2$ 个坐标依次为 $2, 1, 1, 3$. 这样得到的表如 \eqref{a_section_step_2} 所示.
+\begin{equation}
+    \begin{matrix}
+        \cdot&-&-&-&-&\ra&s_2\\
+        |&a_{12}&a_{12}&a_{13}&a_{13}&\\
+        |&a_{32}&a_{31}&a_{31}&a_{33}&\\
+        |&a_{22}&a_{21}&a_{21}&a_{23}&\\
+        \da&&&&&&\\
+        s_1&&&&&&
+    \end{matrix}\label{a_section_step_2}
+\end{equation}
+这样我们就成功获得数组片段啦. 如果 \ttt{a} 是 $n$ 维数组, 亦可如法炮制, 请同学们自己尝试.
+
+如果向量 \ttt{i1, ..., in} 中的任意 \ttt{im} 是 \ttt{[im\_{}1]}, 其中 \ttt{[im\_{}1]} 是标量, 那么我们可以用 \ttt{im\_{}1} 代替 \ttt{im} 或 \ttt{[im\_{}1]}. 但这么做之后得到的数组片段和原来的不太一样, 数组片段的第 $m$ 个维度会被灭掉, 而后面的维度会依次递补上来. 请看下面这个例子.
+\begin{lstlisting}
+program main
+    implicit none
+    integer :: i, a(3, 3)
+    a = reshape([(i, i = 1, 9)], [3, 3])
+    print *, a([3], [2, 1, 1, 3])
+end program main
+\end{lstlisting}
+用之前的方法可知这个例子中数组片段维数为 $2$, 形状为 $[1, 4]$, 元素可以排成表, 如 \eqref{a_section__example_1} 所示.
+\begin{equation}
+    \begin{matrix}
+        \cdot&-&-&-&-&\ra&s_2\\
+        |&a_{32}&a_{31}&a_{31}&a_{33}&\\
+        \da&&&&&&\\
+        s_1&&&&&&
+    \end{matrix}\label{a_section__example_1}
+\end{equation}
+又请看下面这个例子.
+\begin{lstlisting}
+program main
+    implicit none
+    integer :: i, a(3, 3)
+    a = reshape([(i, i = 1, 9)], [3, 3])
+    print *, a(3, [2, 1, 1, 3])
+end program main
+\end{lstlisting}
+原本向量 \ttt{i1} 是 $[3]$, 这个例子中用 $3$ 代替, 结果是 \eqref{a_section__example_1} 所示的表的 $s_1$ 维被灭掉, 而 $s_2$ 维依次递补上来变成 $s_1$ 维, 所以这个例子中数组片段的维数为 $1$, 形状为 $[4]$, 元素可以排成表, 如 \eqref{a_section__example_2} 所示.
+\begin{equation}
+    \begin{matrix}
+        \cdot&-&-&-&-&\ra&s_1\\
+        &a_{32}&a_{31}&a_{31}&a_{33}&
+    \end{matrix}\label{a_section__example_2}
+\end{equation}
+
+我接着讲用三元下标 (vector subscript\footnote{\href{https://j3-fortran.org/doc/year/24/24-007.pdf}{标准解释文档}里用的词是 ``subscript triplet'', 可翻译成 ``下表三元组''.}) 来获取数组片段. 三元下标是 \ttt{m1:m2:m3}, 等价于向量下标 \ttt{[(i, i = m1, m2, m3)]}, 请注意这是官规而不是 Ifx 的器规, 并且三元下标两边没有左右中括号 \ttt{[]}. 若省略 \ttt{m1}/\ttt{m2}, 则 \ttt{m1}/\ttt{m2} 是用于获取片段的数组的, 三元下标对应的维度的上界/下界. 若省略 \ttt{:m3}, 则 \ttt{m3} 是 \ttt{1}. 请看下面这个例子.
+\begin{lstlisting}
+program main
+    implicit none
+    integer :: i, a(3, 3)
+    a = reshape([(i, i = 1, 9)], [3, 3])
+    print *, a(::2, 2)
+end program main
+\end{lstlisting}
+这个例子中, 三元下标 \ttt{::2} 对应 \ttt{a} 的第 $1$ 个维度, \ttt{a} 的第 $1$ 个维度的上界和下界分别是 $1$ 和 $3$, 所以 \ttt{::2} 等价于 \ttt{1:3:2}, 亦即等价于 \ttt{[(i, i = 1, 3, 2)]}, 亦即等价于 \ttt{[1, 3]}. 并且数组片段的第 $2$ 个维度被灭掉. 所以这个例子中数组片段的维数为 $1$, 形状为 $[2]$, 元素可以排成表, 如 \eqref{a_section__example_3} 所示.
+\begin{equation}
+    \begin{matrix}
+        \cdot&\\
+        |&a_{12}\\
+        |&a_{32}\\
+        \da&\\
+        s_1&
+    \end{matrix}\label{a_section__example_3}
+\end{equation}
+学 Fortran 的 Matlab 的三元下标用法和 Fortran 相同, 而 C 和学 C 的 Python 的三元下标用法和 Fortran 不相同, 请同学们注意.
+
+同学们如果学数组片段学得晕乎, 请至少掌握使用三元下标 \ttt{m1:m2} 且 \ttt{m1 <= m2} 的情形, 此情形很常用. 若 \ttt{a} 是数组, 且任意 \ttt{m1\_{}i:m2\_{}i}, \ttt{m1\_{}i <= m2\_{}i}, 则 \ttt{a(m1\_{}1:m2\_{}1, ..., m1\_{}n:m2\_{}n)} 代表把 \ttt{a} 的元素中第 \ttt{i} 个下标不在左右闭区间 $[$\ttt{m1\_{}i}$,$ \ttt{m2\_{}i}$]$ 中的元素灭掉得到的数组片段. 请看下面这个例子.
+\begin{lstlisting}
+program main
+    implicit none
+    integer :: i, a(3, 3)
+    a = reshape([(i, i = 1, 9)], [3, 3])
+    print *, a(1:2, 2:3)
+end program main
+\end{lstlisting}
+先将 \ttt{a} 的元素排成表, 如 \eqref{simple_a_whole} 所示.
+\begin{equation}
+    \begin{matrix}
+        a_{11}&a_{12}&a_{13}\\
+        a_{21}&a_{22}&a_{23}\\
+        a_{31}&a_{32}&a_{33}
+    \end{matrix}\label{simple_a_whole}
+\end{equation}
+第 $1$ 个三元下标是 \ttt{1:2}, 而 $3$ 不在 $[1,2]$ 中, 所以灭掉 \ttt{a} 的元素中第 $1$ 个下标是 $3$ 的元素. 第 $2$ 个三元下标是 \ttt{2:3}, 而 $1$ 不在 $[2,3]$ 中, 所以灭掉 \ttt{a} 的元素中第 $2$ 个下标是 $1$ 的元素. 结果如 \eqref{simple_a_step_1} 所示.
+\begin{equation}
+    \begin{matrix}
+        \times&a_{12}&a_{13}\\
+        \times&a_{22}&a_{23}\\
+        \times&\times&\times
+    \end{matrix}\label{simple_a_step_1}
+\end{equation}
+所以得到的数组片段如 \eqref{simple_a_step_2} 所示.
+\begin{equation}
+    \begin{matrix}
+        a_{12}&a_{13}\\
+        a_{22}&a_{23}
+    \end{matrix}\label{simple_a_step_2}
+\end{equation}
+
+本节讲的数组操作, 得到的都是非全数组. 非全数组没有确定的下标, 所以对非全数组取元素/片段将会失败. 例如下面这个程序对数组片段 \ttt{a(:, :)} 再取片段不成.
+\begin{lstlisting}
+program main
+    implicit none
+    integer :: i, a(3, 3)
+    a = reshape([(i, i = 1, 9)], [3, 3])
+    print *, a(:, :)(:, :) ! Invalid!
+end program main
+\end{lstlisting}
 
 \section{数组赋值}\label{fortran_array_assignment}
 
-数组赋值可分两种,一种``\ttt{=}''右侧是数组,另一种``\ttt{=}''右侧是标量.
+给数组 \ttt{\{var\}} 用 \ttt{\{var\} = \{expr\}} 赋值, 情况可分两种, 一种 \ttt{\{expr\}} 是数组, 另一种 \ttt{\{expr\}} 是标量.
 
-如果``\ttt{=}''右侧是数组,则俩玩楞形状必须一样滴.假设我们要令\ttt{a=b},并设$n$维数组$a$和$b$的下界分别为$j_{a;1},\dots,j_{a;n}$和$j_{b;1},\dots,j_{b;n}$,则$a$和$b$的元素自然能一一对应.首先我们要搞一个$\tilde{b}$,使得$\tilde{b}_{(i_1-j_{b;1}+j_{a;1})\dots(i_n-j_{b;n}+j_{a;n})}=b_{i_1\dots i_n}$,然后令$a$等于$\tilde{b}$即可.简单来说就是令$a$和$b$中两两对应的元素相等.这里$b$的上下界可能是不确定的,但赋值给$a$后,$a$先前声明过,所以其上下界一定是确定的.
+如果 \ttt{\{expr\}} 是数组, 那么 \ttt{\{var\}} 和 \ttt{\{expr\}} 形状必须一样. 此时让 \ttt{\{var\}} 和 \ttt{\{expr\}} 一一对应的元素相等. 示例如下, 其中 \ttt{\{expr\}} 是非全数组, 上下界不定, 但元素的一一对应关系和上下界无关, 所以赋值可行.
+\begin{lstlisting}
+program main
+    implicit none
+    integer :: i
+    real :: a(3, 3)
+    a = reshape([(real(i), i = 1, 9)], [3, 3])
+    a = -a
+    do i = 1, 3
+        print *, a(i, :)
+    end do
+end program main
+\end{lstlisting}
 
-如果``\ttt{=}''右侧是标量,比如数组是$a$,标量是$b$,则先把$b$变成和$a$形状相同的数组$c$,使得$c$中任意元素都是$b$,然后令\ttt{a=c}即可.
+如果 \ttt{\{var\}} 是延迟形状数组, 那么 \ttt{\{var\}} 和 \ttt{\{expr\}} 维数必须一样, 此时 \ttt{lbound(\{var\})} 和 \ttt{ubound(\{var\})} 分别是 \ttt{lbound(\{expr\})} 和 \ttt{ubound (\{expr\})}. 示例如下, 其中 \ttt{\{expr\}} 是非全数组, 则 \ttt{lbound(\{var\})} 和 \ttt{ubound(\{var\})} 分别是 $[1,1]$ 和 $[3,3]$.
+\begin{lstlisting}
+program main
+    implicit none
+    integer :: i
+    real, allocatable :: a(:, :)
+    a = reshape([(real(i), i = 1, 9)], [3, 3])
+    do i = 1, 3
+        print *, a(i, :)
+    end do
+    print *, lbound(a)
+    print *, ubound(a)
+    deallocate(a)
+end program main
+\end{lstlisting}
 
-对于数组,我们还可以用一些特殊东东来赋值,比如forall,where和do concurrent,不过这些东东我自己貌似会用,却研究不出它们的明确规则.我计划在第\ref{fortran_parallel_conpute}章介绍它们.
+如果 \ttt{\{expr\}} 是标量, 那么先临时造一个形状与 \ttt{\{var\}} 一样, 而其中元素皆为 \ttt{\{expr\}} 的数组 \ttt{\{expr\_{}\}}, 然后执行 \ttt{\{var\} = \{expr\_{}\}}. 示例如下.
+\begin{lstlisting}
+program main
+    implicit none
+    integer :: i
+    real :: a(3, 3)
+    a = 0.0
+    do i = 1, 3
+        print *, a(i, :)
+    end do
+end program main
+\end{lstlisting}
+如果 \ttt{\{var\}} 是延迟形状数组且形状未定, 那么执行 \ttt{\{var\} = \{expr\}} 将失败. 错误示例如下, 此程序 Ifx 能跑起, 原因应该是 Ifx 在 \ttt{\{var\}} 形状未定的情况下, 会自己认定 \ttt{\{var\}} 的各维度的长度是 $0$.
+\begin{lstlisting}
+program main
+    implicit none
+    integer :: i
+    real, allocatable :: a(:, :)
+    a = 0.0 ! Invalid!
+    do i = 1, 3
+        print *, a(i, :)
+    end do
+    print *, lbound(a)
+    print *, ubound(a)
+    deallocate(a)
+end program main
+\end{lstlisting}
+如果 \ttt{\{var\}} 是延迟形状数组且形状已定, 那么 \ttt{\{var\}} 的各维度的上界和下界虽被重定, 但重定后的各维度的上界和下界和重定前的各维度的上界和下界相同, 相当于上界和下界没被重定, 并且随后执行 \ttt{\{var\} = \{expr\}}. 示例如下.
+\begin{lstlisting}
+program main
+    implicit none
+    integer :: i
+    real, allocatable :: a(:, :)
+    allocate(a(0:2, 0:2))
+    a = 0.0
+    do i = 1, 3
+        print *, a(i, :)
+    end do
+    print *, lbound(a)
+    print *, ubound(a)
+    deallocate(a)
+end program main
+\end{lstlisting}
+
+对于数组, 我们还可以用一些特殊东东来赋值, 比如 where (掩码数组赋值) 和 do concurrent, 另外还有已被弃用的 forall. 不过这些东东比较难, 我计划在第\ref{fortran_parallel_compute}章介绍它们.
+
+\section{数组运算}\label{fortran_array_operation}
+
+如果一个代表运算 $\text{OP}$ 的一元运算符 \ttt{\{op\}} 右跟 \ttt{\{q\}}, 且 \ttt{\{q\}} 是数组, 那么结果的形状与 \ttt{\{q\}} 一样, 且任意 \ttt{\{q\}} 的元素 $q_{s_1\dots s_n}$, \ttt{\{op\}\{q\}} 中与 $q_{s_1\dots s_n}$ 对应的元素为 $\text{OP}\,q_{s_1\dots s_n}$. 示例如下.
+\begin{lstlisting}
+program main
+    implicit none
+    integer :: i
+    real :: a(3, 3)
+    a = reshape([(real(i), i = 1, 9)], [3, 3])
+    a = -a
+    do i = 1, 3
+        print *, a(i, :)
+    end do
+end program main
+\end{lstlisting}
+
+如果一个代表运算 $\text{OP}$ 的二元运算符 \ttt{\{op\}} 左右分别跟 \ttt{\{q1\}} 和 \ttt{\{q2\}}, 且 \ttt{\{q1\}} 和 \ttt{\{q2\}} 是形状相同的数组, 那么结果的形状也相同, 且任意 \ttt{\{q1\}} 和 \ttt{\{q2\}} 的元素 ${q_1}_{s_1\dots s_n}$ 和 ${q_2}_{s_1\dots s_n}$, \ttt{\{q1\}\{op\}\{q2\}} 中与 ${q_1}_{s_1\dots s_n}$ 和 ${q_2}_{s_1\dots s_n}$ 对应的元素为 ${q_1}_{s_1\dots s_n}\,\text{OP}\,{q_2}_{s_1\dots s_n}$. 示例如下.
+\begin{lstlisting}
+program main
+    implicit none
+    integer :: i
+    real :: a(3, 3)
+    a = reshape([(real(i), i = 1, 9)], [3, 3])
+    a = a * a
+    do i = 1, 3
+        print *, a(i, :)
+    end do
+end program main
+\end{lstlisting}
+如果一个代表运算 $\text{OP}$ 的二元运算符 \ttt{\{op\}} 左右分别跟 \ttt{\{q1\}} 和 \ttt{\{q2\}}, 且 \ttt{\{q1\}} 和 \ttt{\{q2\}} 是形状不同的数组, 那么运算将失败. 错误示例如下.
+\begin{lstlisting}
+program main
+    implicit none
+    integer :: i
+    real :: a(3, 3)
+    a = reshape([(real(i), i = 1, 9)], [3, 3])
+    a = a(3, :) * a(3:3, :) ! Invalid!
+    do i = 1, 3
+        print *, a(i, :)
+    end do
+end program main
+\end{lstlisting}
+如果一个代表运算 $\text{OP}$ 的二元运算符 \ttt{\{op\}} 左右分别跟 \ttt{\{q1\}} 和 \ttt{\{q2\}}, 且 \ttt{\{q1\}} 和 \ttt{\{q2\}} 一个是标量一个是数组, 那么先临时把 \ttt{\{q1\}} 和 \ttt{\{q2\}} 中是标量的那个替换成一数组, 此数组形状与 \ttt{\{q1\}} 和 \ttt{\{q2\}} 中是数组的那个一样, 且此数组中元素皆为 \ttt{\{q1\}} 和 \ttt{\{q2\}} 中是标量的那个, 然后按 \ttt{\{q1\}} 和 \ttt{\{q2\}} 是形状相同的数组时的方法进行运算. 示例如下.
+\begin{lstlisting}
+program main
+    implicit none
+    integer :: i
+    real :: a(3, 3)
+    a = reshape([(real(i), i = 1, 9)], [3, 3])
+    a = a(3, 3) * a
+    do i = 1, 3
+        print *, a(i, :)
+    end do
+end program main
+\end{lstlisting}
+
+本节讲的数组运算, 得到的都是非全数组. 所以下面这个程序不成.
+\begin{lstlisting}
+program main
+    implicit none
+    integer :: i
+    real :: a(3, 3)
+    a = reshape([(real(i), i = 1, 9)], [3, 3])
+    print *, (-a)(3, 3) ! Invalid!
+end program main
+\end{lstlisting}
+但下面这个程序成, 因为数组取元素/片段优先于数组运算, 所以 \ttt{-a(3, 3)} 实际上代表 \ttt{-(a(3, 3))}, 没有问题.
+\begin{lstlisting}
+program main
+    implicit none
+    integer :: i
+    real :: a(3, 3)
+    a = reshape([(real(i), i = 1, 9)], [3, 3])
+    print *, -a(3, 3)
+end program main
+\end{lstlisting}
