@@ -6,13 +6,13 @@
 
 \subsection{if 结构}\label{if_construct}
 
-在讲 if 结构之前同学们需要知道 \ttt{read(*, *)} 语句, 这种语句将大量出现在示例中. \ttt{read(*, *)} 语句干的事和 \ttt{print *,} 语句相反, 它会把我们输入在屏幕上的内容赋值给变量. 请看下面这个例子, 这个例子在运行到第五行时会停住.
+在讲 if 结构之前同学们需要知道 \ttt{read *,} 语句, 这种语句将大量出现在示例中. \ttt{read *,} 语句干的事和 \ttt{print *,} 语句相反, 它会把我们输入在屏幕上的内容赋值给变量. 请看下面这个例子, 这个例子在运行到第五行时会停住.
 \begin{lstlisting}
 program main
     use,intrinsic :: iso_fortran_env, only: real128
     implicit none
     real(real128) :: number
-    read(*, *) number
+    read *, number
     print *, number
 end program main
 \end{lstlisting}
@@ -23,7 +23,7 @@ end program main
 program main
     implicit none
     integer :: number
-    read(*, *) number
+    read *, number
     print *, number
     if (number /= 0) then
         ! (number /= 0) == .true.
@@ -51,7 +51,7 @@ program main
     implicit none
     integer :: number
     print *, 'Enter a integer number:'
-    read(*, *) number
+    read *, number
     print *, number
     if (number /= 0) then
         ! (number /= 0) == .true.
@@ -69,7 +69,7 @@ end program main
 program main
     implicit none
     integer :: score
-    read(*, *) score
+    read *, score
     print *, score
     if ((score < 0) .or. (score > 100)) then
         ! ((score < 0) .or. (score > 100)) == .true.
@@ -99,7 +99,7 @@ end program main
 program main
     implicit none
     integer :: number
-    read(*, *) number
+    read *, number
     print *, number
     if (number /= 0) then
         print *, 'The number is not 0!'
@@ -112,7 +112,7 @@ end program main
 program main
     implicit none
     integer :: number
-    read(*, *) number
+    read *, number
     print *, number
     if (number /= 0) then
         print *, 'The number is not 0!'
@@ -126,7 +126,7 @@ end program main
 program main
     implicit none
     integer :: score
-    read(*, *) score
+    read *, score
     print *, score
     if ((score < 0) .or. (score > 100)) then
         print *, 'Invalid Score!'
@@ -144,7 +144,7 @@ end program main
 program main
     implicit none
     integer :: score
-    read(*, *) score
+    read *, score
     print *, score
     if ((score < 0) .or. (score > 100)) then
         print *, 'Invalid Score!'
@@ -164,7 +164,7 @@ end program main
 program main
     implicit none
     integer :: score
-    read(*, *) score
+    read *, score
     print *, score
     if ((score < 0) .or. (score > 100)) then
         print *, 'Invalid Score!'
@@ -184,7 +184,7 @@ end program main
 program main
     implicit none
     integer :: score
-    read(*, *) score
+    read *, score
     print *, score
     if ((score < 0) .or. (score > 100)) then
         print *, 'Invalid Score!'
@@ -202,7 +202,7 @@ end program main
 program main
     implicit none
     integer :: score
-    read(*, *) score
+    read *, score
     print *, score
     if ((score < 0) .or. (score > 100)) then
         print *, 'Invalid Score!'
@@ -218,7 +218,7 @@ end program main
 program main
     implicit none
     integer :: score
-    read(*, *) score
+    read *, score
     print *, score
     if (score > 100) then
         print *, 'Invalid Score!'
@@ -248,7 +248,7 @@ end program main
 program main
     implicit none
     integer :: score
-    read(*, *) score
+    read *, score
     print *, score
     if (score > 100) then
         print *, 'Invalid Score!'
@@ -272,7 +272,7 @@ end program main
 program main
     implicit none
     integer :: score
-    read(*, *) score
+    read *, score
     print *, score
     outer: if ((score < 0) .or. (score > 100)) then
         print *, 'Invalid Score!'
@@ -291,7 +291,7 @@ end program main
 program main
     implicit none
     integer :: score
-    read(*, *) score
+    read *, score
     print *, score
     outer: if ((score < 0) .or. (score > 100)) then
         print *, 'Invalid Score!'
@@ -512,7 +512,7 @@ program main
     implicit none
     continue
     integer :: number
-    read(*, *) number
+    read *, number
     print *, number
 end program main
 \end{lstlisting}
@@ -524,7 +524,7 @@ continue 语句写作 \ttt{continue}, 表示 ``啥也不干'', 和注释行没�
 program main
     implicit none
     integer :: number
-    read(*, *) number
+    read *, number
     print *, number
     if (number /= 0) then
     else
@@ -537,7 +537,7 @@ end program main
 program main
     implicit none
     integer :: number
-    read(*, *) number
+    read *, number
     print *, number
     if (number /= 0) then
         continue
@@ -557,7 +557,7 @@ program main
     implicit none
     integer :: i, j, n
     logical :: is_prime
-    read(*, *) n
+    read *, n
     do i = n**2, (n+1)**2
         is_prime = .true.
         do j = 2, i-1
@@ -575,7 +575,7 @@ program main
     implicit none
     integer :: i, j, n
     logical :: is_prime
-    read(*, *) n
+    read *, n
     do i = n**2, (n+1)**2
         is_prime = .true.
         inner_loop: do j = 2, i-1
@@ -594,7 +594,7 @@ program main
     implicit none
     integer :: i, j, n
     logical :: is_prime
-    read(*, *) n
+    read *, n
     outer_loop: do i = n**2, (n+1)**2
         is_prime = .true.
         do j = 2, i-1
@@ -620,7 +620,7 @@ program main
     implicit none
     integer :: i, j, n
     logical :: is_prime
-    read(*, *) n
+    read *, n
     do i = n**2, (n+1)**2
         is_prime = .true.
         inner_loop: do j = 2, i-1     !<-----+
@@ -639,7 +639,7 @@ program main
     implicit none
     integer :: i, j, n
     logical :: is_prime
-    read(*, *) n
+    read *, n
     outer_loop: do i = n**2, (n+1)**2 !<---------+
         is_prime = .true.                        !
         do j = 2, i-1                            !
