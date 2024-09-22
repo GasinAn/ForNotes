@@ -320,7 +320,7 @@ end function combinatorial
     \item 调用函数子程序前必须对函数子程序本身进行声明 (声明的类型和种别是函数子程序的结果的类型和种别), 子例行子程序是不需要的. 比如示例程序的主程序加了 \ttt{integer :: combinatorial} 一句, 因为整型是函数 \ttt{combinatorial} 的结果 \ttt{comb} 的类型. 
 \end{enumerate} 
 按照当今的规范, 我们必须保证函数子程序的所有哑参量都是只读的 (结果不是哑参量). 如果不遵守此规范, 我保证同志们之后会无比头痛. 
-\begin{convention} 
+\begin{convention}\label{func_all_in}
     标注函数子程序的所有哑参量为只读参量. 
 \end{convention} 
 
@@ -660,9 +660,156 @@ function identity(x) result(y)
 end function identity
 \end{lstlisting} 
 
+\section{特殊过程}
+
+\subsection{纯过程}\label{pure_procedure}
+
+按规范 \ref{func_all_in} 写出的函数都是纯 (pure) 过程. 纯过程的定义有点复杂, 但同学们只需知道最典型的纯过程, 就是过程的哑参量 (函数结果不算) 都是只读参量的过程. 写纯过程子程序时, 在开头的 \ttt{subroutine} 或 \ttt{function} 前加 \ttt{pure}, 示例如下.
+\begin{lstlisting}
+program main
+    implicit none
+    integer :: factorial
+    print *, factorial(10)
+end program main
+
+pure function factorial(n) result(p)
+    integer, intent(in) :: n
+    integer :: p
+    integer :: i 
+    p = 1
+    do i = 1, n
+        p = p * i
+    end do
+end function factorial
+\end{lstlisting}
+给哑参量加 intent 属性能帮我们避坑, 造纯过程能进一步帮我们避坑, 因为如果我们可以确定一个过程的哑参量都是只读参量, 我们就可以让这个过程成为纯过程, 这样如果我们一不小心写错了, 让哑参量不是只读参量了, 编译器就能在编译时马上查出来, 免得我们乱跑程序跑了很久结果还不对. 
+
+\subsection{逐元过程}\label{elemental_procedure}
+
+如果我们使用固有函数 \ttt{log}, 我们会发现它非常神奇, 它可以接收任意形状的数组, 并把数组中的所有元素分别都求自然对数, 形成形状相同的新数组. 其实很多常用的固有函数都如此.
+\begin{lstlisting}
+program main
+    implicit none
+    integer :: i
+    print *, log(real(1))
+    print *, log([(real(i), i = 1, 9)])
+end program main
+\end{lstlisting}
+这是因为 \ttt{log} 是逐元 (elemental) 过程. 逐元过程就是可以接收任意形状的数组, 并把数组中的所有元素分别都进行操作, 形成形状相同的新数组的过程. 逐元过程必须是纯过程. 我们可以把 \ref{pure_procedure} 小节的示例中的纯过程子程序中 \ttt{pure} 改成 \ttt{elemental}, 将纯过程子程序改写成逐元过程子程序, 注意 \ttt{elemental} 已表明过程是纯过程, 我们没必要再写 \ttt{pure}.
+\begin{lstlisting}
+program main
+    implicit none
+    integer :: i, factorial
+    print *, factorial(10)
+    print *, factorial([(i, i = 1, 9)])
+end program main
+
+elemental function factorial(n) result(p)
+    integer, intent(in) :: n
+    integer :: p
+    integer :: i 
+    p = 1
+    do i = 1, n
+        p = p * i
+    end do
+end function factorial
+\end{lstlisting}
+不过上面这个轮子是跑不了的, 即使编译器允许跑, 结果也很可能是错的, 因为按 Fortran 的语法, 被使用的逐元过程, 必须带过程接口 (见 \ref{fortran_interface} 节), 所以要写成下面这个样子才行.\label{elemental_procedure_program} 
+\begin{lstlisting}
+program main
+    implicit none
+    integer :: i
+    interface
+        elemental function factorial(n) result(p)
+            integer, intent(in) :: n
+            integer :: p
+        end function factorial
+    end interface
+    print *, factorial(10)
+    print *, factorial([(i, i = 1, 9)])
+end program main
+
+elemental function factorial(n) result(p)
+    integer, intent(in) :: n
+    integer :: p
+    integer :: i 
+    p = 1
+    do i = 1, n
+        p = p * i
+    end do
+end function factorial
+\end{lstlisting}
+
+\subsection{递归过程}
+
+因为 $n!=n\cdot(n-1)!$, 所以我们可以玩点花活儿. 我们可以尝试把 \ref{pure_procedure} 小节的示例改写成下面这样, 其中函数 \ttt{factorial} 调用自己, 表示 $n!=n\cdot(n-1)!$. 但下面这个轮子是跑不了的, 因为 Fortran 不允许一个普通的过程调用自己.
+\begin{lstlisting}
+program main
+    implicit none
+    integer :: factorial
+    print *, factorial(10)
+end program main
+
+function factorial(n) result(p)
+    integer, intent(in) :: n
+    integer :: p 
+    p = 1
+    if (n == 1) then
+        p = 1
+    else
+        ! factorial(n) == n * factorial(n-1)
+        p = n * factorial(n-1)
+    end if
+end function factorial
+\end{lstlisting}
+我们可以在子程序开头的 \ttt{subroutine} 或 \ttt{function} 前加 \ttt{recursive}, 将过程改造成递归 (recursive) 过程. 递归过程就是可以调用自己的过程. 于是花活儿就像下面这样玩成了. 请同学们自己分析下面这个轮子的运行过程.
+\begin{lstlisting}
+program main
+    implicit none
+    integer :: factorial
+    print *, factorial(10)
+end program main
+
+recursive function factorial(n) result(p)
+    integer, intent(in) :: n
+    integer :: p 
+    p = 1
+    if (n == 1) then
+        p = 1
+    else
+        ! factorial(n) == n * factorial(n-1)
+        p = n * factorial(n-1)
+    end if
+end function factorial
+\end{lstlisting}
+
+如果想让过程又是纯过程又是递归过程, 我们把 \ttt{pure} 和 \ttt{recursive} 都加在子程序开头的 \ttt{subroutine} 或 \ttt{function} 前即可 (\ttt{pure} 和 \ttt{recursive} 顺序任意), 像下面这样.
+\begin{lstlisting}
+program main
+    implicit none
+    integer :: factorial
+    print *, factorial(10)
+end program main
+
+recursive pure function factorial(n) result(p)
+    integer, intent(in) :: n
+    integer :: p 
+    p = 1
+    if (n == 1) then
+        p = 1
+    else
+        ! factorial(n) == n * factorial(n-1)
+        p = n * factorial(n-1)
+    end if
+end function factorial
+\end{lstlisting}
+想让过程又是逐元过程又是递归过程亦是同理, 请同学们自己尝试.
+
+如果能理解透递归过程的运作原理, 在可以使用递归过程的时候用递归过程, 程序是会很简洁很秀的. 但是如果想让程序跑得快, 递归过程最好不用. 因为程序每调用一个过程, 都会在内存中专门为这个过程分配一块存储空间, 术语称作进栈 (push stack), 而用递归过程时, 过程可能会被调用灰常多次 (例如 \ttt{factorial(1000)} 会调用 \ttt{factorial} $1000$ 次), 最后的结果是递归过程被多多地调用, 内存被多多地占着, 电脑不堪重负, 程序跑得慢甚至崩溃出错.
+
 \section{过程接口} \label{fortran_interface} 
 
-之前第 \pageref{assumed-shape_array_program} 页和第 \pageref{dummy_procedure_program} 页的轮子用了过程接口 (procedure interface). 过程接口可分为三类: 特定接口 (specific interface), 泛型接口 (generic interface) 和抽象接口 (abstract interface). 
+之前第 \pageref{assumed-shape_array_program} 页, 第 \pageref{dummy_procedure_program} 页, 第 \pageref{elemental_procedure_program} 页的轮子用了过程接口 (procedure interface). 过程接口可分为三类: 特定接口 (specific interface), 泛型接口 (generic interface) 和抽象接口 (abstract interface). 
 
 \subsection{特定接口} 
 
@@ -673,7 +820,8 @@ end function identity
         \item 是假定形状数组;
     \end{itemize} 
     \item 过程是函数且结果是数组;
-    \item 过程是另一个过程的实参量.
+    \item 过程是哑过程;
+    \item 过程是逐元过程.
 \end{itemize} 
 这不一定需要背, 编译器应该是要告诉我们的. 我们可以先不加接口, 然后如果编译器告诉我们 ``Explicit interface required for \dots{}'' 或 ``Expected a procedure for argument \dots{}'' 或其他七七八八的话, 那就是要加接口了. 
 
