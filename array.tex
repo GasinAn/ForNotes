@@ -281,7 +281,7 @@ end program main
     \end{matrix}\label{a_section__example_2}
 \end{equation}
 
-我接着讲用三元下标 (vector subscript\footnote{\href{https://j3-fortran.org/doc/year/24/24-007.pdf}{标准解释文档}里用的词是 ``subscript triplet'', 可翻译成 ``下表三元组''.}) 来获取数组片段. 三元下标是 \ttt{m1:m2:m3}, 等价于向量下标 \ttt{[(i, i = m1, m2, m3)]}, 请注意这是官规而不是 Ifx 的器规, 并且三元下标两边没有左右中括号 \ttt{[]}. 若省略 \ttt{m1}/\ttt{m2}, 则 \ttt{m1}/\ttt{m2} 是用于获取片段的数组的, 三元下标对应的维度的上界/下界. 若省略 \ttt{:m3}, 则 \ttt{m3} 是 \ttt{1}. 请看下面这个例子.
+我接着讲用三元下标 (vector subscript\footnote{\href{https://j3-fortran.org/doc/year/24/24-007.pdf}{标准解释文档}里用的词是 ``subscript triplet'', 可翻译成 ``下标三元组''.}) 来获取数组片段. 三元下标是 \ttt{m1:m2:m3}, 等价于向量下标 \ttt{[(i, i = m1, m2, m3)]}, 请注意这是官规而不是 Ifx 的器规, 并且三元下标两边没有左右中括号 \ttt{[]}. 若省略 \ttt{m1}/\ttt{m2}, 则 \ttt{m1}/\ttt{m2} 是用于获取片段的数组的, 三元下标对应的维度的上界/下界. 若省略 \ttt{:m3}, 则 \ttt{m3} 是 \ttt{1}. 请看下面这个例子.
 \begin{lstlisting}
 program main
     implicit none
@@ -423,7 +423,165 @@ program main
 end program main
 \end{lstlisting}
 
-对于数组, 我们还可以用一些特殊东东来赋值, 比如 where (掩码数组赋值) 和 do concurrent, 另外还有已被弃用的 forall. 不过这些东东比较难, 我计划在第\ref{fortran_parallel_compute}章介绍它们.
+仿照对整个数组赋值, 我们可以轻松地对数组元素/片段赋值, 示例如下, 示例中数组元素 \ttt{a(3, 1)} 被赋值成 \ttt{0}, 数组片段 \ttt{a(1:2, 2:3)} 对应的元素 \ttt{a(2, 1)}, \ttt{a(2, 2)}, \ttt{a(3, 1)}, \ttt{a(3, 2)} 分别被赋值成 \ttt{1}, \ttt{2}, \ttt{3}, \ttt{4}, 其他元素不变. 
+\begin{lstlisting}
+program main
+    implicit none
+    integer :: i, a(3, 3)
+    a = reshape([(i, i = 1, 9)], [3, 3])
+    a(3, 1) = 0
+    a(1:2, 2:3) = reshape([(i, i = 1, 4)], [2, 2])
+    do i = 1, 3
+        print *, a(i, :)
+    end do
+end program main
+\end{lstlisting}
+
+Fortran 数组赋值是并行 (parallel) 计算, 请看下面的例子.
+\begin{lstlisting}
+program main
+    implicit none
+    integer :: i, a(9)
+    a = [(i, i = 1, 9)]
+    a(2:9) = a(1:8)
+    print *, a
+end program main
+\end{lstlisting}
+在上面的例子中, \ttt{a(1)} 赋值给 \ttt{a(2)}, \ttt{a(2)} 赋值给 \ttt{a(3)}, \dots{}, \ttt{a(8)} 赋值给 \ttt{a(9)}, 这些赋值是需要\uline{同时}进行的, 最后 \ttt{a} 是 $[1,1,2,3,4,5,6,7,8]$. 同时进行多个计算就是并行计算, 当然这需要电脑有同时进行多个计算的能力. 如果电脑不行, 比如安安用家里的老破电脑跑上面的例子, 电脑每时每刻总是只能进行一个计算, 此时编译器和电脑会自己想办法操作一波, 模拟同时进行多个计算, 以保证最后干出来的结果和那些能同时进行多个计算的好电脑干出来的结果一样, 这样的计算就是并发 (concurrent) 计算. 又请看下面的例子.
+\begin{lstlisting}
+program main
+    implicit none
+    integer :: i, a(9)
+    a = [(i, i = 1, 9)]
+    do i = 1, 8
+        a(i+1) = a(i)
+    end do
+    print *, a
+end program main
+\end{lstlisting}
+这个例子不一样, \ttt{a(1)} 赋值给 \ttt{a(2)}, 所以 \ttt{a(2)} 变成 \ttt{1}, \ttt{a(2)} 赋值给 \ttt{a(3)}, 所以 \ttt{a(3)} 变成 \ttt{1}, \dots{}, \ttt{a(8)} 赋值给 \ttt{a(9)}, 所以 \ttt{a(9)} 变成 \ttt{1}, 这些赋值是需要\uline{按顺序依次}进行的, 最后 \ttt{a} 是 $[1,1,1,1,1,1,1,1,1]$. 按顺序依次多个计算就是串行 (serial) 计算.
+
+并行计算我们是非常需要的, 因为能省大量时间, 比如我们有一个大小为 $1000\times1000$ 的数组 (这样大的数组实践中并不罕见). 如果我们的电脑, 比如一台超级计算机, 能同时进行 $1\times{10}^6$ 个计算, 程序运行时我们给数组赋值很多次, 总共用时 $1$ 秒. 如果我们的电脑, 比如安安家里的老破电脑, 只能同时进行 $1$ 个计算, 程序运行时我们给数组赋值很多次, 总共用时 $1\times{10}^6$ 秒 $>$ $10$ 天, 用时太多了. Fortran 的语法可以直接区分串行计算和并行计算, 这是 Fortran 的巨大优势 (Python 的 Numpy 已借鉴).
+
+数组赋值还可以用forall 结构, where 结构和 do concurrent 结构, 其中 forall 结构已被弃用, 加之同学们学完 where 结构和 do concurrent 结构估计已经晕菜了, 安安拒讲 forall 结构. 同学们如果弄不懂 where 结构和 do concurrent 结构可以先不掌握, 因为不用这俩玩意儿同学们也能干活儿, 就是程序跑得可能比较慢, 但其他数组赋值方法同学们必须掌握, 不然期末一定挂科呢.
+
+\subsection{where 结构}
+
+实践中我们经常会碰到需要 ``根据数组元素的性质决定对元素的操作'' 的情况. 假如有个数组 \ttt{a}, 我们想让 \ttt{a} 中 \ttt{<= 3} 的元素都加上 \ttt{2}, 让 \ttt{a} 中不 \ttt{<= 3} 且 \ttt{<= 6} 的元素都加上 \ttt{2}, 让 \ttt{a} 中其他元素都加上 \ttt{3}, 我们可以傻乎乎地用双重 do 循环加 if 判断这么写.
+\begin{lstlisting}
+program main
+    implicit none
+    integer :: i, j, a(3, 3)
+    a = reshape([(i, i = 1, 9)], [3, 3])
+    do i = 1, 3
+        do j = 1, 3
+            if (a(i, j) <= 3) then
+                a(i, j) = a(i, j) + 1
+            else if (a(i, j) <= 6) then
+                a(i, j) = a(i, j) + 2
+            else
+                a(i, j) = a(i, j) + 3
+            end if
+        end do
+    end do
+    do i = 1, 3
+        print *, a(i, :)
+    end do
+end program main
+\end{lstlisting}
+Fortran 党看这个程序要跳脚, 因为第一这个程序太冗长, 第二这个程序的双重 do 循环里是完全串行计算的. 我们可以使用 where 结构进行掩码数组赋值, 改写上面的程序成下面的程序, 其中 \ttt{tag} 是 where 结构的标签, 可省去, 并且注释标注的行分别都是并行计算的. 相信同学们能总结出 where 结构的用法. 另外 where 结构和 if 结构的语法很像但又有点不一样, 请同学们自己对比, 不要混淆.
+\begin{lstlisting}
+program main
+    implicit none
+    integer :: i, a(3, 3)
+    a = reshape([(i, i = 1, 9)], [3, 3])
+    tag: where (a <= 3)
+        a = a + 1 ! Parallel!
+    elsewhere (a <= 6)
+        a = a + 2 ! Parallel!
+    elsewhere
+        a = a + 3 ! Parallel!
+    end where tag
+    do i = 1, 3
+        print *, a(i, :)
+    end do
+end program main
+\end{lstlisting}
+又假如有个数组 \ttt{a}, 我们想让 \ttt{a(1:2, 2:3)} 中 \ttt{<= 3} 的元素都加上 \ttt{2}, 让 \ttt{a(1:2, 2:3)} 中不 \ttt{<= 3} 且 \ttt{<= 6} 的元素都加上 \ttt{2(1:2, 2:3)}, 让 \ttt{a(1:2, 2:3)} 中其他元素都加上 \ttt{3}, 我们可以这么写.
+\begin{lstlisting}
+program main
+    implicit none
+    integer :: i, a(3, 3)
+    a = reshape([(i, i = 1, 9)], [3, 3])
+    tag: where (a(1:2, 2:3) <= 3)
+        a(1:2, 2:3) = a(1:2, 2:3) + 1 ! Parallel!
+    elsewhere (a(1:2, 2:3) <= 6)
+        a(1:2, 2:3) = a(1:2, 2:3) + 2 ! Parallel!
+    elsewhere
+        a(1:2, 2:3) = a(1:2, 2:3) + 3 ! Parallel!
+    end where tag
+    do i = 1, 3
+        print *, a(i, :)
+    end do
+end program main
+\end{lstlisting}
+又假如有个数组 \ttt{a} 且有个数组 \ttt{b}, 它们形状一样, 我们想当 \ttt{a(i, j) <= 3} 时 \ttt{b(i, j)} 加上 \ttt{1}, 当不 \ttt{a(i, j) <= 3} 且 \ttt{a(i, j) <= 6} 时 \ttt{b(i, j)} 加上 \ttt{2}, 其他情况 \ttt{b(i, j)} 加上 \ttt{3}, 我们可以这么写.
+\begin{lstlisting}
+program main
+    implicit none
+    integer :: i, a(3, 3), b(3, 3)
+    a = reshape([(i, i = 1, 9)], [3, 3])
+    b = reshape([(i, i = 1, 9)], [3, 3])
+    tag: where (a <= 3)
+        b = b + 1 ! Parallel!
+    elsewhere (a <= 6)
+        b = b + 2 ! Parallel!
+    elsewhere
+        b = b + 3 ! Parallel!
+    end where tag
+    do i = 1, 3
+        print *, b(i, :)
+    end do
+end program main
+\end{lstlisting}
+
+\subsection{do concurrent 结构}
+
+有些程序不好用 where 结构改写, 比如下面的程序.
+\begin{lstlisting}
+program main
+    implicit none
+    integer :: i, j, a(9), b(9)
+    a = [(i, i = 1, 9)]
+    b = [(j, j = 1, 9)]
+    do i = 1, 3, 1
+        do j = 7, 9, 1
+            if ((a(i) > 1) .and. (b(j) < 9)) then
+                b(i) = -j
+                a(j) = -i
+            end if
+        end do
+    end do
+    print *, a
+    print *, b
+end program main
+\end{lstlisting}
+我们可以使用同样是并行计算的 do concurrent 结构\footnote{\href{https://j3-fortran.org/doc/year/24/24-007.pdf}{标准解释文档}把 do concurrent 结构划成 do 结构中的一种, 但一般还是把 do concurrent 结构单看成一种结构.}来改写上面的程序成下面的程序, 其中 \ttt{tag} 是 do concurrent 结构的标签, 可省去, 两个 \ttt{:1} 因为是 \ttt{:\{m3\}} 所以也可省去, 但 \ttt{\{m1\}} 和 \ttt{\{m2\}} \uline{不可}省去. 相信同学们能总结出 do concurrent 结构的用法. 另外 do concurrent 结构和 do 结构, where 结构和数组三元下标的语法很像但又有点不一样, 请同学们自己对比, 不要混淆.
+\begin{lstlisting}
+program main
+    implicit none
+    integer :: i, j, a(9), b(9)
+    a = [(i, i = 1, 9)]
+    b = [(j, j = 1, 9)]
+    tag: do concurrent (i = 1:3:1, j = 7:9:1, &
+                        (a(i) > 1) .and. (b(j) < 9))
+        b(i) = -j
+        a(j) = -i
+    end do tag
+    print *, a
+    print *, b
+end program main
+\end{lstlisting}
 
 \section{数组运算}\label{fortran_array_operation}
 
@@ -469,6 +627,7 @@ end program main
 \end{lstlisting}
 如果一个代表运算 $\text{OP}$ 的二元运算符 \ttt{\{op\}} 左右分别跟 \ttt{\{q1\}} 和 \ttt{\{q2\}}, 且 \ttt{\{q1\}} 和 \ttt{\{q2\}} 一个是标量一个是数组, 那么先临时把 \ttt{\{q1\}} 和 \ttt{\{q2\}} 中是标量的那个替换成一数组, 此数组形状与 \ttt{\{q1\}} 和 \ttt{\{q2\}} 中是数组的那个一样, 且此数组中元素皆为 \ttt{\{q1\}} 和 \ttt{\{q2\}} 中是标量的那个, 然后按 \ttt{\{q1\}} 和 \ttt{\{q2\}} 是形状相同的数组时的方法进行运算. 示例如下.
 \begin{lstlisting}
+
 program main
     implicit none
     integer :: i
