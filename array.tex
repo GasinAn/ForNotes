@@ -465,7 +465,7 @@ end program main
 
 数组赋值还可以用forall 结构, where 结构和 do concurrent 结构, 其中 forall 结构已被弃用, 加之同学们学完 where 结构和 do concurrent 结构估计已经晕菜了, 安安拒讲 forall 结构. 同学们如果弄不懂 where 结构和 do concurrent 结构可以先不掌握, 因为不用这俩玩意儿同学们也能干活儿, 就是程序跑得可能比较慢, 但其他数组赋值方法同学们必须掌握, 不然期末一定挂科呢.
 
-\subsection{where 结构}
+\subsection{where 结构}\label{where_construct}
 
 实践中我们经常会碰到需要 ``根据数组元素的性质决定对元素的操作'' 的情况. 假如有个数组 \ttt{a}, 我们想让 \ttt{a} 中 \ttt{<= 3} 的元素都加上 \ttt{2}, 让 \ttt{a} 中不 \ttt{<= 3} 且 \ttt{<= 6} 的元素都加上 \ttt{2}, 让 \ttt{a} 中其他元素都加上 \ttt{3}, 我们可以傻乎乎地用双重 do 循环加 if 判断这么写.
 \begin{lstlisting}
