@@ -22,7 +22,7 @@ Printed in China
 
 </div>
 
-# 前言 <div id="char0">
+# 前言 <a name="char0"></a>
 
 天文系的师兄师姐师弟师妹们估计普遍对 Fortran 深恶痛绝. 然而我认为
 Fortran 并不是那么可恶. 对 Fortran 深恶痛绝,
@@ -223,7 +223,7 @@ Python 好使.
 
 - [绘图](https://gasinan.github.io/ForNotes/ForNotes#char10)
 
-# 简介 <div id="char1">
+# 简介 <a name="char1"></a>
 
 Fortran 是一门历史悠久的, 专为科学计算设计的编程语言.
 
@@ -271,7 +271,7 @@ Fortran 的简单教程和许多 Fortran 的资源链接. 现行 Fortran 标准 
 2023
 由[标准解释文档](https://j3-fortran.org/doc/year/24/24-007.pdf)[^11][^12]规定.
 
-# 编译器 <div id="char2">
+# 编译器 <a name="char2"></a>
 
 <table>
 <caption>Ifx (+VS) 与 Gfortran (+VS Code) 的对比</caption>
@@ -352,9 +352,9 @@ Fortran 的简单教程和许多 Fortran 的资源链接. 现行 Fortran 标准 
 </tbody>
 </table>
 
-## 安装 <div id="sec2-1">
+## 安装 <a name="sec2-1"></a>
 
-### Intel® Fortran Compiler (Ifx) <div id="subsec2-1-1">
+### Intel® Fortran Compiler (Ifx) <a name="subsec2-1-1"></a>
 
 Windows 系统安装方式如下.
 
@@ -375,7 +375,7 @@ Windows 系统安装方式如下.
     改成自己最常访问的路径 (比如桌面的路径), 然后点 “应用”, 点 “继续”,
     点 “确定”.<span id="to_desktop" label="to_desktop"></span>
 
-### GNU Fortran Compiler (Gfortran) <div id="subsec2-1-2">
+### GNU Fortran Compiler (Gfortran) <a name="subsec2-1-2"></a>
 
 Windows 系统安装方式如下.[^13]
 
@@ -468,7 +468,7 @@ data-reference="add_key_value">[add_key_value]</a> 步还需解释,
 
 注意第 4 行最后要多加一个逗号来隔开键值对.
 
-## 使用 <div id="sec2-2">
+## 使用 <a name="sec2-2"></a>
 
 CLI (Command Line Interface, 命令行界面) 和 GUI (Graphical User
 Interface, 图形用户界面) 两手都要抓, 两手都要硬. GUI 大家其实老熟了,
@@ -476,7 +476,7 @@ Interface, 图形用户界面) 两手都要抓, 两手都要硬. GUI 大家其�
 就是大家看电影里黑客们用的黑框框, 不过现在手机电脑进步了,
 框框不一定是黑的, 也可能是红的蓝的之类的.
 
-### 使用 CLI <div id="subsec2-2-1">
+### 使用 CLI <a name="subsec2-2-1"></a>
 
 <span id="use_gfortran" label="use_gfortran"></span>
 
@@ -628,7 +628,7 @@ Gfortran 编译执行命令
 我们还可以多次按 Tab 键直到补全出的文件或文件夹是我们想要的.
 同学们可输入 `he` 然后多次按 Tab 键查看效果.
 
-### 使用 GUI <div id="subsec2-2-2">
+### 使用 GUI <a name="subsec2-2-2"></a>
 
 #### Visual Studio (VS)
 
@@ -675,9 +675,9 @@ $`\rightarrow`$ “新建项…”, 可以新建文件, 默认在 `HelloWorld` �
 用 Visual Studio Code 打开 `main.f90`[^16], 然后点右上方的白色三角儿就用
 Gfortran 编译执行成功!
 
-# 基础知识 <div id="char3">
+# 基础知识 <a name="char3"></a>
 
-## 程序 <div id="sec3-1">
+## 程序 <a name="sec3-1"></a>
 
 程序 (program) 是指挥电脑工作的一堆指令. 这堆指令要用一堆字符表示,
 表示指令的所有字符合起来称为源代码 (source code).
@@ -732,7 +732,7 @@ data-reference="source_and_command_helloworld">3.2</a> 所示,
 
 </div>
 
-## 标准与规范 <div id="sec3-2">
+## 标准与规范 <a name="sec3-2"></a>
 
 任何编程<u>语言</u>都有自己的句法/语法 (syntax), 比如 “让电脑屏幕上出现
 ‘A’”, Fortran 要写成 `print *, "A"`, C 要写成 `printf("A");`, Python 2
@@ -772,7 +772,7 @@ Gfortran 说程序没问题, 同学们兴冲冲地交卷了, 然后老师掏出 
 90), 即使是 Visual Fortran 也会认的, 要是某 Fortran 编译器竟连 Fortran
 90 都不认, 我们就把它卸载了…
 
-## 程序单元 <div id="sec3-3">
+## 程序单元 <a name="sec3-3"></a>
 
 每个 Fortran 程序都由若干程序单元 (program unit) 组成.
 程序单元可能是主程序 (main program), 或外部子程序 (external subprogram),
@@ -834,7 +834,7 @@ data-reference="fortran_program">3.1</a> 节 `main.f90` 和
         print *, "Hello, world!"
     end subroutine helloworld
 
-## 编译与运行 <div id="sec3-4">
+## 编译与运行 <a name="sec3-4"></a>
 
 我们用 Fortran 语写好了程序, 命令电脑照此干活儿, 然而电脑会说干不了.
 原因在于, 电脑不认得 Fortran 语, 电脑只懂得电脑语 (学名是机器语言),
@@ -900,13 +900,13 @@ data-reference="fortran_program">3.1</a> 节 `main.f90` 和
 (interpret). 这两种方式还可以混用, 同学们以后玩 Python
 的时候就会遇到混合方式.
 
-## 异常 <div id="sec3-5">
+## 异常 <a name="sec3-5"></a>
 
 程序编译和运行时可能会有不妙的事情发生, 那就是抛出 (raise) 异常
 (exception). 异常分为错误 (error) 和警告 (warning),
 抛出错误和抛出警告也有些俗称, 比如报错和弹警告之类的.
 
-### 错误 <div id="subsec3-5-1">
+### 错误 <a name="subsec3-5-1"></a>
 
 抛出错误有两种情况. 最常见的是我们写的程序不符合 Fortran 语法,
 编译器读不懂, 无法翻译, 就抛出错误然后罢工了. 比如, 编译这样一个保存在
@@ -962,7 +962,7 @@ Gfortran 会报错说不能除以 $`0`$, 但 Ifx 不会报错并会算出正无�
 文件名里不可以有 `*`, 程序只好报个错. 这个程序在同学们以后会学的 Linux
 系统里就可以正常工作, 因为 Linux 文件名里可以有 `*`.
 
-### 警告 <div id="subsec3-5-2">
+### 警告 <a name="subsec3-5-2"></a>
 
 有时候我们写的程序符合 Fortran 语法, 编译器读得懂能翻译,
 但它觉得我们写的程序十分 “危险”,
@@ -1020,7 +1020,7 @@ Gfortran 觉得令整数 `i` 等于逻辑 “真” 的操作其实是标准不�
 Ifx 嘛, 它倒是不报错也不给警告, 干脆利落地编译完了, 但因为器规不同,
 运行后电脑屏幕上出现的是 `-1`…
 
-## 字符集 <div id="sec3-6">
+## 字符集 <a name="sec3-6"></a>
 
 Fortran 可以在程序中使用所有能直接用英语输入法打出的字符, 其他字符
 (比如汉字, 汉语标点) 能否在程序中用则由器规决定. 注意,
@@ -1088,7 +1088,7 @@ data-reference="lower_case_convention">3.5</a>
 $`e`$ 则是离心率, 虽然写成 `e` 也可以和 `e_angle` 区别开,
 但为了让区别更明显, 可以写成 `ecc` (eccentricity 的缩写).
 
-## 源代码格式 <div id="sec3-7">
+## 源代码格式 <a name="sec3-7"></a>
 
 Fortran 有两种源代码格式 (source form): 自由格式 (free form) 和固定格式
 (fixed form). 固定格式是将被废弃的 (obsolescent) 老格式.
@@ -1125,7 +1125,7 @@ Fortran 有两种源代码格式 (source form): 自由格式 (free form) 和固�
 “Select Language Mode” 的按键上, 点击之, 然后弹出的菜单下拉选择 “Fortran
 (FortranFreeForm)”, VS Code 便会自动检查程序是否符合 Fortran 自由格式.
 
-### 空格 <div id="subsec3-7-1">
+### 空格 <a name="subsec3-7-1"></a>
 
 Fortran 代码里空格 (blank/space) 通常没有意义
 (<a href="#fortran_char" data-reference-type="ref"
@@ -1151,7 +1151,7 @@ data-reference="character_string_edit_descriptor">9.3.3</a>
 [官网](https://fortran-lang.org/)上的代码示例和 Python 的 [PEP 8
 规范](https://peps.python.org/pep-0008/)来决定是否加空格.
 
-### 缩进 <div id="subsec3-7-2">
+### 缩进 <a name="subsec3-7-2"></a>
 
 缩进 (indent) 是指源代码每行最前面的空格. 对 Fortran 而言,
 缩进本身没有意义, 但适当的缩进能表示程序的某个结构嵌套在另一个结构里,
@@ -1216,7 +1216,7 @@ data-reference="if_construct">6.1.1</a> 小节会介绍的 `if` 结构, 嵌套�
 Using Spaces”, 再选择 “4”, VS Code 便会智能添加以 4
 个空格为单位的缩进了.
 
-### 空行 <div id="subsec3-7-3">
+### 空行 <a name="subsec3-7-3"></a>
 
 为使得程序更容易被理解, 还要在程序中加入适当的空行,
 以把程序划分成多个部分. 我们可以给上面
@@ -1271,7 +1271,7 @@ data-reference="fortran_intrinsic_type">4</a>章后同学们可知,
 或觉得以后肯定会头昏脑涨,
 插入空行来把这部分划分成各自能完成一件事的几部分就是不错的选择.
 
-### 注释 <div id="subsec3-7-4">
+### 注释 <a name="subsec3-7-4"></a>
 
 程序每一行中, `!` 及后面的所有内容都会被无视 (例外见
 <a href="#fortran_char" data-reference-type="ref"
@@ -1355,7 +1355,7 @@ data-reference="lower_case_convention">3.5</a> 我们可以无视.
 然而用中文可能导致编译器不能干活, 还是用英文吧!
 (尤其是代码要写给外国人看的时候)
 
-### 续行 <div id="subsec3-7-5">
+### 续行 <a name="subsec3-7-5"></a>
 
 写代码的时候, 我们不希望一行里有过多的字符, 因为代码会跑到屏幕右侧以外,
 不方便阅读.
@@ -1519,7 +1519,7 @@ Gfortran 却认为这个程序没问题, 同学们遇到器规啦!
 如果不定这个规则, 代码就可能会出现歧义. 而为什么那些续行规则我不想讲,
 是因为那些规则会让同学们不遵守规范搞幺蛾子, 写出读不懂的程序来.
 
-### 标号 <div id="subsec3-7-6">
+### 标号 <a name="subsec3-7-6"></a>
 
 除后面会说的例外情况外, 在程序中的每一行的开头都可以加上标号 (label).
 标号是用不超过五个数字表示的 1–99999 的整数, 开头可以是 0,
@@ -1565,7 +1565,7 @@ Gfortran 的器规也是不允许). 另外续行符 `&`
 <a href="#no_no_structured" data-reference-type="ref"
 data-reference="no_no_structured">3.3</a> 少用标号.
 
-### 标签 <div id="subsec3-7-7">
+### 标签 <a name="subsec3-7-7"></a>
 
 在程序中某些特殊的地方 (见
 <a href="#fortran_exit" data-reference-type="ref"
@@ -1596,7 +1596,7 @@ data-reference="fortran_cycle">6.2.3</a> 小节) 可以加标签[^27] (tag).
 
 标签不像标号, 是好东西. 同学们可以尽情使用.
 
-# 固有类型 <div id="char4">
+# 固有类型 <a name="char4"></a>
 
 程序需要获取计算所需的原始数据, 并保存计算的结果.
 程序可以从文件中获取数据, 并保存结果到文件中, 但只有文件能干这个事的话,
@@ -1729,7 +1729,7 @@ Fortran 程序的每一行, 除了注释和某个本笔记里不想讲的东东�
 
 </div>
 
-## 整型 <div id="sec4-1">
+## 整型 <a name="sec4-1"></a>
 
 整型数据实体代表整数. 默认种别的整型字面常量长得和整数一样,
 但不能加小数点及之后的 `0`. 下面这个程序使用了默认种别的整型字面常量
@@ -1754,7 +1754,7 @@ Fortran 程序的每一行, 除了注释和某个本笔记里不想讲的东东�
 data-reference="fortran_real">4.2</a> 节介绍的说明实型种别的方式一样,
 但通常情况下没必要说明整型种别, 直接使用默认种别即可.
 
-## 实型 <div id="sec4-2">
+## 实型 <a name="sec4-2"></a>
 
 实型数据实体代表实数, $`+\infty`$, $`-\infty`$ 和 $`\text{NaN}`$.
 $`\text{NaN}`$ 称为非数 (Not a Number),
@@ -1821,7 +1821,7 @@ data-reference="fortran_char">4.4</a>
 `real(real64)`, 使用双精度实型字面常量时用 `d` 代替 `e`.
 这两种不规范的写法同学们不许用.
 
-## 复型 <div id="sec4-3">
+## 复型 <a name="sec4-3"></a>
 
 复型数据实体有实部和虚部, 两者都是实型数据实体,
 如果实部和虚部都代表实数, 那么复型数据实体自然代表复数. 复型用 `complex`
@@ -1876,7 +1876,7 @@ Gfortran 而言是 `real32`), 第二个复型字面常量的种别是 `real16`,
 `real([z])` 和 `aimag([z])` 获取, 例如 `real((0, 1))` 是 `0.0`,
 `aimag((0, 1))` 是 `1.0`.
 
-## 字符型 <div id="sec4-4">
+## 字符型 <a name="sec4-4"></a>
 
 字符型数据实体代表字符串 (character string). 字符串就是排成一串的字符.
 字符串的长度可以是 $`0`$. 字符型字面常量用夹在两个 `’` 或 `"`
@@ -2011,16 +2011,16 @@ data-reference="fortran_array_specification">7.3</a> 节讲.
         print *, '123456789'(:)   ! 123456789
     end program main
 
-## 逻辑型 <div id="sec4-5">
+## 逻辑型 <a name="sec4-5"></a>
 
 逻辑型数据实体代表逻辑值, 逻辑型字面常量只有 `.true.` 和 `.false.`,
 分别代表 “真” 和 “假”. 逻辑型用 `logical` 声明.
 通常情况下没必要说明逻辑型种别, 直接使用默认种别即可. 示例俺懒得写了,
 留给同学们作练习.
 
-# 赋值与运算 <div id="char5">
+# 赋值与运算 <a name="char5"></a>
 
-## 赋值 <div id="sec5-1">
+## 赋值 <a name="sec5-1"></a>
 
 Fortran 中的赋值 (assignment),
 其一般含义可总结为把数据拷贝到一个数据实体中, 分为四种: (普通的)
@@ -2392,7 +2392,7 @@ Ifx 在 `char` 长度未被确定过的情况下, 会自己认定 `char` 的长�
         print *, char, len(char), len('reallocated')
     end program main
 
-## 运算 <div id="sec5-2">
+## 运算 <a name="sec5-2"></a>
 
 表达式由操作数 (operand), 运算符 (operator), 和左小括号 “`(`” 与右小括号
 “`)`” 组成. 同学们其实平常就经常见到表达式, 最常见的就是代数式了,
@@ -2451,7 +2451,7 @@ Fortran 中都得用小括号替代.
         character(10_l**12_l) :: very_long_char
     end program main
 
-### 算数运算 <div id="subsec5-2-1">
+### 算数运算 <a name="subsec5-2-1"></a>
 
 一元算数运算符有两个: `+`, `-`, 二元算数运算符有五个: `+`, `-`, `*`,
 `/`, `**`, 它们的左边右边必须是数字型数据实体. 如果数据实体 `[a]` 的值为
@@ -2625,7 +2625,7 @@ Fortran 语法我们没法儿改, 我们只好自己想办法避坑. 我们发�
 Fortran 整怕 (希望不会), 反正俺是被整怕了,
 所以宁愿写表达式的时候麻烦得要死也要全力避免踩坑…
 
-### 字符运算 <div id="subsec5-2-2">
+### 字符运算 <a name="subsec5-2-2"></a>
 
 字符运算符只有一个: `//`,
 其作用是把左右两边的字符串连起来得到一个新字符串. 示例如下.
@@ -2667,7 +2667,7 @@ $`13`$ 和 $`10`$ 的字符是什么. 我们可以 “用字面常量当注释�
         print *, 'Hello, world!'//crlf
     end program main
 
-### 逻辑运算 <div id="subsec5-2-3">
+### 逻辑运算 <a name="subsec5-2-3"></a>
 
 逻辑运算符一共有五个, 左右需跟逻辑型数据实体. 逻辑运算符中间不能有空格,
 例如 `.not.` 不能写成 `. not .`. 常用的有三个: `.not.`, `.and.`, `.or.`,
@@ -2693,7 +2693,7 @@ data-reference="use_parentheses">5.2</a>,
 加括号来指明逻辑运算符的先后顺序, 例如同学们可以写 `(a .and. b) .or. c`
 或 `a .and. (b .or. c)`, 但不可以写 `a .and. b .or. c`.
 
-### 关系运算 <div id="subsec5-2-4">
+### 关系运算 <a name="subsec5-2-4"></a>
 
 关系运算符有六个: `<`, `<=`, `>`, `>=`, `==`, `/=`, 它们分别有等价的写法
 `.lt.`, `.le.`, `.gt.`, `.ge.`, `.eq.`, `.ne.`, 但这些写法安安不喜欢用,
@@ -2800,9 +2800,9 @@ data-reference="use_standard_only">3.1</a>,
 它们是比较字符串是否相同的, 结果和字符的先后顺序没关系,
 就不用另搞一套来填坑了. 示例俺懒得写了, 请同学们自己写例子来练习.
 
-# 执行控制 <div id="char6">
+# 执行控制 <a name="char6"></a>
 
-## 结构 <div id="sec6-1">
+## 结构 <a name="sec6-1"></a>
 
 有两种结构 (construct) 是经常使用的: 条件结构 (conditional construct)
 和循环结构 (loop construct). 接下来讲的 if 结构是条件结构, do 结构和 do
@@ -2810,7 +2810,7 @@ while 结构[^38]是循环结构. 在使用结构的时候需要缩进, 同学�
 <a href="#fortran_indent" data-reference-type="ref"
 data-reference="fortran_indent">3.9</a>.
 
-### if 结构 <div id="subsec6-1-1">
+### if 结构 <a name="subsec6-1-1"></a>
 
 在讲 if 结构之前同学们需要知道 `read *,` 语句,
 这种语句将大量出现在示例中. `read *,` 语句干的事和 `print *,` 语句相反,
@@ -3175,7 +3175,7 @@ if 结构的前后加注释, 把内层的 if 结构区分出来.
         end if outer
     end program main
 
-### do 结构 <div id="subsec6-1-2">
+### do 结构 <a name="subsec6-1-2"></a>
 
 欧拉告诉我们, $`\sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6}`$.
 我们可以将左边的级数截断至一个 $`n_{\text{max}}`$ 来算出 $`\pi`$
@@ -3423,7 +3423,7 @@ label="hw_2"></span>
     \end{bmatrix}
 ```
 
-### do while 结构 <div id="subsec6-1-3">
+### do while 结构 <a name="subsec6-1-3"></a>
 
 之前我们用一个级数来计算 $`\pi`$, 现在要考虑这个级数收敛速度如何.
 假如要计算 $`n`$ 取多少时级数和能大于 $`3.14`$, 我们可以这么做.
@@ -3463,7 +3463,7 @@ label="hw_2"></span>
 因为 do while 结构其实是 do 结构中的一种. 给 do while 结构加标签和给 do
 结构加标签方式相同.
 
-## 执行控制语句 <div id="sec6-2">
+## 执行控制语句 <a name="sec6-2"></a>
 
 有时我们需要强行打破一个结构, 一个程序单元, 乃至整个程序的执行方式,
 这时我们需要一些统称为执行控制语句 (execution control statement) 的东东.
@@ -3478,7 +3478,7 @@ label="hw_2"></span>
         print *, number
     end program main
 
-### continue 语句 <div id="subsec6-2-1">
+### continue 语句 <a name="subsec6-2-1"></a>
 
 continue 语句写作 `continue`, 表示 “啥也不干”, 和注释行没有太大区别.
 这个语句看起来没什么用, 其实还是有点用的. 请看下面这个示例, 这个示例由
@@ -3517,7 +3517,7 @@ continue 语句写作 `continue`, 表示 “啥也不干”, 和注释行没有�
 <a href="#fortran_cycle" data-reference-type="ref"
 data-reference="fortran_cycle">6.2.3</a> 小节), 同学们莫要搞混.
 
-### exit 语句 <div id="subsec6-2-2">
+### exit 语句 <a name="subsec6-2-2"></a>
 
 已知任意正整数 $`n`$ , $`n^2`$ 和 $`(n+1)^2`$ 之间肯定有个质数.
 现打算造个程序来判断 $`n^2`$ 和 $`(n+1)^2`$ 之间的每个数是否是质数.
@@ -3590,7 +3590,7 @@ data-reference="fortran_cycle">6.2.3</a> 小节), 同学们莫要搞混.
 
 在 do while 结构和 if 结构中也可使用 exit 语句, 请同学们自己尝试.
 
-### cycle 语句 <div id="subsec6-2-3">
+### cycle 语句 <a name="subsec6-2-3"></a>
 
 一个循环结构总是代表一个循环, 这个循环会一轮一轮进行, exit
 语句是终止整个循环, 而 cycle 语句是终止本轮循环, 进行下一轮循环.
@@ -3646,7 +3646,7 @@ data-reference="whether_loop_terminate">[whether_loop_terminate]</a> 步.
 在 do while 结构中也可使用 cycle 语句, 请同学们自己尝试. 在 if
 结构中没法儿使用 cycle 语句.
 
-### stop 语句 <div id="subsec6-2-4">
+### stop 语句 <a name="subsec6-2-4"></a>
 
 stop 语句是 `stop` 后跟字符串, 作用是强行跳转到主程序最后一行. 运行 stop
 语句时, 电脑会参考 `stop`
@@ -3664,7 +3664,7 @@ stop 语句是 `stop` 后跟字符串, 作用是强行跳转到主程序最后�
         print *, "Hello, world!"
     end subroutine helloworld
 
-### error stop 语句 <div id="subsec6-2-5">
+### error stop 语句 <a name="subsec6-2-5"></a>
 
 error stop 语句是 `error stop` 后跟字符串, 作用是强行让电脑报错. 运行
 error stop 语句时, 电脑会参考 `error stop`
@@ -3685,7 +3685,7 @@ error stop 语句时, 电脑会参考 `error stop`
 error stop 语句和 stop 语句的不同是 stop 语句造成程序的正常终止 (normal
 termination) 而 error stop 语句造成程序的错误终止 (error termination).
 
-### return 语句 <div id="subsec6-2-6">
+### return 语句 <a name="subsec6-2-6"></a>
 
 return 语句是 `return`, 后面<u>不能</u>跟字符串, 只能用在子程序中,
 作用是强行跳转到子程序最后一行. 示例如下.
@@ -3704,7 +3704,7 @@ return 语句是 `return`, 后面<u>不能</u>跟字符串, 只能用在子程�
 
 没有 “error return 语句”.
 
-# 数组 <div id="char7">
+# 数组 <a name="char7"></a>
 
 迄今为止我们折腾的东东都是标量 (scalar), 那都是小 case, 大 case 是数组
 (array). 数组的名字虽然是 “数” 组, 但其实数组可以是任意类型的,
@@ -3718,7 +3718,7 @@ return 语句是 `return`, 后面<u>不能</u>跟字符串, 只能用在子程�
 所以从本章开始俺们会改使用左右大括号 `{}`,
 表示左右大括号和里头的内容需要按需求被替换.
 
-## 数组基础 <div id="sec7-1">
+## 数组基础 <a name="sec7-1"></a>
 
 Fortran 中的数组分为全数组 (whole array) 和非全数组, 先讲全数组.
 全数组是一个映射 $`a\!: S_1 \times \dots \times S_n \to \mathbb{C},\,
@@ -3849,7 +3849,7 @@ $`(l_1,\dots,l_n)`$, 仿佛每个维度的下界都确定是 $`1`$ 一样 (但�
 为表述方便, 以下会用形状和非全数组相同的, 每个维度的下界都确定是 $`1`$
 的全数组来表示非全数组.
 
-## 数组构造 <div id="sec7-2">
+## 数组构造 <a name="sec7-2"></a>
 
 我们可以用数组构造器 (array constructor) 来构造<u>一维</u>数组常量.
 用数组构造器构造出来的一维数组常量都是非全数组.
@@ -3900,7 +3900,7 @@ $`[0+1^2, 1+1^2, 0+2^2, 1+2^2]`$. Python 有一个和多重隐式 do
 data-reference="fortran_array_manipulation">7.4</a>
 节讲的数组操作把一维数组常量变成多维数组常量.
 
-## 数组声明 <div id="sec7-3">
+## 数组声明 <a name="sec7-3"></a>
 
 用数组变量和数组具名常量之前当然要声明. 在数组声明中需要声明数组的类型,
 还可以另外声明数组的种别, 数组的类型/种别是数组中的每个元素的类型/种别.
@@ -4001,7 +4001,7 @@ deallocate 语句操作一番, 所以延迟形状数组很可能不会被电脑�
 
 </div>
 
-## 数组操作 <div id="sec7-4">
+## 数组操作 <a name="sec7-4"></a>
 
 我们可以对数组进行变形 (reshape), 这很简单.
 变形就是用一个旧数组来造一个形状未必一样的新数组, 使得新数组中排在第
@@ -4101,9 +4101,7 @@ subscript) 来获取数组片段, 但即使是 Python 那里, 向量下标也是
 $`[{i_1}_1,\dots,{i_1}_{l_1}],\dots,[{i_n}_1,\dots,{i_n}_{l_n}]`$, 那么
 `a(i1, ..., in)` 的元素可一一对应于形状为 $`[l_1,\dots,l_n]`$ 的数组
 $`b_{s_1\dots s_n}`$ 的元素, 并且
-{% raw %}
-$`b_{s_1\dots s_n}=a_{{i_1}_{s_1}\dots {i_n}_{s_n}}`$.
-{% endraw %}
+$`b_{s_1\dots s_n}=a_{{i_1}_{s_1}\dots {{i_n}_{s_n}}}`$.
 请看下面这个例子.
 
     program main
@@ -4292,7 +4290,7 @@ data-reference="simple_a_step_2">[simple_a_step_2]</a> 所示.
         print *, a(:, :)(:, :) ! Invalid!
     end program main
 
-## 数组赋值 <div id="sec7-5">
+## 数组赋值 <a name="sec7-5"></a>
 
 给数组 `{var}` 用 `{var} = {expr}` 赋值, 情况可分两种, 一种 `{expr}`
 是数组, 另一种 `{expr}` 是标量.
@@ -4446,7 +4444,7 @@ do concurrent 结构可以先不掌握, 因为不用这俩玩意儿同学们也�
 就是程序跑得可能比较慢, 但其他数组赋值方法同学们必须掌握,
 不然期末一定挂科呢.
 
-### where 结构 <div id="subsec7-5-1">
+### where 结构 <a name="subsec7-5-1"></a>
 
 实践中我们经常会碰到需要 “根据数组元素的性质决定对元素的操作” 的情况.
 假如有个数组 `a`, 我们想让 `a` 中 `<= 3` 的元素都加上 `2`, 让 `a` 中不
@@ -4574,7 +4572,7 @@ data-reference="elemental_procedure">8.3.2</a> 小节然后倒回头来看这里
 是逐元函数也不影响这点, 所以这个程序中的 `a = a / sum(log(a))` 相当于
 `a(6:9) = a(6:9) / sum(log(a(:)))`.
 
-### do concurrent 结构 <div id="subsec7-5-2">
+### do concurrent 结构 <a name="subsec7-5-2"></a>
 
 有些程序不好用 where 结构改写, 比如下面的程序.
 
@@ -4616,7 +4614,7 @@ data-reference="elemental_procedure">8.3.2</a> 小节然后倒回头来看这里
         print *, b
     end program main
 
-## 数组运算 <div id="sec7-6">
+## 数组运算 <a name="sec7-6"></a>
 
 如果一个代表运算 $`\text{OP}`$ 的一元运算符 `{op}` 右跟 `{q}`, 且 `{q}`
 是数组, 那么结果的形状与 `{q}` 一样, 且任意 `{q}` 的元素
@@ -4705,7 +4703,7 @@ $`{q_1}_{s_1\dots s_n}\,\text{OP}\,{q_2}_{s_1\dots s_n}`$. 示例如下.
         print *, -a(3, 3)
     end program main
 
-# 过程 <div id="char8">
+# 过程 <a name="char8"></a>
 
 假如我们需要用 Fortran 算阶乘 $`10!`$, 那还是很容易滴.
 
@@ -4831,7 +4829,7 @@ Fortran), 比如算 $`\text{C} _7^3`$ 可以这样.
 换成别的东西就行了, 哦, 还要把大象拿出来, 再多造个名称为 `put_out`
 的过程, 然后写 `call put_out(elephant)` 就行了.
 
-## 外部过程 <div id="sec8-1">
+## 外部过程 <a name="sec8-1"></a>
 
 我们先细掰一些基本概念. 任何过程都是要用一堆字符表示的,
 这堆字符便称为子程序(subprogram).
@@ -4844,7 +4842,7 @@ data-reference="fortran_module">[fortran_module]</a>章,
 本章只讲外部子程序. 子程序按长的样子, 又分为子例行子程序 (subroutine
 subprogram) 和函数子程序 (function subprogram).
 
-### 子例行子程序 <div id="subsec8-1-1">
+### 子例行子程序 <a name="subsec8-1-1"></a>
 
 我们来详细分析下面这个程序.
 
@@ -5098,7 +5096,7 @@ label="arguments"></span> (加 `intent(...)`), 是灰常灰常必要的,
 子程序名能和调用子程序的程序单元里的变量的变量名一样吗?
 子程序能直接或间接地调用自己吗?…
 
-### 函数子程序 <div id="subsec8-1-2">
+### 函数子程序 <a name="subsec8-1-2"></a>
 
 如果同志们没被子例行子程序弄晕, 那理解函数子程序便轻而易举了.
 我们还是写一个计算组合数的子例行子程序, 不过我用 `...` 省略一部分,
@@ -5210,7 +5208,7 @@ label="arguments"></span> (加 `intent(...)`), 是灰常灰常必要的,
         end do
     end function factorial
 
-### 固有过程 <div id="subsec8-1-3">
+### 固有过程 <a name="subsec8-1-3"></a>
 
 为了让我们能快乐地玩轮子, 合格的 Fortran
 编译器都已经自己造好了一大堆轮子, 称为固有过程 (intrinsic procedure),
@@ -5231,9 +5229,9 @@ label="arguments"></span> (加 `intent(...)`), 是灰常灰常必要的,
 
 请同学们自己想办法用固有过程算 $`e`$.
 
-## 过程中的变量 <div id="sec8-2">
+## 过程中的变量 <a name="sec8-2"></a>
 
-### save 属性 <div id="subsec8-2-1">
+### save 属性 <a name="subsec8-2-1"></a>
 
 下面这个程序, 连续输出三个 `1`, 这当然没有问题.
 
@@ -5308,7 +5306,7 @@ variable). 第一次调用 `count` 的时候, `n` 一开始是 `0`, 然后
 
 </div>
 
-### 过程中的字符串 <div id="subsec8-2-2">
+### 过程中的字符串 <a name="subsec8-2-2"></a>
 
 在用子程序的时候碰上字符串, 就会比较麻烦,
 因为哑实结合还和字符串的长度有关. 我们可以直接把字符串哑参量的长度写成
@@ -5335,7 +5333,7 @@ variable). 第一次调用 `count` 的时候, `n` 一开始是 `0`, 然后
         print *, char_out, len(char_out)
     end subroutine to_screen
 
-### 过程中的数组 <div id="subsec8-2-3">
+### 过程中的数组 <a name="subsec8-2-3"></a>
 
 在用子程序的时候碰上数组, 就会比较麻烦, 因为哑实结合还和数组的形状有关.
 我们必须细掰细掰.
@@ -5513,7 +5511,7 @@ label="assumed-shape_array_program"></span>
         norm = sum(abs(r))
     end function
 
-### 哑过程 <div id="subsec8-2-4">
+### 哑过程 <a name="subsec8-2-4"></a>
 
 有的时候我们需要把子程序本身当成参量, 比如我们如果要造个定积分的轮子,
 我们就要被积函数, 下界, 上界三个参量, 被积函数参量当然得是函数啦.
@@ -5572,9 +5570,9 @@ label="dummy_procedure_program"></span>
         y = x
     end function identity
 
-## 特殊过程 <div id="sec8-3">
+## 特殊过程 <a name="sec8-3"></a>
 
-### 纯过程 <div id="subsec8-3-1">
+### 纯过程 <a name="subsec8-3-1"></a>
 
 按规范 <a href="#func_all_in" data-reference-type="ref"
 data-reference="func_all_in">8.2</a> 写出的函数都是纯 (pure) 过程.
@@ -5604,7 +5602,7 @@ data-reference="func_all_in">8.2</a> 写出的函数都是纯 (pure) 过程.
 让哑参量不是只读参量了, 编译器就能在编译时马上查出来,
 免得我们乱跑程序跑了很久结果还不对.
 
-### 逐元过程 <div id="subsec8-3-2">
+### 逐元过程 <a name="subsec8-3-2"></a>
 
 如果我们使用固有函数 `log`, 我们会发现它非常神奇,
 它可以接收任意形状的数组, 并把数组中的所有元素分别都求自然对数,
@@ -5672,7 +5670,7 @@ label="elemental_procedure_program"></span>
         end do
     end function factorial
 
-### 递归过程 <div id="subsec8-3-3">
+### 递归过程 <a name="subsec8-3-3"></a>
 
 因为 $`n!=n\cdot(n-1)!`$, 所以我们可以玩点花活儿. 我们可以尝试把
 <a href="#pure_procedure" data-reference-type="ref"
@@ -5797,13 +5795,13 @@ data-reference="pure_procedure">8.3.1</a> 小节的示例改写成下面这样,
 最后的结果是递归过程被多多地调用, 内存被多多地占着, 电脑不堪重负,
 程序跑得慢甚至崩溃出错.
 
-## 过程接口 <div id="sec8-4">
+## 过程接口 <a name="sec8-4"></a>
 
 之前第 页, 第 页, 第 页的轮子用了过程接口 (procedure interface).
 过程接口可分为三类: 特定接口 (specific interface), 泛型接口 (generic
 interface) 和抽象接口 (abstract interface).
 
-### 特定接口 <div id="subsec8-4-1">
+### 特定接口 <a name="subsec8-4-1"></a>
 
 特定接口相当于过程的声明. 通常情况下, 子例行不需要声明,
 函数也只需要声明结果就可以了. 但如果碰上了以下情形之一,
@@ -6021,7 +6019,7 @@ $`\sin`$ 的积分, 我们用固有过程 `sin` 直接干算不得.
         y = sin(x)
     end function sin_
 
-### 泛型接口 <div id="subsec8-4-2">
+### 泛型接口 <a name="subsec8-4-2"></a>
 
 泛型接口是一个比较妙的东东. 假如我们现在要造个算符号函数
 $`\mathop{\mathrm{sgn}}`$ 的轮子, 那是轻而易举的.
@@ -6162,7 +6160,7 @@ compatibility) 超严格的, 但我们用泛型接口便能有所突破, 这当�
 data-reference="fortran_preprocessor">[fortran_preprocessor]</a>章介绍的预处理器的话,
 就可以省事儿不少还易读 (我用过, 超好用), 但这已经是超 Fortran 的内容了.
 
-### 抽象接口 <div id="subsec8-4-3">
+### 抽象接口 <a name="subsec8-4-3"></a>
 
 特定接口只对应一个过程, 而抽象接口则对应所有特征 (characteristic)
 相同的过程, 我们来看下面这个程序.
@@ -6272,7 +6270,7 @@ data-reference="fortran_preprocessor">[fortran_preprocessor]</a>章介绍的预�
 `dim2mat` 特征相同的过程 `...` (示例中是 `eye` 和 `minkowski`)
 加特定接口了.
 
-# 输入与输出 <div id="char9">
+# 输入与输出 <a name="char9"></a>
 
 之前我们都只是小打小闹而已, 现在我们来干一些大活儿. 我们来玩玩 [Gaia
 DR3](https://cdsarc.cds.unistra.fr/viz-bin/cat/I/355). 我们想知道Gaia
@@ -6343,7 +6341,7 @@ DR3里的哪个源距银道面最远且最远有多远, 比较不动脑筋地做
 其中两千行是数据, 要是处理原始星表, 就有三十六亿行是数据,
 这不是要崩溃[^48]? 这时候我们就需要让Fortran自己干转移数据的事情.
 
-## 文件 <div id="sec9-1">
+## 文件 <a name="sec9-1"></a>
 
 我们平常所说的文件, Fortran称其为外部文件 (external file),
 不过一般来说外部文件得是纯文本文件[^49]. 既然是纯文本文件,
@@ -6461,7 +6459,7 @@ Fortran会在第三行后认得 `test.txt`, 这个 `test.txt`
         close(10)
     end subroutine open_and_close
 
-## 读取与写入 <div id="sec9-2">
+## 读取与写入 <a name="sec9-2"></a>
 
 读取 (read) 是把文件里的内容变成Fortran数据实体, 写入 (write)
 是把Fortran数据实体变成文件里的内容. 让我们来看下面这个轮子.
@@ -6660,7 +6658,7 @@ $`2\times2`$ 矩阵的行列式” 的提示, 告诉用这个轮子的人这个�
 
 </div>
 
-## 编辑符 <div id="sec9-3">
+## 编辑符 <a name="sec9-3"></a>
 
 如果我们分别用Ifx和Gfortran跑下面这个处心积虑造出来的简单轮子,
 我们会发现结果的格式有点区别,
@@ -6817,7 +6815,7 @@ designation”.
 edit descriptor), 字符串编辑符 (character string edit descriptor).
 接下来我们一个个扒.
 
-### 数据编辑符 <div id="subsec9-3-1">
+### 数据编辑符 <a name="subsec9-3-1"></a>
 
 数据编辑符和读取与写入时的数据实体是一一对应的, 比如下面这个轮子, `A4`
 对应 `’ello’`, `A5` 对应 `’world’`, 其他编辑符不是数据编辑符,
@@ -7337,7 +7335,7 @@ L$`w`$ 表示一共输出 $`w`$ 个字符, 前面 $`w-1`$ 个是空格, 最后1�
         close(10)
     end program main
 
-### 控制编辑符 <div id="subsec9-3-2">
+### 控制编辑符 <a name="subsec9-3-2"></a>
 
 $`n`$X编辑符表示把 “文件定位” 右移 $`n`$ 位, 这通常等价于输出 $`n`$
 个空格, 但如果 $`n`$X编辑符后没有数据编辑符或字符串编辑符, 则
@@ -7447,7 +7445,7 @@ $`\sum_{i=m_\text{min}}^{m_\text{max}}10^{i}`$ 的实数, 而电脑是二进制�
 读取后实数都必须是形如 $`\sum_{i=n_\text{min}}^{n_\text{max}}2^{i}`$
 的实数, 所以也得舍入.
 
-### 字符串编辑符 <div id="subsec9-3-3">
+### 字符串编辑符 <a name="subsec9-3-3"></a>
 
 字符串编辑符就是一个字符串, 作用就是输出这个字符串.
 
@@ -7480,7 +7478,7 @@ $`\sum_{i=m_\text{min}}^{m_\text{max}}10^{i}`$ 的实数, 而电脑是二进制�
         close(10)
     end program main
 
-# 绘图 <div id="char10">
+# 绘图 <a name="char10"></a>
 
 Fortran 一直没有标准的绘图轮子, 毕竟 Fortran 刚出世的那个年代,
 电脑破烂到图都不知道哪里存. Fortran

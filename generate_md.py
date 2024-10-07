@@ -14,20 +14,20 @@ for i in range(len(md)):
         sec, subsec = 0, 0
         name = md[i][2:].replace('\n', '')
         id = f'char{str(chap)}'
-        md[i] = f'# {name} <div id="{id}">'+'\n'
+        md[i] = f'# {name} <a name="{id}"></a>'+'\n'
         contents += f'- [{name}]({url}#{id})'+'\n\n'
     elif md[i][:3] == '## ':
         sec += 1
         subsec = 0
         name = md[i][3:].replace('\n', '')
         id = f'sec{str(chap)}-{str(sec)}'
-        md[i] = f'## {name} <div id="{id}">'+'\n'
+        md[i] = f'## {name} <a name="{id}"></a>'+'\n'
         contents += f'    - [{name}]({url}#{id})'+'\n\n'
     elif md[i][:4] == '### ':
         subsec += 1
         name = md[i][4:].replace('\n', '')
         id = f'subsec{str(chap)}-{str(sec)}-{str(subsec)}'
-        md[i] = f'### {name} <div id="{id}">'+'\n'
+        md[i] = f'### {name} <a name="{id}"></a>'+'\n'
         contents += f'        - [{name}]({url}#{id})'+'\n\n'
 with open('ForNotes.md', 'w', encoding='utf-8') as f:
     f.write(''.join(md))
