@@ -1,16 +1,12 @@
 <div class="center">
 
-Markdown 版本由 [Pandoc](https://pandoc.org/)自动生成, 若有格式错误, 请阅读 [PDF 版本](https://github.com/GasinAn/ForNotes/raw/refs/heads/main/ForNotes.pdf).
+Markdown 版本由 [Pandoc](https://pandoc.org/) 自动生成, 若有格式错误, 请阅读 [PDF 版本](https://github.com/GasinAn/ForNotes/raw/refs/heads/main/ForNotes.pdf).
 
 Copyright 2024 by GasinAn
-
- 
 
 All rights reserved. No part of this book may be reproduced, in any form
 or by any means, without permission in writing from the publisher,
 except by a Markdowner.
-
- 
 
 The author and publisher of this book have used their best efforts in
 preparing this book. These efforts include the development, research,
@@ -21,8 +17,6 @@ contained in this book. The author and publisher shall not be liable in
 any event of incidental or consequential damages in connection with, or
 arising out of, the furnishing, performance, or use of these techniques
 or programs.
-
- 
 
 Printed in China
 
@@ -228,7 +222,6 @@ Python 好使.
         - [字符串编辑符](https://gasinan.github.io/ForNotes/ForNotes#subsec9-3-3)
 
 - [绘图](https://gasinan.github.io/ForNotes/ForNotes#char10)
-
 
 # 简介 <div id="char1">
 
@@ -534,7 +527,6 @@ file), 这个过程称作链接 (linking), Windows
     end program main
 
 打开 `helloworld.f90`, 写入下面的内容并保存.
-
 
     subroutine helloworld()
         implicit none
@@ -1251,7 +1243,6 @@ data-reference="fortran_intrinsic_type">4</a>章后同学们可知,
     program main
         implicit none
         integer :: m, n
-
 
         do m = 1, 1
             if (.true.) then
@@ -2639,7 +2630,6 @@ Fortran 整怕 (希望不会), 反正俺是被整怕了,
 字符运算符只有一个: `//`,
 其作用是把左右两边的字符串连起来得到一个新字符串. 示例如下.
 
-
     program main
         implicit none
         print *, 'Hello'//','//' '//'world'//'!'
@@ -2992,7 +2982,6 @@ data-reference="fortran_indent">3.9</a>.
 
 再请看下面这个示例, 这个示例由 页的 “判断是否及格” 示例删去注释得来.
 
-
     program main
         implicit none
         integer :: score
@@ -3171,7 +3160,6 @@ if 结构的前后加注释, 把内层的 if 结构区分出来.
 结构的时候, 只能在整个复杂型 if 结构的头尾加标签. 下面的示例是错误的,
 不加标签 `inner` 则是正确的.
 
-
     program main
         implicit none
         integer :: score
@@ -3343,7 +3331,6 @@ $`m_3`$ 始终是 $`1`$, $`10`$, $`2`$ 不变. 但 Fortran
 
 上面程序的计数变量 `[m]` 都是整型的. 按 Modern Fortran 标准, 计数变量
 “shall be” 整型的. 这是无比正确的. 请看下面这个例子.
-
 
     program main
         implicit none

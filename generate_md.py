@@ -2,7 +2,7 @@ import os
 os.system('pandoc -f latex -t gfm -o ForNotes.md ForNotes.tex')
 
 url = 'https://gasinan.github.io/ForNotes/ForNotes'
-notice = '\n\nMarkdown 版本由 [Pandoc](https://pandoc.org/)自动生成, 若有格式错误, 请阅读 [PDF 版本](https://github.com/GasinAn/ForNotes/raw/refs/heads/main/ForNotes.pdf).'
+notice = '\n\nMarkdown 版本由 [Pandoc](https://pandoc.org/) 自动生成, 若有格式错误, 请阅读 [PDF 版本](https://github.com/GasinAn/ForNotes/raw/refs/heads/main/ForNotes.pdf).'
 
 with open('ForNotes.md', 'r', encoding='utf-8') as f:
     md = f.readlines()
@@ -40,5 +40,7 @@ md = md.replace('# Contents\n', contents)
 md = md.replace('$`\,\\text{\\textregistered}`$', '®')
 md = md.replace('$`{}^\\text{\\textregistered}`$', '®')
 md = md.replace('<span\nclass="math inline">${}^\\text{\\textregistered}$</span>', '®')
+md = md.replace(' \n', '')
+md = md.replace(3*'\n', 2*'\n')
 with open('ForNotes.md', 'w', encoding='utf-8') as f:
     f.write(md)
