@@ -463,7 +463,7 @@ end program main
 
 并行计算我们是非常需要的, 因为能省大量时间, 比如我们有一个大小为 $1000\times1000$ 的数组 (这样大的数组实践中并不罕见). 如果我们的电脑, 比如一台超级计算机, 能同时进行 $1\times{10}^6$ 个计算, 程序运行时我们给数组赋值很多次, 总共用时 $1$ 秒. 如果我们的电脑, 比如安安家里的老破电脑, 只能同时进行 $1$ 个计算, 程序运行时我们给数组赋值很多次, 总共用时 $1\times{10}^6$ 秒 $>$ $10$ 天, 用时太多了. Fortran 的语法可以直接区分串行计算和并行计算, 这是 Fortran 的巨大优势 (Python 的 Numpy 已借鉴).
 
-数组赋值还可以用forall 结构, where 结构和 do concurrent 结构, 其中 forall 结构已被弃用, 加之同学们学完 where 结构和 do concurrent 结构估计已经晕菜了, 安安拒讲 forall 结构. 同学们如果弄不懂 where 结构和 do concurrent 结构可以先不掌握, 因为不用这俩玩意儿同学们也能干活儿, 就是程序跑得可能比较慢, 但其他数组赋值方法同学们必须掌握, 不然期末一定挂科呢.
+数组赋值还可以用 forall 结构, where 结构和 do concurrent 结构, 其中 forall 结构已被弃用, 加之同学们学完 where 结构和 do concurrent 结构估计已经晕菜了, 安安拒讲 forall 结构. 同学们如果弄不懂 where 结构和 do concurrent 结构可以先不掌握, 因为不用这俩玩意儿同学们也能干活儿, 就是程序跑得可能比较慢, 但其他数组赋值方法同学们必须掌握, 不然期末一定挂科呢.
 
 \subsection{where 结构}\label{where_construct}
 
@@ -545,6 +545,30 @@ program main
 end program main
 \end{lstlisting}
 
+看懂上面几个示例的同学会觉得 where 结构真好用, 但请这些同学不要高兴得太早, where 结构乍看着方便, 实则正因如此而有一个 Fortran 没学好的人不可能知道的坑. 要懂得这个坑, 同学们需要先学习 \ref{elemental_procedure} 小节然后倒回头来看这里. 来看下面这个\href{https://j3-fortran.org/doc/year/24/24-007.pdf}{标准解释文档}里给的经典程序.
+\begin{lstlisting}
+program main
+    implicit none
+    integer :: i
+    real :: a(9)
+    a = [(real(i), i = -4, +4)]
+    where(a > 0.0)
+        ! log is invoked only for positive elements,
+        ! because log is elemental.
+        a = log(a) 
+    end where
+    print *, a/sum(a)
+    a = [(real(i), i = -4, +4)]
+    where(a > 0.0)
+        ! log is invoked for ALL elements,
+        ! because sum is NOT elemental.
+        a = a / sum(log(a)) 
+    end where
+    print *, a
+end program main
+\end{lstlisting}
+在这个程序中, \ttt{a = log(a)} 里的 \ttt{log} 是逐元函数, 所以 \ttt{log(a)} 里的 \ttt{a} 代表的是 \ttt{a} 的元素 \ttt{> 0.0} 的部分, 所以这个程序中的 \ttt{a = log(a)} 相当于 \ttt{a(6:9) = log(a(6:9))}. 而 \ttt{a = a / sum(log(a))} 里的 \ttt{sum} \uline{不是}逐元函数, \ttt{sum(log(a))} 里的 \ttt{a} 出现在非逐元函数的 \ttt{sum} 后跟的括号 \ttt{()} 里, 这时请注意, \ttt{sum(log(a))} 里的 \ttt{a} 代表的不是 \ttt{a} 的元素 \ttt{> 0.0} 的部分, 而是 \ttt{a} \uline{整个数组}, 即便 \ttt{log} 是逐元函数也不影响这点, 所以这个程序中的 \ttt{a = a / sum(log(a))} 相当于 \ttt{a(6:9) = a(6:9) / sum(log(a(:)))}.
+
 \subsection[do concurrent\\结构]{do concurrent 结构}
 
 有些程序不好用 where 结构改写, 比如下面的程序.
@@ -568,6 +592,7 @@ end program main
 \end{lstlisting}
 我们可以使用同样是并行计算的 do concurrent 结构\footnote{\href{https://j3-fortran.org/doc/year/24/24-007.pdf}{标准解释文档}把 do concurrent 结构划成 do 结构中的一种, 但一般还是把 do concurrent 结构单看成一种结构.}来改写上面的程序成下面的程序, 其中 \ttt{tag} 是 do concurrent 结构的标签, 可省去, 两个 \ttt{:1} 因为是 \ttt{:\{m3\}} 所以也可省去, 但 \ttt{\{m1\}} 和 \ttt{\{m2\}} \uline{不可}省去. 相信同学们能总结出 do concurrent 结构的用法. 另外 do concurrent 结构和 do 结构, where 结构和数组三元下标的语法很像但又有点不一样, 请同学们自己对比, 不要混淆.
 \begin{lstlisting}
+
 program main
     implicit none
     integer :: i, j, a(9), b(9)
@@ -627,7 +652,6 @@ end program main
 \end{lstlisting}
 如果一个代表运算 $\text{OP}$ 的二元运算符 \ttt{\{op\}} 左右分别跟 \ttt{\{q1\}} 和 \ttt{\{q2\}}, 且 \ttt{\{q1\}} 和 \ttt{\{q2\}} 一个是标量一个是数组, 那么先临时把 \ttt{\{q1\}} 和 \ttt{\{q2\}} 中是标量的那个替换成一数组, 此数组形状与 \ttt{\{q1\}} 和 \ttt{\{q2\}} 中是数组的那个一样, 且此数组中元素皆为 \ttt{\{q1\}} 和 \ttt{\{q2\}} 中是标量的那个, 然后按 \ttt{\{q1\}} 和 \ttt{\{q2\}} 是形状相同的数组时的方法进行运算. 示例如下.
 \begin{lstlisting}
-
 program main
     implicit none
     integer :: i
