@@ -1,7 +1,5 @@
 Markdown 版本由 [Pandoc](https://pandoc.org/) 自动生成, 若有格式错误, 请阅读 [PDF 版本](https://github.com/GasinAn/ForNotes/raw/refs/heads/main/ForNotes.pdf).
 
-<div class="center">
-
 Copyright 2024 by GasinAn
 
 All rights reserved. No part of this book may be reproduced, in any form
@@ -19,8 +17,6 @@ arising out of, the furnishing, performance, or use of these techniques
 or programs.
 
 Printed in China
-
-</div>
 
 # 前言 <a name="char0"></a>
 
@@ -706,8 +702,6 @@ data-reference="source_and_command_main">3.1</a> 和表
 data-reference="source_and_command_helloworld">3.2</a> 所示,
 这一大堆指令合起来就是程序.
 
-<div id="source_and_command_main">
-
 | 源代码              | 指令                    |
 |:--------------------|:------------------------|
 | `program main`      | 开始运行主程序 `main`   |
@@ -717,9 +711,7 @@ data-reference="source_and_command_helloworld">3.2</a> 所示,
 
 `main.f90` 中源代码与指令的对照
 
-</div>
 
-<div id="source_and_command_helloworld">
 
 | 源代码                      | 指令                             |
 |:----------------------------|:---------------------------------|
@@ -729,8 +721,6 @@ data-reference="source_and_command_helloworld">3.2</a> 所示,
 | `end subroutine helloworld` | 结束运行子例行 `helloworld`      |
 
 `helloworld.f90` 中源代码与指令的对照
-
-</div>
 
 ## 标准与规范 <a name="sec3-2"></a>
 
@@ -760,11 +750,7 @@ Gfortran 说程序没问题, 同学们兴冲冲地交卷了, 然后老师掏出 
 为防止这种悲惨情形发生, 我们需要避免使用Fortran
 标准没规定而编译器自定的规则.
 
-<div id="use_standard_only" class="convention">
-
 **规范 3.1**. *只使用 Fortran 现行标准自行规定的规则.*
-
-</div>
 
 这样, 我们的程序编译器要是不认, 安安唯一能想到的可能就是 Fortran
 标准更新了, 而编译器没更新, 还用着旧标准. 不过同学们没必要担心这一情形,
@@ -805,12 +791,8 @@ data-reference="fortran_submodule">[fortran_submodule]</a>章里讲.[^20]
 并且文件名和文件里的程序单元名相同 (比如主程序 `main` 放在 `main.f90`
 里).
 
-<div id="one_program_unit" class="convention">
-
 **规范 3.2**. *一个源代码文件里只放一个程序单元,
 并且文件名和文件里的程序单元名相同.*
-
-</div>
 
 当然, 安安偶尔也会在一个源代码文件里放多个程序单元, 比如安安在玩 SOFA
 的时候, 习惯把除 `t_sofa_f.for`
@@ -887,11 +869,7 @@ data-reference="fortran_program">3.1</a> 节 `main.f90` 和
 本笔记里会介绍一些不符合结构化原则的语法, 但只是因为不用那些语法,
 有些活儿干不了. 请同学们尽可能少用那些语法.
 
-<div id="no_no_structured" class="convention">
-
 **规范 3.3**. *尽可能少用不符合结构化程序设计原则的语法.*
-
-</div>
 
 最后补充一下, 玩 Fortran 时我们是先用编译器把 Fortran
 程序从头到尾全翻译了然后再运行. 但编程语言还有另一种运行方式, 是用解释器
@@ -1034,12 +1012,8 @@ Fortran 可以在程序中使用所有能直接用英语输入法打出的字符
 为避免各种各样的问题, 还是只用正常字符为好. 另外源代码文件名最好也如此,
 不然编译器可能会无法识别源代码文件呢.
 
-<div id="english_character_convention" class="convention">
-
 **规范 3.4**.
 *在程序和源代码文件名中只使用能直接用英语输入法打出的字符.*
-
-</div>
 
 Fortran 是大小写不敏感的 (case-insensitive), 也就是说,
 很多情况下程序里的字母大写小写效果是完全相同的 (效果不同的地方见
@@ -1070,11 +1044,7 @@ $`E=M+E\cos E`$, 然后俺忘了这茬, 结果死活找不出自己哪里写错�
 (俺搞毕设时知道这事, 但俺偷懒了, 结果惨遭报应…).
 因为单词写成小写字母比写成大写字母好认, 所以现在人们都统一只用小写字母.
 
-<div id="lower_case_convention" class="convention">
-
 **规范 3.5**. *只在程序中使用小写字母.*
-
-</div>
 
 如上所述, 有时 Fortran 大小写是分的, 这时规范
 <a href="#lower_case_convention" data-reference-type="ref"
@@ -1094,11 +1064,7 @@ Fortran 有两种源代码格式 (source form): 自由格式 (free form) 和固�
 (fixed form). 固定格式是将被废弃的 (obsolescent) 老格式.
 安安的笔记里只讲自由格式.
 
-<div class="convention">
-
 **规范 3.6**. *永远编写自由格式的程序.*
-
-</div>
 
 自由格式源代码文件拓展名一般是 `.f90`, 固定格式源代码文件拓展名一般是
 `.for`/`.f`, 这是 Fortran 编译器的惯例. 查 [Ifx
@@ -1109,11 +1075,7 @@ Fortran 有两种源代码格式 (source form): 自由格式 (free form) 和固�
 `.f90` 的文件里, 以保证它俩能认得. 要是某 Fortran 编译器竟不遵从惯例,
 我们就把它卸载了…
 
-<div class="convention">
-
 **规范 3.7**. *保证自由格式源代码文件拓展名为 *`.f90`*.*
-
-</div>
 
 这里需澄清, 有习惯说法是把自由格式程序说成 “Fortran 90 程序”,
 把固定格式程序说成“FORTRAN 77 程序”. 这种说法的根源是 Fortran
@@ -1140,11 +1102,7 @@ data-reference="character_string_edit_descriptor">9.3.3</a>
 `print*,’A’`, 挤成一团, 也不能说是错误, 但即便像 VS Code
 里那样代码有颜色区分, 也让人看得晕乎, 更何况笔记里这样代码没颜色呢.
 
-<div id="fortran_blank" class="convention">
-
 **规范 3.8**. *在程序中适当地加入空格.*
-
-</div>
 
 至于什么时候加入空格, 其实没什么具体原则, 不同的人意见不一.
 同学们可以参考本笔记, Fortran
@@ -1176,11 +1134,7 @@ data-reference="do_construct">6.1.2</a> 小节会介绍的 `do` 结构,
 data-reference="if_construct">6.1.1</a> 小节会介绍的 `if` 结构, 嵌套在
 `do` 结构里, 之间的代码又又缩进一层, 有 12 个空格的缩进.
 
-<div id="fortran_indent" class="convention">
-
 **规范 3.9**. *在程序中加入适当的缩进, 以 $`4`$ 个空格为单位.*
-
-</div>
 
 “以 4 个空格为单位”, 是指保持缩进为 4 个空格, 或 8 个空格, 或 12 个空格,
 以此类推. 有些人可能更喜欢以 8 个空格为单位的缩进,
@@ -1205,11 +1159,7 @@ data-reference="if_construct">6.1.1</a> 小节会介绍的 `if` 结构, 嵌套�
 编译器可能会允许在程序中使用 \[Tab\] 键, 但这也不保险. 总而言之, 使用
 \[Tab\] 键, 实在不清楚会不会出问题.
 
-<div class="convention">
-
 **规范 3.10**. *不要使用*\[Tab\]*键.*
-
-</div>
 
 在 VS Code 中, 把鼠标移到右下角铃铛图标按键左边第四个, 鼠标移到后会显示
 “Select Indentation” 的按键上, 点击之, 然后弹出的菜单下拉选择 “Indent
@@ -1260,11 +1210,7 @@ data-reference="fortran_intrinsic_type">4</a>章后同学们可知,
 在上面的程序中: 双空行划分 “说明部分”和 “执行部分”; 单空行划分
 “执行部分”中的各部分.
 
-<div class="convention">
-
 **规范 3.11**. *在程序中加入适当的空行.*
-
-</div>
 
 至于什么时候加入一个或几个空行, 其实没什么具体原则, 完全看个人心情.
 简单原则就是, 如果读程序长长的一部分, 感觉头昏脑涨,
@@ -1342,11 +1288,7 @@ $`10`$ 的阶乘, 还要费点脑子, 而加上个注释, 就能一眼看出代�
 当然, 如果代码自己不足以表达意思, 还是尽可能加上注释吧,
 偷懒可是要遭报应的呀!
 
-<div class="convention">
-
 **规范 3.12**. *在代码本身不足以表明代码含义的时候尽可能加入注释以说明.*
-
-</div>
 
 因为注释会被忽略, 所以规范
 <a href="#lower_case_convention" data-reference-type="ref"
@@ -1360,11 +1302,7 @@ data-reference="lower_case_convention">3.5</a> 我们可以无视.
 写代码的时候, 我们不希望一行里有过多的字符, 因为代码会跑到屏幕右侧以外,
 不方便阅读.
 
-<div id="fortran_no_more_than_80" class="convention">
-
 **规范 3.13**. *程序每一行不应超过 $`80`$ 个字符.*
-
-</div>
 
 有些人可能会放宽到不超过 $`120`$ 个字符, 配合以 8
 个空格为单位的缩进和宽屏电脑.
@@ -1478,19 +1416,13 @@ data-reference="character_string_edit_descriptor">9.3.3</a>
 拆成两行简直是犯罪), 其次我们不应该在不应加空格的地方用续行 (比如在 `*,`
 之间用续行拆成两半).
 
-<div class="convention">
-
 **规范 3.14**. *只在不用续行就无法遵守规范
 *<a href="#fortran_no_more_than_80" data-reference-type="ref"
 data-reference="fortran_no_more_than_80">3.13</a>* 的时候使用续行.*
 
-</div>
 
-<div class="convention">
 
 **规范 3.15**. *不在不应加空格的地方使用续行.*
-
-</div>
 
 有同学可能会突然发现不对, 本章的许多程序不符合规范
 <a href="#fortran_indent" data-reference-type="ref"
@@ -1723,11 +1655,7 @@ Fortran 程序的每一行, 除了注释和某个本笔记里不想讲的东东�
 有了它, 老师用来折磨同学们的 I–N 隐式规则就被禁掉了.
 请同学们务必在每个程序单元里都加上它.
 
-<div class="convention">
-
 **规范 4.1**. *在程序的每个程序单元里都加上 *`implicit none`*.*
-
-</div>
 
 ## 整型 <a name="sec4-1"></a>
 
@@ -2181,8 +2109,6 @@ data-reference="numeric_type_convert">5.1</a>, 其中的术语解释如下:
 
 - 二次转化: 先转化成实型, 再转化成整型.
 
-<div id="numeric_type_convert">
-
 |      |   整型   |     实型      |     复型      |
 |:----:|:--------:|:-------------:|:-------------:|
 | 整型 |  值相等  |    值近似     | 实部近似虚部0 |
@@ -2190,8 +2116,6 @@ data-reference="numeric_type_convert">5.1</a>, 其中的术语解释如下:
 | 复型 | 二次转化 | 实部近似虚部0 |    值近似     |
 
 Fortran 数字型数据实体转化表
-
-</div>
 
 同学们莫要被这表吓破了胆, 我们可以简化记忆. 首先, 编译器们在自己决定
 “如何近似”的时候, 总是尽可能地近似 (敢不如此我们就卸载),
@@ -2202,8 +2126,6 @@ data-reference="numeric_type_convert">5.1</a> 就简化成表
 <a href="#simplified_numeric_type_convert" data-reference-type="ref"
 data-reference="simplified_numeric_type_convert">5.2</a>.
 
-<div id="simplified_numeric_type_convert">
-
 |      |   整型   |     实型      |  复型  |
 |:----:|:--------:|:-------------:|:------:|
 | 整型 |  值相等  |    值相等     | 值相等 |
@@ -2211,8 +2133,6 @@ data-reference="simplified_numeric_type_convert">5.2</a>.
 | 复型 | 二次转化 | 实部近似虚部0 | 值相等 |
 
 简化 Fortran 数字型数据实体转化表
-
-</div>
 
 最后同学们会发现只需记下面的内容即可:
 
@@ -2263,13 +2183,9 @@ Fortran 程序和 C 程序里使用 “显式” 的转化. 对 Fortran 而言,
         print *, a, b
     end program main
 
-<div class="convention">
-
 **规范 5.1**. *在实型转整型, 复型转实型, 复型转整型的时候, 用
 *`int([entity])`* /*`real([entity])`* 来说明数据实体 *`[entity]`*
 被转化成整型/实型.*
-
-</div>
 
 字符型数据实体赋值给字符型数据实体的时候, “`=`” 两边的长度可能不一样,
 这时自然有个长度转化的问题. 如果 “`=`”
@@ -2475,12 +2391,8 @@ $`\sqrt[b]{a}=a^{1/b}`$, 所以就没必要给开方准备一个运算符了.
 `[a]**([b]**[c])`. 但 `**` 的运算顺序和其他运算符相反这件事很容易忘了,
 所以请同学们不写 `[a]**[b]**[c]` 而写 `[a]**([b]**[c])`.
 
-<div id="use_parentheses" class="convention">
-
 **规范 5.2**. *在表达式中运算符的运算顺序容易被误解的情况下,
 用括号指明运算顺序.*
-
-</div>
 
 代数式中应该只出现类似 $`a-(-b)`$ 之类的东东, 不出现类似 $`a--b`$
 之类的东东. 类似地, Fortran 表达式里不允许连着出现两个算数运算符,
@@ -2605,12 +2517,8 @@ Fortran 语法我们没法儿改, 我们只好自己想办法避坑. 我们发�
 不过这些地方非常少, 以安安的经验,
 我们是不会因这些整型数据实体而掉坑里去的.
 
-<div class="convention">
-
 **规范 5.3**. *尽可能避免使用整型数据实体; 如果一定要使用,
 在表达式中先将其转化成实型数据实体.*
-
-</div>
 
 如果有一个实型变量 `a`, 要算 `a` 的 `2` 次方, 安安会写 `a**2.0` 而不会写
 `a**2`. 如果有一个实型变量 `b`, 一个整型变量 `n`, 要算 `b` 的 `n` 次方,
@@ -2746,12 +2654,8 @@ Ifx 和 Gfortran 竟都能得出正确的结果, 似乎非常高级…
 “整数到整数的运算”, 例如整数的加, 减, 乘, <u>整</u>除之类的,
 这类表达式不会引入存储数据和计算的误差.
 
-<div class="convention">
-
 **规范 5.4**. *如果两个表达式中所包含的所有表达式的结果不都是整型的,
 那么不比较这两个表达式是否相等.*
-
-</div>
 
 还有一个小坑, 像下面这样的程序 `==` 左右两边一样, 结果算出来竟是
 `.false.`
@@ -3322,12 +3226,8 @@ $`m_3`$ 始终是 $`1`$, $`10`$, $`2`$ 不变. 但 Fortran
         print *, 'After loop: ', n
     end program main
 
-<div class="convention">
-
 **规范 6.1**. *在使用 do 结构时, 让 *`[m1]`*, *`[m2]`*, *`[m3]`*
 的值保持不变.*
-
-</div>
 
 上面程序的计数变量 `[m]` 都是整型的. 按 Modern Fortran 标准, 计数变量
 “shall be” 整型的. 这是无比正确的. 请看下面这个例子.
@@ -3356,12 +3256,8 @@ $`m_3`$ 始终是 $`1`$, $`10`$, $`2`$ 不变. 但 Fortran
 `n` 的输出结果是 `1000000` 而不是 `1000001`, 结果不是我们期待的了,
 而且连警告也没有…
 
-<div class="convention">
-
 **规范 6.2**. *在使用 do 结构时, 让 *`[m]`*, *`[m1]`*, *`[m2]`*,
 *`[m3]`* 是整型的.*
-
-</div>
 
 我们可以用一些偷鸡摸狗的正确办法来避免用实型的计数变量,
 例如我们可以把上面的程序改成下面的程序.
@@ -3783,8 +3679,6 @@ $`a_{11},a_{21},a_{12},a_{22}`$, 在 C 规定的行优先顺序中,
 位置最后的下标变动最快, 排序是 $`a_{11},a_{12},a_{21},a_{22}`$,
 示意图如下.
 
-<div id="column_major">
-
 |  |  |  |  |  |
 |:--:|:--:|:--:|:--:|:--:|
 | $`a_{11}`$ |  | $`\rightarrow`$ | $`\rightarrow`$ | $`a_{12}`$ |
@@ -3795,9 +3689,7 @@ $`a_{11},a_{21},a_{12},a_{22}`$, 在 C 规定的行优先顺序中,
 
 Fortran 规定的列优先顺序示意图
 
-</div>
 
-<div id="row_major">
 
 |  |  |  |  |  |
 |:--:|:--:|:--:|:--:|:--:|
@@ -3808,8 +3700,6 @@ Fortran 规定的列优先顺序示意图
 | $`a_{21}`$ | $`\rightarrow`$ | $`\rightarrow`$ | $`\rightarrow`$ | $`a_{22}`$ |
 
 C 规定的行优先顺序示意图
-
-</div>
 
 如果两个数组 $`a`$ 和 $`b`$, 它们的形状一样,
 那么这两个数组的元素有自然的一一对应关系, 即按 Fortran
@@ -3823,8 +3713,6 @@ $`b\!:\{1,2,3\}\times\{1,2\}\to\mathbb{C}`$, 它们的元素对应关系如图
 data-reference="element_corresponding">7.3</a> 所示
 (数组元素的左边圆圈中的数字一样的元素是对应的).
 
-<div id="element_corresponding">
-
 |              |              |     |              |              |
 |:------------:|:------------:|:---:|:------------:|:------------:|
 | $`\,a_{00}`$ | $`\,a_{01}`$ |     | $`\,b_{11}`$ | $`\,b_{12}`$ |
@@ -3832,8 +3720,6 @@ data-reference="element_corresponding">7.3</a> 所示
 | $`\,a_{20}`$ | $`\,a_{21}`$ |     | $`\,b_{31}`$ | $`\,b_{32}`$ |
 
 元素对应关系示意图
-
-</div>
 
 如果两个数组可以有元素对应关系, 那么它们需要有相同的形状,
 但它们的每个维度都不需要有相同的上下界.
@@ -3994,12 +3880,8 @@ deallocate 语句操作一番, 所以延迟形状数组很可能不会被电脑�
 但实践中的延迟长度字符串通常很小 (天文人经常做大规模数据处理,
 但不经常做大规模文本处理), 这个问题姑且可以无视.
 
-<div class="convention">
-
 **规范 7.1**. *如果程序运行到某时已经不需要使用某个有 allocatable
 属性的变量, 那么对这个变量使用 deallocate 语句.*
-
-</div>
 
 ## 数组操作 <a name="sec7-4"></a>
 
@@ -5084,11 +4966,7 @@ label="arguments"></span> (加 `intent(...)`), 是灰常灰常必要的,
 老老实实一个个标注. 如果哑参量除哑实结合时外不被赋值, 就标只读,
 如果哑参量在哑实结合时不需要被赋值, 就标只写, 剩下的标读写.
 
-<div class="convention">
-
 **规范 8.1**. *正确标注每个哑参量为只读参量, 只写参量或读写参量.*
-
-</div>
 
 子程序还有很多禁令, 请同志们自己写程序测试, 编译器会告诉大家答案的.
 比如, 子程序名能和主程序名一样吗?
@@ -5169,11 +5047,7 @@ label="arguments"></span> (加 `intent(...)`), 是灰常灰常必要的,
 按照当今的规范, 我们必须保证函数子程序的所有哑参量都是只读的
 (结果不是哑参量). 如果不遵守此规范, 我保证同志们之后会无比头痛.
 
-<div id="func_all_in" class="convention">
-
 **规范 8.2**. *标注函数子程序的所有哑参量为只读参量.*
-
-</div>
 
 使用函数子程序的好处是调用函数子程序后会生成一个数据实体,
 经验表明多数情况下这样能让我们偷懒少打几个字,
@@ -5299,12 +5173,8 @@ variable). 第一次调用 `count` 的时候, `n` 一开始是 `0`, 然后
 
 因此, 不要这么写, 除非声明时标有 `, parameter` 或 `, save`.
 
-<div class="convention">
-
 **规范 8.3**. *除非已经明确标明变量有 parameter 属性或 save 属性,
 否则不得在声明变量的时候直接给变量初始化.*
-
-</div>
 
 ### 过程中的字符串 <a name="subsec8-2-2"></a>
 
@@ -6396,11 +6266,7 @@ Fortran会在第三行后认得 `test.txt`, 这个 `test.txt`
 也需要用这个文件里的数据, 结果同学们居然把文件占住了, 打不开这个文件,
 同学们得被暴打一顿. 所以请同学们养成关掉没用文件的好习惯.
 
-<div class="convention">
-
 **规范 9.1**. *在不需要使用外部文件的时候将其关闭.*
-
-</div>
 
 注意, 内部文件是不需要也没法打开或关闭的.
 
@@ -6652,11 +6518,7 @@ $`2\times2`$ 矩阵的行列式” 的提示, 告诉用这个轮子的人这个�
 轮子在干什么, 自己要干什么, 最后得到的又是什么统统弄不懂,
 哪怕是造轮子的人自己可能也会懵, 忘了自己干了什么在干什么该干什么[^55].
 
-<div class="convention">
-
 **规范 9.2**. *输出充足的与程序功能及输入输出有关的提示信息.*
-
-</div>
 
 ## 编辑符 <a name="sec9-3"></a>
 

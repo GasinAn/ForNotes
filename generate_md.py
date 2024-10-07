@@ -9,6 +9,8 @@ with open('ForNotes.md', 'r', encoding='utf-8') as f:
 contents = '# 目录\n\n'
 chap, sec, subsec = -1, 0, 0
 for i in range(len(md)):
+    if '<div' in md[i] or 'div>' in md[i]:
+        md[i] = '\n'
     if md[i][:2] == '# ' and md[i] != '# Contents\n':
         chap += 1
         sec, subsec = 0, 0
@@ -35,13 +37,15 @@ with open('ForNotes.md', 'w', encoding='utf-8') as f:
 with open('ForNotes.md', 'r', encoding='utf-8') as f:
     md = f.read()
 md = notice + md
+
 md = md.replace('LaTeXer', 'Markdowner')
 md = md.replace('# Contents\n', contents)
 md = md.replace('$`\,\\text{\\textregistered}`$', '®')
 md = md.replace('$`{}^\\text{\\textregistered}`$', '®')
 md = md.replace('<span\nclass="math inline">${}^\\text{\\textregistered}$</span>', '®')
 md = md.replace('{{', '{ {')
-md = md.replace(' \n', '')
+md = md.replace(' \n', '\n')
+md = md.replace(4*'\n', 3*'\n')
 md = md.replace(3*'\n', 2*'\n')
 with open('ForNotes.md', 'w', encoding='utf-8') as f:
     f.write(md)
