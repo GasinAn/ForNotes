@@ -669,7 +669,7 @@ end function identity
 program main
     implicit none
     integer :: factorial
-    print *, factorial(10)
+    print *, factorial(3)
 end program main
 
 pure function factorial(n) result(p)
@@ -700,7 +700,7 @@ end program main
 program main
     implicit none
     integer :: i, factorial
-    print *, factorial(10)
+    print *, factorial(3)
     print *, factorial([(i, i = 1, 9)])
 end program main
 
@@ -725,7 +725,7 @@ program main
             integer :: p
         end function factorial
     end interface
-    print *, factorial(10)
+    print *, factorial(3)
     print *, factorial([(i, i = 1, 9)])
 end program main
 
@@ -747,13 +747,12 @@ end function factorial
 program main
     implicit none
     integer :: factorial
-    print *, factorial(10)
+    print *, factorial(3)
 end program main
 
 function factorial(n) result(p)
     integer, intent(in) :: n
-    integer :: p 
-    p = 1
+    integer :: p
     if (n == 1) then
         p = 1
     else
@@ -762,18 +761,17 @@ function factorial(n) result(p)
     end if
 end function factorial
 \end{lstlisting}
-我们可以在子程序开头的 \ttt{subroutine} 或 \ttt{function} 前加 \ttt{recursive}, 将过程改造成递归 (recursive) 过程. 递归过程就是可以调用自己的过程. 于是花活儿就像下面这样玩成了. 请同学们自己分析下面这个轮子的运行过程.
+我们可以在子程序开头的 \ttt{subroutine} 或 \ttt{function} 前加 \ttt{recursive}, 将过程改造成递归 (recursive) 过程. 递归过程就是可以调用自己的过程. 于是花活儿就像下面这样玩成了.
 \begin{lstlisting}
 program main
     implicit none
     integer :: factorial
-    print *, factorial(10)
+    print *, factorial(3)
 end program main
 
 recursive function factorial(n) result(p)
     integer, intent(in) :: n
-    integer :: p 
-    p = 1
+    integer :: p
     if (n == 1) then
         p = 1
     else
@@ -782,19 +780,36 @@ recursive function factorial(n) result(p)
     end if
 end function factorial
 \end{lstlisting}
+
+不过上面这个例子我们还要细掰细掰. 同学们可能会这么分析上面这个例子.
+\begin{enumerate}
+    \item 主程序第四行要算 \ttt{factorial(3)}, 所以函数 \ttt{factorial} 的哑元 \ttt{n} 变成 \ttt{3}.
+    \item \ttt{n /= 1}, 所以 \ttt{p = n * factorial(n-1)}, 要算 \ttt{factorial(n-1)}, 所以函数 \ttt{factorial} 的哑元 \ttt{n} 变成 \ttt{n-1}, 所以 \ttt{n} 变成 \ttt{2}.
+    \item \ttt{n /= 1}, 所以 \ttt{p = n * factorial(n-1)}, 要算 \ttt{factorial(n-1)}, 所以函数 \ttt{factorial} 的哑元 \ttt{n} 变成 \ttt{n-1}, 所以 \ttt{n} 变成 \ttt{1}.
+    \item \ttt{n == 1}, 所以 \ttt{p = 1}, \ttt{p} 变成 \ttt{1}, 然后到 \ttt{end function factorial}, \ttt{p} 是结果, 所以 \ttt{factorial(3)} 是 \ttt{1}.
+\end{enumerate}
+可这明显不对呀, 程序跑出来结果应该是 \ttt{6} 才对嘛. 要想弄懂上面这个例子, 我们需要更准确地理解过程的调用. 过程调用时, 严格意义上说, 不是过程本身被调用了, 而是过程连同过程中的所有常量变量都被复制出分身, 然后分身被调用了. 所以上面这个例子应分析如下.
+\begin{enumerate}
+    \item 主程序第四行要算 \ttt{factorial(3)}, 所以函数 \ttt{factorial} 被复制出分身 \ttt{factorial}$_1$, 哑元 \ttt{n}$_1$ 变成 \ttt{3}.
+    \item \ttt{n}$_1$ \ttt{/= 1}, 所以 \ttt{p}$_1$ \ttt{= n}$_1$ \ttt{* factorial(n}$_1$\ttt{-1)}, 要算 \ttt{factorial(n}$_1$\ttt{-1)}, 所以函数 \ttt{factorial} 被复制出分身 \ttt{factorial}$_2$, \ttt{n}$_2$ \ttt{= n}$_1$\ttt{-1}, 哑元 \ttt{n}$_2$ 变成 \ttt{2}.
+    \item \ttt{n}$_2$ \ttt{/= 1}, 所以 \ttt{p}$_2$ \ttt{= n}$_2$ \ttt{* factorial(n}$_2$\ttt{-1)}, 要算 \ttt{factorial(n}$_2$\ttt{-1)}, 所以函数 \ttt{factorial} 被复制出分身 \ttt{factorial}$_3$, \ttt{n}$_3$ \ttt{= n}$_2$\ttt{-1}, 哑元 \ttt{n}$_3$ 变成 \ttt{1}.
+    \item \ttt{n}$_3$ \ttt{== 1}, 所以 \ttt{p}$_3$ \ttt{= 1}, \ttt{p}$_3$ 变成 \ttt{1}, 然后到 \ttt{end function factorial}, \ttt{p}$_3$ 是结果, 而 \ttt{p}$_2$ \ttt{= n}$_2$ \ttt{* factorial(n}$_2$\ttt{-1)} 时调用 \ttt{factorial}$_3$, 所以 \ttt{factorial(n}$_2$\ttt{-1)} 是 \ttt{1}.
+    \item \ttt{n}$_2$ 是 \ttt{2}, 所以 \ttt{p}$_2$ 变成 \ttt{2}, 然后到 \ttt{end function factorial}, \ttt{p}$_2$ 是结果, 而 \ttt{p}$_1$ \ttt{= n}$_1$ \ttt{* factorial(n}$_1$\ttt{-1)} 时调用 \ttt{factorial}$_2$, 所以 \ttt{factorial (n}$_1$\ttt{-1)} 是 \ttt{2}.
+    \item \ttt{n}$_1$ 是 \ttt{3}, 所以 \ttt{p}$_1$ 变成 \ttt{6}, 然后到 \ttt{end function factorial}, \ttt{p}$_1$ 是结果, 而主程序算 \ttt{factorial(3)} 时调用 \ttt{factorial}$_1$, 所以 \ttt{factorial(3)} 是 \ttt{6}.
+\end{enumerate}
+啊! 这么分析就正确了!
 
 如果想让过程又是纯过程又是递归过程, 我们把 \ttt{pure} 和 \ttt{recursive} 都加在子程序开头的 \ttt{subroutine} 或 \ttt{function} 前即可 (\ttt{pure} 和 \ttt{recursive} 顺序任意), 像下面这样.
 \begin{lstlisting}
 program main
     implicit none
     integer :: factorial
-    print *, factorial(10)
+    print *, factorial(3)
 end program main
 
 recursive pure function factorial(n) result(p)
     integer, intent(in) :: n
-    integer :: p 
-    p = 1
+    integer :: p
     if (n == 1) then
         p = 1
     else

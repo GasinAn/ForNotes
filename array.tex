@@ -557,7 +557,8 @@ program main
         ! because log is elemental.
         a = log(a) 
     end where
-    print *, a/sum(a)
+    print *, a
+    print *, a / sum(a)
     a = [(real(i), i = -4, +4)]
     where(a > 0.0)
         ! log is invoked for ALL elements,
@@ -592,7 +593,6 @@ end program main
 \end{lstlisting}
 我们可以使用同样是并行计算的 do concurrent 结构\footnote{\href{https://j3-fortran.org/doc/year/24/24-007.pdf}{标准解释文档}把 do concurrent 结构划成 do 结构中的一种, 但一般还是把 do concurrent 结构单看成一种结构.}来改写上面的程序成下面的程序, 其中 \ttt{tag} 是 do concurrent 结构的标签, 可省去, 两个 \ttt{:1} 因为是 \ttt{:\{m3\}} 所以也可省去, 但 \ttt{\{m1\}} 和 \ttt{\{m2\}} \uline{不可}省去. 相信同学们能总结出 do concurrent 结构的用法. 另外 do concurrent 结构和 do 结构, where 结构和数组三元下标的语法很像但又有点不一样, 请同学们自己对比, 不要混淆.
 \begin{lstlisting}
-
 program main
     implicit none
     integer :: i, j, a(9), b(9)
