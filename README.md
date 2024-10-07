@@ -1,7 +1,3 @@
----
-mathjax: true
----
-
 # ForNotes
 Fortran 笔记
 
