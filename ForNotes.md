@@ -3311,7 +3311,7 @@ $m_3$ 始终是 $1$, $10$, $2$ 不变. 但 Fortran
 第二个是求下面这个矩阵中所有元素的和. 我觉得做这题同学们一定需要让一个
 do 结构里再有另一个 do 结构, 正好给同学们练习.<span id="hw_2"
 label="hw_2"></span>
-``` math
+$$
 \begin{bmatrix}
         \sqrt{1}     &\sqrt{2}     &\sqrt{3}     &\ddots&\ddots\\
         \sqrt{2}     &\sqrt{3}     &\ddots&\ddots&\ddots\\
@@ -3319,7 +3319,7 @@ label="hw_2"></span>
         \ddots&\ddots&\ddots&\sqrt{99}    &\sqrt{100}    \\
         \ddots&\ddots&\sqrt{99}    &\sqrt{100}   &\sqrt{101}   \\
     \end{bmatrix}
-```
+$$
 
 ### do while 结构 <a name="subsec6-1-3"></a>
 
@@ -3654,13 +3654,13 @@ $s_i$ 称为 $a_{s_1\dots s_n}$ 的第 $i$ 个下标/索引
 $[a_1\,a_2\,a_3]$, 但数学中通常喜欢把这横条竖起来摆. 又例如一个 $2$
 维数组 $a\!:\{1,2,3\}\times\{1,2,3\}\to\mathbb{C}$,
 我们可以把它想象成一大方表
-``` math
+$$
 \begin{bmatrix}
         a_{11}&a_{12}&a_{13}\\
         a_{21}&a_{22}&a_{23}\\
         a_{31}&a_{32}&a_{33}
     \end{bmatrix}.
-```
+$$
 $3$ 维数组就麻烦了, 我们需要想象有一大堆正方体小箱子堆成一个大长方体,
 每个小箱子中都装着一个复数. 更高维的数组就更麻烦了, 例如 $4$ 维数组,
 只能要么想象成有一大堆正方体小箱子堆成一个 “ $4$ 维大长方体”,
@@ -3896,13 +3896,13 @@ $i$ 个的元素和旧数组中排在第 $i$ 个的元素相同, 换言之,
 进行变形得到的形状为 `{shape}` 的新数组. 例如, 假设我们想造式
 <a href="#a1" data-reference-type="eqref" data-reference="a1">[a1]</a>
 中的数组,
-``` math
+$$
 \begin{bmatrix}
         1&4&7\\
         2&5&8\\
         3&6&9
     \end{bmatrix}\label{a1}
-```
+$$
 我们可以把 `[(i, i = 1, 9)]` 变形成形状为 `[3, 3]` 的数组, 因此我们写
 `reshape([(i, i = 1, 9)], [3, 3])` 即可.
 
@@ -3922,18 +3922,18 @@ $s_n$ 轴变成新 $s_{i_n}$, 变换后挂在坐标点 $(s_1,\dots,s_n)$
 中的数组转置成式
 <a href="#a2" data-reference-type="eqref" data-reference="a2">[a2]</a>
 中的数组.
-``` math
+$$
 \begin{bmatrix}
         1&2&3\\
         4&5&6\\
         7&8&9
     \end{bmatrix}\label{a2}
-```
+$$
 我们先给式
 <a href="#a1" data-reference-type="eqref" data-reference="a1">[a1]</a>
 中的数组补上坐标轴如 <a href="#a1_" data-reference-type="eqref"
 data-reference="a1_">[a1_]</a> 所示,
-``` math
+$$
 \begin{matrix}
         \cdot&-&-&-&\rightarrow&s_2\\
         |&1&4&7&&\\
@@ -3942,12 +3942,12 @@ data-reference="a1_">[a1_]</a> 所示,
         \downarrow&&&&&\\
         s_1&&&&&\\
     \end{matrix}\label{a1_}
-```
+$$
 再给式
 <a href="#a2" data-reference-type="eqref" data-reference="a2">[a2]</a>
 中的数组补上坐标轴如 <a href="#a2_" data-reference-type="eqref"
 data-reference="a2_">[a2_]</a> 所示,
-``` math
+$$
 \begin{matrix}
         \cdot&-&-&-&\rightarrow&s_2\\
         |&1&2&3&&\\
@@ -3956,7 +3956,7 @@ data-reference="a2_">[a2_]</a> 所示,
         \downarrow&&&&&\\
         s_1&&&&&\\
     \end{matrix}\label{a2_}
-```
+$$
 对比 <a href="#a1_" data-reference-type="eqref"
 data-reference="a1_">[a1_]</a> 和
 <a href="#a2_" data-reference-type="eqref"
@@ -3998,18 +3998,18 @@ $b_{s_1\dots s_n}=a_{ {i_1}_{s_1}\dots { {i_n}_{s_n}}}$.
 这个例子中 `a` 的元素可以排成表, 如
 <a href="#a_whole" data-reference-type="eqref"
 data-reference="a_whole">[a_whole]</a> 所示.
-``` math
+$$
 \begin{matrix}
         a_{11}&a_{12}&a_{13}\\
         a_{21}&a_{22}&a_{23}\\
         a_{31}&a_{32}&a_{33}
     \end{matrix}\label{a_whole}
-```
+$$
 先可确定例子中的数组片段形状为 $[3, 4]$, 我们先在一个 $3\times4$
 的表中填满 $a_{??}$, 并在周围补上坐标轴, 如
 <a href="#a_section_step_1" data-reference-type="eqref"
 data-reference="a_section_step_1">[a_section_step_1]</a> 所示.
-``` math
+$$
 \begin{matrix}
         \cdot&-&-&-&-&\rightarrow&s_2\\
         |&a_{??}&a_{??}&a_{??}&a_{??}&\\
@@ -4018,7 +4018,7 @@ data-reference="a_section_step_1">[a_section_step_1]</a> 所示.
         \downarrow&&&&&&\\
         s_1&&&&&&
     \end{matrix}\label{a_section_step_1}
-```
+$$
 向量 `i1` 是 $[1, 3, 2]$, 向量 `i2` 是 $[2, 1, 1, 3]$,
 所以我们我们需要这么做: 沿着坐标轴 $s_1$ 方向, 每一列从上到下, 让表中
 $a_{??}$ 的第 $1$ 个坐标依次为 $1, 3, 2$; 沿着坐标轴 $s_2$ 方向,
@@ -4026,7 +4026,7 @@ $a_{??}$ 的第 $1$ 个坐标依次为 $1, 3, 2$; 沿着坐标轴 $s_2$ 方向,
 $2, 1, 1, 3$. 这样得到的表如
 <a href="#a_section_step_2" data-reference-type="eqref"
 data-reference="a_section_step_2">[a_section_step_2]</a> 所示.
-``` math
+$$
 \begin{matrix}
         \cdot&-&-&-&-&\rightarrow&s_2\\
         |&a_{12}&a_{12}&a_{13}&a_{13}&\\
@@ -4035,7 +4035,7 @@ data-reference="a_section_step_2">[a_section_step_2]</a> 所示.
         \downarrow&&&&&&\\
         s_1&&&&&&
     \end{matrix}\label{a_section_step_2}
-```
+$$
 这样我们就成功获得数组片段啦. 如果 `a` 是 $n$ 维数组, 亦可如法炮制,
 请同学们自己尝试.
 
@@ -4055,14 +4055,14 @@ data-reference="a_section_step_2">[a_section_step_2]</a> 所示.
 元素可以排成表, 如
 <a href="#a_section__example_1" data-reference-type="eqref"
 data-reference="a_section__example_1">[a_section__example_1]</a> 所示.
-``` math
+$$
 \begin{matrix}
         \cdot&-&-&-&-&\rightarrow&s_2\\
         |&a_{32}&a_{31}&a_{31}&a_{33}&\\
         \downarrow&&&&&&\\
         s_1&&&&&&
     \end{matrix}\label{a_section__example_1}
-```
+$$
 又请看下面这个例子.
 
     program main
@@ -4079,12 +4079,12 @@ data-reference="a_section__example_1">[a_section__example_1]</a>
 所以这个例子中数组片段的维数为 $1$, 形状为 $[4]$, 元素可以排成表, 如
 <a href="#a_section__example_2" data-reference-type="eqref"
 data-reference="a_section__example_2">[a_section__example_2]</a> 所示.
-``` math
+$$
 \begin{matrix}
         \cdot&-&-&-&-&\rightarrow&s_1\\
         &a_{32}&a_{31}&a_{31}&a_{33}&
     \end{matrix}\label{a_section__example_2}
-```
+$$
 
 我接着讲用三元下标 (vector subscript[^42]) 来获取数组片段. 三元下标是
 `m1:m2:m3`, 等价于向量下标 `[(i, i = m1, m2, m3)]`, 请注意这是官规而不是
@@ -4106,7 +4106,7 @@ $2$ 个维度被灭掉. 所以这个例子中数组片段的维数为 $1$, 形�
 $[2]$, 元素可以排成表, 如
 <a href="#a_section__example_3" data-reference-type="eqref"
 data-reference="a_section__example_3">[a_section__example_3]</a> 所示.
-``` math
+$$
 \begin{matrix}
         \cdot&\\
         |&a_{12}\\
@@ -4114,7 +4114,7 @@ data-reference="a_section__example_3">[a_section__example_3]</a> 所示.
         \downarrow&\\
         s_1&
     \end{matrix}\label{a_section__example_3}
-```
+$$
 学 Fortran 的 Matlab 的三元下标用法和 Fortran 相同, 而 C 和学 C 的
 Python 的三元下标用法和 Fortran 不相同, 请同学们注意.
 
@@ -4134,34 +4134,34 @@ Python 的三元下标用法和 Fortran 不相同, 请同学们注意.
 先将 `a` 的元素排成表, 如
 <a href="#simple_a_whole" data-reference-type="eqref"
 data-reference="simple_a_whole">[simple_a_whole]</a> 所示.
-``` math
+$$
 \begin{matrix}
         a_{11}&a_{12}&a_{13}\\
         a_{21}&a_{22}&a_{23}\\
         a_{31}&a_{32}&a_{33}
     \end{matrix}\label{simple_a_whole}
-```
+$$
 第 $1$ 个三元下标是 `1:2`, 而 $3$ 不在 $[1,2]$ 中, 所以灭掉 `a`
 的元素中第 $1$ 个下标是 $3$ 的元素. 第 $2$ 个三元下标是 `2:3`, 而
 $1$ 不在 $[2,3]$ 中, 所以灭掉 `a` 的元素中第 $2$ 个下标是 $1$
 的元素. 结果如 <a href="#simple_a_step_1" data-reference-type="eqref"
 data-reference="simple_a_step_1">[simple_a_step_1]</a> 所示.
-``` math
+$$
 \begin{matrix}
         \times&a_{12}&a_{13}\\
         \times&a_{22}&a_{23}\\
         \times&\times&\times
     \end{matrix}\label{simple_a_step_1}
-```
+$$
 所以得到的数组片段如
 <a href="#simple_a_step_2" data-reference-type="eqref"
 data-reference="simple_a_step_2">[simple_a_step_2]</a> 所示.
-``` math
+$$
 \begin{matrix}
         a_{12}&a_{13}\\
         a_{22}&a_{23}
     \end{matrix}\label{simple_a_step_2}
-```
+$$
 
 本节讲的数组操作, 得到的都是非全数组. 非全数组没有确定的下标,
 所以对非全数组取元素/片段将会失败. 例如下面这个程序对数组片段 `a(:, :)`
@@ -4627,7 +4627,7 @@ ${q_1}_{s_1\dots s_n}\,\text{OP}\,{q_2}_{s_1\dots s_n}$. 示例如下.
 
 假如我们需要用 Fortran 算 CG 系数
 $\left\langle 3, 2;5, 4|7, 6\right\rangle$,
-``` math
+$$
 \begin{aligned}
     \left\langle j_1, m_1;j_2, m_2|j_3, m_3\right\rangle&=\delta_{m_3, m_1+m_2} \Big[(2j_3+1)\\
     &\cdot\frac{(j_1+j_2-j_3)!(j_2+j_3-j_1)!(j_3+j_1-j_2)!} {(j_1+j_2+j_3+1)!} 
@@ -4637,7 +4637,7 @@ $\left\langle 3, 2;5, 4|7, 6\right\rangle$,
     &\cdot(j_1-m_1-\nu)!(j_2+m_2-\nu)!\\
     &\cdot(j_3-j_1-m_2+\nu)!(j_3-j_2+m_1+\nu)!], 
 \end{aligned}
-```
+$$
 那不知要 `do` 多少回, 算个大头鬼哟! 不算了, 准备卸 Fortran 了!
 
 桥豆麻袋 (ちょっと待って), Fortran 是有法子能偷懒滴 (如果没有我第一个卸
