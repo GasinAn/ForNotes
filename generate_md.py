@@ -3,6 +3,7 @@ os.system('pandoc -f latex -t gfm -o ForNotes.md ForNotes.tex')
 
 url = 'https://gasinan.github.io/ForNotes/ForNotes'
 notice = 'Markdown 版本由 [Pandoc](https://pandoc.org/) 自动生成, 若有格式错误, 请阅读 [PDF 版本](https://github.com/GasinAn/ForNotes/raw/refs/heads/main/ForNotes.pdf).\n\n'
+acknowledgement = '诚挚感谢 Mantej 著 [*Math Expressions in Markdown Using MathJax and Jekyll*](https://mantejjosan.github.io/math-made-easy/tut/)\n\n'
 
 with open('ForNotes.md', 'r', encoding='utf-8') as f:
     md = f.readlines()
@@ -36,7 +37,7 @@ with open('ForNotes.md', 'w', encoding='utf-8') as f:
 
 with open('ForNotes.md', 'r', encoding='utf-8') as f:
     md = f.read()
-md = notice + md
+md = notice + acknowledgement + md
 
 md = md.replace('LaTeXer', 'Markdowner')
 md = md.replace('# Contents\n', contents)

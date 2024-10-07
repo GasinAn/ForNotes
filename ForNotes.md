@@ -1,5 +1,7 @@
 Markdown 版本由 [Pandoc](https://pandoc.org/) 自动生成, 若有格式错误, 请阅读 [PDF 版本](https://github.com/GasinAn/ForNotes/raw/refs/heads/main/ForNotes.pdf).
 
+诚挚感谢 Mantej 著 [*Math Expressions in Markdown Using MathJax and Jekyll*](https://mantejjosan.github.io/math-made-easy/tut/)
+
 Copyright 2024 by GasinAn
 
 All rights reserved. No part of this book may be reproduced, in any form
