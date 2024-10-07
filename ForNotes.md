@@ -4101,7 +4101,7 @@ subscript) 来获取数组片段, 但即使是 Python 那里, 向量下标也是
 $`[{i_1}_1,\dots,{i_1}_{l_1}],\dots,[{i_n}_1,\dots,{i_n}_{l_n}]`$, 那么
 `a(i1, ..., in)` 的元素可一一对应于形状为 $`[l_1,\dots,l_n]`$ 的数组
 $`b_{s_1\dots s_n}`$ 的元素, 并且
-$`b_{s_1\dots s_n}=a_{ {i_1}_{s_1}\dots {{i_n}_{s_n}}}`$.
+$`b_{s_1\dots s_n}=a_{ {i_1}_{s_1}\dots { {i_n}_{s_n}}}`$.
 请看下面这个例子.
 
     program main

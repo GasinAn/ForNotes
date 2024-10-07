@@ -40,6 +40,7 @@ md = md.replace('# Contents\n', contents)
 md = md.replace('$`\,\\text{\\textregistered}`$', '®')
 md = md.replace('$`{}^\\text{\\textregistered}`$', '®')
 md = md.replace('<span\nclass="math inline">${}^\\text{\\textregistered}$</span>', '®')
+md = md.replace('{{', '{ {')
 md = md.replace(' \n', '')
 md = md.replace(3*'\n', 2*'\n')
 with open('ForNotes.md', 'w', encoding='utf-8') as f:
