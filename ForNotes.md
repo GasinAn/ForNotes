@@ -334,8 +334,7 @@ Fortran 的简单教程和许多 Fortran 的资源链接. 现行 Fortran 标准 
 <td style="text-align: center;">2024.2.0,</td>
 </tr>
 <tr>
-<td style="text-align: center;">on Intel<span
-class="math inline">${}^\text{\textregistered}$</span> 64,</td>
+<td style="text-align: center;">on Intel® 64,</td>
 </tr>
 <tr>
 <td style="text-align: center;">Build 20240602</td>
@@ -655,8 +654,8 @@ Gfortran 编译执行命令
 默认使用的是 Ifort[^15]. 欲用 Ifx, 右键右边 “解决方案资源管理器” 里的
 “Console1 (Ifx)”,点最下面的 “属性”, 左边选 “配置属性” $`\rightarrow`$
 “General” (应已自动选上), 点 “Use Compiler” 右边的 “Ifx
-Intel$`\,\text{\textregistered}`$ Fortran Compiler Classic”,
-点最右边的带向下标志的按钮, 改选成“IFX Intel$`\,\text{\textregistered}`$
+Intel® Fortran Compiler Classic”,
+点最右边的带向下标志的按钮, 改选成“IFX Intel®
 Fortran Compiler”, 点 “应用”, 点 “确定”,看到右边 “Console1 (Ifx)” 变成
 “Console1 (IFX)” 即成功.
 

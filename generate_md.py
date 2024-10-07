@@ -37,6 +37,8 @@ with open('ForNotes.md', 'r', encoding='utf-8') as f:
 md = md.replace('<div class="center">', '<div class="center">'+notice)
 md = md.replace('LaTeXer', 'Markdowner')
 md = md.replace('# Contents\n', contents)
+md = md.replace('$`\,\\text{\\textregistered}`$', '®')
 md = md.replace('$`{}^\\text{\\textregistered}`$', '®')
+md = md.replace('<span\nclass="math inline">${}^\\text{\\textregistered}$</span>', '®')
 with open('ForNotes.md', 'w', encoding='utf-8') as f:
     f.write(md)
