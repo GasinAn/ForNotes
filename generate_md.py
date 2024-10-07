@@ -47,6 +47,8 @@ md = md.replace('<span\nclass="math inline">${}^\\text{\\textregistered}$</span>
 md = md.replace('{{', '{ {')
 md = md.replace('$`', '$')
 md = md.replace('`$', '$')
+md = md.replace('``` math', '$$')
+md = md.replace('```', '$$')
 md = md.replace(' \n', '\n')
 md = md.replace(4*'\n', 3*'\n')
 md = md.replace(3*'\n', 2*'\n')
