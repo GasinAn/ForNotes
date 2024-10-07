@@ -1,6 +1,6 @@
-<div class="center">
-
 Markdown 版本由 [Pandoc](https://pandoc.org/) 自动生成, 若有格式错误, 请阅读 [PDF 版本](https://github.com/GasinAn/ForNotes/raw/refs/heads/main/ForNotes.pdf).
+
+<div class="center">
 
 Copyright 2024 by GasinAn
 
