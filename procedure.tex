@@ -389,7 +389,7 @@ subroutine count()
     print *, n
 end subroutine count
 \end{lstlisting} 
-但下面这个程序输出的却是 \ttt{1}, \ttt{2}, \ttt{3}. 在这个程序里, 子程序 \ttt{count} 里的 \ttt{n} 声明的时候加了 \ttt{, save}, 并赋值 \ttt{0}, 这使 \ttt{n} 有了 save 属性, 成为被保存 (saved) 变量. 第一次调用 \ttt{count} 的时候, \ttt{n} 一开始是 \ttt{0}, 然后 \ttt{n = n + 1}, \ttt{n} 就是 \ttt{1}. 而第二次调用 \ttt{count} 的时候, \ttt{n} 一开始并没有重新被赋值成 \ttt{0}, 而是保存着上一次调用到最后的值 \ttt{1}, 所以再次 \ttt{n = n + 1} 后 \ttt{n} 变成 \ttt{2}. 第三次调用 \ttt{count} 的时候, \ttt{n} 一开始是 \ttt{2}, 所以最后是 \ttt{3}. 
+但下面这个程序输出的却是 \ttt{1}, \ttt{2}, \ttt{3}. 在这个程序里, 子程序 \ttt{count} 里的 \ttt{n} 声明的时候加了 \ttt{, save}, 并赋值 \ttt{0}, 这使 \ttt{n} 有了 save 属性, 成为已保存变量 (saved variable), 相当于 C 的静态局域变量 (static local variable). 第一次调用 \ttt{count} 的时候, \ttt{n} 一开始是 \ttt{0}, 然后 \ttt{n = n + 1}, \ttt{n} 就是 \ttt{1}. 而第二次调用 \ttt{count} 的时候, \ttt{n} 一开始并没有重新被赋值成 \ttt{0}, 而是保存着上一次调用到最后的值 \ttt{1}, 所以再次 \ttt{n = n + 1} 后 \ttt{n} 变成 \ttt{2}. 第三次调用 \ttt{count} 的时候, \ttt{n} 一开始是 \ttt{2}, 所以最后是 \ttt{3}. 
 \begin{lstlisting} 
 program main
     use iso_fortran_env, only: dp => real64
