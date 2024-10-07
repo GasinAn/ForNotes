@@ -1,3 +1,1 @@
-kramdown:
-  math_engine: MathJax
-usemath: latex
+markdown: kramdown
