@@ -318,35 +318,8 @@ Fortran 的简单教程和许多 Fortran 的资源链接. 现行 Fortran 标准 
 </tr>
 <tr>
 <td style="text-align: center;">本笔记使用版本</td>
-<td style="text-align: center;"><table>
-<caption>Ifx (+VS) 与 Gfortran (+VS Code) 的对比</caption>
-<tbody>
-<tr>
-<td style="text-align: center;">2024.2.0,</td>
-</tr>
-<tr>
-<td style="text-align: center;">on Intel® 64,</td>
-</tr>
-<tr>
-<td style="text-align: center;">Build 20240602</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: center;"><table>
-<caption>Ifx (+VS) 与 Gfortran (+VS Code) 的对比</caption>
-<tbody>
-<tr>
-<td style="text-align: center;">13.2.0,</td>
-</tr>
-<tr>
-<td style="text-align: center;">64-posix-seh-rev1,</td>
-</tr>
-<tr>
-<td style="text-align: center;">Built by MinGW-Builds</td>
-</tr>
-</tbody>
-</table></td>
-</tr>
+<td style="text-align: center;">2024.2.0, on Intel® 64, Build 20240602</td>
+<td style="text-align: center;">13.2.0, 64-posix-seh-rev1, Built by MinGW-Builds
 </tbody>
 </table>
 
@@ -3714,9 +3687,9 @@ data-reference="element_corresponding">7.3</a> 所示
 
 |              |              |     |              |              |
 |:------------:|:------------:|:---:|:------------:|:------------:|
-| $\,a_{00}$ | $\,a_{01}$ |     | $\,b_{11}$ | $\,b_{12}$ |
-| $\,a_{10}$ | $\,a_{11}$ |     | $\,b_{21}$ | $\,b_{22}$ |
-| $\,a_{20}$ | $\,a_{21}$ |     | $\,b_{31}$ | $\,b_{32}$ |
+| ①$\,a_{00}$ | ④$\,a_{01}$ |     | ①$\,b_{11}$ | ④$\,b_{12}$ |
+| ②$\,a_{10}$ | ⑤$\,a_{11}$ |     | ②$\,b_{21}$ | ⑤$\,b_{22}$ |
+| ③$\,a_{20}$ | ⑥$\,a_{21}$ |     | ③$\,b_{31}$ | ⑥$\,b_{32}$ |
 
 元素对应关系示意图
 

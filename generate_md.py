@@ -56,3 +56,6 @@ md = md.replace(4*'\n', 3*'\n')
 md = md.replace(3*'\n', 2*'\n')
 with open('ForNotes.md', 'w', encoding='utf-8') as f:
     f.write(md)
+
+print('请手动修正嵌套表格错误.')
+print('请手动修正带圈数字错误. ①②③④⑤⑥')
