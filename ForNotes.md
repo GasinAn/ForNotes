@@ -319,7 +319,7 @@ Fortran 的简单教程和许多 Fortran 的资源链接. 现行 Fortran 标准 
 <tr>
 <td style="text-align: center;">本笔记使用版本</td>
 <td style="text-align: center;">2024.2.0, on Intel® 64, Build 20240602</td>
-<td style="text-align: center;">13.2.0, 64-posix-seh-rev1, Built by MinGW-Builds
+<td style="text-align: center;">13.2.0, 64-posix-seh-rev1, Built by MinGW-Builds</td>
 </tbody>
 </table>
 
