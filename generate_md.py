@@ -46,16 +46,16 @@ md = md.replace('$`{}^\\text{\\textregistered}`$', '®')
 md = md.replace('$`\,\\text{\\textregistered}`$', '®')
 md = md.replace('$`\!`$', '')
 md = md.replace('{{', '{ {')
-md = md.replace('$`', '$')
-md = md.replace('`$', '$')
-md = md.replace('``` math', '\n$$')
-md = md.replace('```', '$$\n')
+md = md.replace('}}', '} }')
+md = md.replace('$`', '\(')
+md = md.replace('`$', '\)')
+md = md.replace('``` math', '\n\[')
+md = md.replace('```', '\]\n')
 md = md.replace(' \n', '\n')
 n = 3
 while n*'\n' in md:
     n += 1
 for i in range(n, 2, -1):
-    print(i)
     md = md.replace(i*'\n', 2*'\n')
 with open('ForNotes.md', 'w', encoding='utf-8') as f:
     f.write(md)
