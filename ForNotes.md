@@ -2,7 +2,7 @@ Markdown 版本由 [Pandoc](https://pandoc.org/) 自动生成, 若有格式错�
 
 诚挚感谢 [MathJax](https://www.mathjax.org/), Mantej 撰 [“Math Expressions in Markdown Using MathJax and Jekyll”](https://mantejjosan.github.io/math-made-easy/tut/) 提供数学公式显示方案
 
-Copyright 2024 by GasinAn
+Copyright ©️ 2024 by GasinAn
 
 All rights reserved. No part of this book may be reproduced, in any form
 or by any means, without permission in writing from the publisher,
@@ -271,58 +271,18 @@ Fortran 的简单教程和许多 Fortran 的资源链接. 现行 Fortran 标准 
 
 # 编译器 <a name="char2"></a>
 
-<table>
-<caption>Ifx (+VS) 与 Gfortran (+VS Code) 的对比</caption>
-<thead>
-<tr>
-<th style="text-align: center;">编译器</th>
-<th style="text-align: center;">Ifx (+VS)</th>
-<th style="text-align: center;">Gfortran (+VS Code)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: center;">类型</td>
-<td style="text-align: center;">专有软件</td>
-<td style="text-align: center;">自由软件</td>
-</tr>
-<tr>
-<td style="text-align: center;">总空间占用</td>
-<td style="text-align: center;">约 5.2G</td>
-<td style="text-align: center;">约 780M</td>
-</tr>
-<tr>
-<td style="text-align: center;">语法支持</td>
-<td style="text-align: center;">略多于 Gfortran, 较宽松</td>
-<td style="text-align: center;">略少于 Ifx, 较严格</td>
-</tr>
-<tr>
-<td style="text-align: center;">自动纠错</td>
-<td style="text-align: center;">无</td>
-<td style="text-align: center;">有</td>
-</tr>
-<tr>
-<td style="text-align: center;">自动补全</td>
-<td style="text-align: center;">无</td>
-<td style="text-align: center;">有</td>
-</tr>
-<tr>
-<td style="text-align: center;">编译提示信息</td>
-<td style="text-align: center;">次于 Gfortran</td>
-<td style="text-align: center;">优于 Ifx</td>
-</tr>
-<tr>
-<td style="text-align: center;">平均运行速度</td>
-<td style="text-align: center;">快于 Gfortran</td>
-<td style="text-align: center;">慢于 Ifx</td>
-</tr>
-<tr>
-<td style="text-align: center;">本笔记使用版本</td>
-<td style="text-align: center;">2024.2.0, on Intel® 64, Build 20240602</td>
-<td style="text-align: center;">13.2.0, 64-posix-seh-rev1, Built by MinGW-Builds</td>
-</tr>
-</tbody>
-</table>
+| 编译器 | Ifx (+VS) | Gfortran (+VS Code) |
+|:--:|:---|:---|
+| 类型 | 专有软件 | 自由软件 |
+| 总空间占用 | 约 5.2 G | 约 780 M |
+| 语法支持 | 略多于 Gfortran, 较宽松 | 略少于 Ifx, 较严格 |
+| 自动纠错 | 无 | 有 |
+| 自动补全 | 无 | 有 |
+| 编译提示信息 | 次于 Gfortran | 优于 Ifx |
+| 平均运行速度 | 快于 Gfortran | 慢于 Ifx |
+| 本笔记使用版本 | 2024.2.0, on Intel® 64, Build 20240602 | 13.2.0, 64-posix-seh-rev1, Built by MinGW-Builds |
+
+Ifx (+VS) 与 Gfortran (+VS Code) 的对比
 
 ## 安装 <a name="sec2-1"></a>
 
@@ -471,17 +431,20 @@ file), 这个过程称作链接 (linking), Windows
 系统中链接出的可执行文件后缀名是 `.exe`, Linux
 系统中链接出的可执行文件后缀名一般是 `.out`. 广义的编译包括编译和链接.
 最后我们需要命令电脑照可执行文件干活儿, 这个过程称之为执行 (execution).
-示意图如下.
+示意图如 <a href="#execute_run" data-reference-type="ref"
+data-reference="execute_run">[execute_run]</a> 所示.
 
-|      |                 |                |                 |
-|:----:|:---------------:|:--------------:|:---------------:|
-|      | 源代码文件$1$ |       …        | 源代码文件$n$ |
-| 编译 | $\downarrow$  | $\downarrow$ | $\downarrow$  |
-|      |  目标文件$1$  |       …        |  目标文件$n$  |
-| 链接 | $\downarrow$  | $\downarrow$ | $\downarrow$  |
-|      | $\rightarrow$ |   可执行文件   | $\leftarrow$  |
-| 运行 |                 | $\downarrow$ |                 |
-|      |                 |    电脑工作    |                 |
+$$
+\begin{matrix}
+        & \text{源代码文件}1  & \dots & \text{源代码文件}n \\
+        \text{编译} & \downarrow& \downarrow& \downarrow\\
+        & \text{目标文件}1  & \dots & \text{目标文件}n \\
+        \text{链接} & \downarrow& \downarrow& \downarrow\\
+        & \rightarrow& \text{可执行文件} & \leftarrow\\
+        \text{运行} & & \downarrow&  \\
+        & & \text{电脑工作} & \\
+    \end{matrix}.\label{execute_run}
+$$
 
 编译执行流程示意图
 
@@ -522,18 +485,18 @@ file), 这个过程称作链接 (linking), Windows
 `C:\Users\GasinAn\Desktop` 了.
 
 然后俺们要编译, 用 Ifx 的同学需要在框框里输入
-“`ifx /c `<span class="sans-serif">源代码文件$\!$<!-- -->1</span>` ... `<span class="sans-serif">源代码文件$\!$n</span>”
+“`ifx /c `<span class="sans-serif">源代码文件<!-- -->1</span>` ... `<span class="sans-serif">源代码文件n</span>”
 然后按回车键, 用 Gfortran 的同学需要在框框里输入
-“`gfortran -c `<span class="sans-serif">源代码文件$\!$<!-- -->1</span>` ... `<span class="sans-serif">源代码文件$\!$n</span>”
+“`gfortran -c `<span class="sans-serif">源代码文件<!-- -->1</span>` ... `<span class="sans-serif">源代码文件n</span>”
 然后按回车键. 所以用 Ifx 的同学需要在框框里输入
 `ifx /c main.f90 helloworld.f90` 然后按回车键, 用 Gfortran
 的同学需要在框框里输入 `gfortran -c main.f90 helloworld.f90`
 然后按回车键.
 
 然后俺们要链接, 用 Ifx 的同学需要在框框里输入
-“`ifx `<span class="sans-serif">目标文件$\!$<!-- -->1</span>` ... `<span class="sans-serif">目标文件$\!$n</span>` /o `<span class="sans-serif">可执行文件</span>”
+“`ifx `<span class="sans-serif">目标文件<!-- -->1</span>` ... `<span class="sans-serif">目标文件n</span>` /o `<span class="sans-serif">可执行文件</span>”
 然后按回车键, 用 Gfortran 的同学需要在框框里输入
-“`gfortran `<span class="sans-serif">目标文件$\!$<!-- -->1</span>` ... `<span class="sans-serif">目标文件$\!$n</span>` -o `<span class="sans-serif">可执行文件</span>”
+“`gfortran `<span class="sans-serif">目标文件<!-- -->1</span>` ... `<span class="sans-serif">目标文件n</span>` -o `<span class="sans-serif">可执行文件</span>”
 然后按回车键. 所以用 Ifx 的同学可以在框框里输入
 `ifx main.obj helloworld.obj /o a.exe` 然后按回车键, 用 Gfortran
 的同学可以在框框里输入 `gfortran main.o helloworld.o -o a.exe`
@@ -545,9 +508,9 @@ file), 这个过程称作链接 (linking), Windows
 
 编译和链接的时候我们可以偷懒, 我们可以直接一步进行编译+链接两步, 用 Ifx
 的同学需要在框框里输入
-“`ifx `<span class="sans-serif">源代码文件$\!$<!-- -->1</span>` ... `<span class="sans-serif">源代码文件$\!$n</span>` /o `<span class="sans-serif">可执行文件</span>”
+“`ifx `<span class="sans-serif">源代码文件<!-- -->1</span>` ... `<span class="sans-serif">源代码文件n</span>` /o `<span class="sans-serif">可执行文件</span>”
 然后按回车键, 用 Gfortran 的同学需要在框框里输入
-“`gfortran `<span class="sans-serif">源代码文件$\!$<!-- -->1</span>` ... `<span class="sans-serif">源代码文件$\!$n</span>` -o `<span class="sans-serif">可执行文件</span>”
+“`gfortran `<span class="sans-serif">源代码文件<!-- -->1</span>` ... `<span class="sans-serif">源代码文件n</span>` -o `<span class="sans-serif">可执行文件</span>”
 然后按回车键. 所以用 Ifx 的同学可以在框框里输入
 `ifx main.f90 helloworld.f90 /o a.exe` 然后按回车键, 用 Gfortran
 的同学可以在框框里输入 `gfortran main.f90 helloworld.f90 -o a.exe`
@@ -566,18 +529,18 @@ file), 这个过程称作链接 (linking), Windows
 
 | “`cd`” 目录 | `cd /D `<span class="sans-serif">目录</span> |
 |:---|:---|
-| 编译 | `ifx /c `<span class="sans-serif">源代码文件$\!$<!-- -->1</span>` ... `<span class="sans-serif">源代码文件$\!$n</span> |
-| 链接 | `ifx `<span class="sans-serif">目标文件$\!$<!-- -->1</span>` ... `<span class="sans-serif">目标文件$\!$n</span>` /o `<span class="sans-serif">可执行文件</span> |
-| 编译链接 | `ifx `<span class="sans-serif">源代码文件$\!$<!-- -->1</span>` ... `<span class="sans-serif">源代码文件$\!$n</span>` /o `<span class="sans-serif">可执行文件</span> |
+| 编译 | `ifx /c `<span class="sans-serif">源代码文件<!-- -->1</span>` ... `<span class="sans-serif">源代码文件n</span> |
+| 链接 | `ifx `<span class="sans-serif">目标文件<!-- -->1</span>` ... `<span class="sans-serif">目标文件n</span>` /o `<span class="sans-serif">可执行文件</span> |
+| 编译链接 | `ifx `<span class="sans-serif">源代码文件<!-- -->1</span>` ... `<span class="sans-serif">源代码文件n</span>` /o `<span class="sans-serif">可执行文件</span> |
 | 执行 | <span class="sans-serif">可执行文件</span> |
 
 Ifx 编译执行命令
 
 | “`cd`” 目录 | `cd `<span class="sans-serif">目录</span> |
 |:---|:---|
-| 编译 | `gfortran -c `<span class="sans-serif">源代码文件$\!$<!-- -->1</span>` ... `<span class="sans-serif">源代码文件 $\!$n</span> |
-| 链接 | `gfortran `<span class="sans-serif">目标文件$\!$<!-- -->1</span>` ... `<span class="sans-serif">目标文件$\!$n</span> ` -o `<span class="sans-serif">可执行文件</span> |
-| 编译链接 | `gfortran `<span class="sans-serif">源代码文件$\!$<!-- -->1</span>` ... `<span class="sans-serif">源代码文件 $\!$n</span>` -o `<span class="sans-serif">可执行文件</span> |
+| 编译 | `gfortran -c `<span class="sans-serif">源代码文件<!-- -->1</span>` ... `<span class="sans-serif">源代码文件 n</span> |
+| 链接 | `gfortran `<span class="sans-serif">目标文件<!-- -->1</span>` ... `<span class="sans-serif">目标文件n</span> ` -o `<span class="sans-serif">可执行文件</span> |
+| 编译链接 | `gfortran `<span class="sans-serif">源代码文件<!-- -->1</span>` ... `<span class="sans-serif">源代码文件 n</span>` -o `<span class="sans-serif">可执行文件</span> |
 | 执行 | <span class="sans-serif">可执行文件</span> |
 
 Gfortran 编译执行命令
@@ -3590,7 +3553,8 @@ return 语句是 `return`, 后面<u>不能</u>跟字符串, 只能用在子程�
 ## 数组基础 <a name="sec7-1"></a>
 
 Fortran 中的数组分为全数组 (whole array) 和非全数组, 先讲全数组.
-全数组是一个映射 $a\!: S_1 \times \dots \times S_n \to \mathbb{C},\,
+全数组是一个映射
+$a\colon  S_1 \times \dots \times S_n \to \mathbb{C},\,
         (s_1,\dots,s_n) \mapsto a_{s_1\dots s_n}$, 其中任意
 $i \in \{1,\dots,n\}$, $S_i = \{j_i,\dots,k_i\} \subset \mathbb{Z}$.
 换言之, 全数组是一堆带着 $n$ 个整数下标的复数 $a_{s_1\dots s_n}$,
@@ -3621,9 +3585,9 @@ $s_i$ 称为 $a_{s_1\dots s_n}$ 的第 $i$ 个下标/索引
 同学们玩数组的时候的难点通常是不能领会数据结构 (data structure),
 而数据结构正是程序设计的灵魂.
 最简单帮助同学们领会数据结构的方式就是让数据结构直观化. 例如一个 $1$
-维数组 $a\!:\{1,2,3\}\to\mathbb{C}$, 我们可以把它想象成一横条
+维数组 $a\colon \{1,2,3\}\to\mathbb{C}$, 我们可以把它想象成一横条
 $[a_1\,a_2\,a_3]$, 但数学中通常喜欢把这横条竖起来摆. 又例如一个 $2$
-维数组 $a\!:\{1,2,3\}\times\{1,2,3\}\to\mathbb{C}$,
+维数组 $a\colon \{1,2,3\}\times\{1,2,3\}\to\mathbb{C}$,
 我们可以把它想象成一大方表
 
 $$
@@ -3648,29 +3612,37 @@ $s_i>t_i$, 则 $a_{s_1\dots s_n}$ 在 $a_{t_1\dots t_n}$ 后. 如果用
 Fortran 规定的排列顺序称为列优先顺序 (column-major order). Matlab 学
 Fortran, 也是列优先顺序. C 规定的排列顺序不一样, 是行优先顺序 (row-major
 order), Python 学 C, 也是行优先顺序. 例如一个 $2$ 维数组
-$a\!:\{1,2\}\times\{1,2\}\to\mathbb{C}$, 在 Fortran
+$a\colon \{1,2\}\times\{1,2\}\to\mathbb{C}$, 在 Fortran
 规定的列优先顺序中, 位置最前的下标变动最快, 排序是
-$a_{11},a_{21},a_{12},a_{22}$, 在 C 规定的行优先顺序中,
-位置最后的下标变动最快, 排序是 $a_{11},a_{12},a_{21},a_{22}$,
-示意图如下.
+$a_{11},a_{21},a_{12},a_{22}$, 示意图如
+<a href="#column_major" data-reference-type="ref"
+data-reference="column_major">[column_major]</a> 所示, 在 C
+规定的行优先顺序中, 位置最后的下标变动最快, 排序是
+$a_{11},a_{12},a_{21},a_{22}$, 示意图如
+<a href="#row_major" data-reference-type="ref"
+data-reference="row_major">[row_major]</a> 所示.
 
-|  |  |  |  |  |
-|:--:|:--:|:--:|:--:|:--:|
-| $a_{11}$ |  | $\rightarrow$ | $\rightarrow$ | $a_{12}$ |
-| $\downarrow$ |  | $\uparrow$ |  | $\downarrow$ |
-| $\downarrow$ |  | $\uparrow$ |  | $\downarrow$ |
-| $\downarrow$ |  | $\uparrow$ |  | $\downarrow$ |
-| $a_{21}$ | $\rightarrow$ | $\uparrow$ |  | $a_{22}$ |
+$$
+\begin{matrix}
+        a_{11}&&\rightarrow&\rightarrow&a_{12}\\
+        \downarrow&&\uparrow&&\downarrow\\
+        \downarrow&&\uparrow&&\downarrow\\
+        \downarrow&&\uparrow&&\downarrow\\
+        a_{21}&\rightarrow&\uparrow&&a_{22}\\
+    \end{matrix}.\label{column_major}
+$$
 
 Fortran 规定的列优先顺序示意图
 
-|  |  |  |  |  |
-|:--:|:--:|:--:|:--:|:--:|
-| $a_{11}$ | $\rightarrow$ | $\rightarrow$ | $\rightarrow$ | $a_{12}$ |
-|  |  |  |  | $\downarrow$ |
-| $\downarrow$ | $\leftarrow$ | $\leftarrow$ | $\leftarrow$ | $\leftarrow$ |
-| $\downarrow$ |  |  |  |  |
-| $a_{21}$ | $\rightarrow$ | $\rightarrow$ | $\rightarrow$ | $a_{22}$ |
+$$
+\begin{matrix}
+        a_{11}&\rightarrow&\rightarrow&\rightarrow&a_{12}\\
+        &&&&\downarrow\\
+        \downarrow&\leftarrow&\leftarrow&\leftarrow&\leftarrow\\
+        \downarrow&&&&\\
+        a_{21}&\rightarrow&\rightarrow&\rightarrow&a_{22}\\
+    \end{matrix}.\label{row_major}
+$$
 
 C 规定的行优先顺序示意图
 
@@ -3680,17 +3652,23 @@ C 规定的行优先顺序示意图
 的元素中排在第 $i$ 个的元素是对应的. 换言之,
 如果用相同的直观化方法来展示 $a$ 和 $b$ 的元素, 那么 $a$ 和 $b$
 的元素中摆在相同位置的元素是对应的. 例如一个 $2$ 维数组
-$a\!:\{0,1,2\}\times\{0,1\}\to\mathbb{C}$ 和另一个 $2$ 维数组
-$b\!:\{1,2,3\}\times\{1,2\}\to\mathbb{C}$, 它们的元素对应关系如图
+$a\colon \{0,1,2\}\times\{0,1\}\to\mathbb{C}$ 和另一个 $2$ 维数组
+$b\colon \{1,2,3\}\times\{1,2\}\to\mathbb{C}$,
+它们的元素对应关系示意图如
 <a href="#element_corresponding" data-reference-type="ref"
-data-reference="element_corresponding">7.3</a> 所示
-(数组元素的左边圆圈中的数字一样的元素是对应的).
+data-reference="element_corresponding">[element_corresponding]</a> 所示
+(数组元素的左边 $n \colon$ 一样的元素是对应的).
 
-|              |              |     |              |              |
-|:------------:|:------------:|:---:|:------------:|:------------:|
-| ①$\,a_{00}$ | ④$\,a_{01}$ |     | ①$\,b_{11}$ | ④$\,b_{12}$ |
-| ②$\,a_{10}$ | ⑤$\,a_{11}$ |     | ②$\,b_{21}$ | ⑤$\,b_{22}$ |
-| ③$\,a_{20}$ | ⑥$\,a_{21}$ |     | ③$\,b_{31}$ | ⑥$\,b_{32}$ |
+$$
+\begin{matrix}
+        1 \colon a_{00}&4 \colon a_{01}&
+        &1 \colon b_{11}&4 \colon b_{12}\\
+        2 \colon a_{10}&5 \colon a_{11}&
+        &2 \colon b_{21}&5 \colon b_{22}\\
+        3 \colon a_{20}&6 \colon a_{21}&
+        &3 \colon b_{31}&6 \colon b_{32}\\
+    \end{matrix}.\label{element_corresponding}
+$$
 
 元素对应关系示意图
 
@@ -7393,9 +7371,9 @@ Python 的 Matplotlib, 那么最好有一个能简单地把 Fortran 算出的数
 
 [^14]: 有 Conda 当然用 Conda 啦!
 
-[^15]: Intel® Fortran Compiler
-    Classic,这玩意儿 Intel® 不想玩儿了,要用
-    Ifx 来代替.
+[^15]: Intel® Fortran Compiler Classic,
+    这玩意儿 Intel® 不想玩儿了, 要用 Ifx
+    来代替.
 
 [^16]: 之后同学们学 <a href="#program_unit" data-reference-type="ref"
     data-reference="program_unit">3.3</a> 节, 会明白 `main.f90`

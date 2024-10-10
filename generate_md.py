@@ -41,21 +41,21 @@ md = notice + acknowledgement + md
 
 md = md.replace('LaTeXer', 'Markdowner')
 md = md.replace('# Contents\n', contents)
-md = md.replace('$`\,\\text{\\textregistered}`$', '®')
+md = md.replace('Copyright', 'Copyright ©️')
 md = md.replace('$`{}^\\text{\\textregistered}`$', '®')
-md = md.replace('<span\nclass="math inline">${}^\\text{\\textregistered}$</span>', '®')
+md = md.replace('$`\,\\text{\\textregistered}`$', '®')
+md = md.replace('$`\!`$', '')
 md = md.replace('{{', '{ {')
 md = md.replace('$`', '$')
 md = md.replace('`$', '$')
 md = md.replace('``` math', '\n$$')
 md = md.replace('```', '$$\n')
 md = md.replace(' \n', '\n')
-md = md.replace(6*'\n', 5*'\n')
-md = md.replace(5*'\n', 4*'\n')
-md = md.replace(4*'\n', 3*'\n')
-md = md.replace(3*'\n', 2*'\n')
+n = 3
+while n*'\n' in md:
+    n += 1
+for i in range(n, 2, -1):
+    print(i)
+    md = md.replace(i*'\n', 2*'\n')
 with open('ForNotes.md', 'w', encoding='utf-8') as f:
     f.write(md)
-
-print('请手动修正嵌套表格错误. <table>')
-print('请手动修正带圈数字错误. ①②③④⑤⑥')
