@@ -53,16 +53,16 @@ end program main
 
 我们平常所说的文件, Fortran称其为外部文件 (external file), 不过一般来说外部文件得是纯文本文件\footnote{某些编译器可能有器规来应对二进制文件. 不知什么是纯文本文件和二进制文件的同志们赶紧恶补.}. 既然是纯文本文件, 就相当于一个字符串, 说到字符串, 就让我们想到字符串变量. Fortran称字符串变量为内部文件 (internal file), 将外部文件与内部文件合称为文件 (file). 
 
-我们需要让Fortran知道我们要用什么文件. 内部文件Fortran是认得的, 因为是自家的字符串变量嘛, 但外部文件Fortran不认得. 为了让Fortran认得外部文件, 我们要将外部文件打开 (open). 下面这个轮子, Fortran会在第三行后认得 \ttt{test.txt}, 这个 \ttt{test.txt}  应该和编译完最后生成的 \ttt{.exe} 文件\footnote{注意不是源代码文件.}在一个目录里. 
+我们需要让Fortran知道我们要用什么文件. 内部文件Fortran是认得的, 因为是自家的字符串变量嘛, 但外部文件Fortran不认得. 为了让Fortran认得外部文件, 我们要将外部文件打开 (open). 下面这个轮子, Fortran会在第3行后认得 \ttt{test.txt}, 这个 \ttt{test.txt}  应该和编译完最后生成的 \ttt{.exe} 文件\footnote{注意不是源代码文件.}在一个目录里. 
 \begin{lstlisting}
 program main
     implicit none
     open(10, file='test.txt')
 end program main
 \end{lstlisting}
-其中 \ttt{10} 这个位置填的是文件单位 (file unit), 说白了就是一个编号, 这编号必须是非负整数, 而且最好不小于 \ttt{10}, 因为小于 \ttt{10} 的编号可能有些奇奇怪怪的用途.  \ttt{file=}  后加的是文件路径, 不知什么是文件路径的同志们请自行补习. 上个轮子的第三行就是让Fortran认得文件路径为 \ttt{test.txt}  的文件, 并且称其为10号文件. 
+其中 \ttt{10} 这个位置填的是文件单位 (file unit), 说白了就是一个编号, 这编号必须是非负整数, 而且最好不小于 \ttt{10}, 因为小于 \ttt{10} 的编号可能有些奇奇怪怪的用途.  \ttt{file=}  后加的是文件路径, 不知什么是文件路径的同志们请自行补习. 上个轮子的第3行就是让Fortran认得文件路径为 \ttt{test.txt}  的文件, 并且称其为10号文件. 
 
-使用完外部文件后我们应当将其关闭 (close), 也就是让Fortran忘记外部文件. 我们在上面那个轮子中加上一行, Fortran就会在第四行后忘记10号文件(即 \ttt{test.txt} ). 
+使用完外部文件后我们应当将其关闭 (close), 也就是让Fortran忘记外部文件. 我们在上面那个轮子中加上一行, Fortran就会在第4行后忘记10号文件(即 \ttt{test.txt} ). 
 \begin{lstlisting}
 program main
     implicit none
@@ -187,7 +187,7 @@ end program main
 \end{lstlisting}
 第一次打开关闭文件, 因为 \ttt{status='REPLACE'}, 后面也没有写入, 所以最后得到一个空白文件. 第二次打开关闭文件, 先写入 $ e+\pi $, $ e+\pi $ 后面再写入 $ e-\pi $. 第三次打开关闭文件, 在文件最后先写入 $ e\cdot\pi $, 再写入 $ e/\pi $, 所以最后文件里依次是 $ e+\pi $, $ e-\pi $, $ e\cdot\pi $, $ e/\pi $. 第四次打开关闭文件, 先读取文件开头的 $ e+\pi $ 赋值给 \ttt{val}, 再读取下面的 $ e-\pi $ 赋值给 \ttt{val}. 第五次打开关闭文件, 还是先读取文件开头的 $ e+\pi $ 赋值给 \ttt{val}, 再读取下面的 $ e-\pi $ 赋值给 \ttt{val}, 所以最后输出的依次是 $ e+\pi $, $ e-\pi $, $ e+\pi $, $ e-\pi $. 
 
-注意每次 \ttt{read} 或 \ttt{write} 后, 下次 \ttt{read} 或 \ttt{write} 都会\uline{从下一行开始}. 下面这个轮子, 第一次 \ttt{write} 后 \ttt{1} 和 \ttt{2} 写入在第一行, 第二次 \ttt{write} 后 \ttt{3} 和 \ttt{4} 写入在第二行, 第一次 \ttt{read} 从第一行开始, 因为后面只跟着一个 \ttt{val1}, 所以 \ttt{val1} 为 \ttt{1}, 第二次 \ttt{read} 从第二行开始, 因为后面只跟着一个 \ttt{val2}, 所以 \ttt{val2} 为 \ttt{3}, \ttt{2} 和 \ttt{4} 则被无视!
+注意每次 \ttt{read} 或 \ttt{write} 后, 下次 \ttt{read} 或 \ttt{write} 都会\uline{从下一行开始}. 下面这个轮子, 第一次 \ttt{write} 后 \ttt{1} 和 \ttt{2} 写入在第1行, 第二次 \ttt{write} 后 \ttt{3} 和 \ttt{4} 写入在第2行, 第一次 \ttt{read} 从第1行开始, 因为后面只跟着一个 \ttt{val1}, 所以 \ttt{val1} 为 \ttt{1}, 第二次 \ttt{read} 从第2行开始, 因为后面只跟着一个 \ttt{val2}, 所以 \ttt{val2} 为 \ttt{3}, \ttt{2} 和 \ttt{4} 则被无视!
 \begin{lstlisting}
 program main
     implicit none
@@ -246,7 +246,7 @@ program main
     print *, 'Bye bye, world!'
 end program main
 \end{lstlisting}
-输入的话 \ttt{*} 则通常代表键盘. 比如下面这个轮子, 运行到第五行时程序会停下来, 我们在命令行(cmd呀powershell呀之类的东东)中可以打字儿, 假设打入 \ttt{98 54e1} 然后回车, \ttt{98}和 \ttt{54e1} 就赋值给 \ttt{mat(1, 1)} 和 \ttt{mat(1, 2)} 了, 第七行会干和第五行一样的事儿, 但语法更简单, 假设打入 \ttt{7.6 3.2e0}然后回车, \ttt{7.6}和 \ttt{3.2e0}就赋值给 \ttt{mat(2, 1)} 和 \ttt{mat(2, 2)} 了, 最后输出矩阵行列式. 注意 ``\ttt{*}'' 也是不需要且没法打开或关闭的. \ttt{read \{fmt\},} 等价于 \ttt{read(*, \{fmt\})}, 也就是说 \ttt{read *,} 等价于 \ttt{read(*, *)}.
+输入的话 \ttt{*} 则通常代表键盘. 比如下面这个轮子, 运行到第5行时程序会停下来, 我们在命令行(cmd呀powershell呀之类的东东)中可以打字儿, 假设打入 \ttt{98 54e1} 然后回车, \ttt{98}和 \ttt{54e1} 就赋值给 \ttt{mat(1, 1)} 和 \ttt{mat(1, 2)} 了, 第7行会干和第5行一样的事儿, 但语法更简单, 假设打入 \ttt{7.6 3.2e0}然后回车, \ttt{7.6}和 \ttt{3.2e0}就赋值给 \ttt{mat(2, 1)} 和 \ttt{mat(2, 2)} 了, 最后输出矩阵行列式. 注意 ``\ttt{*}'' 也是不需要且没法打开或关闭的. \ttt{read \{fmt\},} 等价于 \ttt{read(*, \{fmt\})}, 也就是说 \ttt{read *,} 等价于 \ttt{read(*, *)}.
 \begin{lstlisting}
 program main
     implicit none
@@ -300,7 +300,7 @@ end program main
 \end{lstlisting}
 可见自己规定格式就是把原来的 \ttt{*} 换成一个字符串, 这个字符串里是 \ttt{(...)}, 称为格式声明 (format specification), \ttt{*} 则是代表编译器自己决定格式. 
 
-我们回归一开始玩Gaia DR3遇到的问题, 现在我们可以把第 \pageref{gaiadr3.sam} 页的轮子补成下面的样子, 其中倒数第二行我们写 \ttt{format} 后跟格式声明 (注意格式声明只是 \ttt{(...)}, 不带引号), 前面加标号, 这样我们就能在倒数第三行用标号代替字符串了\footnote{同志们这么写的时候, 带标号的行最好就在用标号的行的下面, 不然查格式时真的是会找不到的\dots{}}. 不过呢, 同志们会发现怎么输出的最大距离是无穷大, 那是因为星表里有些源根本没有视差的数据, 硬读出来是 $ 0 $, 看来研究还是没那么容易做的\dots{} 不过我们可以用 \ref{where_construct} 小节介绍的 where 结构, 把视差测量值不为 $0$ 的源的数据提出来然后再算, 但安安懒得写了, 请同学们自己练习.
+我们回归一开始玩Gaia DR3遇到的问题, 现在我们可以把第 \pageref{gaiadr3.sam} 页的轮子补成下面的样子, 其中倒数第2行我们写 \ttt{format} 后跟格式声明 (注意格式声明只是 \ttt{(...)}, 不带引号), 前面加标号, 这样我们就能在倒数第3行用标号代替字符串了\footnote{同志们这么写的时候, 带标号的行最好就在用标号的行的下面, 不然查格式时真的是会找不到的\dots{}}. 不过呢, 同志们会发现怎么输出的最大距离是无穷大, 那是因为星表里有些源根本没有视差的数据, 硬读出来是 $ 0 $, 看来研究还是没那么容易做的\dots{} 不过我们可以用 \ref{where_construct} 小节介绍的 where 结构, 把视差测量值不为 $0$ 的源的数据提出来然后再算, 但安安懒得写了, 请同学们自己练习.
 \begin{lstlisting}
 program main
     use iso_fortran_env, only: dp => real64
@@ -754,7 +754,7 @@ program main
 end program main
 \end{lstlisting}
 
-输入的话情况比较复杂. 首先同志们要认定每一行最后都有无数个空格, 下面这个轮子, 写入完第一行是 \ttt{1234567890}, 读取完 \ttt{c} 当然等于 \ttt{'12345'}, 第二行是 \ttt{1}, 后面没了, 同学们要认定 \ttt{1} 后面跟着无数个空格, 所以读取完 \ttt{c} 等于 \ttt{'1    '} 
+输入的话情况比较复杂. 首先同志们要认定每一行最后都有无数个空格, 下面这个轮子, 写入完第1行是 \ttt{1234567890}, 读取完 \ttt{c} 当然等于 \ttt{'12345'}, 第2行是 \ttt{1}, 后面没了, 同学们要认定 \ttt{1} 后面跟着无数个空格, 所以读取完 \ttt{c} 等于 \ttt{'1    '} 
 \begin{lstlisting}
 program main
     implicit none

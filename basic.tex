@@ -109,7 +109,7 @@ end subroutine helloworld
 
 这时我们就得请编译器 (compiler) 们出场干活儿了, 它们会在操作系统的帮助下, 把 Fortran 语翻译成电脑语, 这个过程称为编译\footnote{这里说的是广义的编译. 狭义的编译是广义的编译中的一个环节.} (compile). \ref{use_ifx} 小节中输入 \ttt{ifx *.f* /o a.exe} 回车就是请 Ifx 编译, \ref{use_gfortran} 小节中输入 \ttt{gfortran *.f*} 回车就是请 Gfortran 编译, 最后电脑语程序保存在称为可执行文件 (executable file) 的 \ttt{a.exe} 里.
 
-把程序翻译成电脑语后, 电脑没借口不干活儿了. 我们输入 \ttt{a.exe} 回车, 命令电脑照电脑语程序干活儿, 这个过程称为运行/执行 (execute) 程序, 也俗称跑 (run) 程序. Fortran 程序中指令运行的基本顺序是从主程序第一行 \ttt{program [program-name]} 开始, 向下逐行依次运行, 到主程序最后第一行 \ttt{end program [program-name]} 结束. 本笔记里会介绍许多例外情况, 遇到例外时会称之为跳转 (jump). 例如 \ref{fortran_program} 节 \ttt{main.f90} 和 \ttt{helloworld.f90} 中的程序, 指令的运行顺序如下, 其中指令 3 跳转到指令 4, 指令 7 跳转到指令 8.
+把程序翻译成电脑语后, 电脑没借口不干活儿了. 我们输入 \ttt{a.exe} 回车, 命令电脑照电脑语程序干活儿, 这个过程称为运行/执行 (execute) 程序, 也俗称跑 (run) 程序. Fortran 程序中指令运行的基本顺序是从主程序第1行 \ttt{program [program-name]} 开始, 向下逐行依次运行, 到主程序最后第1行 \ttt{end program [program-name]} 结束. 本笔记里会介绍许多例外情况, 遇到例外时会称之为跳转 (jump). 例如 \ref{fortran_program} 节 \ttt{main.f90} 和 \ttt{helloworld.f90} 中的程序, 指令的运行顺序如下, 其中指令 3 跳转到指令 4, 指令 7 跳转到指令 8.
 \begin{table}[!htbp]
     \centering
     \begin{tabular}{|p{0.42\textwidth}|p{0.48\textwidth}|}
@@ -185,7 +185,7 @@ main.f90:3:10:
 Error: Missing leading left parenthesis in format string at 
 (1)
 \end{verbatim}
-由于程序第三行不符合 Fortran 语法 (\ttt{print} 后少了 \ttt{*,} 之类的东东), 编译器不知怎么干活儿了, 只好报个错. 智能的 VS Code 会在编译前就请 Gfortran 来检查我们的程序是否有语法错误, 这将节约我们的时间.
+由于程序第3行不符合 Fortran 语法 (\ttt{print} 后少了 \ttt{*,} 之类的东东), 编译器不知怎么干活儿了, 只好报个错. 智能的 VS Code 会在编译前就请 Gfortran 来检查我们的程序是否有语法错误, 这将节约我们的时间.
 
 因为有器规, 所以报错还和编译器有关. 比如运行下面这个程序.
 \begin{lstlisting}
@@ -491,7 +491,7 @@ program main
 end program main
 \end{lstlisting}
 
-我猜同学们会觉得续行的定义非常繁复难懂, 非得先定义一个 ``注释行'', 然后再巴拉巴拉, 难道不能直接定义成 ``把下面第一行剪切下来粘贴到这行后''? 还真不行. 来看下面这个程序.
+我猜同学们会觉得续行的定义非常繁复难懂, 非得先定义一个 ``注释行'', 然后再巴拉巴拉, 难道不能直接定义成 ``把下面第1行剪切下来粘贴到这行后''? 还真不行. 来看下面这个程序.
 \begin{lstlisting}
 program main
     implicit none
@@ -500,7 +500,7 @@ program main
              //'are illusions.'
 end program main
 \end{lstlisting}
-如果把续行定义成 ``把下面第一行剪切下来粘贴到这行后'', 上面那个程序就等同于下面这个程序.
+如果把续行定义成 ``把下面第1行剪切下来粘贴到这行后'', 上面那个程序就等同于下面这个程序.
 \begin{lstlisting}
 program main
     implicit none
@@ -570,7 +570,7 @@ end program main
 
 \subsection{标号}
 
-除后面会说的例外情况外, 在程序中的每一行的开头都可以加上标号 (label). 标号是用不超过五个数字表示的 1--99999 的整数, 开头可以是 0, 后面需要跟至少一个空格. 习惯上使用四位数的, 整千或整百的标号. 下面的程序第三行使用了标号.
+除后面会说的例外情况外, 在程序中的每一行的开头都可以加上标号 (label). 标号是用不超过五个数字表示的 1--99999 的整数, 开头可以是 0, 后面需要跟至少一个空格. 习惯上使用四位数的, 整千或整百的标号. 下面的程序第3行使用了标号.
 \begin{lstlisting}
 program main
     implicit none
@@ -608,7 +608,7 @@ end program main
 
 \subsection{标签}
 
-在程序中某些特殊的地方 (见 \ref{fortran_exit} 小节和 \ref{fortran_cycle} 小节) 可以加标签\footnote{\href{https://j3-fortran.org/doc/year/24/24-007.pdf}{标准解释文档}里没这个词, 但\href{https://fortran-lang.org/learn/quickstart/}{官网教程}里有.} (tag). 标签用其标签名表示. 下面的程序第四行和第六行使用了标签名为 \ttt{tag} 的标签.
+在程序中某些特殊的地方 (见 \ref{fortran_exit} 小节和 \ref{fortran_cycle} 小节) 可以加标签\footnote{\href{https://j3-fortran.org/doc/year/24/24-007.pdf}{标准解释文档}里没这个词, 但\href{https://fortran-lang.org/learn/quickstart/}{官网教程}里有.} (tag). 标签用其标签名表示. 下面的程序第4行和第6行使用了标签名为 \ttt{tag} 的标签.
 \begin{lstlisting}
 program main
     implicit none

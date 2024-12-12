@@ -25,13 +25,13 @@ program main
     real, dimension(:), allocatable :: v
 end program main
 \end{lstlisting}
-示例第三行的解释如下.
+示例第3行的解释如下.
 \begin{itemize}
     \item \ttt{[name\_{}1], ..., [name\_{}n]} 是 \ttt{m, q}, 表示创建 2 个数据实体, 名称分别为 \ttt{m} 和 \ttt{q}.
     \item \ttt{[type-with-param]} 是 \ttt{real}, 表示数据实体 \ttt{m} 和 \ttt{q} 的类型为实型, 类型参量为默认类型参量.
     \item \ttt{[attr\_{}1], ..., [attr\_{}m]} 没有 (\ttt{m} 是 0), 表示数据实体 \ttt{m} 和 \ttt{q} 没有其他属性, 也就没有 parameter 属性, 因此数据实体 \ttt{m} 和 \ttt{q}是变量.
 \end{itemize}
-示例第四行的解释如下.
+示例第4行的解释如下.
 \begin{itemize}
     \item \ttt{[name\_{}1], ..., [name\_{}n]} 是 \ttt{v}, 表示创建 1 个数据实体, 名称为 \ttt{v}.
     \item \ttt{[type-with-param]} 是 \ttt{real}, 表示数据实体 \ttt{v} 的类型为实型, 类型参量为默认类型参量.
@@ -54,7 +54,7 @@ program main
     real(dp) :: v
 end program main
 \end{lstlisting}
-示例第二行到第三行使用了种别 \ttt{real32} 和 \ttt{real64}, 并给 \ttt{real64} 取别名 \ttt{dp}. 示例第五行声明了种别为 \ttt{real32} 的 \ttt{m} 和 \ttt{q}. 示例第六行声明了种别为 \ttt{real64} 的 \ttt{v}.
+示例第2行到第3行使用了种别 \ttt{real32} 和 \ttt{real64}, 并给 \ttt{real64} 取别名 \ttt{dp}. 示例第5行声明了种别为 \ttt{real32} 的 \ttt{m} 和 \ttt{q}. 示例第6行声明了种别为 \ttt{real64} 的 \ttt{v}.
 
 Fortran 程序的每一行, 除了注释和某个本笔记里不想讲的东东外, 都是语句 (statement). Fortran 语句的位置不能乱放, 同学们现在需要记的规则是, 在每一个程序单元内, 以 \ttt{use} 做开头的使用语句放最前面, \ttt{implicit none} 放第二个, 声明语句放第三个, 其他称为执行语句的语句放最后面.
 

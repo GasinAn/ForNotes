@@ -4,7 +4,7 @@
 
 Fortran 中的赋值 (assignment), 其一般含义可总结为把数据拷贝到一个数据实体中, 分为四种: (普通的) 固有赋值 (intrinsic assignment), 掩码数组赋值 (masked array assignment), 指针赋值 (pointer assignment), 和超载赋值 (defined assignment). 本节只讲固有赋值的最简单情形, 固有赋值的其他情形一和掩码数组赋值一起放在 \ref{fortran_array_assignment} 节讲, 固有赋值的其他情形二和指针赋值一起放在 \ref{fortran_pointer_assignment} 节讲, 超载赋值放在 \ref{fortran_defined_assignment} 节讲.
 
-固有赋值的形式是 \ttt{[var] = [expr]}. \ttt{[var]} 可以是很多东东, 最常见的情况是 \ttt{[var]} 是一个变量, 其他情况安安将一一列举. \ttt{[expr]} 是一个表达式 (expression), 放在 \ref{fortran_opration} 节详细介绍. 运行 \ttt{[var] = [expr]} 时, 程序会先对 \ttt{[expr]} 进行求值 (evaluation) 并得到一个结果 (result), 此结果是一个数据实体, 然后将得到的结果中的数据拷贝到 \ttt{[var]} 里去. 下面的例子中, 第四行对表达式 \ttt{10.0} 进行求值, 得到的结果中的数据 $10.0$ 拷贝到 \ttt{a} 里去, 第五行对表达式 \ttt{a + a*a - a/a} 进行求值, 得到的结果中的数据 $109.0$ 还拷贝到 \ttt{a} 里去, 所以最后 \ttt{a} 里的数据是 $109.0$.
+固有赋值的形式是 \ttt{[var] = [expr]}. \ttt{[var]} 可以是很多东东, 最常见的情况是 \ttt{[var]} 是一个变量, 其他情况安安将一一列举. \ttt{[expr]} 是一个表达式 (expression), 放在 \ref{fortran_opration} 节详细介绍. 运行 \ttt{[var] = [expr]} 时, 程序会先对 \ttt{[expr]} 进行求值 (evaluation) 并得到一个结果 (result), 此结果是一个数据实体, 然后将得到的结果中的数据拷贝到 \ttt{[var]} 里去. 下面的例子中, 第4行对表达式 \ttt{10.0} 进行求值, 得到的结果中的数据 $10.0$ 拷贝到 \ttt{a} 里去, 第5行对表达式 \ttt{a + a*a - a/a} 进行求值, 得到的结果中的数据 $109.0$ 还拷贝到 \ttt{a} 里去, 所以最后 \ttt{a} 里的数据是 $109.0$.
 \begin{lstlisting}
 program main
     implicit none
@@ -15,7 +15,7 @@ program main
 end program main
 \end{lstlisting}
 
-为避免后面讲解时啰里巴嗦的, 安安需要先啰嗦几句. 如果数据实体中有 Fortran 程序拷贝到其中存储的数据, 安安就称数据实体中存储的数据为数据实体的值 (value), 例如上面的程序第四行运行后 \ttt{a} 的值是 $10.0$. 如果数据实体的值和一个字面常量的值相同, 安安也称数据实体的值为那个字面常量, 例如上面的程序第四行运行后 \ttt{a} 的值是 \ttt{10.0}. 安安还把对表达式进行求值得到的结果的值简称为表达式的值, 例如上面的程序第五行运行时表达式 \ttt{a + a*a - a/a} 的值是 \ttt{109.0}.
+为避免后面讲解时啰里巴嗦的, 安安需要先啰嗦几句. 如果数据实体中有 Fortran 程序拷贝到其中存储的数据, 安安就称数据实体中存储的数据为数据实体的值 (value), 例如上面的程序第4行运行后 \ttt{a} 的值是 $10.0$. 如果数据实体的值和一个字面常量的值相同, 安安也称数据实体的值为那个字面常量, 例如上面的程序第4行运行后 \ttt{a} 的值是 \ttt{10.0}. 安安还把对表达式进行求值得到的结果的值简称为表达式的值, 例如上面的程序第5行运行时表达式 \ttt{a + a*a - a/a} 的值是 \ttt{109.0}.
 
 因为赋值会修改数据实体的值, 所以字面常量是不能被赋值的, 例如下面这个程序是不成的.
 \begin{lstlisting}
@@ -129,7 +129,7 @@ Fortran 是强类型语言 (strongly typed language), 因为 Fortran 程序赋�
     \item 其他: 直接令值相等.
 \end{itemize}
 
-我们用一个示例来强化一下认识. 在下面的程序中, 第七行应使 \ttt{b} 的值为 $-5.5$, 然后第八行需要类型转化. 看 ``\ttt{=}'' 右边 \ttt{b} 是实型, 左边 \ttt{a} 是整型, 实型转整型向0取整, $-5.5$ 向0取整是 $-5$, 所以 \ttt{a} 的值为 $-5$. 但这里同学们常犯一个错误, 就是认为第八行后 \ttt{b} 的值也变为 $-5$ 了, 而实际上右边的类型和种别是\uline{临时}转化成左边的类型和种别, 所以第八行后 \ttt{b} 的类型和种别不会变, 值也不会变, 还是 $-5.5$.
+我们用一个示例来强化一下认识. 在下面的程序中, 第7行应使 \ttt{b} 的值为 $-5.5$, 然后第8行需要类型转化. 看 ``\ttt{=}'' 右边 \ttt{b} 是实型, 左边 \ttt{a} 是整型, 实型转整型向0取整, $-5.5$ 向0取整是 $-5$, 所以 \ttt{a} 的值为 $-5$. 但这里同学们常犯一个错误, 就是认为第8行后 \ttt{b} 的值也变为 $-5$ 了, 而实际上右边的类型和种别是\uline{临时}转化成左边的类型和种别, 所以第8行后 \ttt{b} 的类型和种别不会变, 值也不会变, 还是 $-5.5$.
 \begin{lstlisting}
 program main
     implicit none
@@ -141,7 +141,7 @@ program main
 end program main
 \end{lstlisting}
 
-默认情形下 Fortran 和 C 的的类型和种别转化是 ``隐式'' 的转化, 意思是, 在类型和种别转化的时候 Fortran 程序和 C 程序里没有一个明确的标记来说明, 需要仔细分析各个数据实体的类型和种别然后判断出有转化. 于是乎老师就可以借机整出一堆怪题来疯狂折磨同学们了, 并且实际人们用 Fortran 和 C 干活的时候, 也很容易没看出程序某某地方有类型和种别转化. Python 没有这个问题, 因为 Python 不是静态类型语言.\footnote{详细说来, Fortran 和 C 因为是静态类型语言, ``\ttt{=}'' 左边的类型和种别不能变, 所以赋值时是 ``右配合左'', 把 ``\ttt{=}'' 右边的类型和种别 (临时) 变成左边的类型和种别, 这样在实型转整型, 复型转实型, 复型转整型的时候, ``\ttt{=}'' 左右两边的值可能是不一样的. 而 Python 因为不是静态类型语言, ``\ttt{=}'' 左边的类型和种别能变, 所以赋值时是 ``左配合右'', 把 ``\ttt{=}'' 左边的类型和种别变成右边的类型和种别, 这样 ``\ttt{=}'' 左右两边的值永远是一样的, 不会折磨人, 所以 Python 大家都爱用. 然而这并不意味着 Python 无敌了, 正因为 Python ``\ttt{=}'' 左边的类型和种别能变, 所以电脑在运行 Python 程序的时候老是要查看变量的类型和种别到底是什么, 这样运行 Python 程序的时候就快不起来了\dots{}} 这样就有必要在 Fortran 程序和 C 程序里使用 ``显式'' 的转化. 对 Fortran 而言, 在实型转整型, 复型转实型, 复型转整型的时候, 转化前后的值可能会不一样, 我们应当用 \ttt{int([entity])}/\ttt{real([entity])} 来说明数据实体 \ttt{[entity]} 被转化成整型/实型. 其他情形下, 转化前后的值一样, 就没必要啰嗦了. 例如上面的程序应该改写成下面的程序, 这样看到明确的标记 \ttt{int} 就可以直接判断出 \ttt{b} 被转化成整型了. 仍要注意类型和种别转化只是\uline{临时}的, 第八行后 \ttt{b} 的值还是 $-5.5$.
+默认情形下 Fortran 和 C 的的类型和种别转化是 ``隐式'' 的转化, 意思是, 在类型和种别转化的时候 Fortran 程序和 C 程序里没有一个明确的标记来说明, 需要仔细分析各个数据实体的类型和种别然后判断出有转化. 于是乎老师就可以借机整出一堆怪题来疯狂折磨同学们了, 并且实际人们用 Fortran 和 C 干活的时候, 也很容易没看出程序某某地方有类型和种别转化. Python 没有这个问题, 因为 Python 不是静态类型语言.\footnote{详细说来, Fortran 和 C 因为是静态类型语言, ``\ttt{=}'' 左边的类型和种别不能变, 所以赋值时是 ``右配合左'', 把 ``\ttt{=}'' 右边的类型和种别 (临时) 变成左边的类型和种别, 这样在实型转整型, 复型转实型, 复型转整型的时候, ``\ttt{=}'' 左右两边的值可能是不一样的. 而 Python 因为不是静态类型语言, ``\ttt{=}'' 左边的类型和种别能变, 所以赋值时是 ``左配合右'', 把 ``\ttt{=}'' 左边的类型和种别变成右边的类型和种别, 这样 ``\ttt{=}'' 左右两边的值永远是一样的, 不会折磨人, 所以 Python 大家都爱用. 然而这并不意味着 Python 无敌了, 正因为 Python ``\ttt{=}'' 左边的类型和种别能变, 所以电脑在运行 Python 程序的时候老是要查看变量的类型和种别到底是什么, 这样运行 Python 程序的时候就快不起来了\dots{}} 这样就有必要在 Fortran 程序和 C 程序里使用 ``显式'' 的转化. 对 Fortran 而言, 在实型转整型, 复型转实型, 复型转整型的时候, 转化前后的值可能会不一样, 我们应当用 \ttt{int([entity])}/\ttt{real([entity])} 来说明数据实体 \ttt{[entity]} 被转化成整型/实型. 其他情形下, 转化前后的值一样, 就没必要啰嗦了. 例如上面的程序应该改写成下面的程序, 这样看到明确的标记 \ttt{int} 就可以直接判断出 \ttt{b} 被转化成整型了. 仍要注意类型和种别转化只是\uline{临时}的, 第8行后 \ttt{b} 的值还是 $-5.5$.
 \begin{lstlisting}
 program main
     implicit none
@@ -184,7 +184,7 @@ end program main
 \end{lstlisting}
 在 \ref{fortran_complex} 节我们介绍过可以用 \ttt{real([z])}/\ttt{aimag([z])} 获取 \ttt{[z]} 的实部/虚部, 但 \ttt{real([z])}/\ttt{aimag([z])} 不能用在 ``\ttt{=}'' 左边. \ttt{[z]\%{}re}/\ttt{[z]\%{}im} 虽然可能可以用在 ``\ttt{=}'' 右边, 但同学们去用的时候, 程序就经常会报错, 这是由于 Fortran 的语法有缺陷, 而在 ``\ttt{=}'' 右边用 \ttt{real([z])}/\ttt{aimag([z])} 就永远不会出问题. Python 的语法简洁优美, 类似 \ttt{[z]\%{}re}/\ttt{[z]\%{}im} 的语法用在 ``\ttt{=}'' 左右两边都没问题, 而类似 \ttt{real([z])}/\ttt{aimag([z])} 的语法只能用在 ``\ttt{=}'' 右边. C 就麻烦了, 复型都不是基本类型, 所以用复型的时候老费劲儿了\dots{}
 
-对任意字符型变量 \ttt{[c]}, 我们可以直接对 \ttt{[c](nl:nu)} 赋值以改变 \ttt{[c]} 的第 \ttt{nl} 到第 \ttt{nu} 个字符而不改变其他字符. 这个语法和字符串切片的语法在形式上是一样的. \ttt{nl} 和 \ttt{nu} 必须是整型数据实体. \ttt{nl} 和 \ttt{nu} 都可以不写. 如果 \ttt{nl} 不写, \ttt{nl} 就等于 \ttt{1}. 如果 \ttt{nu} 不写, \ttt{nu} 就等于 \ttt{[c]} 的长度. 示例如下. 这个示例需要解释一下, 第五行我们把 \ttt{'HELLO, WORLD!'} 赋给 \ttt{hello\_{}world} 的第 \ttt{1} 到第 \ttt{1} 个字符, 但 \ttt{hello\_{}world} 的第 \ttt{1} 到第 \ttt{1} 个字符长度只为 $1$, 所以根据字符串赋值规则, \ttt{'HELLO, WORLD!'} 的尾巴被砍掉, 只剩最前面的 \ttt{'H'} 赋给\ttt{hello\_{}world} 的第 \ttt{1} 到第 \ttt{1} 个字符.
+对任意字符型变量 \ttt{[c]}, 我们可以直接对 \ttt{[c](nl:nu)} 赋值以改变 \ttt{[c]} 的第 \ttt{nl} 到第 \ttt{nu} 个字符而不改变其他字符. 这个语法和字符串切片的语法在形式上是一样的. \ttt{nl} 和 \ttt{nu} 必须是整型数据实体. \ttt{nl} 和 \ttt{nu} 都可以不写. 如果 \ttt{nl} 不写, \ttt{nl} 就等于 \ttt{1}. 如果 \ttt{nu} 不写, \ttt{nu} 就等于 \ttt{[c]} 的长度. 示例如下. 这个示例需要解释一下, 第5行我们把 \ttt{'HELLO, WORLD!'} 赋给 \ttt{hello\_{}world} 的第 \ttt{1} 到第 \ttt{1} 个字符, 但 \ttt{hello\_{}world} 的第 \ttt{1} 到第 \ttt{1} 个字符长度只为 $1$, 所以根据字符串赋值规则, \ttt{'HELLO, WORLD!'} 的尾巴被砍掉, 只剩最前面的 \ttt{'H'} 赋给\ttt{hello\_{}world} 的第 \ttt{1} 到第 \ttt{1} 个字符.
 \begin{lstlisting}
 program main
     implicit none
@@ -207,7 +207,7 @@ program main
     print *, char, len(char), len('reallocated')
 end program main
 \end{lstlisting}
-再来两个例子让同学们把这个问题弄清楚. 在下面这个例子中, 第四行 \ttt{char} 的长度被定了, 然后第六行和第八行 ``\ttt{=}'' 左边是 \ttt{char}, 这时遵循简化赋值语法, ``\ttt{=}'' 左边字符串的长度被重定, 来和 ``\ttt{=}'' 右边字符串的长度一致.
+再来两个例子让同学们把这个问题弄清楚. 在下面这个例子中, 第4行 \ttt{char} 的长度被定了, 然后第6行和第8行 ``\ttt{=}'' 左边是 \ttt{char}, 这时遵循简化赋值语法, ``\ttt{=}'' 左边字符串的长度被重定, 来和 ``\ttt{=}'' 右边字符串的长度一致.
 \begin{lstlisting}
 program main
     implicit none
@@ -220,7 +220,7 @@ program main
     print *, char, len(char), len('reallocated')
 end program main
 \end{lstlisting}
-而在下面这个例子中, 第四行 \ttt{char} 的长度被定了, 然后第六行和第八行 ``\ttt{=}'' 左边是 \ttt{char(:)}, 这时不遵循简化赋值语法, ``\ttt{=}'' 左边字符串的长度不被重定, 而``\ttt{=}'' 右边字符串被砍尾巴/补空格来和 ``\ttt{=}'' 左边字符串的长度一致.
+而在下面这个例子中, 第4行 \ttt{char} 的长度被定了, 然后第6行和第8行 ``\ttt{=}'' 左边是 \ttt{char(:)}, 这时不遵循简化赋值语法, ``\ttt{=}'' 左边字符串的长度不被重定, 而``\ttt{=}'' 右边字符串被砍尾巴/补空格来和 ``\ttt{=}'' 左边字符串的长度一致.
 \begin{lstlisting}
 program main
     implicit none

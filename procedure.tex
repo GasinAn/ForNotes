@@ -243,7 +243,7 @@ subroutine add_one_(a)
     a = a + 1.0_dp
 end subroutine add_one_
 \end{lstlisting} 
-还有只写的 (加 \ttt{, intent(out)} 的) 哑参量, 在子程序运行的一开始都是未定义的, 不论与哑参量结合的实参量是否未定义. 所以下面这程序中, 即使主程序里的 \ttt{a} 不是未定义的, 子程序 \ttt{add\_{}one} 的第六行赋值时 ``\ttt{=}'' 右边的 \ttt{a} 也是未定义的, 这个程序老天也不知会出什么结果. 但 Ifx 和 Gfortran 有器规, 会把只写参量当成读写参量 (我猜是这样了啦), 一开始也实参量赋值给哑参量了, 所以结果没事. 但无论如何这么写都是不对的!
+还有只写的 (加 \ttt{, intent(out)} 的) 哑参量, 在子程序运行的一开始都是未定义的, 不论与哑参量结合的实参量是否未定义. 所以下面这程序中, 即使主程序里的 \ttt{a} 不是未定义的, 子程序 \ttt{add\_{}one} 的第6行赋值时 ``\ttt{=}'' 右边的 \ttt{a} 也是未定义的, 这个程序老天也不知会出什么结果. 但 Ifx 和 Gfortran 有器规, 会把只写参量当成读写参量 (我猜是这样了啦), 一开始也实参量赋值给哑参量了, 所以结果没事. 但无论如何这么写都是不对的!
 \begin{lstlisting} 
 program main
     use iso_fortran_env, only: dp => real64
@@ -783,14 +783,14 @@ end function factorial
 
 不过上面这个例子我们还要细掰细掰. 同学们可能会这么分析上面这个例子.
 \begin{enumerate}
-    \item 主程序第四行要算 \ttt{factorial(3)}, 所以函数 \ttt{factorial} 的哑元 \ttt{n} 变成 \ttt{3}.
+    \item 主程序第4行要算 \ttt{factorial(3)}, 所以函数 \ttt{factorial} 的哑元 \ttt{n} 变成 \ttt{3}.
     \item \ttt{n /= 1}, 所以 \ttt{p = n * factorial(n-1)}, 要算 \ttt{factorial(n-1)}, 所以函数 \ttt{factorial} 的哑元 \ttt{n} 变成 \ttt{n-1}, 所以 \ttt{n} 变成 \ttt{2}.
     \item \ttt{n /= 1}, 所以 \ttt{p = n * factorial(n-1)}, 要算 \ttt{factorial(n-1)}, 所以函数 \ttt{factorial} 的哑元 \ttt{n} 变成 \ttt{n-1}, 所以 \ttt{n} 变成 \ttt{1}.
     \item \ttt{n == 1}, 所以 \ttt{p = 1}, \ttt{p} 变成 \ttt{1}, 然后到 \ttt{end function factorial}, \ttt{p} 是结果, 所以 \ttt{factorial(3)} 是 \ttt{1}.
 \end{enumerate}
 可这明显不对呀, 程序跑出来结果应该是 \ttt{6} 才对嘛. 要想弄懂上面这个例子, 我们需要更准确地理解过程的调用. 过程调用时, 严格意义上说, 不是过程本身被调用了, 而是过程连同过程中的所有常量变量都被复制出分身, 然后分身被调用了. 所以上面这个例子应分析如下.
 \begin{enumerate}
-    \item 主程序第四行要算 \ttt{factorial(3)}, 所以函数 \ttt{factorial} 被复制出分身 \ttt{factorial}$_1$, 哑元 \ttt{n}$_1$ 变成 \ttt{3}.
+    \item 主程序第4行要算 \ttt{factorial(3)}, 所以函数 \ttt{factorial} 被复制出分身 \ttt{factorial}$_1$, 哑元 \ttt{n}$_1$ 变成 \ttt{3}.
     \item \ttt{n}$_1$ \ttt{/= 1}, 所以 \ttt{p}$_1$ \ttt{= n}$_1$ \ttt{* factorial(n}$_1$\ttt{-1)}, 要算 \ttt{factorial(n}$_1$\ttt{-1)}, 所以函数 \ttt{factorial} 被复制出分身 \ttt{factorial}$_2$, \ttt{n}$_2$ \ttt{= n}$_1$\ttt{-1}, 哑元 \ttt{n}$_2$ 变成 \ttt{2}.
     \item \ttt{n}$_2$ \ttt{/= 1}, 所以 \ttt{p}$_2$ \ttt{= n}$_2$ \ttt{* factorial(n}$_2$\ttt{-1)}, 要算 \ttt{factorial(n}$_2$\ttt{-1)}, 所以函数 \ttt{factorial} 被复制出分身 \ttt{factorial}$_3$, \ttt{n}$_3$ \ttt{= n}$_2$\ttt{-1}, 哑元 \ttt{n}$_3$ 变成 \ttt{1}.
     \item \ttt{n}$_3$ \ttt{== 1}, 所以 \ttt{p}$_3$ \ttt{= 1}, \ttt{p}$_3$ 变成 \ttt{1}, 然后到 \ttt{end function factorial}, \ttt{p}$_3$ 是结果, 而 \ttt{p}$_2$ \ttt{= n}$_2$ \ttt{* factorial(n}$_2$\ttt{-1)} 时调用 \ttt{factorial}$_3$, 所以 \ttt{factorial(n}$_2$\ttt{-1)} 是 \ttt{1}.
@@ -903,7 +903,7 @@ function eye(n) result(mat)
     !----------------------------------------
 end function eye
 \end{lstlisting} 
-然后我们定睛一看, 两个注释行中间的部分, 第一行是 \ttt{i} 的声明, \ttt{i} 既不是哑参量也不是结果, 所以删去, 后面几行是执行部分也删去. 删完以后就成下面这个样子. 
+然后我们定睛一看, 两个注释行中间的部分, 第1行是 \ttt{i} 的声明, \ttt{i} 既不是哑参量也不是结果, 所以删去, 后面几行是执行部分也删去. 删完以后就成下面这个样子. 
 \begin{lstlisting} 
 program main
     use iso_fortran_env, only: dp => real64

@@ -6,7 +6,7 @@
 
 \subsection{if 结构}\label{if_construct}
 
-在讲 if 结构之前同学们需要知道 \ttt{read *,} 语句, 这种语句将大量出现在示例中. \ttt{read *,} 语句干的事和 \ttt{print *,} 语句相反, 它会把我们输入在屏幕上的内容赋值给变量. 请看下面这个例子, 这个例子在运行到第五行时会停住.
+在讲 if 结构之前同学们需要知道 \ttt{read *,} 语句, 这种语句将大量出现在示例中. \ttt{read *,} 语句干的事和 \ttt{print *,} 语句相反, 它会把我们输入在屏幕上的内容赋值给变量. 请看下面这个例子, 这个例子在运行到第5行时会停住.
 \begin{lstlisting}
 program main
     use,intrinsic :: iso_fortran_env, only: real128
@@ -16,7 +16,7 @@ program main
     print *, number
 end program main
 \end{lstlisting}
-不论是用 VS 2019 + Ifx 还是用 VS Code + Gfortran 来运行这个例子, 都会弹出个框框. 如果是用 VS 2019 + Ifx, 那么框框里应该有一个闪烁白竖线光标. 如果是用 VS Code + Gfortran, 那么框框里应该有一个白块光标. 假如框框里没有光标, 我们需要在框框的中央用鼠标左键点击一下让光标出现. 光标出现后, 我们需要用键盘输入数字, 假设我们输入 \ttt{123.456}, 我们会发现 \ttt{123.456} 随着我们的输入依次出现在框框里. 然后我们按回车键, \ttt{123.456} 就被赋值给 \ttt{number} 了. 之后程序会继续运行, \ttt{number} 的值 \ttt{123.456} 因运行第六行而重新出现在屏幕上 (虽然数字的显示格式可能有区别). 特别注意, 我们输入的数字不能带种别, 例如我们不能输入 \ttt{123.456\_{}real128}.
+不论是用 VS 2019 + Ifx 还是用 VS Code + Gfortran 来运行这个例子, 都会弹出个框框. 如果是用 VS 2019 + Ifx, 那么框框里应该有一个闪烁白竖线光标. 如果是用 VS Code + Gfortran, 那么框框里应该有一个白块光标. 假如框框里没有光标, 我们需要在框框的中央用鼠标左键点击一下让光标出现. 光标出现后, 我们需要用键盘输入数字, 假设我们输入 \ttt{123.456}, 我们会发现 \ttt{123.456} 随着我们的输入依次出现在框框里. 然后我们按回车键, \ttt{123.456} 就被赋值给 \ttt{number} 了. 之后程序会继续运行, \ttt{number} 的值 \ttt{123.456} 因运行第6行而重新出现在屏幕上 (虽然数字的显示格式可能有区别). 特别注意, 我们输入的数字不能带种别, 例如我们不能输入 \ttt{123.456\_{}real128}.
 
 现在开讲 if 结构的基本型. 请看下面这个 ``判断是否为0'' 示例. 注意 \ttt{number} 变成整型的了, 所以如果同学们输入的不是整数的话, Gfortran 会报错, 但 Ifx 不会.\label{whether_zero}
 \begin{lstlisting}
@@ -34,15 +34,15 @@ program main
     end if
 end program main
 \end{lstlisting}
-这个例子中第六行到第十二行是个 if 结构. 程序运行这个 if 结构的规则是: 先计算括号里的 表达式, 看它是 \ttt{.true.} 还是 \ttt{.false.}.
+这个例子中第6行到第12行是个 if 结构. 程序运行这个 if 结构的规则是: 先计算括号里的 表达式, 看它是 \ttt{.true.} 还是 \ttt{.false.}.
 \begin{itemize}
-    \item 如果是 \ttt{.true.}, 那么从 \ttt{then} 下面第一行开始依次运行, 直到运行到 \ttt{else} , 然后跳转从 \ttt{end if} 下面第一行开始依次运行. 这样, \ttt{else} 和 \ttt{end if} 之间的行不会运行.
-    \item 如果是 \ttt{.false.}, 那么跳转从 \ttt{else} 下面第一行开始依次运行, 直到运到行 \ttt{end if} , 然后从 \ttt{end if} 下面第一行开始依次运行. 这样, \ttt{then} 和 \ttt{else} 之间的行不会运行.
+    \item 如果是 \ttt{.true.}, 那么从 \ttt{then} 下面第1行开始依次运行, 直到运行到 \ttt{else} , 然后跳转从 \ttt{end if} 下面第1行开始依次运行. 这样, \ttt{else} 和 \ttt{end if} 之间的行不会运行.
+    \item 如果是 \ttt{.false.}, 那么跳转从 \ttt{else} 下面第1行开始依次运行, 直到运到行 \ttt{end if} , 然后从 \ttt{end if} 下面第1行开始依次运行. 这样, \ttt{then} 和 \ttt{else} 之间的行不会运行.
 \end{itemize}
 让我们按 if 结构的规则分析两个具体情况:
 \begin{itemize}
-    \item \ttt{number} 是 \ttt{1}: 此时括号里的 \ttt{number /= 0} 是 \ttt{.true.}, 那么从 \ttt{then} 下面第一行开始依次运行, 所以第七第八行会运行, 屏幕上出现 ``The number is not 0!'', 然后第九行是 \ttt{else}, 所以跳转运行 \ttt{end if} 下面一行, 也就是 \ttt{end program main}. 最终结论: 屏幕上出现 ``The number is not 0!''.
-    \item \ttt{number} 是 \ttt{0}: 此时括号里的 \ttt{number /= 0} 是 \ttt{.false.}, 那么跳转从 \ttt{else} 下面第一行开始依次运行, 所以第十第十一行会运行, 屏幕上出现 ``The number is 0!'', 然后第十二行是 \ttt{else}, 所以运行 \ttt{end if} 下面一行, 也就是 \ttt{end program main}. 最终结论: 屏幕上出现 ``The number is 0!''.
+    \item \ttt{number} 是 \ttt{1}: 此时括号里的 \ttt{number /= 0} 是 \ttt{.true.}, 那么从 \ttt{then} 下面第1行开始依次运行, 所以第七第8行会运行, 屏幕上出现 ``The number is not 0!'', 然后第9行是 \ttt{else}, 所以跳转运行 \ttt{end if} 下面一行, 也就是 \ttt{end program main}. 最终结论: 屏幕上出现 ``The number is not 0!''.
+    \item \ttt{number} 是 \ttt{0}: 此时括号里的 \ttt{number /= 0} 是 \ttt{.false.}, 那么跳转从 \ttt{else} 下面第1行开始依次运行, 所以第10第11行会运行, 屏幕上出现 ``The number is 0!'', 然后第12行是 \ttt{else}, 所以运行 \ttt{end if} 下面一行, 也就是 \ttt{end program main}. 最终结论: 屏幕上出现 ``The number is 0!''.
 \end{itemize}
 
 特别说明, 上面的例子有个小问题, 就是运行后弹出的框框里没有提示语, 如果人们没仔细读过源代码, 他们就不知道程序想让他们干啥了. 所以我们本应加上提示语, 比如像下面这样.
@@ -88,11 +88,11 @@ end program main
 \end{lstlisting}
 让我们按 if 结构的规则分析三个具体情况:
 \begin{itemize}
-    \item \ttt{number} 是 \ttt{101}: 第六行判断为 \ttt{.true.}, 程序会运行第六行的 \ttt{then} 后的代码, 屏幕上会出现 ``Invalid Score!''; 然后第九行是 \ttt{else}, 所以会跳转运行第十八行的 \ttt{end if} 后的代码. 最终结论: 屏幕上出现 ``Invalid Score!''.
-    \item \ttt{number} 是 \ttt{61}: 第六行判断为 \ttt{.false.}, 程序会跳转运行第九行的 \ttt{else} 后的代码; 然后第十一行判断为 \ttt{.true.}, 程序会运行第十一行的 \ttt{then} 后的代码, 屏幕上会出现 ``Succeed.''; 然后第十四行是 \ttt{else}, 所以会跳转运行第十七行的 \ttt{end if} 后的代码; 然后第十八行是 \ttt{end if}, 所以会运行第十八行的 \ttt{end if} 后的代码. 最终结论: 屏幕上出现 ``Succeed.''.
-    \item \ttt{number} 是 \ttt{1}: 第六行判断为 \ttt{.false.}, 程序会跳转运行第九行的 \ttt{else} 后的代码; 然后第十一行判断为 \ttt{.false.}, 程序会跳转运行第十四行的 \ttt{else} 后的代码, 屏幕上会出现 ``Fail.''; 然后第十七行是 \ttt{end if}, 所以会运行第十七行的 \ttt{end if} 后的代码; 然后第十八行是 \ttt{end if}, 所以会运行第十八行的 \ttt{end if} 后的代码. 最终结论: 屏幕上出现 ``Fail.''.
+    \item \ttt{number} 是 \ttt{101}: 第6行判断为 \ttt{.true.}, 程序会运行第6行的 \ttt{then} 后的代码, 屏幕上会出现 ``Invalid Score!''; 然后第9行是 \ttt{else}, 所以会跳转运行第18行的 \ttt{end if} 后的代码. 最终结论: 屏幕上出现 ``Invalid Score!''.
+    \item \ttt{number} 是 \ttt{61}: 第6行判断为 \ttt{.false.}, 程序会跳转运行第9行的 \ttt{else} 后的代码; 然后第11行判断为 \ttt{.true.}, 程序会运行第11行的 \ttt{then} 后的代码, 屏幕上会出现 ``Succeed.''; 然后第14行是 \ttt{else}, 所以会跳转运行第17行的 \ttt{end if} 后的代码; 然后第18行是 \ttt{end if}, 所以会运行第18行的 \ttt{end if} 后的代码. 最终结论: 屏幕上出现 ``Succeed.''.
+    \item \ttt{number} 是 \ttt{1}: 第6行判断为 \ttt{.false.}, 程序会跳转运行第9行的 \ttt{else} 后的代码; 然后第11行判断为 \ttt{.false.}, 程序会跳转运行第14行的 \ttt{else} 后的代码, 屏幕上会出现 ``Fail.''; 然后第17行是 \ttt{end if}, 所以会运行第17行的 \ttt{end if} 后的代码; 然后第18行是 \ttt{end if}, 所以会运行第18行的 \ttt{end if} 后的代码. 最终结论: 屏幕上出现 ``Fail.''.
 \end{itemize}
-同学们可能还是头大, 安安表示没法子, 这是任何人学第一门编程语言都要闯过的关, 同学们只能刻苦修炼, 争取早日闯关成功. 像安安这样身经百战 (被毒打过不知多少回) 的, 看这个示例是能一秒分析清楚它的运行方式的. 这个程序还体现出缩进的用处, 缩进后可以很清楚地看出, 第六行的 \ttt{then}, 第九行的 \ttt{else}, 第十八行的 \ttt{end if} 是一个 if 结构的, 第十一行的 \ttt{then}, 第十四行的 \ttt{else}, 第十七行的 \ttt{end if} 是一个 if 结构的. 如果没有缩进, 安安分析程序也是要头大的\dots{}
+同学们可能还是头大, 安安表示没法子, 这是任何人学第一门编程语言都要闯过的关, 同学们只能刻苦修炼, 争取早日闯关成功. 像安安这样身经百战 (被毒打过不知多少回) 的, 看这个示例是能一秒分析清楚它的运行方式的. 这个程序还体现出缩进的用处, 缩进后可以很清楚地看出, 第6行的 \ttt{then}, 第9行的 \ttt{else}, 第18行的 \ttt{end if} 是一个 if 结构的, 第11行的 \ttt{then}, 第14行的 \ttt{else}, 第17行的 \ttt{end if} 是一个 if 结构的. 如果没有缩进, 安安分析程序也是要头大的\dots{}
 
 现在开讲 if 结构的简化型和复杂型, 没有熟练掌握 if 结构的基本型的同学请不要学习. 请看下面这个示例, 这个示例由 \pageref{whether_zero} 页的 ``判断是否为0'' 示例删去注释和 \ttt{else} 到 \ttt{end if} 之间的语句得来.
 \begin{lstlisting}
@@ -337,7 +337,7 @@ program main
     print *, (6.0*s) ** (1.0/2.0)
 end program main
 \end{lstlisting}
-这个程序运行到第六行后发生什么事了? 首先电脑把 \ttt{n} 赋成 \ttt{1}, 然后运行 \ttt{do} 到 \ttt{end do} 之间的命令, 也就是第七行. 运行完第七行后, 电脑把 \ttt{n} 加上\ttt{1}, 然后再一次运行第七行, 然后再把 \ttt{n} 加上 \ttt{1}, 然后再一次运行第七行\dots{} 如此循环进行, 直到 \ttt{n} 等于 \ttt{1000} 后, 电脑最后一次运行第七行, 然后就运行 \ttt{end do} 之后的命令了. 对上面这个例子, 总的过程就是: 令 \ttt{n} 等于 \ttt{1}, 运行第七行, 令\ttt{n}等于\ttt{2}, 运行第七行\dots{} 令 \ttt{n} 等于 \ttt{999}, 运行第七行, 令\ttt{n}等于\ttt{1000}, 运行第七行, 最后运行第九行就得到 $\pi$ 的近似值了.
+这个程序运行到第6行后发生什么事了? 首先电脑把 \ttt{n} 赋成 \ttt{1}, 然后运行 \ttt{do} 到 \ttt{end do} 之间的命令, 也就是第7行. 运行完第7行后, 电脑把 \ttt{n} 加上\ttt{1}, 然后再一次运行第7行, 然后再把 \ttt{n} 加上 \ttt{1}, 然后再一次运行第7行\dots{} 如此循环进行, 直到 \ttt{n} 等于 \ttt{1000} 后, 电脑最后一次运行第7行, 然后就运行 \ttt{end do} 之后的命令了. 对上面这个例子, 总的过程就是: 令 \ttt{n} 等于 \ttt{1}, 运行第7行, 令\ttt{n}等于\ttt{2}, 运行第7行\dots{} 令 \ttt{n} 等于 \ttt{999}, 运行第7行, 令\ttt{n}等于\ttt{1000}, 运行第7行, 最后运行第9行就得到 $\pi$ 的近似值了.
 
 上面的程序每次 \ttt{n} 都增加 \ttt{1}, 可以不如此. 因为 $(6\cdot\sum_{n=1}^{n_{\text{max}}} \frac{1}{n^2})^{1/2} = (6\cdot\sum_{n=-1}^{-n_{\text{max}}} \frac{1}{n^2})^{1/2}$, 所以我们可以改用后式, 然后取 $n_{\text{max}}=1000$ 来算出 $\pi$ 的近似值, 像下面这样.
 \begin{lstlisting}
@@ -352,7 +352,7 @@ program main
     print *, (6.0*s) ** (1.0/2.0)
 end program main
 \end{lstlisting}
-注意第六行现在多出了个 \ttt{, -1} 在最后, 这就表示现在每次 \ttt{n} 都增加 \ttt{-1}, 也就是减 \ttt{1}. 对上面这个例子, 这意味着 \ttt{n} 的值会依次是 \ttt{-1}, \ttt{-2}, \dots{}, \ttt{-999}, \ttt{-1000}.
+注意第6行现在多出了个 \ttt{, -1} 在最后, 这就表示现在每次 \ttt{n} 都增加 \ttt{-1}, 也就是减 \ttt{1}. 对上面这个例子, 这意味着 \ttt{n} 的值会依次是 \ttt{-1}, \ttt{-2}, \dots{}, \ttt{-999}, \ttt{-1000}.
 
 我们快速总结一下 do 结构的运行方式, 一个 do 结构前头是 \ttt{do [m] = [m1], [m2], [m3]}, 后头是 \ttt{end do}. \ttt{[m]} 必须是变量, 称作计数变量 (counter variable). 最后的 \ttt{, [m3]} 可以省略, 如果省略, 那么 \ttt{[m3]} 为 \ttt{1}. do 结构的运行方式如下:
 \begin{enumerate}
@@ -447,7 +447,7 @@ program main
     print *, n, r_, s
 end program main
 \end{lstlisting}
-这个程序中, 第七行本来要写 \ttt{do r = 1.0, 2.0, 0.001}, 第九行本来要写 \ttt{s = s + r**0.5}, 但这样 \ttt{r} 得是实型的不成. 现在另造一个整型的 \ttt{r\_{}}, 并计划让 \ttt{r == real(r\_{})/1000.0}, 于是第七行可以写成 \ttt{do r\_{} = 1000, 2000, 1} (最后的 \ttt{, 1} 也可省略), 第九行用 \ttt{real(r\_{})/1000.0} 间接地算 \ttt{r}, 所以写成 \ttt{s = s + (real(r\_{})/1000.0)**0.5}, 这样就可以巧妙地避免用实型的计数变量了!
+这个程序中, 第7行本来要写 \ttt{do r = 1.0, 2.0, 0.001}, 第9行本来要写 \ttt{s = s + r**0.5}, 但这样 \ttt{r} 得是实型的不成. 现在另造一个整型的 \ttt{r\_{}}, 并计划让 \ttt{r == real(r\_{})/1000.0}, 于是第7行可以写成 \ttt{do r\_{} = 1000, 2000, 1} (最后的 \ttt{, 1} 也可省略), 第9行用 \ttt{real(r\_{})/1000.0} 间接地算 \ttt{r}, 所以写成 \ttt{s = s + (real(r\_{})/1000.0)**0.5}, 这样就可以巧妙地避免用实型的计数变量了!
 
 给 do 结构加标签和给 if 结构加标签方式类似, 在 do 结构开头的 \ttt{do} 前面加 \ttt{[tag]:}, 结尾的 \ttt{end do} 后面加 \ttt{[tag]}, 即可给 do 结构加标签 \ttt{[tag]}. \ttt{do} 的左右须有空格. 示例如下.
 \begin{lstlisting}
@@ -569,7 +569,7 @@ program main
     end do
 end program main
 \end{lstlisting}
-这个程序在效率上让人不大满意, 因为在第九行判断 \ttt{j} 是否整除 \ttt{i} 时, 其实只需有一回 \ttt{i == i/j*j} 就可以知道 \ttt{i} 不是质数了, 所以希望在 \ttt{i == i/j*j} 时, 将 \ttt{is\_{}prime} 赋成 \ttt{.false.}, 然后直接运行里层的 \ttt{end do} 之后的第十三行输出结果. 这时只需加个 exit 语句就好, 像下面这样.
+这个程序在效率上让人不大满意, 因为在第9行判断 \ttt{j} 是否整除 \ttt{i} 时, 其实只需有一回 \ttt{i == i/j*j} 就可以知道 \ttt{i} 不是质数了, 所以希望在 \ttt{i == i/j*j} 时, 将 \ttt{is\_{}prime} 赋成 \ttt{.false.}, 然后直接运行里层的 \ttt{end do} 之后的第13行输出结果. 这时只需加个 exit 语句就好, 像下面这样.
 \begin{lstlisting}
 program main
     implicit none
@@ -588,7 +588,7 @@ program main
     end do
 end program main
 \end{lstlisting}
-在上面这个程序中, 电脑只要一见到 \ttt{exit inner\_{}loop} 就浑身一激灵, 然后就直接跳转运行 \ttt{end do inner\_{}loop} 之后的语句了. \ttt{exit} 后的标签指明了跳转的位置, 如果我们想跳转到外层的 \ttt{end do} 后 (上面的程序第十五行后), 我们可以这么写.
+在上面这个程序中, 电脑只要一见到 \ttt{exit inner\_{}loop} 就浑身一激灵, 然后就直接跳转运行 \ttt{end do inner\_{}loop} 之后的语句了. \ttt{exit} 后的标签指明了跳转的位置, 如果我们想跳转到外层的 \ttt{end do} 后 (上面的程序第15行后), 我们可以这么写.
 \begin{lstlisting}
 program main
     implicit none
@@ -608,7 +608,7 @@ program main
 end program main                      !<---------+
 \end{lstlisting}
 
-如果结构只有一层, 不是内外嵌套的, 那么 \ttt{exit} 后可以不写标签. 如果结构不只有一层, 是内外嵌套的, 那么 \ttt{exit} 后不写标签会引发混乱, 例如上面的程序, 会不知道跳转到第十三行 \ttt{end do} 后还是第十五行 \ttt{end do} 后.
+如果结构只有一层, 不是内外嵌套的, 那么 \ttt{exit} 后可以不写标签. 如果结构不只有一层, 是内外嵌套的, 那么 \ttt{exit} 后不写标签会引发混乱, 例如上面的程序, 会不知道跳转到第13行 \ttt{end do} 后还是第15行 \ttt{end do} 后.
 
 在 do while 结构和 if 结构中也可使用 exit 语句, 请同学们自己尝试.
 
@@ -633,7 +633,7 @@ program main
     end do
 end program main
 \end{lstlisting}
-在上面这个程序中, 电脑只要一见到 \ttt{cycle inner\_{}loop} 就浑身一哆嗦, 然后就不再进行循环第 \ref{run_do_block} 步, 直接跳转到内层循环的开头 (上面的程序第八行), 并进行循环第 \ref{whether_loop_terminate} 步. \ttt{cycle} 后的标签指明了跳转的位置, 如果我们想终止一轮外层循环, 我们可以这么写.
+在上面这个程序中, 电脑只要一见到 \ttt{cycle inner\_{}loop} 就浑身一哆嗦, 然后就不再进行循环第 \ref{run_do_block} 步, 直接跳转到内层循环的开头 (上面的程序第8行), 并进行循环第 \ref{whether_loop_terminate} 步. \ttt{cycle} 后的标签指明了跳转的位置, 如果我们想终止一轮外层循环, 我们可以这么写.
 \begin{lstlisting}
 program main
     implicit none
@@ -653,7 +653,7 @@ program main
 end program main
 \end{lstlisting}
 
-如果结构只有一层, 不是内外嵌套的, 那么 \ttt{cycle} 后可以不写标签. 如果结构不只有一层, 是内外嵌套的, 那么 \ttt{cycle} 后不写标签会引发混乱, 例如上面的程序, 会不知道跳转到第八行还是第六行.
+如果结构只有一层, 不是内外嵌套的, 那么 \ttt{cycle} 后可以不写标签. 如果结构不只有一层, 是内外嵌套的, 那么 \ttt{cycle} 后不写标签会引发混乱, 例如上面的程序, 会不知道跳转到第8行还是第6行.
 
 在 do while 结构中也可使用 cycle 语句, 请同学们自己尝试. 在 if 结构中没法儿使用 cycle 语句.
 
