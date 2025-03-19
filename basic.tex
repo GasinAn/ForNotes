@@ -58,15 +58,15 @@ end subroutine helloworld
 
 任何编程\uline{语言}都有自己的句法/语法 (syntax), 比如 ``让电脑屏幕上出现 `A'{}'', Fortran 要写成 \ttt{print *, "A"}, C 要写成 \ttt{printf("A");}, Python 2 要写成 \ttt{print "A"}, Python 3 要写成 \ttt{print("A")}. 编程语言对语法的统一规定称为标准 (standard). Fortran 的现行标准是 Fortran 2023 (第\ref{introduction}章中已介绍), 旧标准有 FORTRAN 66, FORTRAN 77, Fortran 90, Fortran 95, Fortran 2003, Fortran 2008, Fortran 2018.
 
-不太好玩儿的是, 虽然 Fortran 语法已由现行标准规定好了, Fortran 编译器们却偶尔不按 Fortran 标准来干活儿, 自己制定了一些规则, 还有些时候, Fortran 标准直接就把权利赋予编译器, 让他们自定一些规则. 这样, Fortran 编译器们时不时就有和 ``官规'' 不同的 ``器规''.
+不太好玩儿的是, 虽然 Fortran 语法已由现行标准规定好了, Fortran 编译器们却偶尔不按 Fortran 标准来干活儿, 自己制定了一些规则, 还有些时候, Fortran 标准直接就把权利赋予编译器, 让他们自己制定一些规则. 这样, Fortran 编译器们时不时就有和 ``官规'' 不同的 ``器规''.
 
-编程语言的标准是 ``硬规则'', 除此之外还有 ``软规则'', 称为规范 (convention). 所谓 ``规范'', 就是被代码毒打的前人总结的血泪教训. 不遵守规范, 也不一定会出什么问题, 但一旦出了问题, 就不知道问题出在哪儿啦. 请同学们尽量遵守本笔记列出的 Fortran 规范, 不然期末挂了不要怪 Fortran 哟! 不过有时不遵守规范也确实不会出什么问题, 安安会适时说明的.
+编程语言的标准是 ``硬规则'', 除此之外还有 ``软规则'', 称为规范 (convention). 所谓规范, 就是写代码的人在遵守代码语法规则之余, 自己强迫自己另外遵守的规则. 虽然在遵守代码语法规则之余还要遵守规范显得麻烦, 但不遵守规范就会遇到更大的麻烦, 这些麻烦可大致总结成三类: 代码写不出, 代码读不懂, 代码不好用.
 
-编译器各有各的器规, 这可能会出事. 想象一下, 同学们期末考写好程序, Ifx 和 Gfortran 说程序没问题, 同学们兴冲冲地交卷了, 然后老师掏出 Visual Fortran (某老款编译器), Visual Fortran 说程序有问题, 同学们就挂科啦. 为防止这种悲惨情形发生, 我们需要避免使用Fortran 标准没规定而编译器自定的规则.
+编译器各有各的器规, 这可能会出事. 想象一下, 同学们期末考写好程序, Ifx 和 Gfortran 都说程序没问题, 同学们兴冲冲地交卷了, 然后老师掏出 Visual Fortran (某老款编译器), Visual Fortran 说程序有问题, 同学们就挂科啦. 为防止这种悲惨情形发生, 我们需要尽量避免使用 Fortran 标准没制定而编译器自己制定的规则.
 \begin{convention}\label{use_standard_only}
-    只使用 Fortran 现行标准自行规定的规则.
+    如果 Fortran 现行标准有自行规定规则, 则只使用这些规则.
 \end{convention}
-这样, 我们的程序编译器要是不认, 安安唯一能想到的可能就是 Fortran 标准更新了, 而编译器没更新, 还用着旧标准. 不过同学们没必要担心这一情形, 本笔记里的东东绝大多数 Fortran 90 就有了 (我猜老师现在也只教到 Fortran 90), 即使是 Visual Fortran 也会认的, 要是某 Fortran 编译器竟连 Fortran 90 都不认, 我们就把它卸载了\dots{}
+这样, 编译器要是不认我们的程序, 安安唯一能想到的可能就是 Fortran 标准更新了, 而编译器没更新, 还用着旧标准. 不过同学们没必要担心这一情形, 本笔记里的东东绝大多数 Fortran 90 就有了 (我猜老师现在也只教到 Fortran 90), 即使是 Visual Fortran 也会认的, 要是某 Fortran 编译器竟连 Fortran 90 都不认, 我们就把它卸载了\dots{} 遵守这规范还有其他好处. 想象一下, 原本我们写了个程序, 是用 Ifx 编译的, 但 Intel 近些年不行了, 我们也许需要换 \href{https://www.amd.com/en/developer/aocc.html}{AMD} 或 \href{https://developer.nvidia.com/hpc-sdk#}{NVIDIA} 的编译器. 如果我们的程序用了一堆 Ifx 的器规, 我们就麻了, 因为 AMD, NVIDIA 和 Intel 是死对头, 想来就不会认 Ifx 的器规, 我们只好把 AMD, NVIDIA 不认的那部分全改写一遍, 苦しいね!
 
 \section{程序单元}\label{program_unit}
 
