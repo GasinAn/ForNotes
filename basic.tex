@@ -4,7 +4,7 @@
 
 程序 (program) 是指挥电脑工作的一堆指令. 这堆指令要用一堆字符表示, 表示指令的所有字符合起来称为源代码 (source code). 源代码需要被保存在文件中, 保存源代码的所有文件合起来称为源代码文件 (source code file).
 
-比如,在一个名为 \ttt{main.f90} 的文件内写入下面这些内容并保存.
+比如,在一个名为 \ttt{main.f90} 的文件内写入下面这些内容\footnote{最左边的数字是行号, 别写进文件里啊!}并保存.
 \begin{lstlisting}
 program main
     implicit none
@@ -73,14 +73,14 @@ end subroutine helloworld
 每个 Fortran 程序都由若干程序单元 (program unit) 组成. 程序单元可能是主程序 (main program), 或外部子程序 (external subprogram), 或模块 (module), 或子模块 (submodule). 一个 Fortran 程序中必须有且只有一个主程序, 其他程序单元数目随便.
 
 主程序长下面这样.
-\begin{lstlisting}
+\begin{verbatim}
 program [program-name]
     ...
 end program [program-name]
-\end{lstlisting}
+\end{verbatim}
 其中 \ttt{[program-name]} 处是一个名称 (name), 名称指的是由字母, 数字和下划线 ``\ttt{\_{}}''\footnote{
     下划线是空格的替代字符,长得还是蛮像滴!
-} 组成的, 开头是字母的字符串\footnote{后文中的 ``某某名'' 若不另加说明则都是名称, 不再赘述.}, ``\ttt{...}'' 处则是各种指令, 一行一条. 比如, 之前 \ref{fortran_program} 节里 \ttt{main.f90} 里的程序就是一个名称为 \ttt{main} 的主程序\footnote{安安习惯把主程序的名称取做 \ttt{main} 并放在 \ttt{main.f90} 里.} \\(\ttt{helloworld.f90} 里的程序则是一个外部子程序).
+} 组成的, 开头是字母的字符串\footnote{后文中的 ``某某名'' 若不另加说明则都是名称, 不再赘述.}, ``\ttt{...}'' 处则是各种指令, 一行一条. 比如, 之前 \ref{fortran_program} 节里 \ttt{main.f90} 里的程序就是一个名称为 \ttt{main} 的主程序\footnote{安安习惯把主程序的名称取做 \ttt{main} 并放在 \ttt{main.f90} 里.} (\ttt{helloworld.f90} 里的程序则是一个外部子程序).
 
 外部子程序在第\ref{fortran_procedure}章里讲, 模块在第\ref{fortran_module}章里讲, 子模块在第\ref{fortran_submodule}章里讲.\footnote{??\mbox{}的内容安安会在猴年马月写好的!}
 
@@ -88,7 +88,7 @@ end program [program-name]
 \begin{convention}
     一个源代码文件里只放一个程序单元, 并且文件名和文件里的程序单元名相同.\label{one_program_unit}
 \end{convention}
-当然, 安安偶尔也会在一个源代码文件里放多个程序单元, 比如安安在玩 SOFA 的时候, 习惯把除 \ttt{t\_{}sofa\_{}f.for} 外的所有文件里的东东通通复制粘贴到一个名为 \ttt{sofa.for} 的新文件里, 这个文件里就有一大堆外部子程序了.
+当然, 安安偶尔也会在一个源代码文件里放多个程序单元, 比如安安在玩 \href{https://iausofa.org/}{SOFA} 的时候, 习惯把除 \ttt{t\_{}sofa\_{}f.for} 外的所有文件里的东东通通复制粘贴到一个名为 \ttt{sofa.for} 的新文件里, 这个文件里就有一大堆外部子程序了.
 
 今后程序若有多个程序单元, 我将把这多个程序单元写在一起 (虽然按规范 \ref{one_program_unit} 它们应该被分别保存). 比如 \ref{fortran_program} 节 \ttt{main.f90} 和 \ttt{helloworld.f90} 中的程序会合写成如下模样.
 \begin{lstlisting}
@@ -96,7 +96,8 @@ program main
     implicit none
     call helloworld()
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 subroutine helloworld()
     implicit none
     print *, "Hello, world!"
@@ -107,9 +108,7 @@ end subroutine helloworld
 
 我们用 Fortran 语写好了程序, 命令电脑照此干活儿, 然而电脑会说干不了. 原因在于, 电脑不认得 Fortran 语, 电脑只懂得电脑语 (学名是机器语言), 甚至不同电脑的电脑语还不一样. 而电脑语身为正常人类的我们完全搞不懂\dots{}
 
-这时我们就得请编译器 (compiler) 们出场干活儿了, 它们会在操作系统的帮助下, 把 Fortran 语翻译成电脑语, 这个过程称为编译\footnote{这里说的是广义的编译. 狭义的编译是广义的编译中的一个环节.} (compile). \ref{use_ifx} 小节中输入 \ttt{ifx *.f* /o a.exe} 回车就是请 Ifx 编译, \ref{use_gfortran} 小节中输入 \ttt{gfortran *.f*} 回车就是请 Gfortran 编译, 最后电脑语程序保存在称为可执行文件 (executable file) 的 \ttt{a.exe} 里.
-
-把程序翻译成电脑语后, 电脑没借口不干活儿了. 我们输入 \ttt{a.exe} 回车, 命令电脑照电脑语程序干活儿, 这个过程称为运行/执行 (execute) 程序, 也俗称跑 (run) 程序. Fortran 程序中指令运行的基本顺序是从主程序第1行 \ttt{program [program-name]} 开始, 向下逐行依次运行, 到主程序最后第1行 \ttt{end program [program-name]} 结束. 本笔记里会介绍许多例外情况, 遇到例外时会称之为跳转 (jump). 例如 \ref{fortran_program} 节 \ttt{main.f90} 和 \ttt{helloworld.f90} 中的程序, 指令的运行顺序如下, 其中指令 3 跳转到指令 4, 指令 7 跳转到指令 8.
+这时我们就得请编译器 (compiler) 们出场干活儿了, 它们会在操作系统的帮助下, 把 Fortran 语翻译成电脑语, 这个过程就是 \ref{use_ifx} 小节所讲的编译+链接 (我们也常直接用 ``编译'' 指代编译+链接两步). 把程序翻译成电脑语后, 电脑没借口不干活儿了, 我们就可以开心地命令电脑照电脑语程序干活儿, 这个过程就是 \ref{use_ifx} 小节所讲的运行. Fortran 程序中指令运行的基本顺序是从主程序第 1 行 \ttt{program [program-name]} 开始, 向下逐行依次运行, 到主程序最后 1 行 \ttt{end program [program-name]} 结束. 本笔记里会介绍许多例外情况, 遇到例外时会称之为跳转 (jump). 例如 \ref{fortran_program} 节 \ttt{main.f90} 和 \ttt{helloworld.f90} 中的程序, 指令的运行顺序如下, 其中指令 3 跳转到指令 4, 指令 7 跳转到指令 8.
 \begin{table}[!htbp]
     \centering
     \begin{tabular}{|p{0.42\textwidth}|p{0.48\textwidth}|}
@@ -154,7 +153,7 @@ end subroutine helloworld
 
 \section{异常}\label{fortran_exception}
 
-程序编译和运行时可能会有不妙的事情发生, 那就是抛出 (raise) 异常 (exception). 异常分为错误 (error) 和警告 (warning), 抛出错误和抛出警告也有些俗称, 比如报错和弹警告之类的.
+程序编译和运行时可能会有不妙的事情发生, 那就是抛出 (raise) 异常 (exception). 异常分为错误 (error) 和警告 (warning). 如果我们的程序编译和运行时并不符合我们的设想, 我们便称程序有故障 (bug\footnote{``bug'' 的本意是 ``虫'', 请同学们自行搜索 ``bug'' 的来历.}), 排除故障我们称为调试 (debug), 但只有被电脑揪出来的故障才称为异常.
 
 \subsection{错误}\label{fortran_error}
 
@@ -166,7 +165,7 @@ program main
 end program main
 \end{lstlisting}
 Ifx 给出的结果如下\footnote{
-    假定屏幕宽度是 60 字符宽, 且略去版权声明等无关紧要的内容, 下同.
+    假定屏幕宽度是 60 个字符宽, 且略去版权声明等无关紧要的内容, 下同.
 }.
 \begin{verbatim}
 main.f90(3): error #6899: First non-blank character in a cha
@@ -271,13 +270,13 @@ PROGRAM MAIN
 END PROGRAM MAIN
 \end{lstlisting}
 
-Fortran 大小写不分是有历史原因的. 当年电脑太烂了, 为节省存储空间, 一开始 Fortran 只许用大写字母, 后来电脑不那么烂了, 能用小写字母了, Fortran 大概是因为想尽量保证老程序能用, 所以直接规定大小写不分, 结果挖了个如今没法儿填的史诗级奆坑, 学 Fortran 玩 Fortran 的历来都深受其害. 举个例子, 当年俺搞毕设, 需要解 Kepler 方程 $E=M+e\cos E$,在程序里对应地写成 \ttt{E = M + e*cos(E)}, 然而 Fortran 是大小写不分的, 所以 \ttt{E = M + e*cos(E)} 其实对应于 $e=M+e\cos e$ 或 $E=M+E\cos E$, 然后俺忘了这茬, 结果死活找不出自己哪里写错了\dots{}
+Fortran 大小写不分是有历史原因的. 当年电脑太烂了, 为节省存储空间, 一开始 Fortran 只许用大写字母, 后来电脑不那么烂了, 能用小写字母了, Fortran 大概是因为想尽量保证老程序能用, 所以直接规定大小写不分, 结果挖了个如今没法儿填的史诗级奆坑, 学 Fortran 玩 Fortran 的历来都深受其害. 举个例子, 当年俺搞毕设, 需要解 Kepler 方程 $E=M+e\cos E$,在程序里对应地写了 \ttt{E = M + e*cos(E)}, 然而 Fortran 是大小写不分的, 所以 \ttt{E = M + e*cos(E)} 其实对应于 $e=M+e\cos e$ 或 $E=M+E\cos E$, 然后俺忘了这茬, 结果死活找不出自己哪里写错了\dots{}
 
-被 Fortran 反复毒打后, 人们决定做些什么来避免被毒打. 既然 Fortran 大小写不分, 那避免混淆的最好办法就是在程序里统一只用小写或大写字母 (俺搞毕设时知道这事, 但俺偷懒了, 结果惨遭报应\dots{}). 因为单词写成小写字母比写成大写字母好认, 所以现在人们都统一只用小写字母.
+被 Fortran 反复毒打后, 人们决定做些什么来避免被毒打. 既然 Fortran 大小写不分, 那避免混淆的最好办法就是在程序里统一只用小写或大写字母 (俺搞毕设时当然知道这事, 但俺心存侥幸偷懒了, 结果惨遭报应\dots{}). 因为单词写成小写字母比写成大写字母好认, 所以现在人们都统一只用小写字母.
 \begin{convention}
     只在程序中使用小写字母.\label{lower_case_convention}
 \end{convention}
-如上所述, 有时 Fortran 大小写是分的, 这时规范 \ref{lower_case_convention} 没法儿遵守, 当然就不遵守了. 除此之外, 规范 \ref{lower_case_convention} 还有其他一些可以不遵守的情形, 俺留着后面说. 这样, \ttt{E = M + e*cos(E)} 就得改写了. 因为 Kepler 方程里 $E$ 是偏近点角, 是个角, 所以 \ttt{E} 可以写成 \ttt{e\_{}angle} (也可以写成 \ttt{angle\_{}e}, 但绝不能写成 \ttt{E\_{}angle}!!!), $e$ 则是离心率, 虽然写成 \ttt{e} 也可以和 \ttt{e\_{}angle} 区别开, 但为了让区别更明显, 可以写成 \ttt{ecc} (eccentricity 的缩写).
+如上所述, 有时 Fortran 大小写是分的, 这时规范 \ref{lower_case_convention} 没法儿遵守, 当然就不遵守了. 除此之外, 规范 \ref{lower_case_convention} 还有其他一些可以不遵守的情形, 俺留着后面说. 这样, \ttt{E = M + e*cos(E)} 就得改写了, 改写方法倒没有定则. 最简单的办法就是直接上英文全称, \ttt{E} 改写成 \ttt{eccentric\_{}anomaly}, \ttt{e} 改写成 \ttt{eccentricity}, 不过这么写太长了. 想来想去, 安安觉得 \ttt{E} 改写成 \ttt{ea}, \ttt{e} 不改写就可以了.
 
 \section{源代码格式}
 
@@ -299,7 +298,7 @@ Fortran 有两种源代码格式 (source form): 自由格式 (free form) 和固�
 
 Fortran 代码里空格 (blank/space) 通常没有意义 (\ref{fortran_char} 节和 \ref{character_string_edit_descriptor} 小节中有例外), 可多可少可没有, 但有些时候空格是必要的, 否则会出现混淆, 比如 \ttt{program main} 就不能写成 \ttt{programmain} (没有编译器能智能到把它拆成两个词).
 
-虽然空格没有意义, 但能让代码更清楚. 如果把 \ttt{print *, 'A'} 写成 \ttt{print*,'A'}, 挤成一团, 也不能说是错误, 但即便像 VS Code 里那样代码有颜色区分, 也让人看得晕乎, 更何况笔记里这样代码没颜色呢.
+虽然空格没有意义, 但能让代码更清楚. 如果把 \ttt{print *, 'A'} 写成 \ttt{print*,'A'}, 挤成一团, 也不能说是错误, 但即便像 VS Code 里那样代码有颜色区分, 也让人看得晕乎, 更何况像笔记里这样代码没颜色呢.
 \begin{convention}
     在程序中适当地加入空格.\label{fortran_blank}
 \end{convention}
@@ -308,6 +307,18 @@ Fortran 代码里空格 (blank/space) 通常没有意义 (\ref{fortran_char} 节
 \subsection{缩进}\label{indent}
 
 缩进 (indent) 是指源代码每行最前面的空格. 对 Fortran 而言, 缩进本身没有意义, 但适当的缩进能表示程序的某个结构嵌套在另一个结构里, 这能使程序更容易被理解. 来看下面这个程序.
+\begin{lstlisting}
+program main
+implicit none
+integer :: i
+do i = 1, 1
+if (.true.) then
+print *, 'I'
+end if
+end do
+end program main
+\end{lstlisting}
+在上面这个程序中, 第 1 行到第 9 行是个主程序, 第 4 行到第 8 行是个 \ref{do_construct} 小节会介绍的 \ttt{do} 结构, 第 5 行到第 7 行是个 \ref{if_construct} 小节会介绍的 \ttt{if} 结构. 但这么写代码, 即使是想安安这样的老手也得努力分析一波才能看出这个程序的结构来. 所以我们应该把程序写成下面这样.
 \begin{lstlisting}
 program main
     implicit none
@@ -319,7 +330,7 @@ program main
     end do
 end program main
 \end{lstlisting}
-在上面的程序中: 第 1 行到第 9 行是个主程序, 之间的代码缩进一层, 有 4 个空格的缩进; 第 4 行到第 8 行是个 \ref{do_construct} 小节会介绍的 \ttt{do} 结构, 嵌套在主程序里, 之间的代码又缩进一层, 有 8 个空格的缩进; 第 3 行到第 7 行是个 \ref{if_construct} 小节会介绍的 \ttt{if} 结构, 嵌套在 \ttt{do} 结构里, 之间的代码又又缩进一层, 有 12 个空格的缩进.
+第 2 行到第 8 行的代码缩进一层, 有 4 个空格的缩进, 表示这些代码是在主程序里的; 第 5 行到第 7 行的代码缩进一层, 有 8 个空格的缩进, 表示这些代码是在主程序里的 \ttt{do} 结构里的; 第 6 行的代码又又缩进一层, 有 12 个空格的缩进, 表示这些代码是在主程序里的 \ttt{do} 结构里的\ttt{if} 结构里的. 如此这般代码的结构就一目了然了.
 \begin{convention}
     在程序中加入适当的缩进, 以 $4$ 个空格为单位.\label{fortran_indent}
 \end{convention}
@@ -336,9 +347,9 @@ program main
 end program main
 \end{lstlisting}
 
-请注意, 在文本编辑器中按 [Tab] 键, 也会出现一长串 ``空格'', 但实际上对电脑而言, 按 [Tab] 键和按一堆空格, 效果是不同的. 智能的文本编辑器, 比如 VS Code, 可能会自动把 [Tab] 转换为适当数目的空格, 但这不保险. 一些经典的优秀编辑器, 比如 Vim, 是会严格区分 [Tab] 和空格的\footnote{
+请注意, 在文本编辑器中按 [Tab] 键, 也会出现一长串 ``空格'', 但实际上, 电脑会认为 [Tab] 和一堆空格是不同的东东, 编译器不一定会允许在程序中使用 [Tab] 键. 智能的文本编辑器, 比如 VS Code, 会猜我们是不是实际上需要一堆空格, 然后自动把 [Tab] 转换为适当数目的空格, 但它完全可能猜错. 而其他经典的优秀编辑器, 比如 \href{https://www.gnu.org/software/emacs/}{Emacs} 和 \href{https://www.vim.org/}{Vim}, 是会严格区分 [Tab] 和空格的\footnote{
     这并不见得是坏事, 因为有些特殊文件是必须使用 [Tab] 的.
-}, 除非另装外挂. 编译器可能会允许在程序中使用 [Tab] 键, 但这也不保险. 总而言之, 使用 [Tab] 键, 实在不清楚会不会出问题.
+}, 除非另装外挂.
 \begin{convention}
     不要使用\emph{[Tab]}键.
 \end{convention}
@@ -347,7 +358,7 @@ end program main
 
 \subsection{空行}\label{empty_line}
 
-为使得程序更容易被理解, 还要在程序中加入适当的空行, 以把程序划分成多个部分. 我们可以给上面 \ref{indent} 小节的程序加一个空行, 变成下面的程序.
+为使得程序更容易被理解, 还要在程序中加入适当的空行, 以表示程序可划分成多个部分. 我们可以给上面 \ref{indent} 小节的程序加一个空行, 变成下面的程序.
 \begin{lstlisting}
 program main
     implicit none
@@ -360,7 +371,7 @@ program main
     end do
 end program main
 \end{lstlisting}
-学第\ref{fortran_intrinsic_type}章后同学们可知, 在上面的程序中: 空行以上的部分可以称为 ``说明部分''; 空行以下的部分可以称为 ``执行部分''. 还常用双空行和单空行来进一步划分. 比如下面这个程序.
+学第\ref{fortran_intrinsic_type}章后同学们可知, 在上面的程序中, 空行以上的部分可以称为 ``说明部分'', 空行以下的部分可以称为 ``执行部分''. 还常用双空行和单空行来进一步划分. 比如下面这个程序.
 \begin{lstlisting}
 program main
     implicit none
@@ -380,15 +391,15 @@ program main
     end do
 end program main
 \end{lstlisting}
-在上面的程序中: 双空行划分 ``说明部分''和 ``执行部分''; 单空行划分 ``执行部分''中的各部分.
+在上面的程序中, 双空行划分 ``说明部分''和 ``执行部分'', 单空行划分 ``执行部分''中的各部分 (每个部分都是一个 \ref{do_construct} 小节介绍的 \ttt{do} 结构).
 \begin{convention}
     在程序中加入适当的空行.
 \end{convention}
-至于什么时候加入一个或几个空行, 其实没什么具体原则, 完全看个人心情. 简单原则就是, 如果读程序长长的一部分, 感觉头昏脑涨, 或觉得以后肯定会头昏脑涨, 插入空行来把这部分划分成各自能完成一件事的几部分就是不错的选择.
+至于什么时候加入一个或几个空行, 其实没什么具体原则, 完全看个人心情. 如果读程序里长长的一段, 感觉头昏脑涨, 或觉得以后再读这段肯定会头昏脑涨, 插入空行来把这段划分成各自能完成一件事的几段就是不错的选择.
 
 \subsection{注释}
 
-程序每一行中, \ttt{!} 及后面的所有内容都会被无视 (例外见 \ref{fortran_char} 节和 \ref{character_string_edit_descriptor} 小节), 也就相当于 \ttt{!} 及后面的内容不存在. 会被无视的 \ttt{!} 及后面的内容称为注释 (comment). 例如下面两个程序是完全一样的.
+程序每一行中, ``\ttt{!}'' 及后面的所有内容都会被编译器无视 (例外见 \ref{fortran_char} 节和 \ref{character_string_edit_descriptor} 小节), 也就相当于 ``\ttt{!}'' 及后面的内容不存在. 会被无视的 ``\ttt{!}'' 及后面的内容称为注释 (comment). 例如下面两个程序是完全一样的.
 \begin{lstlisting}
 program main
     !                   _oo0oo_
@@ -410,7 +421,7 @@ program main
     ! =====`-.____`.___ \_____/___.-`___.-'=====
     !                   `=---='
     implicit none
-    print *, 'No bugs forever!' ! The Buddha bless us!
+    print *, 'No bugs forever!' ! We are blessed!
 end program main
 \end{lstlisting}
 \begin{lstlisting}
@@ -420,7 +431,7 @@ program main
 end program main
 \end{lstlisting}
 
-注释看起来没什么用, 其实用处大极了, 主要功能就是在代码中插入 ``笔记'', 方便读代码的人理解代码在干什么. 比如下面这个程序, 其实是算 $10$ 的阶乘, 但是代码本身只能表示 ``从 $1$ 乘到 $10$'' 的意思, 要理解是算 $10$ 的阶乘, 还要费点脑子, 而加上个注释, 就能一眼看出代码是在算 $10$ 的阶乘了 (除非英语看不懂\dots{}).
+注释看起来没什么用, 其实用处大极了, 主要功能就是在代码中插入 ``笔记'', 方便读代码的人理解代码在干什么. 比如下面这个程序, 其实是算 $10$ 的阶乘, 但是代码本身只能表示 ``从 $1$ 乘到 $10$'' 的意思, 要理解是算 $10$ 的阶乘, 还要稍稍费点脑子, 而加上个注释, 就能一眼看出代码是在算 $10$ 的阶乘了 (除非看不懂英语\dots{}).
 \begin{lstlisting}
 program main
     implicit none
@@ -465,7 +476,7 @@ end program main
 \end{verbatim}
 这样如果一行超过 80 个字符, 就会分行显示. 注意, 只是分行显示, 这一行还是超过 80 个字符的 (可以看到 ``分行'' 后下面一 ``行'' 是没有行号的). 加入这两个键值对只是起提醒作用, 太长还是要分行写的 (照顾那些没有像 VS Code 这样智能的编辑器的可怜人).
 
-但有时代码一行确实写不完, 这时我们可以使用续行 (continuation). 首先我们需要介绍注释行 (comment line). 注释行就是相当于空行的行, 包括空行, 只有空格的行和除空格外只有注释的行. 而续行就是在一行的末尾加上 \ttt{\&{}}, 表示把下面第一个不是注释行的行剪切下来粘贴到这行后 (并去掉用于表示续行的 \ttt{\&{}}). 比如下面两个程序是一样的.
+但有时代码一行确实写不完, 这时我们可以使用续行 (continuation). 首先我们需要介绍注释行 (comment line). 注释行就是相当于空行的行, 包括空行, 只有空格的行和除空格外只有注释的行. 而续行就是在一行的末尾加上 ``\ttt{\&{}}'', 表示把下面第一个不是注释行的行剪切下来粘贴到这行后 (并去掉用于表示续行的 ``\ttt{\&{}}''). 比如下面两个程序是一样的.
 \begin{lstlisting}
 program main
     implicit none
@@ -516,7 +527,7 @@ program main
 end program main
 \end{lstlisting}
 
-续行有许多需要补充说明的. 首先注释相比续行是优先的, 所以下面这个程序不行, 因为 \ttt{\&{}} 在 \ttt{!} 后, 被当成注释了 (笔记里显示成斜体 \emph{\ttt{\&{}}}).
+续行有许多需要补充说明的. 首先注释相比续行是优先的, 所以下面这个程序不行, 因为 ``\ttt{\&{}}'' 在 ``\ttt{!}'' 后, 被当成注释了 (笔记里显示成斜体 ``\emph{\ttt{\&{}}}'').
 \begin{lstlisting}
 program main
     implicit none
@@ -548,7 +559,7 @@ end &
 program &
 main
 \end{lstlisting}
-为了不晕乎, 我们首先要尽量少用续行 (把 \ttt{program main} 拆成两行简直是犯罪), 其次我们不应该在不应加空格的地方用续行 (比如在 \ttt{*,} 之间用续行拆成两半).
+为了不晕乎, 我们首先要尽量少用续行 (把 \ttt{program main} 硬拆成两行简直是犯罪), 其次我们不应该在不应加空格的地方用续行 (比如在 \ttt{*,} 之间用续行拆成两半).
 \begin{convention}
     只在不用续行就无法遵守规范 \emph{\ref{fortran_no_more_than_80}} 的时候使用续行.
 \end{convention}
@@ -556,9 +567,9 @@ main
     不在不应加空格的地方使用续行.
 \end{convention}
 
-有同学可能会突然发现不对, 本章的许多程序不符合规范 \ref{fortran_indent}, 例如本章的第一个程序. 其实用续行的时候, 规范 \ref{fortran_indent} 可以不遵守. 本章的第一个程序采用的那种缩进方式, 是让下一行和上一行 ``内容对齐'', 这也是续行时常用的方式. 具体到程序, 就是让 \ttt{*,} 所在的行的下一行的第一个非空格字符, 和 \ttt{*,} 之后的第一个非空格字符对齐. 不过续行时的缩进还有其他方式. 同学们可以参考本笔记,  Fortran \href{https://fortran-lang.org/}{官网}上的代码示例和 Python 的 \href{https://peps.python.org/pep-0008/}{PEP 8 规范}来决定续行时如何缩进.
+有同学可能会突然发现不对, 本章的许多程序不符合规范 \ref{fortran_indent}, 例如本章的第一个程序. 其实用续行的时候, 规范 \ref{fortran_indent} 可以不遵守. 本章的第一个程序采用的那种缩进方式, 是让下一行和上一行 ``内容对齐'', 这也是续行时常用的方式. 具体到本章的第一个程序, 就是让 \ttt{*,} 所在的行的下一行的第一个非空格字符, 和 \ttt{*,} 之后的第一个非空格字符对齐. 不过续行时的缩进还有其他方式. 同学们可以参考本笔记,  Fortran \href{https://fortran-lang.org/}{官网}上的代码示例和 Python 的 \href{https://peps.python.org/pep-0008/}{PEP 8 规范}来决定续行时如何缩进.
 
-续行还有一个冷门规则, 在程序的每一行中, 都不能除空格和注释外, 单单只有一个用于续行的 \ttt{\&{}}. 比如下面这个程序是不行的. 然而, Ifx 和 Gfortran 却认为这个程序没问题, 同学们遇到器规啦!
+续行还有一个冷门规则, 在程序的每一行中, 都不能除空格和注释外, 单单只有一个用于续行的 ``\ttt{\&{}}''. 比如下面这个程序是不行的. 然而 Ifx 和 Gfortran 却认为这个程序没问题, 同学们遇到器规啦!
 \begin{lstlisting}
 program main
     implicit none
@@ -587,7 +598,7 @@ program main
 end program main
 \end{lstlisting}
 
-注释行不被允许加标号, 原因可能和续行一样, 也是会有歧义 (但这回 Ifx 和 Gfortran 的器规也是不允许). 另外续行符 \ttt{\&{}} 所在的行的下面第一个不是注释行的行, 也就是 ``用于续行的行'', 也不被允许加标号, 因为 ``用于续行的行'' 其实只是续行符 \ttt{\&{}} 所在的行的后面部分, 它的开头其实不是一行的开头. 以上规则的反例如下.
+注释行不被允许加标号, 原因可能和续行一样, 也是会有歧义 (但这回 Ifx 和 Gfortran 的器规也是不允许). 另外续行符 ``\ttt{\&{}}'' 所在的行的下面第一个不是注释行的行, 也就是 ``用于续行的行'', 也不被允许加标号, 因为 ``用于续行的行'' 其实只是续行符 ``\ttt{\&{}}'' 所在的行的后面部分, 它的开头其实不是一行的开头. 以上规则的反例如下.
 \begin{lstlisting}
 program main
     implicit none
@@ -604,7 +615,7 @@ program main
 end program main
 \end{lstlisting}
 
-标号是 Fortran 老得要死的语法, 不是个好东西. 首先, 标号只是个数字, 没法儿给所在的那行是干什么用的提供任何有效信息. 更要命的是, 使用标号写出来的程序极可能不符合结构化原则. 请同学们根据规范 \ref{no_no_structured} 少用标号.
+标号是 Fortran 老得要死的语法, 不是个好东西. 首先, 标号只是个数字, 没法儿为理解标号所在的那行是干什么用的提供任何有效信息. 更要命的是, 使用标号写出来的程序极可能不符合结构化原则. 请同学们根据规范 \ref{no_no_structured} 少用标号.
 
 \subsection{标签}
 
