@@ -124,7 +124,8 @@ program main
     print *, a, b, c
     print *, x, y, z
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 subroutine ab2bc_then_sumabc(a, b, c)
     use iso_fortran_env, only: dp => real64
     implicit none
@@ -161,7 +162,8 @@ program main
     call combinatorial(7, 3, result)
     print *, result
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 subroutine combinatorial(n, m, comb)
     implicit none
     integer, intent(in) :: n
@@ -173,7 +175,8 @@ subroutine combinatorial(n, m, comb)
     call factorial(n-m, c)
     comb = a / (b*c)
 end subroutine combinatorial
-
+\end{lstlisting}
+\begin{lstlisting}
 subroutine factorial(n, fact)
     implicit none
     integer, intent(in) :: n
@@ -196,7 +199,8 @@ program main
     call add_one(a)
     print *, a
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 subroutine add_one(a)
     use iso_fortran_env, only: dp => real64
     implicit none
@@ -214,7 +218,8 @@ program main
     call add_one(a)
     print *, a
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 subroutine add_one(a)
     use iso_fortran_env, only: dp => real64
     implicit none
@@ -232,14 +237,16 @@ program main
     call add_one(a)
     print *, a
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 subroutine add_one(a)
     use iso_fortran_env, only: dp => real64
     implicit none
     real(dp), intent(in) :: a
     call add_one_(a)
 end subroutine add_one
-
+\end{lstlisting}
+\begin{lstlisting}
 subroutine add_one_(a)
     use iso_fortran_env, only: dp => real64
     implicit none
@@ -257,7 +264,8 @@ program main
     call add_one(a)
     print *, a
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 subroutine add_one(a)
     ! Dummy argument may be undefined here!
     use iso_fortran_env, only: dp => real64
@@ -284,7 +292,8 @@ program main
     call combinatorial(7, 3, result)
     print *, result
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 subroutine combinatorial(n, m, comb)
     implicit none
     integer, intent(in) :: n
@@ -305,7 +314,8 @@ program main
     result = combinatorial(7, 3)
     print *, result
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 function combinatorial(n, m) result(comb)
     implicit none
     integer, intent(in) :: n
@@ -335,7 +345,8 @@ program main
     integer :: combinatorial
     print *, combinatorial(7, 3)
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 function combinatorial(n, m) result(comb)
     implicit none
     integer, intent(in) :: n
@@ -345,7 +356,8 @@ function combinatorial(n, m) result(comb)
     comb = factorial(n) &
            / (factorial(m)*factorial(n-m))
 end function combinatorial
-
+\end{lstlisting}
+\begin{lstlisting}
 function factorial(n) result(fact)
     implicit none
     integer, intent(in) :: n
@@ -384,7 +396,8 @@ program main
     call count()
     call count()
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 subroutine count()
     implicit none
     integer :: n
@@ -402,7 +415,8 @@ program main
     call count() ! 1 -> 2
     call count() ! 2 -> 3
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 subroutine count()
     implicit none
     integer, save :: n = 0
@@ -419,7 +433,8 @@ program main
     call count()
     call count()
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 subroutine count()
     implicit none
     ! n has SAVE attribute!!!
@@ -445,7 +460,8 @@ program main
     call to_screen(char_in, char_out)
     print *, char_out
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 subroutine to_screen(char_in, char_out)
     implicit none
     character(*), intent(in) :: char_in
@@ -472,7 +488,8 @@ program main
     r = [-1.0_dp, 2.0_dp]
     print *, norm_1(r)
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 function norm_1(r) result(norm)
     use iso_fortran_env, only: dp => real64
     implicit none
@@ -493,7 +510,8 @@ program main
     print *, norm_1(r_2, size(r_2))
     print *, norm_1(r_3, size(r_3))
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 function norm_1(r, size_r) result(norm)
     use iso_fortran_env, only: dp => real64
     implicit none
@@ -513,7 +531,8 @@ program main
     real(dp) :: strange_mat_element_sum
     print *, strange_mat_element_sum(50)
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 function strange_mat_element_sum(n) result(s)
     use iso_fortran_env, only: dp => real64
     implicit none
@@ -545,7 +564,8 @@ program main
     print *, norm_1(r_2)
     print *, norm_1(r_3)
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 function norm_1(r) result(norm)
     use iso_fortran_env, only: dp => real64
     implicit none
@@ -573,7 +593,8 @@ program main
     print *, norm_1(r_2)
     print *, norm_1(r_3)
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 function norm_1(r) result(norm)
     use iso_fortran_env, only: dp => real64
     implicit none
@@ -601,7 +622,8 @@ program main
     print *, norm_1(r_2)
     print *, norm_1(r_3)
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 function norm_1(r) result(norm)
     use iso_fortran_env, only: dp => real64
     implicit none
@@ -629,7 +651,8 @@ program main
     real(dp) :: integrate
     print *, integrate(identity, 0.0_dp, 1.0_dp)
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 function integrate(f, a, b) result(s)
     ! Use trapezoidal rule.
     use iso_fortran_env, only: dp => real64
@@ -654,7 +677,8 @@ function integrate(f, a, b) result(s)
     end do
     s = s * h
 end function integrate
-
+\end{lstlisting}
+\begin{lstlisting}
 function identity(x) result(y)
     use iso_fortran_env, only: dp => real64
     implicit none
@@ -675,7 +699,8 @@ program main
     integer :: factorial
     print *, factorial(3)
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 pure function factorial(n) result(p)
     integer, intent(in) :: n
     integer :: p
@@ -707,7 +732,8 @@ program main
     print *, factorial(3)
     print *, factorial([(i, i = 1, 9)])
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 elemental function factorial(n) result(p)
     integer, intent(in) :: n
     integer :: p
@@ -732,7 +758,8 @@ program main
     print *, factorial(3)
     print *, factorial([(i, i = 1, 9)])
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 elemental function factorial(n) result(p)
     integer, intent(in) :: n
     integer :: p
@@ -753,7 +780,8 @@ program main
     integer :: factorial
     print *, factorial(3)
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 function factorial(n) result(p)
     integer, intent(in) :: n
     integer :: p
@@ -772,7 +800,8 @@ program main
     integer :: factorial
     print *, factorial(3)
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 recursive function factorial(n) result(p)
     integer, intent(in) :: n
     integer :: p
@@ -810,7 +839,8 @@ program main
     integer :: factorial
     print *, factorial(3)
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 recursive pure function factorial(n) result(p)
     integer, intent(in) :: n
     integer :: p
@@ -854,7 +884,8 @@ program main
     real(dp) :: i(3, 3)
     i = eye(3)
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 function eye(n) result(mat)
     use iso_fortran_env, only: dp => real64
     implicit none
@@ -892,7 +923,8 @@ program main
     real(dp) :: i(3, 3)
     i = eye(3)
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 function eye(n) result(mat)
     use iso_fortran_env, only: dp => real64
     implicit none
@@ -923,7 +955,8 @@ program main
     real(dp) :: i(3, 3)
     i = eye(3)
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 function eye(n) result(mat)
     use iso_fortran_env, only: dp => real64
     implicit none
@@ -950,7 +983,8 @@ program main
     real(dp) :: integrate
     print *, integrate(sin, 0.0_dp, 1.0_dp)
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 function integrate(f, a, b) result(s)
     ! Use trapezoidal rule.
     use iso_fortran_env, only: dp => real64
@@ -984,7 +1018,8 @@ program main
     real(dp) :: integrate
     print *, integrate(sin_, 0.0_dp, 1.0_dp)
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 function integrate(f, a, b) result(s)
     ! Use trapezoidal rule.
     use iso_fortran_env, only: dp => real64
@@ -1009,7 +1044,8 @@ function integrate(f, a, b) result(s)
     end do
     s = s * h
 end function integrate
-
+\end{lstlisting}
+\begin{lstlisting}
 function sin_(x) result(y)
     use iso_fortran_env, only: dp => real64
     implicit none
@@ -1029,7 +1065,8 @@ program main
     real(dp) :: sgn
     print *, sgn(10.0_dp)
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 function sgn(x) result(y)
     use iso_fortran_env, only: dp => real64
     implicit none
@@ -1055,7 +1092,8 @@ program main
     print *, sgn_real64(10.0_dp)
     print *, sgn_real128(10.0_qp)
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 function sgn_real64(x) result(y)
     use iso_fortran_env, only: dp => real64
     implicit none
@@ -1069,7 +1107,8 @@ function sgn_real64(x) result(y)
         y = 0.0_dp
     end if
 end function sgn_real64
-
+\end{lstlisting}
+\begin{lstlisting}
 function sgn_real128(x) result(y)
     use iso_fortran_env, only: qp => real128
     implicit none
@@ -1107,7 +1146,8 @@ program main
     print *, sgn(10.0_dp)
     print *, sgn(10.0_qp)
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 function sgn_real64(x) result(y)
     use iso_fortran_env, only: dp => real64
     implicit none
@@ -1121,7 +1161,8 @@ function sgn_real64(x) result(y)
         y = 0.0_dp
     end if
 end function sgn_real64
-
+\end{lstlisting}
+\begin{lstlisting}
 function sgn_real128(x) result(y)
     use iso_fortran_env, only: qp => real128
     implicit none
@@ -1165,7 +1206,8 @@ program main
     mat_i = eye(4)
     mat_m = minkowski(4)
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 function eye(n) result(mat)
     use iso_fortran_env, only: dp => real64
     implicit none
@@ -1177,7 +1219,8 @@ function eye(n) result(mat)
         mat(i, i) = 1.0_dp
     end do
 end function eye
-
+\end{lstlisting}
+\begin{lstlisting}
 function minkowski(n) result(eta)
     use iso_fortran_env, only: dp => real64
     implicit none
@@ -1209,7 +1252,8 @@ program main
     mat_i = eye(4)
     mat_m = minkowski(4)
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 function eye(n) result(mat)
     use iso_fortran_env, only: dp => real64
     implicit none
@@ -1221,7 +1265,8 @@ function eye(n) result(mat)
         mat(i, i) = 1.0_dp
     end do
 end function eye
-
+\end{lstlisting}
+\begin{lstlisting}
 function minkowski(n) result(eta)
     use iso_fortran_env, only: dp => real64
     implicit none
@@ -1235,4 +1280,4 @@ function minkowski(n) result(eta)
     end do
 end function minkowski
 \end{lstlisting} 
-和特定接口相比, 抽象接口的 \ttt{interface} 前多了个 \ttt{abstract}. 接口块里过程名 \ttt{dim2mat} 的接口和过程 \ttt{eye}, \ttt{minkowski} 的特定接口长得 ``一模一样'': 都是函数, 都只有一个整型只读参量等等. 至于抽象接口里函数名是 \ttt{dim2mat}, 参量名是 \ttt{dim}, 结果名是 \ttt{mat}, 无关紧要, 这些名称都是可以随便取的\footnote{如果碰上了什么规矩, 编译器会告诉我们.}, 只需保证抽象接口的特征和本需加特定接口的过程的特征相同即可. 然后我们只需要再写 \ttt{procedure(dim2mat) :: eye, minkowski} 就相当于给和 \ttt{dim2mat} 特征相同的过程 \ttt{...} (示例中是 \ttt{eye} 和 \ttt{minkowski}) 加特定接口了.
+和特定接口相比, 抽象接口的 \ttt{interface} 前多了个 \ttt{abstract}. 接口块里过程名 \ttt{dim2mat} 的接口和过程 \ttt{eye}, \ttt{minkowski} 的特定接口长得 ``一模一样'': 都是函数, 都只有一个整型只读参量等等. 至于抽象接口里函数名是 \ttt{dim2mat}, 参量名是 \ttt{dim}, 结果名是 \ttt{mat}, 无关紧要, 这些名称都是可以随便取的\footnote{如果碰上了什么规矩, 编译器会告诉我们的!}, 只需保证抽象接口的特征和本需加特定接口的过程的特征相同即可. 然后我们只需要再写 \ttt{procedure(dim2mat) :: eye, minkowski} 就相当于给和 \ttt{dim2mat} 特征相同的过程 \ttt{...} (示例中是 \ttt{eye} 和 \ttt{minkowski}) 加特定接口了.
