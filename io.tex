@@ -1,9 +1,9 @@
 \chapter{输入与输出}\label{io}
 
-之前我们都只是小打小闹而已, 现在我们来干一些大活儿. 我们来玩玩 \href{https://cdsarc.cds.unistra.fr/viz-bin/cat/I/355}{Gaia DR3}. 我们想知道Gaia DR3里的哪个源距银道面最远且最远有多远, 比较不动脑筋地做这件事呢, 我们想知道哪个源的 $ \left\lvert \sin b\right\rvert/p $ 最大, 其中 $ p $ 是源的视差, $ b $ 是源的银纬. 但这里有一个问题, 就是Gaia DR3显然太大了, 同志们得交个几十杯奶茶钱的网费, 所以我们先用Gaia DR3的一个小样本试试水. 
+之前我们都只是小打小闹而已, 现在我们来干一些大活儿. 我们来玩玩 \href{https://cdsarc.cds.unistra.fr/viz-bin/cat/I/355}{Gaia DR3}. 我们想知道 Gaia DR3 里的哪个源距银道面最远且最远有多远, 比较不动脑筋地做这件事呢, 我们想知道哪个源的 $ \left\lvert \sin b\right\rvert/p $ 最大, 其中 $ p $ 是源的视差, $ b $ 是源的银纬. 但这里有一个问题, 就是 Gaia DR3 显然太大了, 同志们得交个几十杯奶茶钱的网费, 所以我们先用 Gaia DR3 的一个小样本试试水. 
 
 首先我们要在\href{https://cdsarc.cds.unistra.fr/viz-bin/cat/I/355}{这个页面}里找到 \href{https://cdsarc.cds.unistra.fr/viz-bin/ReadMe/I/355?format=html&tex=true}{ReadMe} 点进去, 找到 ``File Summary''. 
-\begin{lstlisting}
+\begin{lstlisting}[numbers=none]
 File Summary:
 ------------------------------------------------------
  FileName   Lrecl Records Explanations
@@ -16,7 +16,7 @@ gaiadr3.sam  1788    1000 Gaia DR3 source catalog
 从这个 ``File Summary'' 可知, \ttt{gaiadr3.sam} 是星表\footnote{认不得英文词儿的请上\href{https://nadc. china-vo. org/astrodict/}{天文学名词词典}查询.}, 一共1000行, 每行1788个字符. 不对呀, 后面明明写着一共1811709771个源嘛, 怎么只有1000行? 那当然是因为这只是个1000个源的样本啦, 文件名后缀可是  \ttt{.sam} 呢. 于是乎我们要在\href{https://cdsarc.cds.unistra.fr/viz-bin/cat/I/355}{这个页面}里找到 \href{https://cdsarc.cds.unistra.fr/ftp/I/355}{FTP}, 里头找到 \href{https://cdsarc.cds.unistra.fr/ftp/I/355/gaiadr3.sam.gz}{\ttt{gaiadr3.sam.gz}} 下载下来然后解压得到  \ttt{gaiadr3.sam}. 
 
 回到ReadMe, 下面有  \ttt{gaiadr3.sam} 的 ``Byte-by-byte Description''. 
-\begin{lstlisting}
+\begin{lstlisting}[numbers=none]
 Byte-by-byte Description of file: gaiadr3.sam 
 ------------------------------------------------------
   Bytes   Format Units Label   Explanations
@@ -81,7 +81,7 @@ end program main
 \end{lstlisting}
 原因二是打开文件的时候, 被打开的文件可能被占住, 其他程序用不了. 想象一下, 同学们跑一个程序, 需要用一个文件里的数据, 同学们用程序打开了文件但没关闭, 然后老师或同学们的同学也要跑一个程序, 也需要用这个文件里的数据, 结果同学们居然把文件占住了, 打不开这个文件, 同学们得被暴打一顿. 所以请同学们养成关掉没用文件的好习惯.
 \begin{convention}
-    在不需要使用外部文件的时候将其关闭. 
+    在不需要使用外部文件的时候将其关闭.\label{close_external_file}
 \end{convention}
 
 注意, 内部文件是不需要也没法打开或关闭的. 
@@ -118,7 +118,8 @@ program main
     call open_and_close()
     close(11)
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 subroutine open_and_close()
     implicit none
     open(11, file='test2.txt')
@@ -225,7 +226,7 @@ program main
 end program main
 \end{lstlisting}
 
-把文件单位换成字符串变量即可读取和写入内部文件了. 注意内部文件是不需要也没法打开或关闭的, 所以没法加 \ttt{position=...}, 每次读取或写入都是从内部文件的开头第一个字符开始的, 不论之前读取写入几次. 下面这个轮子, Ifx可以把 $ e^\pi $ 写入 \ttt{f} 并读取至 \ttt{val}\footnote{这就实现了数字型和字符型的相互转换.}, 但Gfortran不行, 要让Gfortran行, \ttt{f} 的长度必须大于 \ttt{16}. 原因见 \ref{fortran_edit_descriptor} 节. \label{internal_file}
+把文件单位换成字符串变量即可读取和写入内部文件了. 注意内部文件是不需要也没法打开或关闭的, 所以没法加 \ttt{position=...}, 每次读取或写入都是从内部文件的开头第一个字符开始的, 不论之前读取写入几次. 下面这个轮子, Ifx可以把 $ e^\pi $ 写入 \ttt{f} 并读取至 \ttt{val}\footnote{这就实现了数字型和字符型的相互转换.}, 但 Gfortran 不行, 要让 Gfortran 行, \ttt{f} 的长度必须大于 \ttt{16}. 原因见 \ref{fortran_edit_descriptor} 节. \label{internal_file}
 \begin{lstlisting}
 program main
     implicit none
@@ -238,7 +239,7 @@ program main
 end program main
 \end{lstlisting}
 
-我们还可以再把字符串变量换成 \ttt{*}, 输出的话 \ttt{*} 通常代表电脑屏幕. 比如下面这个轮子就会把 \ttt{Hello, world!} ``写入电脑屏幕'', 电脑屏幕上就出现 \ttt{Hello, world!} 了. \ttt{print \{fmt\},} 等价于 \ttt{write(*, \{fmt\})}, 也就是说 \ttt{print *,} 等价于 \ttt{write(*, *)}.
+我们还可以再把字符串变量换成 ``\ttt{*}'', 输出的话 ``\ttt{*}'' 通常代表电脑屏幕. 比如下面这个轮子就会把 \ttt{Hello, world!} ``写入电脑屏幕'', 电脑屏幕上就出现 \ttt{Hello, world!} 了. \ttt{print \{fmt\},} 等价于 \ttt{write(*, \{fmt\})}, 也就是说 \ttt{print *,} 等价于 \ttt{write(*, *)}.
 \begin{lstlisting}
 program main
     implicit none
@@ -246,7 +247,7 @@ program main
     print *, 'Bye bye, world!'
 end program main
 \end{lstlisting}
-输入的话 \ttt{*} 则通常代表键盘. 比如下面这个轮子, 运行到第5行时程序会停下来, 我们在命令行(cmd呀powershell呀之类的东东)中可以打字儿, 假设打入 \ttt{98 54e1} 然后回车, \ttt{98}和 \ttt{54e1} 就赋值给 \ttt{mat(1, 1)} 和 \ttt{mat(1, 2)} 了, 第7行会干和第5行一样的事儿, 但语法更简单, 假设打入 \ttt{7.6 3.2e0}然后回车, \ttt{7.6}和 \ttt{3.2e0}就赋值给 \ttt{mat(2, 1)} 和 \ttt{mat(2, 2)} 了, 最后输出矩阵行列式. 注意 ``\ttt{*}'' 也是不需要且没法打开或关闭的. \ttt{read \{fmt\},} 等价于 \ttt{read(*, \{fmt\})}, 也就是说 \ttt{read *,} 等价于 \ttt{read(*, *)}.
+输入的话 ``\ttt{*}'' 则通常代表键盘. 比如下面这个轮子, 运行到第 5 行时程序会停下来, 我们在命令行 (cmd 呀 powershell 呀之类的东东) 中可以打字儿, 假设打入 \ttt{98 54e1} 然后回车, \ttt{98} 和 \ttt{54e1} 就赋值给 \ttt{mat(1, 1)} 和 \ttt{mat(1, 2)} 了, 第 7 行会干和第5行一样的事儿, 但语法更简单, 假设打入 \ttt{7.6 3.2e0} 然后回车, \ttt{7.6} 和 \ttt{3.2e0} 就赋值给 \ttt{mat(2, 1)} 和 \ttt{mat(2, 2)} 了, 最后输出矩阵行列式. 注意 ``\ttt{*}'' 也是不需要且没法打开或关闭的. \ttt{read \{fmt\},} 等价于 \ttt{read(*, \{fmt\})}, 也就是说 \ttt{read *,} 等价于 \ttt{read(*, *)}.
 \begin{lstlisting}
 program main
     implicit none
@@ -262,14 +263,31 @@ program main
 end program main
 \end{lstlisting}
 
-相信同志们现在懂得如何读取和写入外部文件, 内部文件和 ``\ttt{*}'' 了, 不过同志们还需要注意一些细节问题. 在上个轮子中, 我一开始就打出了 ``算 $ 2\times2 $ 矩阵的行列式'' 的提示, 告诉用这个轮子的人这个轮子会干什么, 后面输入和输出是什么也有提示. 如果不这么干, 用轮子的人估计会一脸懵, 轮子在干什么, 自己要干什么, 最后得到的又是什么统统弄不懂, 哪怕是造轮子的人自己可能也会懵, 忘了自己干了什么在干什么该干什么\footnote{如果轮子只是自己用, 还敢赌自己能晓得轮子在干什么, 那想偷懒就偷懒呗.}. 
+相信同志们现在懂得如何读取和写入外部文件, 内部文件和 ``\ttt{*}'' 了, 不过同志们还需要注意一些细节问题. 在上个轮子中, 我一开始就打出了 ``算 $ 2\times2 $ 矩阵的行列式'' 的提示, 告诉用这个轮子的人这个轮子会干什么, 后面输入和输出是什么也有提示. 如果不这么干, 用轮子的人估计会一脸懵, 轮子在干什么, 自己要干什么, 最后得到的又是什么统统弄不懂, 哪怕是造轮子的人自己可能也会懵, 忘了自己干了什么在干什么该干什么\footnote{如果轮子只是自己用, 还敢赌自己能晓得轮子在干什么, 那确实可以爱咋偷懒就咋偷懒\dots{}}. 
 \begin{convention}
     输出充足的与程序功能及输入输出有关的提示信息. 
 \end{convention}
 
+最后偷偷告诉同学们, 不遵守规范 \ref{close_external_file}, 同学们还可能遇到自己绞尽脑汁也想不出是咋回事的诡异情形. 请同学们看下面这个程序.
+\begin{lstlisting}
+program main
+    implicit none
+    real :: any_number
+    open(10, file='test.txt', status='REPLACE', &
+         action='WRITE', position='APPEND')
+    write(10, *) 'Write something.'
+    read *, any_number
+    write(10, *) any_number
+    close(10)
+end program main
+\end{lstlisting}
+请同学们先把程序运行起来, 然后用 VS code 打开 \ttt{test.txt}. 照道理, 程序跑到第 7 行会停下来, 而程序第 6 行已经往 \ttt{test.txt} 里写入 ``\ttt{Write something.}'' 了, 所以 \ttt{test.txt} 里头应该有才是. 然而打开 \ttt{test.txt} 后, 用 Gfortran 的同学会看到里头啥也没有. 这时候, 再请这些同学在黑框框里随便输个数回车, 然后这些同学会发现 ``\ttt{Write something.}'' 又奇迹般地出现了\dots{}
+
+这就涉及到比较高深的电脑工作原理了. 大致说来, 电脑在普通运算和读写外部文件间切换是灰常麻烦的, 所以编译器和操作系统希望电脑少切换. 于是在有读写外部文件的任务时, 编译器和操作系统会在电脑内存里特别划出一块, 称为缓冲区 (buffer). 读取时, 先一股脑地读一大堆数据到缓冲区, 之后再尽量只从缓冲区中读数据. 写入时, 先将数据写入缓冲区, 等缓冲区里有一大堆数据时再将数据一股脑地写入外部文件. 所以第 6 行貌似往 \ttt{test.txt} 里写入 ``\ttt{Write something.}'', 其实只是写到缓冲区里, \ttt{test.txt} 里当然没有了. 不过用 Ifx 的同学们运行上面的例子不会遇到问题, 因为缓冲区是归器规管的, Ifx 的缓冲区器规和 Gfortran 不一样. 所以说呀, 同学们该关文件的时候赶紧关文件, 因为关文件的时候, 编译器和操作系统必须把缓冲区里的东东写入外部文件然后灭掉缓冲区, 同学们就不会遇到缓冲区这令人头大的东东了!
+
 \section{编辑符}\label{fortran_edit_descriptor}
 
-如果我们分别用Ifx和Gfortran跑下面这个处心积虑造出来的简单轮子, 我们会发现结果的格式有点区别, Ifx的结果是用科学计数法表示的而Gfortran的不是. 
+如果我们分别用 Ifx 和 Gfortran 跑下面这个处心积虑造出来的简单小轮子, 我们会发现结果的格式有点区别, Ifx 的结果是用科学计数法表示的而 Gfortran 的不是. 
 \begin{lstlisting}
 program main
     implicit none
@@ -328,7 +346,7 @@ end program main
 \end{lstlisting}
 
 每个格式声明都由 \ttt{()} 里的一堆编辑符 (edit descriptor) 组成, 编辑符间用 \ttt{,} 隔开, 每个编辑符都代指一个操作, 比如上面的轮子读取时编辑符依次是 \ttt{128X}, \ttt{F9.4}, \ttt{842X}, \ttt{F15.11}, 依次代表跳过128个字符不读, 读占9个字符的4位小数的实数, 跳过842个字符不读, 读占15个字符的11位小数的实数. 话说我是怎么知道这么读就行的? 我们再次打开 \href{https://cdsarc.cds.unistra.fr/viz-bin/ReadMe/I/355?format=html&tex=true}{ReadMe} 里的 \ttt{gaiadr3.sam} 的 ``Byte-by-byte Description'', 里头写着. 
-\begin{lstlisting}
+\begin{lstlisting}[numbers=none]
 Byte-by-byte Description of file: gaiadr3.sam 
 ------------------------------------------------------
   Bytes   Format Units Label   Explanations
