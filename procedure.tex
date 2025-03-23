@@ -57,7 +57,8 @@ program main
         / (factorial(3)*factorial(7-3))
     print *, c
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}
 function factorial(n) result(p)
     integer, intent(in) :: n
     integer :: p
@@ -73,7 +74,7 @@ end function factorial
 于是乎我们便发现, 想要玩 Fortran 而不是被 Fortran 玩, 就必须懂过程 (procedure). 因为一个 ``重新创造轮子'' 的梗 (请同志们自行搜索了解), 过程又俗称轮子 (wheel). 过程的定义是 ``封装可以在程序执行期间直接调用的任意操作序列的实体'', 玄玄乎乎的, 我们不理它. 我们可以直接把过程理解成程序运行时的一个操作, 比如上面的例子中 \ttt{function ...} 到 \ttt{end function ...} 就是 ``计算 \ttt{n} 的阶乘'' 这一操作. 使用过程后, 我们就进入面向过程程序设计 (procedure-oriented programming, POP) 阶段了.
 
 啥叫面向过程呢? 众所周知, 置象于冰箱中, 步骤有三: 一开冰箱, 二塞大象, 三关冰箱. 用 Fortran 来写便这般. 
-\begin{lstlisting} 
+\begin{lstlisting}[numbers=none] 
 program main
     ... 
     implicit none
@@ -82,15 +83,18 @@ program main
     call put_in(elephant)
     call close_door()
 end program main
-
+\end{lstlisting}
+\begin{lstlisting}[numbers=none]
 subroutine open_door()
     ... 
 end subroutine open_door
-
+\end{lstlisting}
+\begin{lstlisting}[numbers=none]
 subroutine put_in(what_put_in)
     ... 
 end subroutine put_in
-
+\end{lstlisting}
+\begin{lstlisting}[numbers=none]
 subroutine close_door()
     ... 
 end subroutine close_door

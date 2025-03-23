@@ -94,17 +94,17 @@ Fortran 数组中的元素有一个被规定死的排列顺序: 任意 $a_{s_1\d
 第一种用法是直接写 \ttt{[a1, ..., an]}, \ttt{a1, ..., an} 中的任意 \ttt{ai} 是值为 $a_i$ 的标量, 来代表 $[a_1, ..., a_n]$. 例如 \ttt{[1, 2, 3]} 代表 $[1, 2, 3]$, 非常简单.
 
 第二种用法是用隐式 do 循环 (implied DO loop), 这玩意儿比较难. 同学们需要掌握常用的一重隐式 do 循环, 如果老师敢考难死人的多重隐式 do 循环, 俺们就赶紧揭竿而起\dots{} 假如我们要造个数组 $[1, \dots, 1000]$, 写 \ttt{[1, ..., 1000]} 肯定不成, 这时我们可以写 \ttt{[(i, i = 1, 1000)]}, 其中 \ttt{i} 必须是\uline{声明过的}整型变量. 一般地, 隐式 do 循环 \ttt{[(\{expr\}, \{m\} = \{m1\}, \{m2\}, \{m3\})]} 的第 $i$ 个元素是下面这样的显式 do 循环输出的第 $i$ 个数, 其中 \ttt{, \{m3\}} 若省略, \ttt{\{m3\}} 则为 \ttt{1}.
-\begin{verbatim}
+\begin{lstlisting}[numbers=none]
 do {m} = {m1}, {m2}, {m3}
     print *, {expr}
 end do
-\end{verbatim}
+\end{lstlisting}
 例如 \ttt{[(n**2, n = 1, 10, 2)]} 代表 $[1^2, 3^2, 5^2, 7^2, 9^2]$. 再次提醒, \ttt{\{m\}} 必须是\uline{声明过的}整型变量.
 
 Ifx 有器规, 可以用简写 \ttt{[\{m1\}:\{m2\}:\{m3\}]} 代替 \ttt{[(\{m\}, \{m\} = \{m1\}, \{m2\}, \{m3\})]}. 这种不规范的写法同学们不许用.
 
 一般地, 多重隐式 do 循环 \ttt{[(...(\{expr\}, {m\_{}1} = \{m1\_{}1\}, \{m2\_{}1\}, \{m3\_{}1\}), ..., {m\_{}n} = \{m1\_{}n\}, \{m2\_{}n\}, \{m3\_{}n\})]} 的第 $i$ 个元素是下面这样的多重显式 do 循环输出的第 $i$ 个数, 其中 \ttt{, \{m3\_{}i\}} 若省略, \ttt{\{m3\_{}i\}} 则为 \ttt{1}.
-\begin{verbatim}
+\begin{lstlisting}[numbers=none]
 do {m_n} = {m1_n}, {m2_n}, {m3_n}
     ......
         do {m_1} = {m1_1}, {m2_1}, {m3_1}
@@ -112,7 +112,7 @@ do {m_n} = {m1_n}, {m2_n}, {m3_n}
         end do
     ......
 end do
-\end{verbatim}
+\end{lstlisting}
 例如 \ttt{[((m+n**2, m = 0, 1), n = 1, 2)]} 代表 $[0+1^2, 1+1^2, 0+2^2, 1+2^2]$. Python 有一个和多重隐式 do 循环很相似的, 叫列表推导式的东东, 能给出多维数组. 但请注意, Fortran 的多重隐式 do 循环只能给出\uline{一维}数组常量, 如果需要多维数组常量, 那么需要用 \ref{fortran_array_manipulation} 节讲的数组操作把一维数组常量变成多维数组常量.
 
 \section{数组声明}\label{fortran_array_specification}

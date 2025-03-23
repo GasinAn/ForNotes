@@ -4,7 +4,7 @@
 
 程序 (program) 是指挥电脑工作的一堆指令. 这堆指令要用一堆字符表示, 表示指令的所有字符合起来称为源代码 (source code). 源代码需要被保存在文件中, 保存源代码的所有文件合起来称为源代码文件 (source code file).
 
-比如,在一个名为 \ttt{main.f90} 的文件内写入下面这些内容\footnote{最左边的数字是行号, 别写进文件里啊!}并保存.
+比如, 在一个名为 \ttt{main.f90} 的文件内写入下面这些内容\footnote{最左边的数字是行号, 别写进文件里啊!}并保存.
 \begin{lstlisting}
 program main
     implicit none
@@ -73,13 +73,13 @@ end subroutine helloworld
 每个 Fortran 程序都由若干程序单元 (program unit) 组成. 程序单元可能是主程序 (main program), 或外部子程序 (external subprogram), 或模块 (module), 或子模块 (submodule). 一个 Fortran 程序中必须有且只有一个主程序, 其他程序单元数目随便.
 
 主程序长下面这样.
-\begin{verbatim}
+\begin{lstlisting}[numbers=none]
 program [program-name]
     ...
 end program [program-name]
-\end{verbatim}
+\end{lstlisting}
 其中 \ttt{[program-name]} 处是一个名称 (name), 名称指的是由字母, 数字和下划线 ``\ttt{\_{}}''\footnote{
-    下划线是空格的替代字符,长得还是蛮像滴!
+    下划线是空格的替代字符, 长得还是蛮像滴!
 } 组成的, 开头是字母的字符串\footnote{后文中的 ``某某名'' 若不另加说明则都是名称, 不再赘述.}, ``\ttt{...}'' 处则是各种指令, 一行一条. 比如, 之前 \ref{fortran_program} 节里 \ttt{main.f90} 里的程序就是一个名称为 \ttt{main} 的主程序\footnote{安安习惯把主程序的名称取做 \ttt{main} 并放在 \ttt{main.f90} 里.} (\ttt{helloworld.f90} 里的程序则是一个外部子程序).
 
 外部子程序在第\ref{fortran_procedure}章里讲, 模块在第\ref{fortran_module}章里讲, 子模块在第\ref{fortran_submodule}章里讲.\footnote{??\mbox{}的内容安安会在猴年马月写好的!}
@@ -165,25 +165,25 @@ program main
 end program main
 \end{lstlisting}
 Ifx 给出的结果如下\footnote{
-    假定屏幕宽度是 60 个字符宽, 且略去版权声明等无关紧要的内容, 下同.
+    假定屏幕宽度是 50 个字符宽, 且略去版权声明等无关紧要的内容, 下同.
 }.
-\begin{verbatim}
-main.f90(3): error #6899: First non-blank character in a cha
-racter type format specifier must be a left parenthesis.  [
-'Hello, world!']
+\begin{lstlisting}[numbers=none]
+main.f90(3): error #6899: First non-blank characte
+r in a character type format specifier must be a l
+eft parenthesis.  ['Hello, world!']
     print 'Hello, world!'
 -----------^
 compilation aborted for main.f90 (code 1)
-\end{verbatim}
+\end{lstlisting}
 Gfortran 给出的结果如下.
-\begin{verbatim}
+\begin{lstlisting}[numbers=none]
 main.f90:3:10:
 
     print 'Hello, world!'
          1
-Error: Missing leading left parenthesis in format string at 
-(1)
-\end{verbatim}
+Error: Missing leading left parenthesis in format 
+string at (1)
+\end{lstlisting}
 由于程序第3行不符合 Fortran 语法 (\ttt{print} 后少了 \ttt{*,} 之类的东东), 编译器不知怎么干活儿了, 只好报个错. 智能的 VS Code 会在编译前就请 Gfortran 来检查我们的程序是否有语法错误, 这将节约我们的时间.
 
 因为有器规, 所以报错还和编译器有关. 比如运行下面这个程序.
@@ -218,17 +218,17 @@ program main
 end program main
 \end{lstlisting}
 Ifx 给出这样的结果.
-\begin{verbatim}
-main.f90(4): warning #8221: This integer constant is outside
- the default integer range - using INTEGER(8) instead.   [10
-00000000000]
+\begin{lstlisting}[numbers=none]
+main.f90(4): warning #8221: This integer constant 
+is outside the default integer range - using INTEG
+ER(8) instead.   [1000000000000]
     i = 1000000000000
 --------^
-main.f90(4): warning #6384: This value is out-of-range for a
-n INTEGER(KIND=4) type.   [1000000000000]
+main.f90(4): warning #6384: This value is out-of-r
+ange for an INTEGER(KIND=4) type.   [1000000000000]
     i = 1000000000000
 --------^
-\end{verbatim}
+\end{lstlisting}
 Ifx 认为 \ttt{1000000000000} 过大, 无法正确存储, 于是就给个警告, 但程序仍然可以运行. 正常想来, 程序运行后电脑屏幕上应该出现 \ttt{1000000000000}, 结果出现的却是 \ttt{-727379968}, 果然很奇怪! 至于 Gfortran 嘛, 它也认为 \ttt{1000000000000}过大, 但它不是给个警告, 而是直接报错.
 
 再比如, 编译这样一个保存在 \ttt{main.f90} 中的程序.
@@ -241,15 +241,15 @@ program main
 end program main
 \end{lstlisting}
 Gfortran 给出这样的结果.
-\begin{verbatim}
+\begin{lstlisting}[numbers=none]
 main.f90:4:8:
 
     4 |     i = .true.
       |        1
-Warning: Extension: Conversion from LOGICAL(4) to INTEGER(4)
- at (1)
-\end{verbatim}
-Gfortran 觉得令整数 \ttt{i} 等于逻辑 ``真'' 的操作其实是标准不允许的, 是自己放水才能这么干的, 于是就给个警告 (VS Code 会提前请 Gfortran 来看是否会弹警告), 但程序仍然可以运行. 运行后电脑屏幕上出现 \ttt{1} . 至于 Ifx 嘛, 它倒是不报错也不给警告, 干脆利落地编译完了, 但因为器规不同, 运行后电脑屏幕上出现的是 \ttt{-1}\dots{}
+Warning: Extension: Conversion from LOGICAL(4) to 
+INTEGER(4) at (1)
+\end{lstlisting}
+Gfortran 觉得令整数 \ttt{i} 等于逻辑 ``真'' 的操作其实是标准不允许的, 是自己放水才能这么干的, 于是就给个警告 (VS Code 会提前请 Gfortran 来看是否会弹警告), 但程序仍然可以运行. 运行后电脑屏幕上出现 \ttt{1}. 至于 Ifx 嘛, 它倒是不报错也不给警告, 干脆利落地编译完了, 但因为器规不同, 运行后电脑屏幕上出现的是 \ttt{-1}\dots{}
 
 \section{字符集}
 
@@ -470,10 +470,10 @@ end program main
 有些人可能会放宽到不超过 $120$ 个字符, 配合以 8 个空格为单位的缩进和宽屏电脑.
 
 用 VS Code 的话, 可以在 \ttt{settings.json} 里加入下面这两个键值对.
-\begin{verbatim}
+\begin{lstlisting}[numbers=none]
 "editor.wordWrap": "wordWrapColumn",
 "editor.wordWrapColumn": 80
-\end{verbatim}
+\end{lstlisting}
 这样如果一行超过 80 个字符, 就会分行显示. 注意, 只是分行显示, 这一行还是超过 80 个字符的 (可以看到 ``分行'' 后下面一 ``行'' 是没有行号的). 加入这两个键值对只是起提醒作用, 太长还是要分行写的 (照顾那些没有像 VS Code 这样智能的编辑器的可怜人).
 
 但有时代码一行确实写不完, 这时我们可以使用续行 (continuation). 首先我们需要介绍注释行 (comment line). 注释行就是相当于空行的行, 包括空行, 只有空格的行和除空格外只有注释的行. 而续行就是在一行的末尾加上 ``\ttt{\&{}}'', 表示把下面第一个不是注释行的行剪切下来粘贴到这行后 (并去掉用于表示续行的 ``\ttt{\&{}}''). 比如下面两个程序是一样的.

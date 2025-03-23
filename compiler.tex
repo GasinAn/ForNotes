@@ -59,7 +59,7 @@ Windows 系统安装方式如下.\footnote{
     \item[] 如果已经装了 Python, 装 Modern Fortran 前先用 Pip\footnote{有 Conda 当然用 Conda 啦!} 装 fortls .
     \item 按 Ctrl+Shift+P, 然后选择 ``Preferences: Open Settings (JSON)'', 打开名为 \ttt{settings.json} 的 JSON 文件.
     \item 在 \ttt{settings.json} 里加入下面这些键值对.\label{add_key_value}
-    \begin{verbatim}
+    \begin{lstlisting}[numbers=none]
 "code-runner.executorMap": {
     "FortranFreeForm":
     "cd $dir; gfortran *.f*; if($?){.\a.exe}",
@@ -68,18 +68,18 @@ Windows 系统安装方式如下.\footnote{
 },
 "code-runner.runInTerminal": true,
 "code-runner.saveAllFilesBeforeRun": true
-    \end{verbatim}
+    \end{lstlisting}
 \end{enumerate}
 最后第 \ref{add_key_value} 步还需解释, 因为牵涉到 JSON 文件的语法. JSON 文件里的内容应该满足下面的形式.
-\begin{verbatim}
+\begin{lstlisting}[numbers=none]
 {
   key_1: value_1,
   ...
   key_n: value_n
 }
-\end{verbatim}
+\end{lstlisting}
 每一个形如 \ttt{key\_{}i: value\_{}i} 的东东称作一个键值对, 任意两个键值对之间用逗号隔开. 所以, 如果一开始 \ttt{settings.json} 里头空空如也, 则加入键值对后可能长这样.
-\begin{verbatim}
+\begin{lstlisting}[numbers=none]
 {
   "code-runner.executorMap": {
     "FortranFreeForm":
@@ -90,17 +90,17 @@ Windows 系统安装方式如下.\footnote{
   "code-runner.runInTerminal": true,
   "code-runner.saveAllFilesBeforeRun": true
 }
-\end{verbatim}
+\end{lstlisting}
 如果一开始 \ttt{settings.json} 里长这样,
-\begin{verbatim}
+\begin{lstlisting}[numbers=none]
 {
   "editor.wordWrap": "wordWrapColumn",
   "editor.wordWrapColumn": 80,
   "workbench.colorTheme": "Red"
 }
-\end{verbatim}
+\end{lstlisting}
 则加入键值对后可能长这样.
-\begin{verbatim}
+\begin{lstlisting}[numbers=none]
 {
   "editor.wordWrap": "wordWrapColumn",
   "editor.wordWrapColumn": 80,
@@ -114,7 +114,7 @@ Windows 系统安装方式如下.\footnote{
   "code-runner.runInTerminal": true,
   "code-runner.saveAllFilesBeforeRun": true
 }
-\end{verbatim}
+\end{lstlisting}
 注意第 4 行最后要多加一个逗号来隔开键值对.
 
 \section{使用}
